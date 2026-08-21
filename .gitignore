@@ -1,0 +1,16 @@
+# .NET / Avalonia
+bin/
+obj/
+*.user
+.vs/
+
+# Rider/VS Code
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Von der App zur Laufzeit erzeugt (SQLite-DB liegt regulär unter dem OS-Benutzerverzeichnis,
+# nicht im Repo - dieser Eintrag ist nur ein Sicherheitsnetz, falls mal lokal getestet wird)
+*.db
+*.db-shm
+*.db-wal

@@ -1,0 +1,10 @@
+<Project>
+  <!-- Gilt für alle Projekte unter src/. LangVersion=latest, weil CommunityToolkit.Mvvm's
+       [ObservableProperty] auf partial properties (C# 13) setzt, auch wenn wir auf net8.0 (LTS)
+       statt net9.0 zielen – das SDK bringt einen Roslyn mit, der das unabhängig vom TFM unterstützt. -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+</Project>
