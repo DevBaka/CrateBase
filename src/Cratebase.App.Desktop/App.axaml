@@ -2,15 +2,179 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Cratebase.App.Desktop.App"
              xmlns:local="using:Cratebase.App.Desktop"
-             RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+             RequestedThemeVariant="Dark">
+             <!-- Fest auf Dark statt "Default" (Systemtheme folgen): DJ-Software läuft praktisch
+                  immer dunkel (Sichtbarkeit am Booth), das ist hier eine bewusste Entscheidung,
+                  keine Verlegenheitslösung. -->
 
     <Application.DataTemplates>
         <local:ViewLocator />
     </Application.DataTemplates>
 
+    <Application.Resources>
+        <FontFamily x:Key="DisplayFont">avares://Cratebase.App.Desktop/Assets/Fonts/Sora.ttf#Sora</FontFamily>
+        <FontFamily x:Key="MonoFont">avares://Cratebase.App.Desktop/Assets/Fonts/JetBrainsMono.ttf#JetBrains Mono</FontFamily>
+
+        <!-- Palette 1:1 aus "DJ Library App.dc.html" übernommen (oklch-Werte dort in Hex
+             umgerechnet) - Layout/Umfang ist bewusst nicht 1:1, die Farbsprache schon. -->
+        <Color x:Key="BgWindowColor">#0A0B0D</Color>
+        <Color x:Key="BgSurfaceColor">#0E0F12</Color>
+        <Color x:Key="BgPanelColor">#111318</Color>
+        <Color x:Key="BgElevatedColor">#141519</Color>
+        <Color x:Key="BgChipColor">#1B1D22</Color>
+        <Color x:Key="BorderFaintColor">#16171B</Color>
+        <Color x:Key="BorderColor">#22252B</Color>
+        <Color x:Key="BorderStrongColor">#2B2E35</Color>
+        <Color x:Key="TextPrimaryColor">#ECEEF1</Color>
+        <Color x:Key="TextSecondaryColor">#C9CBD1</Color>
+        <Color x:Key="TextTertiaryColor">#A9ACB4</Color>
+        <Color x:Key="TextMutedColor">#8D919B</Color>
+        <Color x:Key="TextFaintColor">#5B5E66</Color>
+        <Color x:Key="AccentGreenColor">#33E78C</Color>
+        <Color x:Key="AccentGreenBgColor">#2433E78C</Color>
+        <Color x:Key="AccentPurpleColor">#C4A4FE</Color>
+        <Color x:Key="AccentPurpleBgColor">#26AC89E8</Color>
+        <Color x:Key="AccentRedColor">#FF645F</Color>
+
+        <SolidColorBrush x:Key="BgWindowBrush" Color="{StaticResource BgWindowColor}" />
+        <SolidColorBrush x:Key="BgSurfaceBrush" Color="{StaticResource BgSurfaceColor}" />
+        <SolidColorBrush x:Key="BgPanelBrush" Color="{StaticResource BgPanelColor}" />
+        <SolidColorBrush x:Key="BgElevatedBrush" Color="{StaticResource BgElevatedColor}" />
+        <SolidColorBrush x:Key="BgChipBrush" Color="{StaticResource BgChipColor}" />
+        <SolidColorBrush x:Key="BorderFaintBrush" Color="{StaticResource BorderFaintColor}" />
+        <SolidColorBrush x:Key="BorderBrush1" Color="{StaticResource BorderColor}" />
+        <SolidColorBrush x:Key="BorderStrongBrush" Color="{StaticResource BorderStrongColor}" />
+        <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimaryColor}" />
+        <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}" />
+        <SolidColorBrush x:Key="TextTertiaryBrush" Color="{StaticResource TextTertiaryColor}" />
+        <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMutedColor}" />
+        <SolidColorBrush x:Key="TextFaintBrush" Color="{StaticResource TextFaintColor}" />
+        <SolidColorBrush x:Key="AccentGreenBrush" Color="{StaticResource AccentGreenColor}" />
+        <SolidColorBrush x:Key="AccentGreenBgBrush" Color="{StaticResource AccentGreenBgColor}" />
+        <SolidColorBrush x:Key="AccentPurpleBrush" Color="{StaticResource AccentPurpleColor}" />
+        <SolidColorBrush x:Key="AccentPurpleBgBrush" Color="{StaticResource AccentPurpleBgColor}" />
+        <SolidColorBrush x:Key="AccentRedBrush" Color="{StaticResource AccentRedColor}" />
+
+        <!-- FluentTheme-Akzent auf unser Grün mappen, damit eingebaute Controls (Fokusringe,
+             DataGrid-Selektion, Standard-Buttons) sich ohne Template-Kopie einfügen. -->
+        <Color x:Key="SystemAccentColor">#33E78C</Color>
+        <Color x:Key="SystemAccentColorLight1">#5CEDA6</Color>
+        <Color x:Key="SystemAccentColorLight2">#85F2BC</Color>
+        <Color x:Key="SystemAccentColorLight3">#ADF6D2</Color>
+        <Color x:Key="SystemAccentColorDark1">#28B96E</Color>
+        <Color x:Key="SystemAccentColorDark2">#1E8C55</Color>
+        <Color x:Key="SystemAccentColorDark3">#145F3A</Color>
+    </Application.Resources>
+
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+
+        <Style Selector="Window">
+            <Setter Property="Background" Value="{StaticResource BgWindowBrush}" />
+            <Setter Property="FontFamily" Value="{StaticResource DisplayFont}" />
+        </Style>
+        <Style Selector="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource DisplayFont}" />
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+        </Style>
+
+        <!-- Schlanker, dunkler Scrollbar-Daumen statt der wuchtigen FluentTheme-Standardvariante -->
+        <Style Selector="ScrollBar">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="ScrollBar /template/ Thumb">
+            <Setter Property="Background" Value="{StaticResource BorderStrongBrush}" />
+        </Style>
+
+        <Style Selector="Button">
+            <Setter Property="Background" Value="{StaticResource BgChipBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderStrongBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+            <Setter Property="FontSize" Value="12.5" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="12,7" />
+            <Setter Property="CornerRadius" Value="7" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style Selector="Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{StaticResource BorderStrongBrush}" />
+        </Style>
+        <Style Selector="Button:disabled /template/ ContentPresenter">
+            <Setter Property="Opacity" Value="0.45" />
+        </Style>
+
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="{StaticResource BgElevatedBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderStrongBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+            <Setter Property="CaretBrush" Value="{StaticResource AccentGreenBrush}" />
+            <Setter Property="CornerRadius" Value="7" />
+            <Setter Property="FontSize" Value="12.5" />
+            <Setter Property="Padding" Value="10,6" />
+        </Style>
+        <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+            <Setter Property="BorderBrush" Value="{StaticResource AccentGreenBrush}" />
+        </Style>
+
+        <Style Selector="Slider">
+            <Setter Property="Foreground" Value="{StaticResource AccentGreenBrush}" />
+        </Style>
+        <Style Selector="Slider /template/ Track#PART_Track > Thumb">
+            <Setter Property="Background" Value="{StaticResource AccentGreenBrush}" />
+            <Setter Property="Width" Value="12" />
+            <Setter Property="Height" Value="12" />
+        </Style>
+        <Style Selector="Slider:horizontal /template/ RepeatButton#PART_DecreaseButton">
+            <Setter Property="Background" Value="{StaticResource AccentGreenBrush}" />
+        </Style>
+        <Style Selector="Slider:horizontal /template/ RepeatButton#PART_IncreaseButton">
+            <Setter Property="Background" Value="{StaticResource BorderStrongBrush}" />
+        </Style>
+
+        <Style Selector="TreeViewItem">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="MinHeight" Value="0" />
+        </Style>
+        <Style Selector="TreeViewItem /template/ Border#PART_LayoutRoot">
+            <Setter Property="CornerRadius" Value="6" />
+        </Style>
+        <Style Selector="TreeViewItem:selected /template/ Border#PART_LayoutRoot">
+            <Setter Property="Background" Value="{StaticResource AccentGreenBgBrush}" />
+        </Style>
+        <Style Selector="TreeViewItem:selected TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource AccentGreenBrush}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style Selector="DataGrid">
+            <Setter Property="Background" Value="{StaticResource BgWindowBrush}" />
+            <Setter Property="RowBackground" Value="Transparent" />
+            <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource BorderFaintBrush}" />
+            <Setter Property="VerticalGridLinesBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontSize" Value="12.5" />
+        </Style>
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="Background" Value="{StaticResource BgWindowBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource TextFaintBrush}" />
+            <Setter Property="FontSize" Value="10.5" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="4,6" />
+        </Style>
+        <Style Selector="DataGridRow">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
+            <Setter Property="Fill" Value="{StaticResource BgElevatedBrush}" />
+        </Style>
+        <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
+            <Setter Property="Fill" Value="{StaticResource AccentGreenBgBrush}" />
+        </Style>
+        <Style Selector="DataGridCell">
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+            <Setter Property="Padding" Value="10,0" />
+        </Style>
     </Application.Styles>
 </Application>

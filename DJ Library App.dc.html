@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#05060a;}
+::-webkit-scrollbar{width:8px;height:8px;}
+::-webkit-scrollbar-thumb{background:#2b2e35;border-radius:4px;}
+@keyframes pulseDot{0%,100%{opacity:1;}50%{opacity:.3;}}
+input{outline:none;}
+</style>
+</helmet>
+<x-import component-from-global-scope="MacWindow" from="./macos-window.jsx" dc-props="{{ macProps }}" hint-size="1440px,920px">
+<div style="display:flex;flex-direction:column;height:100%;background:#0a0b0d;font-family:'Sora',system-ui,sans-serif;color:#eceef1;overflow:hidden;position:relative;">
+
+  <div style="display:flex;align-items:center;gap:4px;padding:8px 16px;border-bottom:1px solid #22252b;flex-shrink:0;">
+    <sc-if value="{{ isLibrary }}"><div onClick="{{ goLibrary }}" style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;background:oklch(0.82 0.19 155 / 0.14);cursor:pointer;">
+      <div style="display:grid;grid-template-columns:7px 7px;gap:2px;"><div style="width:7px;height:7px;background:oklch(0.82 0.19 155);border-radius:1px;"></div><div style="width:7px;height:7px;background:oklch(0.82 0.19 155);border-radius:1px;"></div><div style="width:7px;height:7px;background:oklch(0.82 0.19 155);border-radius:1px;"></div><div style="width:7px;height:7px;background:oklch(0.82 0.19 155);border-radius:1px;"></div></div>
+      <span style="font-size:13px;font-weight:600;color:oklch(0.82 0.19 155);">Library</span>
+    </div></sc-if>
+    <sc-if value="{{ isLibraryOff }}"><div onClick="{{ goLibrary }}" style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;cursor:pointer;">
+      <div style="display:grid;grid-template-columns:7px 7px;gap:2px;"><div style="width:7px;height:7px;background:#6b6f79;border-radius:1px;"></div><div style="width:7px;height:7px;background:#6b6f79;border-radius:1px;"></div><div style="width:7px;height:7px;background:#6b6f79;border-radius:1px;"></div><div style="width:7px;height:7px;background:#6b6f79;border-radius:1px;"></div></div>
+      <span style="font-size:13px;font-weight:600;color:#8d919b;">Library</span>
+    </div></sc-if>
+
+    <sc-if value="{{ isPlanner }}"><div onClick="{{ goPlanner }}" style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;background:oklch(0.82 0.19 155 / 0.14);cursor:pointer;">
+      <div style="display:flex;gap:2px;"><div style="width:6px;height:12px;background:oklch(0.82 0.19 155);border-radius:1px;"></div><div style="width:6px;height:12px;background:oklch(0.82 0.19 155);border-radius:1px;"></div></div>
+      <span style="font-size:13px;font-weight:600;color:oklch(0.82 0.19 155);">Set Planner</span>
+    </div></sc-if>
+    <sc-if value="{{ isPlannerOff }}"><div onClick="{{ goPlanner }}" style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;cursor:pointer;">
+      <div style="display:flex;gap:2px;"><div style="width:6px;height:12px;background:#6b6f79;border-radius:1px;"></div><div style="width:6px;height:12px;background:#6b6f79;border-radius:1px;"></div></div>
+      <span style="font-size:13px;font-weight:600;color:#8d919b;">Set Planner</span>
+    </div></sc-if>
+
+    <sc-if value="{{ isAnalytics }}"><div onClick="{{ goAnalytics }}" style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;background:oklch(0.82 0.19 155 / 0.14);cursor:pointer;">
+      <div style="display:flex;align-items:flex-end;gap:2px;height:12px;"><div style="width:4px;height:5px;background:oklch(0.82 0.19 155);"></div><div style="width:4px;height:9px;background:oklch(0.82 0.19 155);"></div><div style="width:4px;height:12px;background:oklch(0.82 0.19 155);"></div></div>
+      <span style="font-size:13px;font-weight:600;color:oklch(0.82 0.19 155);">Analytics</span>
+    </div></sc-if>
+    <sc-if value="{{ isAnalyticsOff }}"><div onClick="{{ goAnalytics }}" style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;cursor:pointer;">
+      <div style="display:flex;align-items:flex-end;gap:2px;height:12px;"><div style="width:4px;height:5px;background:#6b6f79;"></div><div style="width:4px;height:9px;background:#6b6f79;"></div><div style="width:4px;height:12px;background:#6b6f79;"></div></div>
+      <span style="font-size:13px;font-weight:600;color:#8d919b;">Analytics</span>
+    </div></sc-if>
+
+    <sc-if value="{{ isDuplicates }}"><div onClick="{{ goDuplicates }}" style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;background:oklch(0.82 0.19 155 / 0.14);cursor:pointer;">
+      <div style="position:relative;width:13px;height:13px;"><div style="position:absolute;left:0;top:2px;width:9px;height:9px;border:1.5px solid oklch(0.82 0.19 155);border-radius:2px;"></div><div style="position:absolute;left:4px;top:0;width:9px;height:9px;border:1.5px solid oklch(0.82 0.19 155);border-radius:2px;background:#0a0b0d;"></div></div>
+      <span style="font-size:13px;font-weight:600;color:oklch(0.82 0.19 155);">Duplicates</span>
+    </div></sc-if>
+    <sc-if value="{{ isDuplicatesOff }}"><div onClick="{{ goDuplicates }}" style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;cursor:pointer;">
+      <div style="position:relative;width:13px;height:13px;"><div style="position:absolute;left:0;top:2px;width:9px;height:9px;border:1.5px solid #6b6f79;border-radius:2px;"></div><div style="position:absolute;left:4px;top:0;width:9px;height:9px;border:1.5px solid #6b6f79;border-radius:2px;background:#0a0b0d;"></div></div>
+      <span style="font-size:13px;font-weight:600;color:#8d919b;">Duplicates</span>
+    </div></sc-if>
+
+    <sc-if value="{{ isDjApp }}"><div onClick="{{ goDjApp }}" style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;background:oklch(0.82 0.19 155 / 0.14);cursor:pointer;">
+      <div style="display:flex;gap:1px;"><div style="width:8px;height:8px;border-radius:50%;border:1.5px solid oklch(0.82 0.19 155);"></div><div style="width:8px;height:8px;border-radius:50%;border:1.5px solid oklch(0.82 0.19 155);margin-left:-3px;"></div></div>
+      <span style="font-size:13px;font-weight:600;color:oklch(0.82 0.19 155);">DJ App</span>
+    </div></sc-if>
+    <sc-if value="{{ isDjAppOff }}"><div onClick="{{ goDjApp }}" style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;cursor:pointer;">
+      <div style="display:flex;gap:1px;"><div style="width:8px;height:8px;border-radius:50%;border:1.5px solid #6b6f79;"></div><div style="width:8px;height:8px;border-radius:50%;border:1.5px solid #6b6f79;margin-left:-3px;"></div></div>
+      <span style="font-size:13px;font-weight:600;color:#8d919b;">DJ App</span>
+    </div></sc-if>
+
+    <sc-if value="{{ isHistory }}"><div onClick="{{ goHistory }}" style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;background:oklch(0.82 0.19 155 / 0.14);cursor:pointer;">
+      <div style="width:14px;height:14px;border-radius:50%;border:1.5px solid oklch(0.82 0.19 155);position:relative;"><div style="position:absolute;top:1px;left:6px;width:1.5px;height:5px;background:oklch(0.82 0.19 155);"></div></div>
+      <span style="font-size:13px;font-weight:600;color:oklch(0.82 0.19 155);">History</span>
+    </div></sc-if>
+    <sc-if value="{{ isHistoryOff }}"><div onClick="{{ goHistory }}" style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;cursor:pointer;">
+      <div style="width:14px;height:14px;border-radius:50%;border:1.5px solid #6b6f79;position:relative;"><div style="position:absolute;top:1px;left:6px;width:1.5px;height:5px;background:#6b6f79;"></div></div>
+      <span style="font-size:13px;font-weight:600;color:#8d919b;">History</span>
+    </div></sc-if>
+
+    <div style="flex:1;"></div>
+    <div onClick="{{ toggleSources }}" style="display:flex;align-items:center;gap:7px;padding:7px 12px;border-radius:8px;cursor:pointer;background:#141519;border:1px solid #22252b;">
+      <div style="width:7px;height:7px;border-radius:50%;background:oklch(0.82 0.19 155);animation:pulseDot 2s infinite;"></div>
+      <span style="font-size:12px;color:#8d919b;font-family:'JetBrains Mono',monospace;">4 sources synced</span>
+    </div>
+  </div>
+
+  <sc-if value="{{ sourcesPanelOpen }}">
+  <div style="position:absolute;top:52px;right:16px;z-index:20;width:300px;background:#141519;border:1px solid #2b2e35;border-radius:12px;padding:14px;box-shadow:0 20px 50px rgba(0,0,0,.5);">
+    <div style="font-size:12px;font-weight:600;color:#8d919b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Connected DJ Libraries</div>
+    <sc-for list="{{ sources }}" as="src" hint-placeholder-count="4">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #22252b;">
+        <div>
+          <div style="font-size:13px;font-weight:600;">{{ src.name }}</div>
+          <div style="font-size:11px;color:#5b5e66;font-family:'JetBrains Mono',monospace;">{{ src.tracks }} tracks · synced {{ src.lastSync }}</div>
+        </div>
+        <div style="width:7px;height:7px;border-radius:50%;background:oklch(0.82 0.19 155);"></div>
+      </div>
+    </sc-for>
+    <div style="font-size:11px;color:#5b5e66;margin-top:10px;">Rekordbox, Serato, Traktor and VirtualDJ collections stay merged and de-duplicated automatically.</div>
+  </div>
+  </sc-if>
+
+  <div style="flex:1;min-height:0;display:flex;">
+
+  <sc-if value="{{ isLibrary }}">
+  <div style="display:flex;width:100%;height:100%;">
+    <div style="width:230px;flex-shrink:0;border-right:1px solid #22252b;background:#0e0f12;overflow-y:auto;padding:12px 8px;">
+      <div onClick="{{ selectAll }}" style="{{ collectionRowStyle }}display:flex;justify-content:space-between;padding:7px 10px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;margin-bottom:10px;">
+        <span>Collection</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;">{{ totalTracks }}</span>
+      </div>
+      <div onClick="{{ aiView.onToggle }}" style="display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;background:oklch(0.7 0.14 300 / 0.16);color:oklch(0.78 0.13 300);margin-bottom:10px;">
+        <span style="width:14px;height:14px;border-radius:4px;border:1.5px solid oklch(0.78 0.13 300);display:flex;align-items:center;justify-content:center;font-size:9px;">✦</span>
+        <span style="flex:1;">Smart Playlist with AI</span>
+      </div>
+      <div style="display:flex;align-items:center;padding:6px 10px;">
+        <span style="flex:1;font-size:10px;color:#5b5e66;text-transform:uppercase;letter-spacing:.06em;">Playlists &amp; Folders</span>
+        <span onClick="{{ libraryBrowser.settings.onToggle }}" style="font-size:11px;color:#5b5e66;cursor:pointer;">⚙</span>
+      </div>
+      <sc-if value="{{ libraryBrowser.settings.open }}">
+        <div style="margin:0 4px 8px;padding:8px;border:1px solid #22252b;border-radius:7px;display:flex;flex-direction:column;gap:6px;background:#141519;">
+          <div onClick="{{ libraryBrowser.settings.onCycleSort }}" style="display:flex;justify-content:space-between;align-items:center;font-size:10.5px;color:#8d919b;cursor:pointer;">
+            <span>Sort</span><span style="background:#1b1d22;color:#c9cbd1;padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;">{{ libraryBrowser.settings.sort }}</span>
+          </div>
+          <div onClick="{{ libraryBrowser.settings.onTogglePath }}" style="display:flex;justify-content:space-between;align-items:center;font-size:10.5px;color:#8d919b;cursor:pointer;">
+            <span>Show path</span><span style="{{ libraryBrowser.settings.pathStyle }}padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;">{{ libraryBrowser.settings.pathLabel }}</span>
+          </div>
+          <div onClick="{{ libraryBrowser.settings.onToggleRating }}" style="display:flex;justify-content:space-between;align-items:center;font-size:10.5px;color:#8d919b;cursor:pointer;">
+            <span>Show rating</span><span style="{{ libraryBrowser.settings.ratingStyle }}padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;">{{ libraryBrowser.settings.ratingLabel }}</span>
+          </div>
+        </div>
+      </sc-if>
+      <sc-for list="{{ libraryBrowser.rows }}" as="row" hint-placeholder-count="12">
+        <sc-if value="{{ row.isFolder }}">
+          <div onClick="{{ row.onClick }}" style="display:flex;align-items:center;gap:6px;padding:6px 8px 6px {{ row.padLeft }}px;border-radius:6px;cursor:pointer;font-size:12.5px;font-weight:600;color:#eceef1;">
+            <span style="font-size:9px;color:#5b5e66;width:9px;flex-shrink:0;">{{ row.arrow }}</span>
+            <span style="width:12px;height:10px;border-radius:2px;border:1.5px solid #6b6f79;flex-shrink:0;"></span>
+            <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ row.name }}</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#5b5e66;flex-shrink:0;">{{ row.meta }}</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{ row.isPlaylist }}">
+          <div onClick="{{ row.onClick }}" onDrop="{{ row.onDrop }}" onDragOver="{{ row.onDragOver }}" style="{{ row.rowStyle }}padding:6px 8px 6px {{ row.padLeft }}px;border-radius:6px;cursor:pointer;font-size:12.5px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="width:9px;flex-shrink:0;"></span>
+              <span style="width:12px;flex-shrink:0;font-size:8px;color:oklch(0.78 0.13 300);text-align:center;">{{ row.smartMark }}</span>
+              <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ row.name }}</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#5b5e66;flex-shrink:0;">{{ row.count }}</span>
+            </div>
+            <div style="font-size:9px;color:#5b5e66;padding-left:27px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ row.subLabel }}</div>
+          </div>
+        </sc-if>
+      </sc-for>
+      <div style="font-size:10px;color:#5b5e66;text-transform:uppercase;letter-spacing:.06em;padding:12px 10px 6px;">Smart Playlists</div>
+      <sc-for list="{{ smartTree }}" as="pl" hint-placeholder-count="3">
+        <div onClick="{{ pl.onClick }}" style="{{ pl.rowStyle }}display:flex;justify-content:space-between;padding:7px 10px;border-radius:6px;cursor:pointer;font-size:13px;">
+          <span>{{ pl.name }}</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5b5e66;">{{ pl.count }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+      <div style="display:flex;align-items:center;gap:14px;padding:14px 18px 10px;border-bottom:1px solid #22252b;flex-shrink:0;">
+        <div style="font-size:16px;font-weight:700;">{{ currentPlaylistName }}</div>
+        <div style="font-size:12px;color:#5b5e66;font-family:'JetBrains Mono',monospace;">{{ visibleTracks.length }} tracks</div>
+        <div style="flex:1;"></div>
+        <input value="{{ search }}" onChange="{{ setSearch }}" placeholder="Search title or artist…" style="background:#141519;border:1px solid #2b2e35;border-radius:7px;padding:7px 12px;color:#eceef1;font-size:12px;width:220px;"/>
+      </div>
+
+      <div style="display:flex;padding:8px 18px;border-bottom:1px solid #22252b;font-size:10px;color:#5b5e66;text-transform:uppercase;letter-spacing:.05em;flex-shrink:0;">
+        <div style="width:24px;"></div>
+        <div onClick="{{ setSortTitle }}" style="flex:1;min-width:160px;cursor:pointer;">Title {{ titleArrow }}</div>
+        <div onClick="{{ setSortArtist }}" style="width:140px;cursor:pointer;">Artist {{ artistArrow }}</div>
+        <div onClick="{{ setSortBpm }}" style="width:50px;cursor:pointer;">BPM {{ bpmArrow }}</div>
+        <div style="width:46px;">Key</div>
+        <div style="width:110px;">Genre</div>
+        <div style="width:80px;">Energy</div>
+        <div style="width:80px;">Rating</div>
+        <div style="width:210px;">Tags</div>
+        <div onClick="{{ setSortPlays }}" style="width:50px;cursor:pointer;">Plays {{ playsArrow }}</div>
+        <div style="width:90px;">Added</div>
+      </div>
+
+      <div style="flex:1;overflow-y:auto;">
+        <sc-for list="{{ visibleTracks }}" as="row" hint-placeholder-count="14">
+          <div draggable="true" onDragStart="{{ row.onDragStart }}" onClick="{{ row.onClick }}" style="{{ row.rowStyle }}display:flex;align-items:center;padding:6px 18px;border-bottom:1px solid #16171b;font-size:12.5px;cursor:grab;">
+            <div style="width:24px;display:flex;">
+              <div onClick="{{ row.onPlay }}" style="{{ row.playBtnStyle }}width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+                <sc-if value="{{ row.playing }}"><div style="display:flex;gap:1.5px;"><div style="width:2px;height:6px;background:#0a0b0d;"></div><div style="width:2px;height:6px;background:#0a0b0d;"></div></div></sc-if>
+                <sc-if value="{{ row.notPlaying }}"><div style="width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:6px solid #0a0b0d;margin-left:1px;"></div></sc-if>
+              </div>
+            </div>
+            <div style="flex:1;min-width:160px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:8px;">{{ row.title }}</div>
+            <div style="width:140px;color:#a9acb4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:8px;">{{ row.artist }}</div>
+            <div style="width:50px;font-family:'JetBrains Mono',monospace;color:#c9cbd1;">{{ row.bpm }}</div>
+            <div style="width:46px;font-family:'JetBrains Mono',monospace;color:#c9cbd1;">{{ row.key }}</div>
+            <div style="width:110px;overflow:hidden;">
+              <span style="{{ row.genrePillStyle }}font-size:10.5px;padding:2px 7px;border-radius:5px;">{{ row.genre }}</span>
+            </div>
+            <div style="width:80px;display:flex;gap:2px;">
+              <sc-for list="{{ row.energyDots }}" as="dot" hint-placeholder-count="5"><div style="{{ dot.style }}width:6px;height:6px;border-radius:50%;"></div></sc-for>
+            </div>
+            <div style="width:80px;display:flex;gap:2px;">
+              <sc-for list="{{ row.stars }}" as="st" hint-placeholder-count="5"><div onClick="{{ st.onClick }}" style="{{ st.style }}font-size:11px;cursor:pointer;">★</div></sc-for>
+            </div>
+            <div style="width:210px;">
+              <sc-if value="{{ row.isEditingTags }}">
+                <input value="{{ row.tagsDraft }}" onChange="{{ row.onDraftChange }}" onBlur="{{ row.onCommitTags }}" onKeyDown="{{ row.onTagsKeyDown }}" autoFocus="{{ true }}" style="width:100%;background:#1b1d22;border:1px solid oklch(0.82 0.19 155);border-radius:5px;padding:3px 6px;color:#eceef1;font-size:11.5px;"/>
+              </sc-if>
+              <sc-if value="{{ row.isNotEditingTags }}">
+                <div onClick="{{ row.onEditTags }}" style="display:flex;gap:4px;flex-wrap:wrap;cursor:text;min-height:18px;">
+                  <sc-for list="{{ row.tagChips }}" as="tg" hint-placeholder-count="2"><span style="background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;font-size:10px;padding:2px 6px;border-radius:9px;">{{ tg.name }}</span></sc-for>
+                  <sc-if value="{{ row.noTags }}"><span style="color:#5b5e66;font-size:11px;">add tags…</span></sc-if>
+                </div>
+              </sc-if>
+            </div>
+            <div style="width:50px;font-family:'JetBrains Mono',monospace;color:#8d919b;">{{ row.plays }}</div>
+            <div style="width:90px;font-family:'JetBrains Mono',monospace;color:#5b5e66;font-size:11px;">{{ row.added }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="height:168px;flex-shrink:0;border-top:1px solid #22252b;background:#0e0f12;display:flex;padding:14px 18px;gap:20px;">
+        <div style="width:190px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;gap:4px;">
+          <div style="font-size:14px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ loadedTitle }}</div>
+          <div style="font-size:12px;color:#8d919b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ loadedArtist }}</div>
+          <div style="display:flex;gap:6px;margin-top:4px;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;background:#1b1d22;border:1px solid #2b2e35;padding:2px 6px;border-radius:5px;">{{ loadedBpm }} BPM</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;background:#1b1d22;border:1px solid #2b2e35;padding:2px 6px;border-radius:5px;">{{ loadedKey }}</span>
+          </div>
+          <div onClick="{{ onTogglePlay }}" style="{{ transportBtnStyle }}margin-top:8px;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+            <sc-if value="{{ isPlaying }}"><div style="display:flex;gap:3px;"><div style="width:3px;height:12px;background:#0a0b0d;"></div><div style="width:3px;height:12px;background:#0a0b0d;"></div></div></sc-if>
+            <sc-if value="{{ isNotPlaying }}"><div style="width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:11px solid #0a0b0d;margin-left:2px;"></div></sc-if>
+          </div>
+        </div>
+        <div style="flex:1;position:relative;display:flex;align-items:center;">
+          <div onClick="{{ onSeek }}" style="position:relative;width:100%;height:70px;display:flex;align-items:center;gap:1px;cursor:pointer;">
+            <sc-for list="{{ waveformBars }}" as="bar" hint-placeholder-count="90">
+              <div style="width:3px;flex-shrink:0;height:{{ bar }}%;background:#3a3d45;border-radius:1px;"></div>
+            </sc-for>
+            <div style="position:absolute;top:0;bottom:0;left:{{ progressPercent }}%;width:2px;background:oklch(0.82 0.19 155);box-shadow:0 0 8px oklch(0.82 0.19 155);"></div>
+            <sc-for list="{{ hotcueMarkers }}" as="cue" hint-placeholder-count="5">
+              <div style="position:absolute;top:0;bottom:0;left:{{ cue.leftPct }}%;width:2px;background:{{ cue.color }};">
+                <div style="position:absolute;top:-16px;left:-6px;width:14px;height:14px;border-radius:3px;background:{{ cue.color }};color:#0a0b0d;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;">{{ cue.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="width:110px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:6px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8d919b;">{{ currentTimeLabel }} / {{ loadedDuration }}</div>
+          <span style="{{ loadedGenrePillStyle }}font-size:10.5px;padding:2px 7px;border-radius:5px;">{{ loadedGenre }}</span>
+          <div style="font-size:10px;color:#5b5e66;">{{ loadedSource }}</div>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ aiView.open }}">
+    <div style="width:400px;flex-shrink:0;border-left:1px solid #22252b;background:#0e0f12;display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid #22252b;flex-shrink:0;">
+        <span style="font-size:11px;color:oklch(0.78 0.13 300);">✦</span>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;">Smart Playlist with AI</div>
+          <div style="font-size:10px;color:#5b5e66;font-family:'JetBrains Mono',monospace;">local · ollama</div>
+        </div>
+        <div onClick="{{ aiView.onToggle }}" style="font-size:14px;color:#5b5e66;cursor:pointer;padding:0 4px;">×</div>
+      </div>
+
+      <div style="padding:12px 16px;border-bottom:1px solid #22252b;flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:10px;color:#5b5e66;text-transform:uppercase;letter-spacing:.05em;">Model</span>
+          <input value="{{ aiView.model }}" onChange="{{ aiView.onModelChange }}" style="flex:1;background:#141519;border:1px solid #2b2e35;border-radius:6px;padding:4px 8px;color:#c9cbd1;font-size:11px;font-family:'JetBrains Mono',monospace;"/>
+        </div>
+        <textarea value="{{ aiView.prompt }}" onChange="{{ aiView.onPromptChange }}" placeholder="Beschreibe die Playlist, die du willst…" style="width:100%;height:70px;background:#141519;border:1px solid #2b2e35;border-radius:7px;padding:8px 10px;color:#eceef1;font-size:12px;resize:none;font-family:inherit;line-height:1.45;"></textarea>
+        <div style="display:flex;flex-direction:column;gap:4px;margin:8px 0;">
+          <sc-for list="{{ aiView.examples }}" as="ex" hint-placeholder-count="2">
+            <div onClick="{{ ex.onClick }}" style="font-size:10.5px;color:#8d919b;background:#141519;border:1px solid #22252b;border-radius:6px;padding:5px 8px;cursor:pointer;line-height:1.4;">{{ ex.text }}</div>
+          </sc-for>
+        </div>
+        <div onClick="{{ aiView.onRun }}" style="background:oklch(0.78 0.13 300);color:#0a0b0d;font-size:12px;font-weight:700;padding:8px 0;border-radius:7px;text-align:center;cursor:pointer;">Generate</div>
+      </div>
+
+      <div style="flex:1;overflow-y:auto;">
+        <sc-if value="{{ aiView.idle }}">
+          <div style="padding:24px 16px;font-size:11.5px;color:#5b5e66;line-height:1.6;">Indexes your 98,412 tracks locally. Nothing leaves the machine — Ollama runs on your own hardware, so the whole collection is fair game for prompting.</div>
+        </sc-if>
+        <sc-if value="{{ aiView.thinking }}">
+          <div style="padding:24px 16px;">
+            <div style="font-size:12px;color:oklch(0.78 0.13 300);font-weight:600;margin-bottom:10px;">Scanning collection…</div>
+            <div style="height:4px;background:#1b1d22;border-radius:2px;overflow:hidden;"><div style="height:100%;width:62%;background:oklch(0.78 0.13 300);"></div></div>
+            <div style="font-size:10.5px;color:#5b5e66;font-family:'JetBrains Mono',monospace;margin-top:8px;line-height:1.7;">reading ID3 + folder paths<br/>resolving genres from tree<br/>matching against prompt</div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ aiView.done }}">
+          <div style="padding:14px 16px;">
+            <div style="font-size:13px;font-weight:700;margin-bottom:3px;">{{ aiView.title }}</div>
+            <div style="font-size:10.5px;color:#5b5e66;font-family:'JetBrains Mono',monospace;margin-bottom:10px;">{{ aiView.matched }} of {{ aiView.scanned }} tracks matched</div>
+            <div style="font-size:11.5px;color:#a9acb4;line-height:1.55;margin-bottom:12px;">{{ aiView.summary }}</div>
+
+            <div style="font-size:10px;color:#5b5e66;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Rules applied</div>
+            <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:14px;">
+              <sc-for list="{{ aiView.rules }}" as="rule" hint-placeholder-count="4">
+                <div style="font-size:10.5px;color:#c9cbd1;font-family:'JetBrains Mono',monospace;background:#141519;border:1px solid #22252b;border-radius:5px;padding:5px 8px;line-height:1.4;">{{ rule }}</div>
+              </sc-for>
+            </div>
+
+            <sc-if value="{{ aiView.isBatch }}">
+              <div style="font-size:10px;color:#5b5e66;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Playlists created</div>
+              <div style="display:flex;flex-direction:column;gap:5px;">
+                <sc-for list="{{ aiView.created }}" as="c" hint-placeholder-count="6">
+                  <div style="background:#141519;border:1px solid #22252b;border-radius:6px;padding:7px 9px;">
+                    <div style="font-size:9.5px;color:#5b5e66;font-family:'JetBrains Mono',monospace;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ c.path }}</div>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                      <span style="font-size:8px;color:oklch(0.78 0.13 300);">✦</span>
+                      <span style="flex:1;font-size:11.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ c.name }}</span>
+                      <span style="font-size:10px;color:#8d919b;font-family:'JetBrains Mono',monospace;">{{ c.count }}</span>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ aiView.isSingle }}">
+              <div style="font-size:10px;color:#5b5e66;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Saves into · {{ aiView.folder }}</div>
+              <div style="display:flex;flex-direction:column;">
+                <sc-for list="{{ aiView.sample }}" as="t" hint-placeholder-count="6">
+                  <div style="display:flex;align-items:center;gap:8px;padding:6px 2px;border-bottom:1px solid #16171b;font-size:11.5px;">
+                    <span style="flex:1;min-width:0;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ t.title }}</span>
+                    <span style="color:#8d919b;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ t.artist }}</span>
+                    <span style="font-family:'JetBrains Mono',monospace;color:#5b5e66;font-size:10px;">{{ t.year }}</span>
+                    <span style="font-family:'JetBrains Mono',monospace;color:#c9cbd1;font-size:10px;">{{ t.bpm }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isPlanner }}">
+  <div style="display:flex;flex-direction:column;width:100%;height:100%;">
+    <div style="display:flex;gap:2px;border-bottom:1px solid #22252b;flex-shrink:0;height:236px;">
+      <div style="flex:1;background:linear-gradient(180deg,#111318,#0c0d10);display:flex;flex-direction:column;min-width:0;border-right:1px solid #22252b;">
+        <div style="display:flex;align-items:baseline;gap:8px;padding:6px 12px;border-bottom:1px solid #1c1e24;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:800;color:oklch(0.82 0.19 155);letter-spacing:-.02em;">{{ panelA.loaded.bpm }}</span>
+          <span style="font-size:8.5px;color:#5b5e66;font-weight:700;">BPM</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;background:#1b1d22;border:1px solid #2b2e35;padding:1px 6px;border-radius:4px;color:#c9cbd1;">{{ panelA.loaded.key }}</span>
+          <div style="min-width:0;">
+            <div style="font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ panelA.loaded.title }}</div>
+            <div style="font-size:10px;color:#8d919b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ panelA.loaded.artist }}</div>
+          </div>
+          <div style="flex:1;"></div>
+          <span style="font-size:9px;font-weight:700;color:#5b5e66;letter-spacing:.06em;">DECK A</span>
+        </div>
+        <div style="display:flex;gap:8px;flex:1;min-height:0;padding:8px 10px;">
+          <div style="width:40px;flex-shrink:0;display:flex;align-items:stretch;gap:4px;">
+            <div onMouseDown="{{ panelA.loaded.onPitchFaderDown }}" style="position:relative;width:20px;background:#0a0b0d;border:1px solid #2b2e35;border-radius:4px;cursor:ns-resize;">
+              <div style="position:absolute;top:50%;left:2px;right:2px;height:1px;background:#3a3d45;"></div>
+              <div style="position:absolute;left:1px;right:1px;height:9px;bottom:{{ panelA.loaded.pitchFaderPct }}%;margin-bottom:-4.5px;background:#c9cbd1;border-radius:2px;"></div>
+            </div>
+            <div style="font-size:8.5px;font-family:'JetBrains Mono',monospace;color:#8d919b;writing-mode:vertical-rl;text-align:center;">{{ panelA.loaded.pitchLabel }}</div>
+          </div>
+          <div style="width:70px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:6px;justify-content:center;">
+            <div style="position:relative;width:60px;height:60px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#24262d,#131418 70%);border:2px solid #2b2e35;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 10px #000;">
+              <div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelA.jogAngle }}deg);">
+                <div style="position:absolute;top:4px;left:50%;width:3px;height:11px;background:oklch(0.82 0.19 155);margin-left:-1.5px;border-radius:2px;"></div>
+              </div>
+              <div style="width:22px;height:22px;border-radius:50%;background:#0e0f12;border:1px solid #2b2e35;"></div>
+            </div>
+            <div style="display:flex;gap:4px;">
+              <div onClick="{{ panelA.onCue }}" style="width:28px;height:24px;border-radius:5px;background:#1b1d22;border:1px solid #2b2e35;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:9px;font-weight:700;color:#a9acb4;">CUE</div>
+              <div onClick="{{ onToggleDeckPlayA }}" style="width:28px;height:24px;border-radius:5px;background:oklch(0.82 0.19 155);display:flex;align-items:center;justify-content:center;cursor:pointer;">
+                <sc-if value="{{ panelA.loaded.isPlaying }}"><div style="display:flex;gap:2px;"><div style="width:3px;height:9px;background:#0a0b0d;"></div><div style="width:3px;height:9px;background:#0a0b0d;"></div></div></sc-if>
+                <sc-if value="{{ panelA.loaded.isNotPlaying }}"><div style="width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:8px solid #0a0b0d;margin-left:2px;"></div></sc-if>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;justify-content:center;">
+            <div onClick="{{ panelA.onSeek }}" style="position:relative;height:56px;display:flex;align-items:center;gap:1px;cursor:pointer;background:#08090b;border-radius:5px;padding:0 3px;border:1px solid #1c1e24;">
+              <sc-for list="{{ panelA.loaded.wave }}" as="bar" hint-placeholder-count="90"><div style="width:3px;flex-shrink:0;height:{{ bar }}%;background:linear-gradient(180deg,oklch(0.78 0.16 55),oklch(0.6 0.16 220));border-radius:1px;"></div></sc-for>
+              <sc-if value="{{ panelA.loopOn }}"><div style="position:absolute;top:0;bottom:0;left:{{ panelA.loaded.progress }}%;width:{{ panelA.loopWidthPct }}%;background:oklch(0.82 0.19 155 / 0.18);border-left:1px solid oklch(0.82 0.19 155);border-right:1px solid oklch(0.82 0.19 155);"></div></sc-if>
+              <div style="position:absolute;top:0;bottom:0;left:{{ panelA.loaded.progress }}%;width:2px;background:#eceef1;box-shadow:0 0 6px #eceef1;"></div>
+              <sc-for list="{{ panelA.hotcuesView }}" as="pad" hint-placeholder-count="8">
+                <sc-if value="{{ pad.filled }}"><div style="position:absolute;top:0;bottom:0;left:{{ pad.leftPct }}%;width:2px;background:{{ pad.tickColor }};"></div></sc-if>
+              </sc-for>
+            </div>
+            <div style="position:relative;height:8px;display:flex;align-items:center;gap:1px;background:#08090b;border-radius:3px;padding:0 3px;border:1px solid #1c1e24;">
+              <sc-for list="{{ panelA.loaded.waveOverview }}" as="bar" hint-placeholder-count="30"><div style="width:2px;flex-shrink:0;height:{{ bar }}%;background:linear-gradient(180deg,oklch(0.7 0.13 55),oklch(0.55 0.13 220));"></div></sc-for>
+              <div style="position:absolute;top:0;bottom:0;left:{{ panelA.loaded.progress }}%;width:1px;background:oklch(0.82 0.19 155);"></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;">
+              <div onClick="{{ panelA.onBeatjumpM4 }}" style="font-size:8.5px;font-family:'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">-4</div>
+              <div onClick="{{ panelA.onBeatjumpM1 }}" style="font-size:8.5px;font-family:'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">-1</div>
+              <div onClick="{{ panelA.onBeatjumpP1 }}" style="font-size:8.5px;font-family:'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">+1</div>
+              <div onClick="{{ panelA.onBeatjumpP4 }}" style="font-size:8.5px;font-family:'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">+4</div>
+              <div style="width:1px;height:14px;background:#2b2e35;margin:0 2px;"></div>
+              <div onClick="{{ panelA.onToggleLoop }}" style="{{ panelA.loopStyle }}font-size:8.5px;font-weight:700;padding:3px 7px;border-radius:4px;cursor:pointer;">LOOP</div>
+              <div onClick="{{ panelA.onLoopHalve }}" style="font-size:8.5px;font-family:'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">½</div>
+              <div style="font-size:8.5px;font-family:'JetBrains Mono',monospace;color:#8d919b;width:30px;text-align:center;">{{ panelA.loopBeats }} bt</div>
+              <div onClick="{{ panelA.onLoopDouble }}" style="font-size:8.5px;font-family:'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">2×</div>
+              <div style="flex:1;"></div>
+              <div onClick="{{ panelA.onToggleSync }}" style="{{ panelA.syncStyle }}font-size:8.5px;font-weight:700;padding:3px 8px;border-radius:4px;cursor:pointer;">SYNC</div>
+            </div>
+            <div style="display:flex;gap:3px;">
+              <sc-for list="{{ panelA.hotcuesView }}" as="pad" hint-placeholder-count="8">
+                <div onClick="{{ pad.onClick }}" style="{{ pad.style }}position:relative;flex:1;height:17px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;cursor:pointer;">
+                  {{ pad.index1 }}
+                  <sc-if value="{{ pad.filled }}"><div onClick="{{ pad.onRemove }}" style="position:absolute;top:-4px;right:-4px;width:12px;height:12px;border-radius:50%;background:#0a0b0d;border:1px solid #2b2e35;font-size:8px;display:flex;align-items:center;justify-content:center;color:#a9acb4;">×</div></sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="width:172px;flex-shrink:0;background:#111318;border-left:1px solid #22252b;border-right:1px solid #22252b;display:flex;padding:8px 6px;gap:5px;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+          <div style="font-size:8.5px;color:#5b5e66;font-weight:700;">CH A</div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <div onMouseDown="{{ panelA.loaded.onGainKnobDown }}" style="width:24px;height:24px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelA.loaded.gainAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:7px;background:#c9cbd1;margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7px;color:#5b5e66;">GAIN</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <div onMouseDown="{{ panelA.loaded.onEqHighKnobDown }}" style="width:24px;height:24px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelA.loaded.eqHighAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:7px;background:oklch(0.82 0.19 155);margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7px;color:#5b5e66;">HI</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <div onMouseDown="{{ panelA.loaded.onEqMidKnobDown }}" style="width:24px;height:24px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelA.loaded.eqMidAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:7px;background:oklch(0.82 0.19 155);margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7px;color:#5b5e66;">MID</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <div onMouseDown="{{ panelA.loaded.onEqLowKnobDown }}" style="width:24px;height:24px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelA.loaded.eqLowAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:7px;background:oklch(0.82 0.19 155);margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7px;color:#5b5e66;">LOW</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;flex:1;min-height:70px;width:100%;justify-content:center;margin-top:2px;">
+            <div style="display:flex;align-items:flex-end;gap:2px;height:100%;">
+              <div style="width:5px;background:linear-gradient(180deg,oklch(0.75 0.18 25),oklch(0.82 0.19 155));border-radius:2px;height:{{ panelA.vuHeightPct }}%;"></div>
+            </div>
+            <div onMouseDown="{{ panelA.loaded.onVolumeFaderDown }}" style="position:relative;width:22px;height:100%;background:#0a0b0d;border:1px solid #2b2e35;border-radius:4px;cursor:ns-resize;">
+              <div style="position:absolute;left:2px;right:2px;height:9px;bottom:{{ panelA.loaded.volumeFaderPct }}%;margin-bottom:-4.5px;background:oklch(0.82 0.19 155);border-radius:2px;box-shadow:0 0 5px oklch(0.82 0.19 155 / 0.6);"></div>
+            </div>
+          </div>
+          <div style="font-size:7px;color:#5b5e66;">VOLUME</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+          <div style="font-size:8.5px;color:#5b5e66;font-weight:700;">CH B</div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <div onMouseDown="{{ panelB.loaded.onGainKnobDown }}" style="width:24px;height:24px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelB.loaded.gainAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:7px;background:#c9cbd1;margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7px;color:#5b5e66;">GAIN</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <div onMouseDown="{{ panelB.loaded.onEqHighKnobDown }}" style="width:24px;height:24px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelB.loaded.eqHighAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:7px;background:oklch(0.82 0.19 155);margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7px;color:#5b5e66;">HI</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <div onMouseDown="{{ panelB.loaded.onEqMidKnobDown }}" style="width:24px;height:24px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelB.loaded.eqMidAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:7px;background:oklch(0.82 0.19 155);margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7px;color:#5b5e66;">MID</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <div onMouseDown="{{ panelB.loaded.onEqLowKnobDown }}" style="width:24px;height:24px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelB.loaded.eqLowAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:7px;background:oklch(0.82 0.19 155);margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7px;color:#5b5e66;">LOW</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;flex:1;min-height:70px;width:100%;justify-content:center;margin-top:2px;">
+            <div style="display:flex;align-items:flex-end;gap:2px;height:100%;">
+              <div style="width:5px;background:linear-gradient(180deg,oklch(0.75 0.18 25),oklch(0.82 0.19 155));border-radius:2px;height:{{ panelB.vuHeightPct }}%;"></div>
+            </div>
+            <div onMouseDown="{{ panelB.loaded.onVolumeFaderDown }}" style="position:relative;width:22px;height:100%;background:#0a0b0d;border:1px solid #2b2e35;border-radius:4px;cursor:ns-resize;">
+              <div style="position:absolute;left:2px;right:2px;height:9px;bottom:{{ panelB.loaded.volumeFaderPct }}%;margin-bottom:-4.5px;background:oklch(0.82 0.19 155);border-radius:2px;box-shadow:0 0 5px oklch(0.82 0.19 155 / 0.6);"></div>
+            </div>
+          </div>
+          <div style="font-size:7px;color:#5b5e66;">VOLUME</div>
+        </div>
+      </div>
+      <div style="flex:1;background:linear-gradient(180deg,#111318,#0c0d10);display:flex;flex-direction:column;min-width:0;">
+        <div style="display:flex;align-items:baseline;gap:8px;padding:6px 12px;border-bottom:1px solid #1c1e24;">
+          <span style="font-size:9px;font-weight:700;color:#5b5e66;letter-spacing:.06em;">DECK B</span>
+          <div style="flex:1;"></div>
+          <div style="min-width:0;text-align:right;">
+            <div style="font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ panelB.loaded.title }}</div>
+            <div style="font-size:10px;color:#8d919b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ panelB.loaded.artist }}</div>
+          </div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;background:#1b1d22;border:1px solid #2b2e35;padding:1px 6px;border-radius:4px;color:#c9cbd1;">{{ panelB.loaded.key }}</span>
+          <span style="font-size:8.5px;color:#5b5e66;font-weight:700;">BPM</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:800;color:oklch(0.82 0.19 155);letter-spacing:-.02em;">{{ panelB.loaded.bpm }}</span>
+        </div>
+        <div style="display:flex;gap:8px;flex:1;min-height:0;padding:8px 10px;">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;justify-content:center;">
+            <div onClick="{{ panelB.onSeek }}" style="position:relative;height:56px;display:flex;align-items:center;gap:1px;cursor:pointer;background:#08090b;border-radius:5px;padding:0 3px;border:1px solid #1c1e24;">
+              <sc-for list="{{ panelB.loaded.wave }}" as="bar" hint-placeholder-count="90"><div style="width:3px;flex-shrink:0;height:{{ bar }}%;background:linear-gradient(180deg,oklch(0.78 0.16 55),oklch(0.6 0.16 220));border-radius:1px;"></div></sc-for>
+              <sc-if value="{{ panelB.loopOn }}"><div style="position:absolute;top:0;bottom:0;left:{{ panelB.loaded.progress }}%;width:{{ panelB.loopWidthPct }}%;background:oklch(0.82 0.19 155 / 0.18);border-left:1px solid oklch(0.82 0.19 155);border-right:1px solid oklch(0.82 0.19 155);"></div></sc-if>
+              <div style="position:absolute;top:0;bottom:0;left:{{ panelB.loaded.progress }}%;width:2px;background:#eceef1;box-shadow:0 0 6px #eceef1;"></div>
+              <sc-for list="{{ panelB.hotcuesView }}" as="pad" hint-placeholder-count="8">
+                <sc-if value="{{ pad.filled }}"><div style="position:absolute;top:0;bottom:0;left:{{ pad.leftPct }}%;width:2px;background:{{ pad.tickColor }};"></div></sc-if>
+              </sc-for>
+            </div>
+            <div style="position:relative;height:8px;display:flex;align-items:center;gap:1px;background:#08090b;border-radius:3px;padding:0 3px;border:1px solid #1c1e24;">
+              <sc-for list="{{ panelB.loaded.waveOverview }}" as="bar" hint-placeholder-count="30"><div style="width:2px;flex-shrink:0;height:{{ bar }}%;background:linear-gradient(180deg,oklch(0.7 0.13 55),oklch(0.55 0.13 220));"></div></sc-for>
+              <div style="position:absolute;top:0;bottom:0;left:{{ panelB.loaded.progress }}%;width:1px;background:oklch(0.82 0.19 155);"></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;">
+              <div onClick="{{ panelB.onBeatjumpM4 }}" style="font-size:8.5px;font-family:'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">-4</div>
+              <div onClick="{{ panelB.onBeatjumpM1 }}" style="font-size:8.5px;font-family:'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">-1</div>
+              <div onClick="{{ panelB.onBeatjumpP1 }}" style="font-size:8.5px;font-family:'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">+1</div>
+              <div onClick="{{ panelB.onBeatjumpP4 }}" style="font-size:8.5px;font-family:'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">+4</div>
+              <div style="width:1px;height:14px;background:#2b2e35;margin:0 2px;"></div>
+              <div onClick="{{ panelB.onToggleLoop }}" style="{{ panelB.loopStyle }}font-size:8.5px;font-weight:700;padding:3px 7px;border-radius:4px;cursor:pointer;">LOOP</div>
+              <div onClick="{{ panelB.onLoopHalve }}" style="font-size:8.5px;font-family:'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">½</div>
+              <div style="font-size:8.5px;font-family:'JetBrains Mono',monospace;color:#8d919b;width:30px;text-align:center;">{{ panelB.loopBeats }} bt</div>
+              <div onClick="{{ panelB.onLoopDouble }}" style="font-size:8.5px;font-family:'JetBrains Mono',monospace;padding:3px 5px;border-radius:4px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">2×</div>
+              <div style="flex:1;"></div>
+              <div onClick="{{ panelB.onToggleSync }}" style="{{ panelB.syncStyle }}font-size:8.5px;font-weight:700;padding:3px 8px;border-radius:4px;cursor:pointer;">SYNC</div>
+            </div>
+            <div style="display:flex;gap:3px;">
+              <sc-for list="{{ panelB.hotcuesView }}" as="pad" hint-placeholder-count="8">
+                <div onClick="{{ pad.onClick }}" style="{{ pad.style }}position:relative;flex:1;height:17px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;cursor:pointer;">
+                  {{ pad.index1 }}
+                  <sc-if value="{{ pad.filled }}"><div onClick="{{ pad.onRemove }}" style="position:absolute;top:-4px;right:-4px;width:12px;height:12px;border-radius:50%;background:#0a0b0d;border:1px solid #2b2e35;font-size:8px;display:flex;align-items:center;justify-content:center;color:#a9acb4;">×</div></sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="width:70px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:6px;justify-content:center;">
+            <div style="position:relative;width:60px;height:60px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#24262d,#131418 70%);border:2px solid #2b2e35;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 10px #000;">
+              <div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelB.jogAngle }}deg);">
+                <div style="position:absolute;top:4px;left:50%;width:3px;height:11px;background:oklch(0.82 0.19 155);margin-left:-1.5px;border-radius:2px;"></div>
+              </div>
+              <div style="width:22px;height:22px;border-radius:50%;background:#0e0f12;border:1px solid #2b2e35;"></div>
+            </div>
+            <div style="display:flex;gap:4px;">
+              <div onClick="{{ panelB.onCue }}" style="width:28px;height:24px;border-radius:5px;background:#1b1d22;border:1px solid #2b2e35;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:9px;font-weight:700;color:#a9acb4;">CUE</div>
+              <div onClick="{{ onToggleDeckPlayB }}" style="width:28px;height:24px;border-radius:5px;background:oklch(0.82 0.19 155);display:flex;align-items:center;justify-content:center;cursor:pointer;">
+                <sc-if value="{{ panelB.loaded.isPlaying }}"><div style="display:flex;gap:2px;"><div style="width:3px;height:9px;background:#0a0b0d;"></div><div style="width:3px;height:9px;background:#0a0b0d;"></div></div></sc-if>
+                <sc-if value="{{ panelB.loaded.isNotPlaying }}"><div style="width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:8px solid #0a0b0d;margin-left:2px;"></div></sc-if>
+              </div>
+            </div>
+          </div>
+          <div style="width:40px;flex-shrink:0;display:flex;align-items:stretch;gap:4px;">
+            <div onMouseDown="{{ panelB.loaded.onPitchFaderDown }}" style="position:relative;width:20px;background:#0a0b0d;border:1px solid #2b2e35;border-radius:4px;cursor:ns-resize;">
+              <div style="position:absolute;top:50%;left:2px;right:2px;height:1px;background:#3a3d45;"></div>
+              <div style="position:absolute;left:1px;right:1px;height:9px;bottom:{{ panelB.loaded.pitchFaderPct }}%;margin-bottom:-4.5px;background:#c9cbd1;border-radius:2px;"></div>
+            </div>
+            <div style="font-size:8.5px;font-family:'JetBrains Mono',monospace;color:#8d919b;writing-mode:vertical-rl;text-align:center;">{{ panelB.loaded.pitchLabel }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:5px 16px;border-bottom:1px solid #22252b;flex-shrink:0;background:#111318;">
+      <span style="font-size:10px;color:#5b5e66;font-family:'JetBrains Mono',monospace;font-weight:700;">A</span>
+      <div style="position:relative;width:240px;height:8px;background:#08090b;border:1px solid #2b2e35;border-radius:4px;">
+        <div style="position:absolute;top:-4px;left:50%;width:1px;height:16px;background:#3a3d45;"></div>
+        <input type="range" min="0" max="100" value="{{ crossfader }}" onChange="{{ setCrossfader }}" style="position:absolute;top:-8px;left:0;width:100%;height:24px;margin:0;accent-color:oklch(0.82 0.19 155);"/>
+      </div>
+      <span style="font-size:10px;color:#5b5e66;font-family:'JetBrains Mono',monospace;font-weight:700;">B</span>
+    </div>
+    <sc-if value="{{ showFavBar }}">
+    <div style="display:grid;grid-template-columns:repeat(8,1fr);grid-auto-rows:22px;gap:4px 8px;padding:6px 16px;border-bottom:1px solid #22252b;flex-shrink:0;background:#0e0f12;">
+      <sc-for list="{{ favoritesView }}" as="slot" hint-placeholder-count="16">
+        <div onDrop="{{ slot.onDrop }}" onDragOver="{{ slot.onDragOver }}" onClick="{{ slot.onClick }}" style="{{ slot.style }}position:relative;height:22px;border-radius:5px;display:flex;align-items:center;gap:5px;padding:0 7px;cursor:pointer;overflow:hidden;">
+          <span style="font-size:8px;color:#5b5e66;font-family:'JetBrains Mono',monospace;flex-shrink:0;">{{ slot.index1 }}</span>
+          <span style="font-size:10.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">{{ slot.label }}</span>
+          <sc-if value="{{ slot.filled }}"><span onClick="{{ slot.onClear }}" style="font-size:10px;color:#5b5e66;cursor:pointer;flex-shrink:0;">×</span></sc-if>
+        </div>
+      </sc-for>
+    </div>
+    </sc-if>
+
+    <div style="flex:1;min-height:0;display:flex;gap:2px;">
+      <sc-if value="{{ showPanelA }}">
+      <div onMouseDown="{{ onFocusA }}" style="{{ panelAWidthStyle }}display:flex;flex-direction:column;min-width:0;border-right:1px solid #22252b;">
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 14px;border-bottom:1px solid #22252b;flex-shrink:0;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8d919b;">DECK A · {{ panelA.tracks.length }} tracks</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{ toggleExpandA }}" style="width:22px;height:22px;border-radius:5px;background:#1b1d22;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">
+            <sc-if value="{{ expandedIsA }}"><div style="width:8px;height:8px;border:1.5px solid #a9acb4;border-radius:1px;"></div></sc-if>
+            <sc-if value="{{ expandedIsNotA }}"><div style="display:flex;gap:1px;"><div style="width:4px;height:8px;border:1.5px solid #a9acb4;border-radius:1px;"></div><div style="width:4px;height:8px;border:1.5px solid #a9acb4;border-radius:1px;"></div></div></sc-if>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;display:flex;">
+          <div style="width:196px;flex-shrink:0;border-right:1px solid #22252b;background:#0e0f12;display:flex;flex-direction:column;">
+            <div style="display:flex;flex-shrink:0;align-items:center;">
+              <div onClick="{{ panelA.onTabPlaylists }}" style="{{ panelA.playlistsTabStyle }}flex:1;text-align:center;padding:8px 4px;font-size:10.5px;font-weight:600;cursor:pointer;">Playlists</div>
+              <div onClick="{{ panelA.onTabFiles }}" style="{{ panelA.filesTabStyle }}flex:1;text-align:center;padding:8px 4px;font-size:10.5px;font-weight:600;cursor:pointer;">Files</div>
+              <div onClick="{{ panelA.browser.settings.onToggle }}" style="width:24px;flex-shrink:0;text-align:center;font-size:11px;color:#5b5e66;cursor:pointer;padding:8px 0;">⚙</div>
+            </div>
+            <sc-if value="{{ panelA.browser.settings.open }}">
+              <div style="padding:8px;border-bottom:1px solid #22252b;display:flex;flex-direction:column;gap:5px;flex-shrink:0;background:#141519;">
+                <div onClick="{{ panelA.browser.settings.onCycleSort }}" style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#8d919b;cursor:pointer;">
+                  <span>Sort</span><span style="background:#1b1d22;color:#c9cbd1;padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;">{{ panelA.browser.settings.sort }}</span>
+                </div>
+                <div onClick="{{ panelA.browser.settings.onTogglePath }}" style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#8d919b;cursor:pointer;">
+                  <span>Show path</span><span style="{{ panelA.browser.settings.pathStyle }}padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;">{{ panelA.browser.settings.pathLabel }}</span>
+                </div>
+                <div onClick="{{ panelA.browser.settings.onToggleRating }}" style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#8d919b;cursor:pointer;">
+                  <span>Show rating</span><span style="{{ panelA.browser.settings.ratingStyle }}padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;">{{ panelA.browser.settings.ratingLabel }}</span>
+                </div>
+              </div>
+            </sc-if>
+            <div style="flex:1;overflow-y:auto;padding:6px;">
+              <sc-if value="{{ panelA.isPlaylistsTab }}">
+                <sc-for list="{{ panelA.browser.rows }}" as="row" hint-placeholder-count="12">
+                  <sc-if value="{{ row.isFolder }}">
+                    <div onClick="{{ row.onClick }}" style="display:flex;align-items:center;gap:5px;padding:5px 6px 5px {{ row.padLeft }}px;border-radius:5px;cursor:pointer;font-size:11.5px;font-weight:600;color:#eceef1;">
+                      <span style="font-size:8px;color:#5b5e66;width:8px;flex-shrink:0;">{{ row.arrow }}</span>
+                      <span style="width:11px;height:9px;border-radius:2px;border:1.5px solid #6b6f79;flex-shrink:0;"></span>
+                      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ row.name }}</span>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ row.isPlaylist }}">
+                    <div onClick="{{ row.onClick }}" onDrop="{{ row.onDrop }}" onDragOver="{{ row.onDragOver }}" style="{{ row.rowStyle }}padding:5px 6px 5px {{ row.padLeft }}px;border-radius:5px;cursor:pointer;font-size:11.5px;">
+                      <div style="display:flex;align-items:center;gap:5px;">
+                        <span style="width:8px;flex-shrink:0;"></span>
+                        <span style="width:10px;flex-shrink:0;font-size:7px;color:oklch(0.78 0.13 300);text-align:center;">{{ row.smartMark }}</span>
+                        <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ row.name }}</span>
+                        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#5b5e66;flex-shrink:0;">{{ row.count }}</span>
+                      </div>
+                      <div style="font-size:8.5px;color:#5b5e66;padding-left:23px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ row.subLabel }}</div>
+                    </div>
+                  </sc-if>
+                </sc-for>
+              </sc-if>
+              <sc-if value="{{ panelA.isFilesTab }}">
+                <sc-for list="{{ panelA.filesTree }}" as="f" hint-placeholder-count="7">
+                  <div onClick="{{ f.onClick }}" style="{{ f.rowStyle }}padding:6px 8px 6px {{ f.padLeft }}px;border-radius:6px;cursor:pointer;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ f.name }}</div>
+                </sc-for>
+              </sc-if>
+            </div>
+          </div>
+          <div style="flex:1;overflow-y:auto;">
+            <sc-for list="{{ panelA.tracks }}" as="t" hint-placeholder-count="10">
+              <div style="{{ t.rowStyle }}display:flex;align-items:center;gap:10px;padding:6px 14px;font-size:12px;border-bottom:1px solid #16171b;">
+                <div draggable="true" onDragStart="{{ t.onDragStart }}" style="flex:1;min-width:0;display:flex;gap:10px;cursor:grab;">
+                  <span style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">{{ t.title }}</span>
+                  <span style="color:#8d919b;width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ t.artist }}</span>
+                  <span style="font-family:'JetBrains Mono',monospace;width:36px;color:#c9cbd1;">{{ t.bpm }}</span>
+                  <span style="font-family:'JetBrains Mono',monospace;width:32px;color:#c9cbd1;">{{ t.key }}</span>
+                </div>
+                <div onClick="{{ t.onLoad }}" style="font-size:10px;padding:3px 8px;border-radius:5px;background:oklch(0.82 0.19 155 / 0.14);color:oklch(0.82 0.19 155);cursor:pointer;flex-shrink:0;">Load</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ showPanelB }}">
+      <div onMouseDown="{{ onFocusB }}" style="{{ panelBWidthStyle }}display:flex;flex-direction:column;min-width:0;">
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 14px;border-bottom:1px solid #22252b;flex-shrink:0;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8d919b;">DECK B · {{ panelB.tracks.length }} tracks</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{ toggleExpandB }}" style="width:22px;height:22px;border-radius:5px;background:#1b1d22;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">
+            <sc-if value="{{ expandedIsB }}"><div style="width:8px;height:8px;border:1.5px solid #a9acb4;border-radius:1px;"></div></sc-if>
+            <sc-if value="{{ expandedIsNotB }}"><div style="display:flex;gap:1px;"><div style="width:4px;height:8px;border:1.5px solid #a9acb4;border-radius:1px;"></div><div style="width:4px;height:8px;border:1.5px solid #a9acb4;border-radius:1px;"></div></div></sc-if>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;display:flex;">
+          <div style="width:196px;flex-shrink:0;border-right:1px solid #22252b;background:#0e0f12;display:flex;flex-direction:column;">
+            <div style="display:flex;flex-shrink:0;align-items:center;">
+              <div onClick="{{ panelB.onTabPlaylists }}" style="{{ panelB.playlistsTabStyle }}flex:1;text-align:center;padding:8px 4px;font-size:10.5px;font-weight:600;cursor:pointer;">Playlists</div>
+              <div onClick="{{ panelB.onTabFiles }}" style="{{ panelB.filesTabStyle }}flex:1;text-align:center;padding:8px 4px;font-size:10.5px;font-weight:600;cursor:pointer;">Files</div>
+              <div onClick="{{ panelB.browser.settings.onToggle }}" style="width:24px;flex-shrink:0;text-align:center;font-size:11px;color:#5b5e66;cursor:pointer;padding:8px 0;">⚙</div>
+            </div>
+            <sc-if value="{{ panelB.browser.settings.open }}">
+              <div style="padding:8px;border-bottom:1px solid #22252b;display:flex;flex-direction:column;gap:5px;flex-shrink:0;background:#141519;">
+                <div onClick="{{ panelB.browser.settings.onCycleSort }}" style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#8d919b;cursor:pointer;">
+                  <span>Sort</span><span style="background:#1b1d22;color:#c9cbd1;padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;">{{ panelB.browser.settings.sort }}</span>
+                </div>
+                <div onClick="{{ panelB.browser.settings.onTogglePath }}" style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#8d919b;cursor:pointer;">
+                  <span>Show path</span><span style="{{ panelB.browser.settings.pathStyle }}padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;">{{ panelB.browser.settings.pathLabel }}</span>
+                </div>
+                <div onClick="{{ panelB.browser.settings.onToggleRating }}" style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#8d919b;cursor:pointer;">
+                  <span>Show rating</span><span style="{{ panelB.browser.settings.ratingStyle }}padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;">{{ panelB.browser.settings.ratingLabel }}</span>
+                </div>
+              </div>
+            </sc-if>
+            <div style="flex:1;overflow-y:auto;padding:6px;">
+              <sc-if value="{{ panelB.isPlaylistsTab }}">
+                <sc-for list="{{ panelB.browser.rows }}" as="row" hint-placeholder-count="12">
+                  <sc-if value="{{ row.isFolder }}">
+                    <div onClick="{{ row.onClick }}" style="display:flex;align-items:center;gap:5px;padding:5px 6px 5px {{ row.padLeft }}px;border-radius:5px;cursor:pointer;font-size:11.5px;font-weight:600;color:#eceef1;">
+                      <span style="font-size:8px;color:#5b5e66;width:8px;flex-shrink:0;">{{ row.arrow }}</span>
+                      <span style="width:11px;height:9px;border-radius:2px;border:1.5px solid #6b6f79;flex-shrink:0;"></span>
+                      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ row.name }}</span>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ row.isPlaylist }}">
+                    <div onClick="{{ row.onClick }}" onDrop="{{ row.onDrop }}" onDragOver="{{ row.onDragOver }}" style="{{ row.rowStyle }}padding:5px 6px 5px {{ row.padLeft }}px;border-radius:5px;cursor:pointer;font-size:11.5px;">
+                      <div style="display:flex;align-items:center;gap:5px;">
+                        <span style="width:8px;flex-shrink:0;"></span>
+                        <span style="width:10px;flex-shrink:0;font-size:7px;color:oklch(0.78 0.13 300);text-align:center;">{{ row.smartMark }}</span>
+                        <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ row.name }}</span>
+                        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#5b5e66;flex-shrink:0;">{{ row.count }}</span>
+                      </div>
+                      <div style="font-size:8.5px;color:#5b5e66;padding-left:23px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ row.subLabel }}</div>
+                    </div>
+                  </sc-if>
+                </sc-for>
+              </sc-if>
+              <sc-if value="{{ panelB.isFilesTab }}">
+                <sc-for list="{{ panelB.filesTree }}" as="f" hint-placeholder-count="7">
+                  <div onClick="{{ f.onClick }}" style="{{ f.rowStyle }}padding:6px 8px 6px {{ f.padLeft }}px;border-radius:6px;cursor:pointer;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ f.name }}</div>
+                </sc-for>
+              </sc-if>
+            </div>
+          </div>
+          <div style="flex:1;overflow-y:auto;">
+            <sc-for list="{{ panelB.tracks }}" as="t" hint-placeholder-count="10">
+              <div style="{{ t.rowStyle }}display:flex;align-items:center;gap:10px;padding:6px 14px;font-size:12px;border-bottom:1px solid #16171b;">
+                <div draggable="true" onDragStart="{{ t.onDragStart }}" style="flex:1;min-width:0;display:flex;gap:10px;cursor:grab;">
+                  <span style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">{{ t.title }}</span>
+                  <span style="color:#8d919b;width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ t.artist }}</span>
+                  <span style="font-family:'JetBrains Mono',monospace;width:36px;color:#c9cbd1;">{{ t.bpm }}</span>
+                  <span style="font-family:'JetBrains Mono',monospace;width:32px;color:#c9cbd1;">{{ t.key }}</span>
+              </div>
+              <div onClick="{{ t.onLoad }}" style="font-size:10px;padding:3px 8px;border-radius:5px;background:oklch(0.82 0.19 155 / 0.14);color:oklch(0.82 0.19 155);cursor:pointer;flex-shrink:0;">Load</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </div>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isAnalytics }}">
+  <div style="width:100%;height:100%;overflow-y:auto;padding:20px 24px;">
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px;">
+      <div style="background:#141519;border:1px solid #22252b;border-radius:12px;padding:16px;">
+        <div style="font-size:11px;color:#8d919b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Total Tracks</div>
+        <div style="font-size:28px;font-weight:700;font-family:'JetBrains Mono',monospace;">{{ totalTracks }}</div>
+      </div>
+      <div style="background:#141519;border:1px solid #22252b;border-radius:12px;padding:16px;">
+        <div style="font-size:11px;color:#8d919b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Playlists</div>
+        <div style="font-size:28px;font-weight:700;font-family:'JetBrains Mono',monospace;">{{ totalPlaylists }}</div>
+      </div>
+      <div style="background:#141519;border:1px solid #22252b;border-radius:12px;padding:16px;">
+        <div style="font-size:11px;color:#8d919b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Total Plays</div>
+        <div style="font-size:28px;font-weight:700;font-family:'JetBrains Mono',monospace;">{{ totalPlays }}</div>
+      </div>
+      <div style="background:#141519;border:1px solid #22252b;border-radius:12px;padding:16px;">
+        <div style="font-size:11px;color:#8d919b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Hours Mixed</div>
+        <div style="font-size:28px;font-weight:700;font-family:'JetBrains Mono',monospace;color:oklch(0.82 0.19 155);">{{ hoursMixed }}</div>
+      </div>
+      <div style="background:#141519;border:1px solid #22252b;border-radius:12px;padding:16px;">
+        <div style="font-size:11px;color:#8d919b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Healthy Tracks</div>
+        <div style="font-size:28px;font-weight:700;font-family:'JetBrains Mono',monospace;">{{ healthyPct }}%</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-bottom:16px;">
+      <div style="background:#141519;border:1px solid #22252b;border-radius:12px;padding:18px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:14px;">Most Played Tracks</div>
+        <sc-for list="{{ topPlayedView }}" as="tp" hint-placeholder-count="8">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px;">
+            <div style="width:150px;flex-shrink:0;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><span style="font-weight:600;">{{ tp.title }}</span></div>
+            <div style="flex:1;height:16px;background:#1b1d22;border-radius:4px;overflow:hidden;">
+              <div style="height:100%;width:{{ tp.widthPct }}%;background:{{ tp.color }};"></div>
+            </div>
+            <div style="width:34px;flex-shrink:0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px;color:#8d919b;">{{ tp.plays }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="background:#141519;border:1px solid #22252b;border-radius:12px;padding:18px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:14px;">Genre Distribution</div>
+        <div style="display:flex;height:16px;border-radius:6px;overflow:hidden;margin-bottom:12px;">
+          <sc-for list="{{ genreDist }}" as="g" hint-placeholder-count="8"><div style="width:{{ g.widthPct }}%;background:{{ g.color }};"></div></sc-for>
+        </div>
+        <sc-for list="{{ genreDist }}" as="g" hint-placeholder-count="8">
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:6px;">
+            <div style="width:8px;height:8px;border-radius:2px;background:{{ g.color }};flex-shrink:0;"></div>
+            <div style="flex:1;color:#c9cbd1;">{{ g.name }}</div>
+            <div style="font-family:'JetBrains Mono',monospace;color:#8d919b;">{{ g.count }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="background:#141519;border:1px solid #22252b;border-radius:12px;padding:18px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:16px;">Weekly Mixing Hours</div>
+      <div style="display:flex;align-items:flex-end;gap:14px;height:120px;">
+        <sc-for list="{{ weeklyView }}" as="w" hint-placeholder-count="8">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px;">
+            <div style="font-size:10px;color:#8d919b;font-family:'JetBrains Mono',monospace;">{{ w.hours }}h</div>
+            <div style="width:100%;background:oklch(0.82 0.19 155);border-radius:3px 3px 0 0;height:{{ w.heightPct }}%;"></div>
+            <div style="font-size:10px;color:#5b5e66;">{{ w.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isDuplicates }}">
+  <div style="width:100%;height:100%;overflow-y:auto;padding:20px 24px;">
+    <div style="display:flex;align-items:center;gap:16px;background:#141519;border:1px solid #22252b;border-radius:12px;padding:16px 20px;margin-bottom:18px;">
+      <div><div style="font-size:11px;color:#8d919b;text-transform:uppercase;">Duplicate Groups</div><div style="font-size:22px;font-weight:700;font-family:'JetBrains Mono',monospace;">{{ dupGroupsView.length }}</div></div>
+      <div><div style="font-size:11px;color:#8d919b;text-transform:uppercase;">Redundant Files</div><div style="font-size:22px;font-weight:700;font-family:'JetBrains Mono',monospace;">{{ totalDupFiles }}</div></div>
+      <div><div style="font-size:11px;color:#8d919b;text-transform:uppercase;">Marked for Removal</div><div style="font-size:22px;font-weight:700;font-family:'JetBrains Mono',monospace;color:oklch(0.7 0.19 25);">{{ totalMarked }}</div></div>
+      <div><div style="font-size:11px;color:#8d919b;text-transform:uppercase;">Space to Reclaim</div><div style="font-size:22px;font-weight:700;font-family:'JetBrains Mono',monospace;">{{ totalMarkedSize }} MB</div></div>
+      <div style="flex:1;"></div>
+      <div onClick="{{ removeAllMarked }}" style="background:oklch(0.7 0.19 25);color:#0a0b0d;font-weight:700;font-size:12.5px;padding:10px 16px;border-radius:8px;cursor:pointer;">Remove All Marked</div>
+    </div>
+
+    <sc-if value="{{ noDuplicates }}"><div style="text-align:center;color:#5b5e66;padding:60px 0;font-size:14px;">No duplicates remaining — your library is clean.</div></sc-if>
+
+    <sc-for list="{{ dupGroupsView }}" as="g" hint-placeholder-count="5">
+      <div style="background:#141519;border:1px solid #22252b;border-radius:12px;padding:16px 20px;margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div><span style="font-weight:700;font-size:14px;">{{ g.title }}</span><span style="color:#8d919b;font-size:13px;"> — {{ g.artist }}</span></div>
+          <div onClick="{{ g.onRemove }}" style="font-size:11.5px;color:oklch(0.7 0.19 25);border:1px solid oklch(0.7 0.19 25 / 0.4);padding:5px 10px;border-radius:6px;cursor:pointer;">Remove Marked ({{ g.markedCount }})</div>
+        </div>
+        <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2">
+          <div onClick="{{ it.onToggle }}" style="{{ it.rowStyle }}display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:8px;cursor:pointer;margin-bottom:6px;">
+            <div style="{{ it.checkStyle }}width:16px;height:16px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <sc-if value="{{ it.marked }}"><div style="width:8px;height:8px;background:#0a0b0d;border-radius:2px;"></div></sc-if>
+            </div>
+            <div style="width:90px;font-size:12px;font-weight:600;">{{ it.source }}</div>
+            <div style="width:150px;font-size:12px;color:#a9acb4;font-family:'JetBrains Mono',monospace;">{{ it.format }}</div>
+            <div style="font-size:12px;color:#8d919b;font-family:'JetBrains Mono',monospace;">{{ it.sizeMB }} MB</div>
+            <div style="flex:1;"></div>
+            <div style="font-size:11px;color:#5b5e66;">{{ it.tagText }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-for>
+  </div>
+  </sc-if>
+
+<sc-if value="{{ isDjApp }}">
+  <div style="display:flex;flex-direction:column;width:100%;height:100%;">
+    <div style="display:flex;align-items:center;gap:14px;padding:6px 16px;border-bottom:1px solid #22252b;flex-shrink:0;background:#111318;">
+      <span style="font-size:10px;font-weight:700;color:#5b5e66;letter-spacing:.08em;">MASTER</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:oklch(0.82 0.19 155);">{{ masterBpm }} BPM</span>
+      <div style="flex:1;"></div>
+      <span style="font-size:9px;color:#5b5e66;font-weight:700;letter-spacing:.05em;">FX</span>
+      <div onClick="{{ onCycleFxCount }}" style="font-size:10px;font-family:'JetBrains Mono',monospace;padding:4px 9px;border-radius:5px;background:#1b1d22;border:1px solid #2b2e35;color:#c9cbd1;cursor:pointer;margin-right:8px;">{{ fxCountLabel }}</div>
+      <span style="font-size:10px;color:#5b5e66;font-family:'JetBrains Mono',monospace;font-weight:700;">A</span>
+      <div style="position:relative;width:260px;height:8px;background:#08090b;border:1px solid #2b2e35;border-radius:4px;">
+        <div style="position:absolute;top:-4px;left:50%;width:1px;height:16px;background:#3a3d45;"></div>
+        <input type="range" min="0" max="100" value="{{ crossfader }}" onChange="{{ setCrossfader }}" style="position:absolute;top:-8px;left:0;width:100%;height:24px;margin:0;accent-color:oklch(0.82 0.19 155);"/>
+      </div>
+      <span style="font-size:10px;color:#5b5e66;font-family:'JetBrains Mono',monospace;font-weight:700;">B</span>
+    </div>
+
+    <div style="display:flex;gap:2px;flex-shrink:0;height:300px;border-bottom:1px solid #22252b;">
+      <div style="flex:1;background:linear-gradient(180deg,#111318,#0c0d10);padding:0;display:flex;flex-direction:column;min-width:0;">
+        <div style="display:flex;align-items:baseline;gap:10px;padding:8px 14px;border-bottom:1px solid #1c1e24;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;color:oklch(0.82 0.19 155);letter-spacing:-.02em;">{{ panelA.loaded.bpm }}</span>
+          <span style="font-size:9px;color:#5b5e66;font-weight:700;">BPM</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;background:#1b1d22;border:1px solid #2b2e35;padding:2px 7px;border-radius:5px;color:#c9cbd1;">{{ panelA.loaded.key }}</span>
+          <div style="min-width:0;">
+            <div style="font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ panelA.loaded.title }}</div>
+            <div style="font-size:11px;color:#8d919b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ panelA.loaded.artist }}</div>
+          </div>
+          <div style="flex:1;"></div>
+          <div onClick="{{ panelA.onToggleSync }}" style="{{ panelA.syncStyle }}font-size:10px;font-weight:700;padding:5px 10px;border-radius:5px;cursor:pointer;">SYNC</div>
+        </div>
+        <div style="display:flex;gap:10px;flex:1;min-height:0;padding:10px 12px;">
+          <div style="width:44px;flex-shrink:0;display:flex;align-items:stretch;gap:5px;">
+            <div onMouseDown="{{ panelA.loaded.onPitchFaderDown }}" style="position:relative;width:22px;background:#0a0b0d;border:1px solid #2b2e35;border-radius:4px;cursor:ns-resize;">
+              <div style="position:absolute;top:50%;left:2px;right:2px;height:1px;background:#3a3d45;"></div>
+              <div style="position:absolute;left:1px;right:1px;height:10px;bottom:{{ panelA.loaded.pitchFaderPct }}%;margin-bottom:-5px;background:#c9cbd1;border-radius:2px;"></div>
+            </div>
+            <div style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#8d919b;writing-mode:vertical-rl;text-align:center;">{{ panelA.loaded.pitchLabel }}</div>
+          </div>
+          <div style="width:96px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:8px;justify-content:center;">
+            <div style="position:relative;width:84px;height:84px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#24262d,#131418 70%);border:2px solid #2b2e35;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 12px #000;">
+              <div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelA.jogAngle }}deg);">
+                <div style="position:absolute;top:5px;left:50%;width:3px;height:14px;background:oklch(0.82 0.19 155);margin-left:-1.5px;border-radius:2px;"></div>
+              </div>
+              <div style="width:30px;height:30px;border-radius:50%;background:#0e0f12;border:1px solid #2b2e35;"></div>
+            </div>
+            <div style="display:flex;gap:5px;">
+              <div onClick="{{ panelA.onCue }}" style="width:30px;height:26px;border-radius:6px;background:#1b1d22;border:1px solid #2b2e35;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:9px;font-weight:700;color:#a9acb4;">CUE</div>
+              <div onClick="{{ onToggleDeckPlayA }}" style="width:30px;height:26px;border-radius:6px;background:oklch(0.82 0.19 155);display:flex;align-items:center;justify-content:center;cursor:pointer;">
+                <sc-if value="{{ panelA.loaded.isPlaying }}"><div style="display:flex;gap:2px;"><div style="width:3px;height:9px;background:#0a0b0d;"></div><div style="width:3px;height:9px;background:#0a0b0d;"></div></div></sc-if>
+                <sc-if value="{{ panelA.loaded.isNotPlaying }}"><div style="width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:8px solid #0a0b0d;margin-left:2px;"></div></sc-if>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;">
+            <div onClick="{{ panelA.onSeek }}" style="position:relative;height:88px;display:flex;align-items:center;gap:1px;cursor:pointer;background:#08090b;border-radius:6px;padding:0 4px;border:1px solid #1c1e24;">
+              <sc-for list="{{ panelA.loaded.wave }}" as="bar" hint-placeholder-count="90"><div style="width:3px;flex-shrink:0;height:{{ bar }}%;background:linear-gradient(180deg,oklch(0.78 0.16 55),oklch(0.6 0.16 220));border-radius:1px;"></div></sc-for>
+              <sc-if value="{{ panelA.loopOn }}"><div style="position:absolute;top:0;bottom:0;left:{{ panelA.loaded.progress }}%;width:{{ panelA.loopWidthPct }}%;background:oklch(0.82 0.19 155 / 0.18);border-left:1px solid oklch(0.82 0.19 155);border-right:1px solid oklch(0.82 0.19 155);"></div></sc-if>
+              <div style="position:absolute;top:0;bottom:0;left:{{ panelA.loaded.progress }}%;width:2px;background:#eceef1;box-shadow:0 0 6px #eceef1;"></div>
+              <sc-for list="{{ panelA.hotcuesView }}" as="pad" hint-placeholder-count="8">
+                <sc-if value="{{ pad.filled }}"><div style="position:absolute;top:0;bottom:0;left:{{ pad.leftPct }}%;width:2px;background:{{ pad.tickColor }};"></div></sc-if>
+              </sc-for>
+            </div>
+            <div style="position:relative;height:9px;display:flex;align-items:center;gap:1px;background:#08090b;border-radius:3px;padding:0 3px;border:1px solid #1c1e24;">
+              <sc-for list="{{ panelA.loaded.waveOverview }}" as="bar" hint-placeholder-count="30"><div style="width:2px;flex-shrink:0;height:{{ bar }}%;background:linear-gradient(180deg,oklch(0.7 0.13 55),oklch(0.55 0.13 220));"></div></sc-for>
+              <div style="position:absolute;top:0;bottom:0;left:{{ panelA.loaded.progress }}%;width:1px;background:oklch(0.82 0.19 155);"></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:5px;">
+              <div onClick="{{ panelA.onBeatjumpM4 }}" style="font-size:9px;font-family:'JetBrains Mono',monospace;padding:4px 6px;border-radius:5px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">-4</div>
+              <div onClick="{{ panelA.onBeatjumpM1 }}" style="font-size:9px;font-family:'JetBrains Mono',monospace;padding:4px 6px;border-radius:5px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">-1</div>
+              <div onClick="{{ panelA.onBeatjumpP1 }}" style="font-size:9px;font-family:'JetBrains Mono',monospace;padding:4px 6px;border-radius:5px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">+1</div>
+              <div onClick="{{ panelA.onBeatjumpP4 }}" style="font-size:9px;font-family:'JetBrains Mono',monospace;padding:4px 6px;border-radius:5px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">+4</div>
+              <div style="width:1px;height:16px;background:#2b2e35;margin:0 4px;"></div>
+              <div onClick="{{ panelA.onToggleLoop }}" style="{{ panelA.loopStyle }}font-size:9px;font-weight:700;padding:4px 8px;border-radius:5px;cursor:pointer;">LOOP</div>
+              <div onClick="{{ panelA.onLoopHalve }}" style="font-size:9px;font-family:'JetBrains Mono',monospace;padding:4px 6px;border-radius:5px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">½</div>
+              <div style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#8d919b;width:34px;text-align:center;">{{ panelA.loopBeats }} bt</div>
+              <div onClick="{{ panelA.onLoopDouble }}" style="font-size:9px;font-family:'JetBrains Mono',monospace;padding:4px 6px;border-radius:5px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">2×</div>
+            </div>
+            <div style="display:flex;gap:4px;">
+              <sc-for list="{{ panelA.hotcuesView }}" as="pad" hint-placeholder-count="8">
+                <div onClick="{{ pad.onClick }}" style="{{ pad.style }}position:relative;flex:1;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;cursor:pointer;">
+                  {{ pad.index1 }}
+                  <sc-if value="{{ pad.filled }}"><div onClick="{{ pad.onRemove }}" style="position:absolute;top:-4px;right:-4px;width:12px;height:12px;border-radius:50%;background:#0a0b0d;border:1px solid #2b2e35;font-size:8px;display:flex;align-items:center;justify-content:center;color:#a9acb4;">×</div></sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:230px;flex-shrink:0;background:#111318;border-left:1px solid #22252b;border-right:1px solid #22252b;display:flex;padding:10px 8px;gap:6px;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+          <div style="font-size:9px;color:#5b5e66;font-weight:700;">CH A</div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <div onMouseDown="{{ panelA.loaded.onGainKnobDown }}" style="width:26px;height:26px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelA.loaded.gainAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:8px;background:#c9cbd1;margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7.5px;color:#5b5e66;">GAIN</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <div onMouseDown="{{ panelA.loaded.onEqHighKnobDown }}" style="width:26px;height:26px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelA.loaded.eqHighAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:8px;background:oklch(0.82 0.19 155);margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7.5px;color:#5b5e66;">HI</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <div onMouseDown="{{ panelA.loaded.onEqMidKnobDown }}" style="width:26px;height:26px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelA.loaded.eqMidAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:8px;background:oklch(0.82 0.19 155);margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7.5px;color:#5b5e66;">MID</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <div onMouseDown="{{ panelA.loaded.onEqLowKnobDown }}" style="width:26px;height:26px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelA.loaded.eqLowAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:8px;background:oklch(0.82 0.19 155);margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7.5px;color:#5b5e66;">LOW</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;flex:1;min-height:96px;width:100%;justify-content:center;margin-top:2px;">
+            <div style="display:flex;align-items:flex-end;gap:2px;height:100%;">
+              <div style="width:5px;background:linear-gradient(180deg,oklch(0.75 0.18 25),oklch(0.82 0.19 155));border-radius:2px;height:{{ panelA.vuHeightPct }}%;"></div>
+            </div>
+            <div onMouseDown="{{ panelA.loaded.onVolumeFaderDown }}" style="position:relative;width:24px;height:100%;background:#0a0b0d;border:1px solid #2b2e35;border-radius:4px;cursor:ns-resize;">
+              <div style="position:absolute;left:2px;right:2px;height:10px;bottom:{{ panelA.loaded.volumeFaderPct }}%;margin-bottom:-5px;background:oklch(0.82 0.19 155);border-radius:2px;box-shadow:0 0 5px oklch(0.82 0.19 155 / 0.6);"></div>
+            </div>
+          </div>
+          <div style="font-size:7.5px;color:#5b5e66;">VOLUME</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+          <div style="font-size:9px;color:#5b5e66;font-weight:700;">CH B</div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <div onMouseDown="{{ panelB.loaded.onGainKnobDown }}" style="width:26px;height:26px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelB.loaded.gainAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:8px;background:#c9cbd1;margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7.5px;color:#5b5e66;">GAIN</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <div onMouseDown="{{ panelB.loaded.onEqHighKnobDown }}" style="width:26px;height:26px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelB.loaded.eqHighAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:8px;background:oklch(0.82 0.19 155);margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7.5px;color:#5b5e66;">HI</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <div onMouseDown="{{ panelB.loaded.onEqMidKnobDown }}" style="width:26px;height:26px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelB.loaded.eqMidAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:8px;background:oklch(0.82 0.19 155);margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7.5px;color:#5b5e66;">MID</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <div onMouseDown="{{ panelB.loaded.onEqLowKnobDown }}" style="width:26px;height:26px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelB.loaded.eqLowAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:8px;background:oklch(0.82 0.19 155);margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7.5px;color:#5b5e66;">LOW</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;flex:1;min-height:96px;width:100%;justify-content:center;margin-top:2px;">
+            <div style="display:flex;align-items:flex-end;gap:2px;height:100%;">
+              <div style="width:5px;background:linear-gradient(180deg,oklch(0.75 0.18 25),oklch(0.82 0.19 155));border-radius:2px;height:{{ panelB.vuHeightPct }}%;"></div>
+            </div>
+            <div onMouseDown="{{ panelB.loaded.onVolumeFaderDown }}" style="position:relative;width:24px;height:100%;background:#0a0b0d;border:1px solid #2b2e35;border-radius:4px;cursor:ns-resize;">
+              <div style="position:absolute;left:2px;right:2px;height:10px;bottom:{{ panelB.loaded.volumeFaderPct }}%;margin-bottom:-5px;background:oklch(0.82 0.19 155);border-radius:2px;box-shadow:0 0 5px oklch(0.82 0.19 155 / 0.6);"></div>
+            </div>
+          </div>
+          <div style="font-size:7.5px;color:#5b5e66;">VOLUME</div>
+        </div>
+      </div>
+
+      <div style="flex:1;background:linear-gradient(180deg,#111318,#0c0d10);padding:0;display:flex;flex-direction:column;min-width:0;">
+        <div style="display:flex;align-items:baseline;gap:10px;padding:8px 14px;border-bottom:1px solid #1c1e24;">
+          <div onClick="{{ panelB.onToggleSync }}" style="{{ panelB.syncStyle }}font-size:10px;font-weight:700;padding:5px 10px;border-radius:5px;cursor:pointer;">SYNC</div>
+          <div style="flex:1;"></div>
+          <div style="min-width:0;text-align:right;">
+            <div style="font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ panelB.loaded.title }}</div>
+            <div style="font-size:11px;color:#8d919b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ panelB.loaded.artist }}</div>
+          </div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;background:#1b1d22;border:1px solid #2b2e35;padding:2px 7px;border-radius:5px;color:#c9cbd1;">{{ panelB.loaded.key }}</span>
+          <span style="font-size:9px;color:#5b5e66;font-weight:700;">BPM</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;color:oklch(0.82 0.19 155);letter-spacing:-.02em;">{{ panelB.loaded.bpm }}</span>
+        </div>
+        <div style="display:flex;gap:10px;flex:1;min-height:0;padding:10px 12px;">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;">
+            <div onClick="{{ panelB.onSeek }}" style="position:relative;height:88px;display:flex;align-items:center;gap:1px;cursor:pointer;background:#08090b;border-radius:6px;padding:0 4px;border:1px solid #1c1e24;">
+              <sc-for list="{{ panelB.loaded.wave }}" as="bar" hint-placeholder-count="90"><div style="width:3px;flex-shrink:0;height:{{ bar }}%;background:linear-gradient(180deg,oklch(0.78 0.16 55),oklch(0.6 0.16 220));border-radius:1px;"></div></sc-for>
+              <sc-if value="{{ panelB.loopOn }}"><div style="position:absolute;top:0;bottom:0;left:{{ panelB.loaded.progress }}%;width:{{ panelB.loopWidthPct }}%;background:oklch(0.82 0.19 155 / 0.18);border-left:1px solid oklch(0.82 0.19 155);border-right:1px solid oklch(0.82 0.19 155);"></div></sc-if>
+              <div style="position:absolute;top:0;bottom:0;left:{{ panelB.loaded.progress }}%;width:2px;background:#eceef1;box-shadow:0 0 6px #eceef1;"></div>
+              <sc-for list="{{ panelB.hotcuesView }}" as="pad" hint-placeholder-count="8">
+                <sc-if value="{{ pad.filled }}"><div style="position:absolute;top:0;bottom:0;left:{{ pad.leftPct }}%;width:2px;background:{{ pad.tickColor }};"></div></sc-if>
+              </sc-for>
+            </div>
+            <div style="position:relative;height:9px;display:flex;align-items:center;gap:1px;background:#08090b;border-radius:3px;padding:0 3px;border:1px solid #1c1e24;">
+              <sc-for list="{{ panelB.loaded.waveOverview }}" as="bar" hint-placeholder-count="30"><div style="width:2px;flex-shrink:0;height:{{ bar }}%;background:linear-gradient(180deg,oklch(0.7 0.13 55),oklch(0.55 0.13 220));"></div></sc-for>
+              <div style="position:absolute;top:0;bottom:0;left:{{ panelB.loaded.progress }}%;width:1px;background:oklch(0.82 0.19 155);"></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:5px;">
+              <div onClick="{{ panelB.onBeatjumpM4 }}" style="font-size:9px;font-family:'JetBrains Mono',monospace;padding:4px 6px;border-radius:5px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">-4</div>
+              <div onClick="{{ panelB.onBeatjumpM1 }}" style="font-size:9px;font-family:'JetBrains Mono',monospace;padding:4px 6px;border-radius:5px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">-1</div>
+              <div onClick="{{ panelB.onBeatjumpP1 }}" style="font-size:9px;font-family:'JetBrains Mono',monospace;padding:4px 6px;border-radius:5px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">+1</div>
+              <div onClick="{{ panelB.onBeatjumpP4 }}" style="font-size:9px;font-family:'JetBrains Mono',monospace;padding:4px 6px;border-radius:5px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">+4</div>
+              <div style="width:1px;height:16px;background:#2b2e35;margin:0 4px;"></div>
+              <div onClick="{{ panelB.onToggleLoop }}" style="{{ panelB.loopStyle }}font-size:9px;font-weight:700;padding:4px 8px;border-radius:5px;cursor:pointer;">LOOP</div>
+              <div onClick="{{ panelB.onLoopHalve }}" style="font-size:9px;font-family:'JetBrains Mono',monospace;padding:4px 6px;border-radius:5px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">½</div>
+              <div style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#8d919b;width:34px;text-align:center;">{{ panelB.loopBeats }} bt</div>
+              <div onClick="{{ panelB.onLoopDouble }}" style="font-size:9px;font-family:'JetBrains Mono',monospace;padding:4px 6px;border-radius:5px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;">2×</div>
+            </div>
+            <div style="display:flex;gap:4px;">
+              <sc-for list="{{ panelB.hotcuesView }}" as="pad" hint-placeholder-count="8">
+                <div onClick="{{ pad.onClick }}" style="{{ pad.style }}position:relative;flex:1;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;cursor:pointer;">
+                  {{ pad.index1 }}
+                  <sc-if value="{{ pad.filled }}"><div onClick="{{ pad.onRemove }}" style="position:absolute;top:-4px;right:-4px;width:12px;height:12px;border-radius:50%;background:#0a0b0d;border:1px solid #2b2e35;font-size:8px;display:flex;align-items:center;justify-content:center;color:#a9acb4;">×</div></sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="width:96px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:8px;justify-content:center;">
+            <div style="position:relative;width:84px;height:84px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#24262d,#131418 70%);border:2px solid #2b2e35;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 12px #000;">
+              <div style="position:absolute;width:100%;height:100%;transform:rotate({{ panelB.jogAngle }}deg);">
+                <div style="position:absolute;top:5px;left:50%;width:3px;height:14px;background:oklch(0.82 0.19 155);margin-left:-1.5px;border-radius:2px;"></div>
+              </div>
+              <div style="width:30px;height:30px;border-radius:50%;background:#0e0f12;border:1px solid #2b2e35;"></div>
+            </div>
+            <div style="display:flex;gap:5px;">
+              <div onClick="{{ panelB.onCue }}" style="width:30px;height:26px;border-radius:6px;background:#1b1d22;border:1px solid #2b2e35;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:9px;font-weight:700;color:#a9acb4;">CUE</div>
+              <div onClick="{{ onToggleDeckPlayB }}" style="width:30px;height:26px;border-radius:6px;background:oklch(0.82 0.19 155);display:flex;align-items:center;justify-content:center;cursor:pointer;">
+                <sc-if value="{{ panelB.loaded.isPlaying }}"><div style="display:flex;gap:2px;"><div style="width:3px;height:9px;background:#0a0b0d;"></div><div style="width:3px;height:9px;background:#0a0b0d;"></div></div></sc-if>
+                <sc-if value="{{ panelB.loaded.isNotPlaying }}"><div style="width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:8px solid #0a0b0d;margin-left:2px;"></div></sc-if>
+              </div>
+            </div>
+          </div>
+          <div style="width:44px;flex-shrink:0;display:flex;align-items:stretch;gap:5px;">
+            <div style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#8d919b;writing-mode:vertical-rl;text-align:center;">{{ panelB.loaded.pitchLabel }}</div>
+            <div onMouseDown="{{ panelB.loaded.onPitchFaderDown }}" style="position:relative;width:22px;background:#0a0b0d;border:1px solid #2b2e35;border-radius:4px;cursor:ns-resize;">
+              <div style="position:absolute;top:50%;left:2px;right:2px;height:1px;background:#3a3d45;"></div>
+              <div style="position:absolute;left:1px;right:1px;height:10px;bottom:{{ panelB.loaded.pitchFaderPct }}%;margin-bottom:-5px;background:#c9cbd1;border-radius:2px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ fxEnabled }}">
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:2px;flex-shrink:0;border-bottom:1px solid #22252b;background:#111318;">
+      <sc-for list="{{ fxView }}" as="fx" hint-placeholder-count="2">
+        <div style="padding:7px 12px;display:flex;align-items:center;gap:10px;border-right:1px solid #22252b;border-bottom:1px solid #1c1e24;min-height:74px;">
+          <div style="width:56px;flex-shrink:0;display:flex;flex-direction:column;gap:3px;">
+            <div onClick="{{ fx.onToggle }}" style="{{ fx.onStyle }}font-size:9.5px;font-weight:700;padding:5px 0;border-radius:5px;cursor:pointer;text-align:center;">FX {{ fx.id }}</div>
+            <div onClick="{{ fx.onToggleMode }}" style="{{ fx.modeStyle }}font-size:7.5px;font-weight:700;padding:3px 0;border-radius:4px;cursor:pointer;text-align:center;letter-spacing:.04em;">{{ fx.modeLabel }}</div>
+            <div onClick="{{ fx.onCycleTarget }}" style="font-size:8px;font-family:'JetBrains Mono',monospace;padding:3px 0;border-radius:4px;background:#1b1d22;border:1px solid #2b2e35;color:#a9acb4;cursor:pointer;text-align:center;">{{ fx.target }}</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;">
+            <div onMouseDown="{{ fx.onWetKnobDown }}" style="width:34px;height:34px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ fx.wetAngle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:10px;background:{{ fx.color }};margin-left:-1px;border-radius:1px;"></div></div></div>
+            <div style="font-size:7.5px;color:#5b5e66;">DRY/WET</div>
+          </div>
+
+          <sc-if value="{{ fx.isSingle }}">
+            <div style="flex:1;min-width:0;display:flex;align-items:center;gap:10px;">
+              <div onClick="{{ fx.onCycleHeadType }}" style="width:84px;flex-shrink:0;font-size:12px;font-weight:700;cursor:pointer;color:#eceef1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ fx.headType }}</div>
+              <sc-for list="{{ fx.params }}" as="p" hint-placeholder-count="3">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                  <div onMouseDown="{{ p.onKnobDown }}" style="width:28px;height:28px;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ p.angle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:8px;background:{{ p.color }};margin-left:-1px;border-radius:1px;"></div></div></div>
+                  <div style="font-size:7px;color:#5b5e66;">{{ p.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ fx.isGroup }}">
+            <div style="flex:1;min-width:0;display:flex;align-items:center;gap:8px;">
+              <sc-for list="{{ fx.slots }}" as="sl" hint-placeholder-count="3">
+                <div style="flex:1;min-width:0;display:flex;align-items:center;gap:5px;">
+                  <div onMouseDown="{{ sl.onKnobDown }}" style="width:26px;height:26px;flex-shrink:0;border-radius:50%;background:#1b1d22;border:1px solid #2b2e35;position:relative;cursor:ns-resize;"><div style="position:absolute;width:100%;height:100%;transform:rotate({{ sl.angle }}deg);"><div style="position:absolute;top:2px;left:50%;width:2px;height:7px;background:{{ sl.color }};margin-left:-1px;border-radius:1px;"></div></div></div>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;">
+                    <div onClick="{{ sl.onCycleType }}" style="font-size:9.5px;font-weight:600;color:#c9cbd1;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ sl.type }}</div>
+                    <div onClick="{{ sl.onToggle }}" style="{{ sl.btnStyle }}font-size:7px;font-weight:700;padding:2px 0;border-radius:3px;cursor:pointer;text-align:center;">ON</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+    </sc-if>
+
+    <div style="display:grid;grid-template-columns:repeat(8,1fr);grid-auto-rows:22px;gap:4px 8px;padding:6px 16px;border-bottom:1px solid #22252b;flex-shrink:0;background:#0e0f12;">
+      <sc-for list="{{ favoritesView }}" as="slot" hint-placeholder-count="16">
+        <div onDrop="{{ slot.onDrop }}" onDragOver="{{ slot.onDragOver }}" onClick="{{ slot.onClick }}" style="{{ slot.style }}position:relative;height:22px;border-radius:5px;display:flex;align-items:center;gap:5px;padding:0 7px;cursor:pointer;overflow:hidden;">
+          <span style="font-size:8px;color:#5b5e66;font-family:'JetBrains Mono',monospace;flex-shrink:0;">{{ slot.index1 }}</span>
+          <span style="font-size:10.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">{{ slot.label }}</span>
+          <sc-if value="{{ slot.filled }}"><span onClick="{{ slot.onClear }}" style="font-size:10px;color:#5b5e66;cursor:pointer;flex-shrink:0;">×</span></sc-if>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="flex:1;min-height:0;display:flex;">
+      <div style="width:206px;flex-shrink:0;border-right:1px solid #22252b;background:#0e0f12;display:flex;flex-direction:column;">
+        <div style="display:flex;flex-shrink:0;align-items:center;">
+          <div onClick="{{ onDjTabPlaylists }}" style="{{ djPlaylistsTabStyle }}flex:1;text-align:center;padding:9px 4px;font-size:11px;font-weight:600;cursor:pointer;">Playlists</div>
+          <div onClick="{{ onDjTabFiles }}" style="{{ djFilesTabStyle }}flex:1;text-align:center;padding:9px 4px;font-size:11px;font-weight:600;cursor:pointer;">Files</div>
+          <div onClick="{{ djBrowser.settings.onToggle }}" style="width:26px;flex-shrink:0;text-align:center;font-size:11px;color:#5b5e66;cursor:pointer;padding:9px 0;">⚙</div>
+        </div>
+        <sc-if value="{{ djBrowser.settings.open }}">
+          <div style="padding:8px;border-bottom:1px solid #22252b;display:flex;flex-direction:column;gap:5px;flex-shrink:0;background:#141519;">
+            <div onClick="{{ djBrowser.settings.onCycleSort }}" style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#8d919b;cursor:pointer;">
+              <span>Sort</span><span style="background:#1b1d22;color:#c9cbd1;padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;">{{ djBrowser.settings.sort }}</span>
+            </div>
+            <div onClick="{{ djBrowser.settings.onTogglePath }}" style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#8d919b;cursor:pointer;">
+              <span>Show path</span><span style="{{ djBrowser.settings.pathStyle }}padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;">{{ djBrowser.settings.pathLabel }}</span>
+            </div>
+            <div onClick="{{ djBrowser.settings.onToggleRating }}" style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#8d919b;cursor:pointer;">
+              <span>Show rating</span><span style="{{ djBrowser.settings.ratingStyle }}padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;">{{ djBrowser.settings.ratingLabel }}</span>
+            </div>
+          </div>
+        </sc-if>
+        <div style="flex:1;overflow-y:auto;padding:8px;">
+          <sc-if value="{{ isDjPlaylistsTab }}">
+            <div onClick="{{ selectAll }}" style="{{ collectionRowStyle }}display:flex;justify-content:space-between;padding:6px 9px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;margin-bottom:6px;">
+              <span>Collection</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;">{{ totalTracks }}</span>
+            </div>
+            <sc-for list="{{ djBrowser.rows }}" as="row" hint-placeholder-count="12">
+              <sc-if value="{{ row.isFolder }}">
+                <div onClick="{{ row.onClick }}" style="display:flex;align-items:center;gap:5px;padding:5px 6px 5px {{ row.padLeft }}px;border-radius:5px;cursor:pointer;font-size:12px;font-weight:600;color:#eceef1;">
+                  <span style="font-size:8px;color:#5b5e66;width:8px;flex-shrink:0;">{{ row.arrow }}</span>
+                  <span style="width:11px;height:9px;border-radius:2px;border:1.5px solid #6b6f79;flex-shrink:0;"></span>
+                  <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ row.name }}</span>
+                </div>
+              </sc-if>
+              <sc-if value="{{ row.isPlaylist }}">
+                <div onClick="{{ row.onClick }}" onDrop="{{ row.onDrop }}" onDragOver="{{ row.onDragOver }}" style="{{ row.rowStyle }}padding:5px 6px 5px {{ row.padLeft }}px;border-radius:5px;cursor:pointer;font-size:12px;">
+                  <div style="display:flex;align-items:center;gap:5px;">
+                    <span style="width:8px;flex-shrink:0;"></span>
+                    <span style="width:10px;flex-shrink:0;font-size:7px;color:oklch(0.78 0.13 300);text-align:center;">{{ row.smartMark }}</span>
+                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ row.name }}</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#5b5e66;flex-shrink:0;">{{ row.count }}</span>
+                  </div>
+                  <div style="font-size:8.5px;color:#5b5e66;padding-left:23px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ row.subLabel }}</div>
+                </div>
+              </sc-if>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ isDjFilesTab }}">
+            <sc-for list="{{ djFilesTree }}" as="f" hint-placeholder-count="7">
+              <div onClick="{{ f.onClick }}" style="{{ f.rowStyle }}padding:6px 8px 6px {{ f.padLeft }}px;border-radius:6px;cursor:pointer;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ f.name }}</div>
+            </sc-for>
+          </sc-if>
+        </div>
+      </div>
+      <div style="flex:1;min-height:0;display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;gap:14px;padding:8px 18px;border-bottom:1px solid #22252b;flex-shrink:0;">
+          <div style="font-size:13px;font-weight:700;">{{ currentPlaylistName }}</div>
+          <div style="flex:1;"></div>
+          <input value="{{ search }}" onChange="{{ setSearch }}" placeholder="Search title or artist…" style="background:#141519;border:1px solid #2b2e35;border-radius:7px;padding:6px 11px;color:#eceef1;font-size:12px;width:200px;"/>
+        </div>
+        <div style="flex:1;overflow-y:auto;">
+          <sc-for list="{{ visibleTracks }}" as="row" hint-placeholder-count="12">
+            <div style="{{ row.rowStyle }}display:flex;align-items:center;gap:10px;padding:5px 18px;font-size:12px;border-bottom:1px solid #16171b;">
+              <div style="flex:1;min-width:0;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ row.title }}</div>
+              <div style="width:130px;color:#a9acb4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ row.artist }}</div>
+              <div style="width:44px;font-family:'JetBrains Mono',monospace;color:#c9cbd1;">{{ row.bpm }}</div>
+              <div style="width:40px;font-family:'JetBrains Mono',monospace;color:#c9cbd1;">{{ row.key }}</div>
+              <span style="{{ row.genrePillStyle }}font-size:10px;padding:2px 7px;border-radius:5px;width:96px;text-align:center;">{{ row.genre }}</span>
+              <div onClick="{{ row.onLoadA }}" style="font-size:10px;padding:4px 9px;border-radius:5px;background:oklch(0.82 0.19 155 / 0.14);color:oklch(0.82 0.19 155);cursor:pointer;">Load A</div>
+              <div onClick="{{ row.onLoadB }}" style="font-size:10px;padding:4px 9px;border-radius:5px;background:oklch(0.82 0.19 155 / 0.14);color:oklch(0.82 0.19 155);cursor:pointer;">Load B</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isHistory }}">
+  <div style="display:flex;flex-direction:column;width:100%;height:100%;">
+    <div style="display:grid;grid-template-columns:repeat(8,1fr);grid-auto-rows:22px;gap:4px 8px;padding:6px 16px;border-bottom:1px solid #22252b;flex-shrink:0;background:#0e0f12;">
+      <sc-for list="{{ favoritesView }}" as="slot" hint-placeholder-count="16">
+        <div onDrop="{{ slot.onDrop }}" onDragOver="{{ slot.onDragOver }}" onClick="{{ slot.onClick }}" style="{{ slot.style }}position:relative;height:22px;border-radius:5px;display:flex;align-items:center;gap:5px;padding:0 7px;cursor:pointer;overflow:hidden;">
+          <span style="font-size:8px;color:#5b5e66;font-family:'JetBrains Mono',monospace;flex-shrink:0;">{{ slot.index1 }}</span>
+          <span style="font-size:10.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">{{ slot.label }}</span>
+          <sc-if value="{{ slot.filled }}"><span onClick="{{ slot.onClear }}" style="font-size:10px;color:#5b5e66;cursor:pointer;flex-shrink:0;">×</span></sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <div style="flex:1;min-height:0;display:flex;width:100%;">
+    <div style="width:230px;flex-shrink:0;border-right:1px solid #22252b;background:#0e0f12;overflow-y:auto;padding:12px 10px;">
+      <div style="font-size:10px;color:#5b5e66;text-transform:uppercase;letter-spacing:.06em;padding:2px 4px 8px;">Filter by software</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;">
+        <sc-for list="{{ softwareFilters }}" as="sw" hint-placeholder-count="5">
+          <div onClick="{{ sw.onClick }}" style="{{ sw.style }}font-size:11px;padding:4px 9px;border-radius:6px;cursor:pointer;">{{ sw.name }}</div>
+        </sc-for>
+      </div>
+      <sc-for list="{{ historyTree }}" as="yr" hint-placeholder-count="2">
+        <div>
+          <div onClick="{{ yr.onToggle }}" style="display:flex;align-items:center;gap:6px;padding:6px 4px;cursor:pointer;font-size:13px;font-weight:700;">
+            <span style="font-size:9px;color:#5b5e66;width:10px;">{{ yr.arrow }}</span><span>{{ yr.label }}</span>
+          </div>
+          <sc-if value="{{ yr.expanded }}">
+            <div style="padding-left:14px;">
+              <sc-for list="{{ yr.months }}" as="mo" hint-placeholder-count="2">
+                <div>
+                  <div onClick="{{ mo.onToggle }}" style="display:flex;align-items:center;gap:6px;padding:5px 4px;cursor:pointer;font-size:12px;color:#c9cbd1;">
+                    <span style="font-size:9px;color:#5b5e66;width:10px;">{{ mo.arrow }}</span><span style="flex:1;">{{ mo.label }}</span><span style="font-size:10px;font-family:'JetBrains Mono',monospace;color:#5b5e66;">{{ mo.count }}</span>
+                  </div>
+                  <sc-if value="{{ mo.expanded }}">
+                    <div style="padding-left:16px;">
+                      <sc-for list="{{ mo.sessions }}" as="sess" hint-placeholder-count="3">
+                        <div onClick="{{ sess.onClick }}" style="{{ sess.rowStyle }}padding:6px 8px;border-radius:6px;cursor:pointer;font-size:11.5px;margin-bottom:2px;">
+                          <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ sess.label }}</div>
+                          <div style="font-size:9.5px;color:#5b5e66;font-family:'JetBrains Mono',monospace;">{{ sess.software }} · {{ sess.trackCount }} tr · {{ sess.duration }}</div>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column;border-right:1px solid #22252b;">
+      <div style="padding:12px 18px;border-bottom:1px solid #22252b;flex-shrink:0;">
+        <div style="font-size:14px;font-weight:700;">{{ historySessionLabel }}</div>
+        <div style="font-size:11px;color:#8d919b;font-family:'JetBrains Mono',monospace;margin-top:2px;">{{ historySessionMeta }}</div>
+      </div>
+
+      <div style="padding:12px 18px;border-bottom:1px solid #22252b;flex-shrink:0;">
+        <div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ historyPreviewView.title }}</div>
+        <div style="font-size:11px;color:#8d919b;margin-bottom:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ historyPreviewView.artist }}</div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div onClick="{{ historyPreviewView.onToggle }}" style="width:30px;height:30px;border-radius:50%;background:oklch(0.82 0.19 155);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">
+            <sc-if value="{{ historyPreviewView.isPlaying }}"><div style="display:flex;gap:2px;"><div style="width:3px;height:10px;background:#0a0b0d;"></div><div style="width:3px;height:10px;background:#0a0b0d;"></div></div></sc-if>
+            <sc-if value="{{ historyPreviewView.isNotPlaying }}"><div style="width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:9px solid #0a0b0d;margin-left:2px;"></div></sc-if>
+          </div>
+          <div onClick="{{ historyPreviewView.onSeek }}" style="flex:1;height:36px;position:relative;display:flex;align-items:center;gap:1px;cursor:pointer;">
+            <sc-for list="{{ historyPreviewView.wave }}" as="bar" hint-placeholder-count="90"><div style="width:2px;flex-shrink:0;height:{{ bar }}%;background:#3a3d45;border-radius:1px;"></div></sc-for>
+            <div style="position:absolute;top:0;bottom:0;left:{{ historyPreviewView.progress }}%;width:2px;background:oklch(0.82 0.19 155);box-shadow:0 0 6px oklch(0.82 0.19 155);"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="flex:1;overflow-y:auto;">
+        <sc-for list="{{ historySessionTracks }}" as="t" hint-placeholder-count="10">
+          <div style="{{ t.rowStyle }}display:flex;align-items:center;gap:10px;padding:7px 18px;font-size:12px;border-bottom:1px solid #16171b;">
+            <div draggable="true" onDragStart="{{ t.onDragStart }}" onClick="{{ t.onPreview }}" style="flex:1;min-width:0;display:flex;gap:10px;cursor:grab;">
+              <span style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">{{ t.title }}</span>
+              <span style="color:#8d919b;width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ t.artist }}</span>
+              <span style="font-family:'JetBrains Mono',monospace;width:36px;color:#c9cbd1;">{{ t.bpm }}</span>
+              <span style="font-family:'JetBrains Mono',monospace;width:32px;color:#c9cbd1;">{{ t.key }}</span>
+              <span style="font-family:'JetBrains Mono',monospace;width:40px;color:#5b5e66;">{{ t.duration }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="width:250px;flex-shrink:0;background:#0e0f12;overflow-y:auto;padding:12px 8px;">
+      <div style="font-size:10px;color:#5b5e66;text-transform:uppercase;letter-spacing:.06em;padding:2px 6px 6px;">Drag tracks here to file</div>
+      <div onClick="{{ historySelectAll }}" style="{{ collectionRowStyle }}display:flex;justify-content:space-between;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;">
+        <span>Collection</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;">{{ historyTotalTracks }}</span>
+      </div>
+      <div style="font-size:10px;color:#5b5e66;text-transform:uppercase;letter-spacing:.06em;padding:10px 10px 6px;">Playlists</div>
+      <sc-for list="{{ historyPlaylistTree }}" as="pl" hint-placeholder-count="8">
+        <div onDrop="{{ pl.onDrop }}" onDragOver="{{ pl.onDragOver }}" style="{{ pl.rowStyle }}display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:12.5px;">
+          <span onClick="{{ pl.onToggleOpen }}" style="font-size:11px;color:#a9acb4;width:18px;height:18px;flex-shrink:0;background:#1b1d22;border:1px solid #2b2e35;border-radius:5px;display:flex;align-items:center;justify-content:center;cursor:pointer;">{{ pl.arrow }}</span>
+          <span onClick="{{ pl.onClick }}" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ pl.name }}</span>
+          <span onClick="{{ pl.onClick }}" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#5b5e66;">{{ pl.count }}</span>
+        </div>
+      </sc-for>
+      <div style="font-size:10px;color:#5b5e66;text-transform:uppercase;letter-spacing:.06em;padding:10px 10px 6px;">Smart Playlists</div>
+      <sc-for list="{{ historySmartTree }}" as="pl" hint-placeholder-count="3">
+        <div onClick="{{ pl.onClick }}" style="{{ pl.rowStyle }}display:flex;justify-content:space-between;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:12.5px;">
+          <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ pl.name }}</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#5b5e66;">{{ pl.count }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ openPlaylistView.hasOpen }}">
+    <div style="width:280px;flex-shrink:0;border-left:1px solid #22252b;background:#0e0f12;display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid #22252b;flex-shrink:0;">
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:12.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ openPlaylistView.name }}</div>
+          <div style="font-size:10px;color:#5b5e66;font-family:'JetBrains Mono',monospace;">{{ openPlaylistView.count }} tracks</div>
+        </div>
+        <div onClick="{{ openPlaylistView.onClose }}" style="font-size:13px;color:#5b5e66;cursor:pointer;padding:2px 6px;">×</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:4px 0;">
+        <sc-for list="{{ openPlaylistView.rows }}" as="ot" hint-placeholder-count="8">
+          <sc-if value="{{ ot.isEnd }}">
+            <div onDrop="{{ ot.onDrop }}" onDragOver="{{ ot.onDragOver }}" style="height:16px;"></div>
+          </sc-if>
+          <sc-if value="{{ ot.title }}">
+            <div onDrop="{{ ot.onDrop }}" onDragOver="{{ ot.onDragOver }}" style="display:flex;align-items:center;gap:8px;padding:6px 14px;font-size:12px;border-bottom:1px solid #16171b;">
+              <span style="font-size:10px;color:#5b5e66;font-family:'JetBrains Mono',monospace;width:16px;flex-shrink:0;">{{ ot.index1 }}</span>
+              <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;">{{ ot.title }}</span>
+              <span style="color:#8d919b;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:90px;">{{ ot.artist }}</span>
+            </div>
+          </sc-if>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  </div>
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const GENRES=["Tech House","Melodic Techno","Techno","Deep House","House","Disco","Drum & Bass","Hip-Hop"];
+const BPM_RANGE={"Tech House":[122,126],"Melodic Techno":[120,124],"Techno":[128,135],"Deep House":[118,123],"House":[122,127],"Disco":[110,118],"Drum & Bass":[168,175],"Hip-Hop":[85,95]};
+const GENRE_COLOR={"Tech House":"oklch(0.75 0.15 155)","Melodic Techno":"oklch(0.75 0.15 250)","Techno":"oklch(0.75 0.15 300)","Deep House":"oklch(0.75 0.15 200)","House":"oklch(0.75 0.15 100)","Disco":"oklch(0.75 0.15 340)","Drum & Bass":"oklch(0.75 0.15 25)","Hip-Hop":"oklch(0.75 0.15 60)"};
+const CAMELOT=["1A","2A","3A","4A","5A","6A","7A","8A","9A","10A","11A","12A","1B","2B","3B","4B","5B","6B","7B","8B","9B","10B","11B","12B"];
+const TAG_POOL=["peak-time","vocal","instrumental","classic","banger","deep","groovy","dark","uplifting","remix","acapella","tool","festival","underground"];
+const CUE_COLORS=["oklch(0.7 0.19 25)","oklch(0.78 0.16 70)","oklch(0.85 0.18 100)","oklch(0.8 0.18 155)","oklch(0.75 0.15 230)","oklch(0.72 0.18 300)"];
+const SOURCES=[{id:"rekordbox",name:"Rekordbox",tracks:18,lastSync:"2 min ago"},{id:"serato",name:"Serato DJ",tracks:9,lastSync:"1 hr ago"},{id:"traktor",name:"Traktor Pro",tracks:6,lastSync:"3 hrs ago"},{id:"virtualdj",name:"VirtualDJ",tracks:3,lastSync:"Yesterday"}];
+const HISTORY_SOFTWARE=["Rekordbox","Serato DJ","Traktor Pro","VirtualDJ"];
+const VENUES=["Warehouse 12","Club Nocturne","Rooftop Sessions","The Basement","Sunset Terrace","Studio Live","Backyard Bash","Loft Session","Radio Mix","Festival Main Stage"];
+function buildHistorySessions(){
+  const sessions=[];
+  const months=["2026-06","2026-05","2026-05","2026-04","2026-03","2026-03","2026-02","2026-01","2025-12","2025-12","2025-11","2025-10"];
+  const MONTH_NAMES=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  months.forEach((ym,i)=>{
+    const[year,month]=ym.split("-");
+    const day=2+((i*7)%26);
+    const software=HISTORY_SOFTWARE[i%HISTORY_SOFTWARE.length];
+    const trackCount=8+(i%6);
+    const trackIds=[];
+    for(let k=0;k<trackCount;k++){trackIds.push("t"+((i*5+k*3)%TITLES.length));}
+    const durMin=trackCount*4+((i*3)%20);
+    sessions.push({
+      id:"hs"+i,year,month,monthLabel:MONTH_NAMES[parseInt(month,10)-1],
+      date:MONTH_NAMES[parseInt(month,10)-1]+" "+day+", "+year,
+      software,venue:VENUES[i%VENUES.length],durationLabel:Math.floor(durMin/60)+"h "+(durMin%60)+"m",trackIds
+    });
+  });
+  return sessions;
+}
+const TITLES=["Midnight Circuit","Analog Horizon","Deep Static","Velvet Machine","Solar Drift","Concrete Bloom","Afterglow Pulse","Nightshift","Glass Corridor","Reverie Engine","Chrome Petals","Low Frequency Love","Warehouse Prayer","Neon Tide","Static Bloom","Fractal Sunrise","Obsidian Groove","Echo Chamber","Paper Moon Disco","Sequence Seven","Iron Lotus","Ghost Frequency","Amber Skyline","Voltage","Silver Wire","Downtown Shuffle","Return to Analog","Broken Radio","Basement Ritual","Fever Dream","Polar Drift","Zero Gravity","Signal Loss","Golden Hour Groove","Last Train","Monochrome"];
+const ARTISTS=["Kaia Vance","Rhoswen","Teo Marsh","Nadia Cole","Below Zero","Marlin Grey","Otis Vale","Sable & Reyn","Corentin Lux","Delphine Row","Vantablack","Ilia Frost","Nyx Harbor","Loyal Sun","Petra Vane","Halcyon Drift","Mika Sorren","Wren Atlas","The Undertow","Faye Kessler","Silo Nine","Rook & Ives","Amara Voss","Digital Bloom","Talia Rook","North Sable","Vasca","Elian Cross","Midcity","Nova Kessler","Orin Blake","Static Lilies","Iris Vantage","Coen Marsh","Pale Fathom","Anders Vale"];
+const DATES=["Jun 12, 2026","May 28, 2026","May 3, 2026","Apr 19, 2026","Mar 30, 2026","Mar 11, 2026","Feb 22, 2026","Jan 30, 2026","Jan 8, 2026","Dec 15, 2025"];
+
+function buildWave(seed){const bars=[];for(let i=0;i<90;i++){const h=14+78*Math.abs(Math.sin((i+seed)*0.31))*(0.35+0.65*Math.abs(Math.sin((i+seed)*0.083+seed)));bars.push(Math.round(h));}return bars;}
+function formatTime(sec){sec=Math.max(0,Math.round(sec));const m=Math.floor(sec/60);const s=String(sec%60).padStart(2,"0");return m+":"+s;}
+
+function buildTracks(){
+  return TITLES.map((title,i)=>{
+    const genre=GENRES[i%GENRES.length];
+    const range=BPM_RANGE[genre];const lo=range[0],hi=range[1];
+    const bpm=lo+((i*37)%(hi-lo+1));
+    const key=CAMELOT[(i*5+2)%CAMELOT.length];
+    const energy=1+((i*3)%5);
+    const rating=i%7===0?0:1+((i*2)%5);
+    const tags=[TAG_POOL[i%TAG_POOL.length],TAG_POOL[(i+5)%TAG_POOL.length]];
+    const plays=(i*13)%140+(i%4===0?45:0);
+    const secs=270+((i*23)%210);
+    const missingMeta=i===4||i===11||i===22||i===33;
+    const cueCount=4+(i%3);
+    const hotcues=[];
+    for(let c=0;c<cueCount;c++){hotcues.push({id:"c"+c,label:String.fromCharCode(65+c),frac:0.06+c*(0.85/cueCount),color:CUE_COLORS[c%CUE_COLORS.length]});}
+    return {id:"t"+i,title,artist:ARTISTS[i],genre,bpm,key:missingMeta?"":key,energy,rating,tags:missingMeta?[]:tags,plays,duration:formatTime(secs),durationSec:secs,added:DATES[i%DATES.length],color:GENRE_COLOR[genre],wave:buildWave(i+1),hotcues,source:SOURCES[i%SOURCES.length].name};
+  });
+}
+const TRACKS=buildTracks();
+const HISTORY_SESSIONS=buildHistorySessions();
+
+function buildFolders(){
+  return [
+    {id:"fo_genres",name:"Genres",parentId:null},
+    {id:"fo_house",name:"House",parentId:"fo_genres"},
+    {id:"fo_mb",name:"Melbourne Bounce",parentId:"fo_house"},
+    {id:"fo_mb_boot",name:"Bootlegs",parentId:"fo_mb"},
+    {id:"fo_techno",name:"Techno",parentId:"fo_genres"},
+    {id:"fo_techno_boot",name:"Bootlegs",parentId:"fo_techno"},
+    {id:"fo_dnb",name:"Drum & Bass",parentId:"fo_genres"},
+    {id:"fo_events",name:"Events",parentId:null},
+    {id:"fo_ai",name:"AI Generated",parentId:null}
+  ];
+}
+const FOLDERS=buildFolders();
+function buildPlaylists(){
+  const byGenre=g=>TRACKS.filter(t=>t.genre===g).map(t=>t.id);
+  const every=(n,off)=>TRACKS.filter((t,i)=>i%n===off).map(t=>t.id);
+  return [
+    {id:"pl1",name:"Peak Time Bangers",folderId:"fo_techno",trackIds:[...byGenre("Techno"),...byGenre("Tech House")].slice(0,9)},
+    {id:"pl2",name:"Deep & Groovy",folderId:"fo_house",trackIds:[...byGenre("Deep House"),...byGenre("House")].slice(0,9)},
+    {id:"pl3",name:"Throwback Disco",folderId:null,trackIds:byGenre("Disco")},
+    {id:"pl4",name:"DnB Selects",folderId:"fo_dnb",trackIds:byGenre("Drum & Bass")},
+    {id:"pl5",name:"Hip-Hop Flavors",folderId:null,trackIds:byGenre("Hip-Hop")},
+    {id:"pl6",name:"Melodic Journeys",folderId:"fo_techno",trackIds:byGenre("Melodic Techno")},
+    {id:"pl7",name:"Wedding Set 2026",folderId:"fo_events",trackIds:every(4,0)},
+    {id:"pl8",name:"Warehouse Classics",folderId:"fo_events",trackIds:every(5,1)},
+    {id:"pl9",name:"Melbourne Bounce Metal Bootlegs",folderId:"fo_mb_boot",smart:true,rule:"genre = Melbourne Bounce AND title ~ (bootleg|edit) AND source-genre = Metal",trackIds:every(7,2)},
+    {id:"pl10",name:"Melbourne Bounce Rap Bootlegs",folderId:"fo_mb_boot",smart:true,rule:"genre = Melbourne Bounce AND title ~ bootleg AND source-genre = Rap",trackIds:every(9,3)},
+    {id:"pl11",name:"Techno Bootlegs — All",folderId:"fo_techno_boot",smart:true,rule:"genre = Techno AND title ~ (bootleg|remix|edit)",trackIds:every(6,1)},
+    {id:"pl12",name:"House Remixes — All",folderId:"fo_house",smart:true,rule:"genre ⊂ House/* AND title ~ remix",trackIds:every(3,1)}
+  ];
+}
+const PLAYLISTS=buildPlaylists();
+
+function buildDupGroups(){
+  const idxs=[2,7,15,20,28];
+  const sources=[["Rekordbox","Serato"],["Traktor","VirtualDJ"],["Rekordbox","Traktor"],["Serato","VirtualDJ"],["Rekordbox","Serato"]];
+  const fmts=[["FLAC 1411kbps","MP3 320kbps"],["AIFF 1411kbps","MP3 256kbps"],["FLAC 1411kbps","MP3 192kbps"],["WAV 1411kbps","MP3 320kbps"],["FLAC 1411kbps","MP3 256kbps"]];
+  return idxs.map((idx,g)=>{
+    const t=TRACKS[idx];
+    return {id:"dup"+g,title:t.title,artist:t.artist,items:[
+      {id:"dup"+g+"a",source:sources[g][0],format:fmts[g][0],sizeMB:42+g*3,marked:false},
+      {id:"dup"+g+"b",source:sources[g][1],format:fmts[g][1],sizeMB:9+g,marked:true}
+    ]};
+  });
+}
+
+const FILE_TREE=[{name:"This Computer",indent:0},{name:"Music",indent:1},{name:"DJ Sets 2026",indent:2},{name:"Rekordbox Exports",indent:2},{name:"Downloads",indent:1},{name:"External Drive",indent:0},{name:"Traktor Backup",indent:1}];
+const ACCENT="oklch(0.82 0.19 155)";
+const ACCENT_SOFT="oklch(0.82 0.19 155 / 0.14)";
+const DANGER="oklch(0.7 0.19 25)";
+const DANGER_SOFT="oklch(0.7 0.19 25 / 0.14)";
+
+class Component extends DCLogic {
+  state={
+    page:"library",tracks:TRACKS,playlists:PLAYLISTS,search:"",currentPlaylistId:"all",
+    selectedTrackId:TRACKS[0].id,playingTrackId:null,isPlaying:false,playbackProgress:0,
+    editingCell:null,tagsDraft:"",sortCol:"title",sortDir:"asc",
+    favorites:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],dragging:null,focusedPanel:"A",
+    deckA:{playlistId:"all",loadedTrackId:TRACKS[0].id,isPlaying:false,progress:0,pitch:0,volume:80,gain:50,eqHigh:50,eqMid:50,eqLow:50,cueFrac:0,hotcues:[null,null,null,null,null,null,null,null],browserTab:"playlists",loopOn:false,loopBeats:4,syncOn:false,jogAngle:0},
+    deckB:{playlistId:"all",loadedTrackId:TRACKS[1].id,isPlaying:false,progress:0,pitch:0,volume:80,gain:50,eqHigh:50,eqMid:50,eqLow:50,cueFrac:0,hotcues:[null,null,null,null,null,null,null,null],browserTab:"playlists",loopOn:false,loopBeats:4,syncOn:false,jogAngle:0},
+    crossfader:50,
+    fxUnitCount:2,
+    fxUnits:[
+      {id:1,mode:"single",on:false,target:"A",wet:35,slots:[{type:"Reverb",on:true,amt:50},{type:"Delay",on:false,amt:40},{type:"Filter",on:false,amt:60}],params:[50,50,50]},
+      {id:2,mode:"group",on:false,target:"B",wet:25,slots:[{type:"Delay",on:true,amt:40},{type:"Flanger",on:true,amt:55},{type:"Gater",on:false,amt:30}],params:[45,55,50]},
+      {id:3,mode:"single",on:false,target:"Both",wet:30,slots:[{type:"Filter",on:true,amt:50},{type:"Phaser",on:false,amt:50},{type:"Reverb",on:false,amt:50}],params:[50,60,40]},
+      {id:4,mode:"group",on:false,target:"Both",wet:20,slots:[{type:"Bit Crusher",on:false,amt:35},{type:"Beatmasher",on:true,amt:50},{type:"Reverse",on:false,amt:50}],params:[50,50,50]}
+    ],
+    djBrowserTab:"playlists",
+    folders:FOLDERS,folderExpanded:{fo_genres:true,fo_house:true,fo_mb:true,fo_mb_boot:true},
+    browserSettings:{
+      library:{sort:"Custom",showPath:false,showRating:true},
+      plannerA:{sort:"Name",showPath:true,showRating:false},
+      plannerB:{sort:"Name",showPath:false,showRating:false},
+      djapp:{sort:"Recent",showPath:false,showRating:true}
+    },
+    browserSettingsOpen:null,
+    aiPanelOpen:false,aiPrompt:"",aiStatus:"idle",aiResult:null,aiModel:"llama3.1:8b",
+    historySoftwareFilter:"All",historyExpanded:{"2026":true,"2026-06":true},historySelectedId:HISTORY_SESSIONS[0].id,historyOpenPlaylistId:null,
+    historyPreview:{trackId:null,isPlaying:false,progress:0},
+    expandedPanel:null,duplicateGroups:buildDupGroups(),sourcesPanelOpen:false,flashPlaylistId:null
+  };
+
+  buildOpenPlaylistView(s,findTrack){
+    const pl=s.playlists.find(p=>p.id===s.historyOpenPlaylistId);
+    if(!pl)return {hasOpen:false};
+    const rows=pl.trackIds.map((tid,idx)=>{
+      const t=findTrack(tid);
+      return {id:tid+"_"+idx,title:t.title,artist:t.artist,bpm:t.bpm,index1:idx+1,onDrop:(e)=>this.dropOnPlaylistAt(e,pl.id,idx),onDragOver:this.allowDrop};
+    });
+    rows.push({id:"end",isEnd:true,onDrop:(e)=>this.dropOnPlaylistAt(e,pl.id,pl.trackIds.length),onDragOver:this.allowDrop});
+    return {hasOpen:true,name:pl.name,count:pl.trackIds.length,rows,onClose:()=>this.toggleHistoryPlaylistOpen(pl.id)};
+  }
+  buildHistoryVals(s,findTrack,playlistTree,smartTree,totalTracks){
+    const filtered=s.historySoftwareFilter==="All"?HISTORY_SESSIONS:HISTORY_SESSIONS.filter(h=>h.software===s.historySoftwareFilter);
+    const years={};
+    filtered.forEach(sess=>{
+      years[sess.year]=years[sess.year]||{};
+      years[sess.year][sess.month]=years[sess.year][sess.month]||[];
+      years[sess.year][sess.month].push(sess);
+    });
+    const historyTree=Object.keys(years).sort((a,b)=>b-a).map(year=>{
+      const yKey=year;
+      const months=Object.keys(years[year]).sort((a,b)=>b-a).map(month=>{
+        const mKey=year+"-"+month;
+        const sessions=years[year][month].map(sess=>({
+          id:sess.id,label:sess.date+" · "+sess.venue,software:sess.software,duration:sess.durationLabel,trackCount:sess.trackIds.length,
+          rowStyle:s.historySelectedId===sess.id?"background:"+ACCENT_SOFT+";color:"+ACCENT+";":"color:#c9cbd1;",
+          onClick:()=>this.selectHistorySession(sess.id)
+        }));
+        const mExpanded=!!s.historyExpanded[mKey];
+        return {key:mKey,label:sessions[0].label.split(" ")[0]+" "+year,count:sessions.length,expanded:mExpanded,arrow:mExpanded?"▾":"▸",onToggle:()=>this.toggleHistoryNode(mKey),sessions};
+      });
+      const yExpanded=!!s.historyExpanded[yKey];
+      return {key:yKey,label:year,expanded:yExpanded,arrow:yExpanded?"▾":"▸",onToggle:()=>this.toggleHistoryNode(yKey),months};
+    });
+    const selectedSession=HISTORY_SESSIONS.find(h=>h.id===s.historySelectedId)||HISTORY_SESSIONS[0];
+    const historySessionTracks=selectedSession.trackIds.map((tid,idx)=>{
+      const t=findTrack(tid);
+      return {
+        id:tid+"_"+idx,title:t.title,artist:t.artist,bpm:t.bpm,key:t.key||"—",duration:t.duration,
+        rowStyle:s.historyPreview.trackId===tid?"background:"+ACCENT_SOFT+";":"",
+        onPreview:()=>this.previewHistoryTrack(tid),onDragStart:(e)=>this.onDragStartTrack(e,t)
+      };
+    });
+    const previewT=s.historyPreview.trackId?findTrack(s.historyPreview.trackId):null;
+    const historyPreviewView=previewT?{
+      hasTrack:true,title:previewT.title,artist:previewT.artist,wave:previewT.wave,progress:s.historyPreview.progress,
+      isPlaying:s.historyPreview.isPlaying,isNotPlaying:!s.historyPreview.isPlaying,
+      onSeek:this.seekHistoryPreview,onToggle:this.toggleHistoryPreview
+    }:{hasTrack:false,title:"No track selected",artist:"Click a track in the session to preview",wave:[],progress:0,isPlaying:false,isNotPlaying:true,onSeek:()=>{},onToggle:()=>{}};
+    const softwareFilters=["All"].concat(HISTORY_SOFTWARE).map(sw=>({
+      name:sw,style:s.historySoftwareFilter===sw?"background:"+ACCENT+";color:#0a0b0d;font-weight:600;":"background:#1b1d22;color:#a9acb4;",onClick:()=>this.setHistorySoftware(sw)
+    }));
+    return {
+      historyTree,softwareFilters,historySessionTracks,historyPreviewView,
+      historySessionLabel:selectedSession.date+" — "+selectedSession.venue,
+      historySessionMeta:selectedSession.software+" · "+selectedSession.trackIds.length+" tracks · "+selectedSession.durationLabel,
+      historyPlaylistTree:playlistTree,
+      historySmartTree:smartTree,historyTotalTracks:totalTracks,
+      openPlaylistView:this.buildOpenPlaylistView(s,findTrack),
+      historySelectAll:()=>this.selectPlaylist("all"),historyAllActive:s.currentPlaylistId==="all"
+    };
+  }
+
+  componentDidMount(){
+    this._tick=setInterval(()=>{
+      const s=this.state;let changed=false;const upd={};
+      if(s.isPlaying){upd.playbackProgress=(s.playbackProgress+0.6)%100;changed=true;}
+      if(s.deckA.isPlaying){upd.deckA={...s.deckA,progress:(s.deckA.progress+0.5)%100,jogAngle:(s.deckA.jogAngle+8)%360};changed=true;}
+      if(s.deckB.isPlaying){upd.deckB={...s.deckB,progress:(s.deckB.progress+0.5)%100,jogAngle:(s.deckB.jogAngle+8)%360};changed=true;}
+      if(s.historyPreview.isPlaying){upd.historyPreview={...s.historyPreview,progress:(s.historyPreview.progress+0.6)%100};changed=true;}
+      if(changed)this.setState(upd);
+    },200);
+  }
+  componentWillUnmount(){clearInterval(this._tick);}
+
+  goPage=(p)=>this.setState({page:p});
+  goLibrary=()=>this.goPage("library");
+  goPlanner=()=>this.goPage("planner");
+  goAnalytics=()=>this.goPage("analytics");
+  goDuplicates=()=>this.goPage("duplicates");
+  selectTrack=(id)=>this.setState({selectedTrackId:id});
+  togglePlay=(id)=>{
+    if(this.state.playingTrackId===id){this.setState({isPlaying:!this.state.isPlaying});}
+    else{this.setState({playingTrackId:id,selectedTrackId:id,isPlaying:true,playbackProgress:0});}
+  };
+  seekTo=(e)=>{const rect=e.currentTarget.getBoundingClientRect();const pct=Math.max(0,Math.min(100,((e.clientX-rect.left)/rect.width)*100));this.setState({playbackProgress:pct});};
+  setRating=(id,n)=>this.setState({tracks:this.state.tracks.map(t=>t.id===id?{...t,rating:n}:t)});
+  startEditTags=(track)=>this.setState({editingCell:track.id,tagsDraft:track.tags.join(", ")});
+  draftTags=(e)=>this.setState({tagsDraft:e.target.value});
+  commitTags=(id)=>{const tags=this.state.tagsDraft.split(",").map(x=>x.trim()).filter(Boolean);this.setState({tracks:this.state.tracks.map(t=>t.id===id?{...t,tags}:t),editingCell:null});};
+  setSort=(col)=>this.setState(s=>({sortCol:col,sortDir:s.sortCol===col&&s.sortDir==="asc"?"desc":"asc"}));
+  setSearch=(e)=>this.setState({search:e.target.value});
+  selectPlaylist=(id)=>this.setState({currentPlaylistId:id});
+  setPanelPlaylist=(panel,id)=>this.setState({["deck"+panel]:{...this.state["deck"+panel],playlistId:id}});
+  focusPanel=(panel)=>this.setState({focusedPanel:panel});
+  loadToDeck=(panel,id)=>this.setState({["deck"+panel]:{...this.state["deck"+panel],loadedTrackId:id,isPlaying:false,progress:0}});
+  toggleDeckPlay=(panel)=>this.setState(s=>({["deck"+panel]:{...s["deck"+panel],isPlaying:!s["deck"+panel].isPlaying}}));
+  setDeckField=(panel,field,val)=>this.setState(s=>({["deck"+panel]:{...s["deck"+panel],[field]:val}}));
+  seekDeck=(panel,e)=>{
+    const rect=e.currentTarget.getBoundingClientRect();
+    const pct=Math.max(0,Math.min(100,((e.clientX-rect.left)/rect.width)*100));
+    this.setState(s=>{const d=s["deck"+panel];return {["deck"+panel]:{...d,progress:pct,cueFrac:d.isPlaying?d.cueFrac:pct}};});
+  };
+  cueDeck=(panel)=>this.setState(s=>({["deck"+panel]:{...s["deck"+panel],progress:s["deck"+panel].cueFrac,isPlaying:false}}));
+  beatjump=(panel,amount)=>this.setState(s=>{const d=s["deck"+panel];return {["deck"+panel]:{...d,progress:(d.progress+amount+100)%100}};});
+  hotcuePad=(panel,idx)=>this.setState(s=>{
+    const d=s["deck"+panel];const hc=d.hotcues.slice();
+    if(hc[idx]==null){hc[idx]=d.progress;return {["deck"+panel]:{...d,hotcues:hc}};}
+    return {["deck"+panel]:{...d,progress:hc[idx]}};
+  });
+  removeHotcue=(panel,idx,e)=>{e.stopPropagation();this.setState(s=>{const d=s["deck"+panel];const hc=d.hotcues.slice();hc[idx]=null;return {["deck"+panel]:{...d,hotcues:hc}};});};
+  setCrossfader=(e)=>this.setState({crossfader:parseFloat(e.target.value)});
+  setBrowserTab=(panel,tab)=>this.setDeckField(panel,"browserTab",tab);
+  toggleLoop=(panel)=>this.setDeckField(panel,"loopOn",!this.state["deck"+panel].loopOn);
+  setLoopBeats=(panel,factor)=>this.setState(s=>{const d=s["deck"+panel];const nb=Math.max(0.25,Math.min(32,d.loopBeats*factor));return {["deck"+panel]:{...d,loopBeats:nb,loopOn:true}};});
+  toggleSync=(panel)=>this.setDeckField(panel,"syncOn",!this.state["deck"+panel].syncOn);
+  mapFx=(id,fn)=>this.setState(s=>({fxUnits:s.fxUnits.map(f=>f.id===id?fn(f):f)}));
+  toggleFx=(id)=>this.mapFx(id,f=>({...f,on:!f.on}));
+  toggleFxMode=(id)=>this.mapFx(id,f=>({...f,mode:f.mode==="single"?"group":"single"}));
+  cycleFxSlotType=(id,slotIdx)=>{
+    const TYPES=["Reverb","Delay","Flanger","Filter","Phaser","Gater","Bit Crusher","Beatmasher","Reverse"];
+    this.mapFx(id,f=>({...f,slots:f.slots.map((sl,i)=>i===slotIdx?{...sl,type:TYPES[(TYPES.indexOf(sl.type)+1)%TYPES.length]}:sl)}));
+  };
+  toggleFxSlot=(id,slotIdx)=>this.mapFx(id,f=>({...f,slots:f.slots.map((sl,i)=>i===slotIdx?{...sl,on:!sl.on}:sl)}));
+  setFxSlotAmt=(id,slotIdx,v)=>this.mapFx(id,f=>({...f,slots:f.slots.map((sl,i)=>i===slotIdx?{...sl,amt:v}:sl)}));
+  setFxWet=(id,v)=>this.mapFx(id,f=>({...f,wet:v}));
+  setFxParamAt=(id,pIdx,v)=>this.mapFx(id,f=>({...f,params:f.params.map((p,i)=>i===pIdx?v:p)}));
+  cycleFxTarget=(id)=>{
+    const T=["Both","A","B"];
+    this.mapFx(id,f=>({...f,target:T[(T.indexOf(f.target)+1)%T.length]}));
+  };
+  cycleFxUnitCount=()=>{
+    const OPTS=[0,2,4];
+    this.setState(s=>({fxUnitCount:OPTS[(OPTS.indexOf(s.fxUnitCount)+1)%OPTS.length]}));
+  };
+  goDjApp=()=>this.goPage("djapp");
+  goHistory=()=>this.goPage("history");
+  toggleHistoryNode=(key)=>this.setState(s=>({historyExpanded:{...s.historyExpanded,[key]:!s.historyExpanded[key]}}));
+  setHistorySoftware=(sw)=>this.setState({historySoftwareFilter:sw});
+  selectHistorySession=(id)=>this.setState({historySelectedId:id});
+  previewHistoryTrack=(id)=>this.setState({historyPreview:{trackId:id,isPlaying:true,progress:0}});
+  toggleHistoryPreview=()=>this.setState(s=>({historyPreview:{...s.historyPreview,isPlaying:!s.historyPreview.isPlaying}}));
+  seekHistoryPreview=(e)=>{const rect=e.currentTarget.getBoundingClientRect();const pct=Math.max(0,Math.min(100,((e.clientX-rect.left)/rect.width)*100));this.setState(s=>({historyPreview:{...s.historyPreview,progress:pct}}));};
+  toggleExpand=(panel)=>this.setState(s=>({expandedPanel:s.expandedPanel===panel?null:panel}));
+  onDragStartTrack=(e,t)=>{e.dataTransfer.setData("text/plain",t.id);this.setState({dragging:{type:"track",id:t.id,name:t.title}});};
+  allowDrop=(e)=>e.preventDefault();
+  dropOnSlot=(e,i)=>{e.preventDefault();const d=this.state.dragging;if(!d)return;const favs=this.state.favorites.slice();favs[i]={type:d.type,id:d.id,name:d.name};this.setState({favorites:favs,dragging:null});};
+  clearSlot=(e,i)=>{e.stopPropagation();const favs=this.state.favorites.slice();favs[i]=null;this.setState({favorites:favs});};
+  loadFavorite=(slot)=>{
+    if(!slot)return;const panel=this.state.focusedPanel;
+    const dual=this.state.page==="planner"||this.state.page==="djapp";
+    if(slot.type==="playlist"){if(dual)this.setPanelPlaylist(panel,slot.id);else this.selectPlaylist(slot.id);}
+    else{if(dual)this.loadToDeck(panel,slot.id);else this.selectTrack(slot.id);}
+  };
+  setDjBrowserTab=(tab)=>this.setState({djBrowserTab:tab});
+  toggleFolder=(id)=>this.setState(s=>({folderExpanded:{...s.folderExpanded,[id]:!s.folderExpanded[id]}}));
+  toggleBrowserSettings=(view)=>this.setState(s=>({browserSettingsOpen:s.browserSettingsOpen===view?null:view}));
+  setBrowserSetting=(view,key,val)=>this.setState(s=>({browserSettings:{...s.browserSettings,[view]:{...s.browserSettings[view],[key]:val}}}));
+  cycleBrowserSort=(view)=>{
+    const OPTS=["Custom","Name","Recent","Track count"];
+    const cur=this.state.browserSettings[view].sort;
+    this.setBrowserSetting(view,"sort",OPTS[(OPTS.indexOf(cur)+1)%OPTS.length]);
+  };
+  buildBrowserTree(s,viewKey,selectedId,onSelect,dropEnabled){
+    const cfg=s.browserSettings[viewKey];
+    const sortPls=(arr)=>{
+      const a=arr.slice();
+      if(cfg.sort==="Name")a.sort((x,y)=>x.name.localeCompare(y.name));
+      else if(cfg.sort==="Track count")a.sort((x,y)=>y.trackIds.length-x.trackIds.length);
+      else if(cfg.sort==="Recent")a.reverse();
+      return a;
+    };
+    const rows=[];
+    const pathOf=(folderId)=>{
+      const parts=[];let cur=s.folders.find(f=>f.id===folderId);
+      while(cur){parts.unshift(cur.name);cur=s.folders.find(f=>f.id===cur.parentId);}
+      return parts.join(" / ");
+    };
+    const mkPlaylist=(p,depth)=>({
+      key:viewKey+"_"+p.id,isPlaylist:true,name:p.name,count:p.trackIds.length,
+      smartMark:p.smart?"✦":"",padLeft:10+depth*13,
+      subLabel:[cfg.showPath?(pathOf(p.folderId)||"—"):null,cfg.showRating?"★".repeat(Math.max(1,Math.min(5,Math.round(p.trackIds.length/4)))):null].filter(Boolean).join(" · "),
+      rowStyle:selectedId===p.id?"background:"+ACCENT_SOFT+";color:"+ACCENT+";":s.flashPlaylistId===p.id?"background:"+ACCENT_SOFT+";color:#c9cbd1;":"color:#c9cbd1;",
+      onClick:()=>onSelect(p.id),
+      onDrop:dropEnabled?(e)=>this.dropOnPlaylist(e,p.id):(e)=>e.preventDefault(),
+      onDragOver:this.allowDrop
+    });
+    const walk=(parentId,depth)=>{
+      s.folders.filter(f=>f.parentId===parentId).forEach(f=>{
+        const expanded=!!s.folderExpanded[f.id];
+        const childPls=sortPls(s.playlists.filter(p=>p.folderId===f.id));
+        const childFolderCount=s.folders.filter(x=>x.parentId===f.id).length;
+        rows.push({
+          key:viewKey+"_"+f.id,isFolder:true,name:f.name,arrow:expanded?"▾":"▸",
+          padLeft:10+depth*13,meta:(childFolderCount?childFolderCount+" fld · ":"")+childPls.length+" pl",
+          onClick:()=>this.toggleFolder(f.id)
+        });
+        if(expanded){walk(f.id,depth+1);childPls.forEach(p=>rows.push(mkPlaylist(p,depth+1)));}
+      });
+    };
+    walk(null,0);
+    sortPls(s.playlists.filter(p=>!p.folderId)).forEach(p=>rows.push(mkPlaylist(p,0)));
+    const isOpen=s.browserSettingsOpen===viewKey;
+    return {
+      rows,
+      settings:{
+        open:isOpen,sort:cfg.sort,showPath:cfg.showPath,showRating:cfg.showRating,
+        pathLabel:cfg.showPath?"On":"Off",ratingLabel:cfg.showRating?"On":"Off",
+        pathStyle:cfg.showPath?"background:"+ACCENT+";color:#0a0b0d;":"background:#1b1d22;color:#8d919b;",
+        ratingStyle:cfg.showRating?"background:"+ACCENT+";color:#0a0b0d;":"background:#1b1d22;color:#8d919b;",
+        onToggle:()=>this.toggleBrowserSettings(viewKey),
+        onCycleSort:()=>this.cycleBrowserSort(viewKey),
+        onTogglePath:()=>this.setBrowserSetting(viewKey,"showPath",!cfg.showPath),
+        onToggleRating:()=>this.setBrowserSetting(viewKey,"showRating",!cfg.showRating)
+      }
+    };
+  }
+  toggleAiPanel=()=>this.setState(s=>({aiPanelOpen:!s.aiPanelOpen}));
+  setAiPrompt=(e)=>this.setState({aiPrompt:e.target.value});
+  setAiModel=(e)=>this.setState({aiModel:e.target.value});
+  useAiExample=(txt)=>this.setState({aiPrompt:txt});
+  runAiPrompt=()=>{
+    const p=(this.state.aiPrompt||"").toLowerCase();
+    if(!p.trim())return;
+    this.setState({aiStatus:"thinking",aiResult:null});
+    clearTimeout(this._aiTimer);
+    this._aiTimer=setTimeout(()=>{
+      let result;
+      if(p.includes("bootleg")||p.includes("remix")){
+        result={
+          kind:"batch",
+          title:"12 smart playlists across 5 genre folders",
+          summary:"Detected remix/bootleg markers in filenames and ID3 comments, then matched each track's source genre against your folder tree.",
+          rules:["title ~ /(bootleg|boot|remix|edit|rework|flip)/i","genre resolved from folder path under Genres/*","source-genre inferred from original artist + Discogs match","auto-place into <genre>/<subgenre>/Bootlegs/"],
+          created:[
+            {path:"Genres/House/Melbourne Bounce/Bootlegs",name:"Melbourne Bounce Metal Bootlegs",count:214},
+            {path:"Genres/House/Melbourne Bounce/Bootlegs",name:"Melbourne Bounce Rap Bootlegs",count:378},
+            {path:"Genres/House/Melbourne Bounce/Bootlegs",name:"Melbourne Bounce Pop Bootlegs",count:502},
+            {path:"Genres/House/Bootlegs",name:"House Remixes — All",count:3841},
+            {path:"Genres/Techno/Bootlegs",name:"Techno Bootlegs — All",count:1264},
+            {path:"Genres/Drum & Bass/Bootlegs",name:"DnB Metal Bootlegs",count:143}
+          ],
+          scanned:98412,matched:7192
+        };
+      }else{
+        result={
+          kind:"single",
+          title:"Goth / Darkwave Night",
+          summary:"Ranked by darkwave canon weight (release year, label, scene relevance) then sequenced for a slow-build evening.",
+          rules:["genre ∈ {Darkwave, Gothic Rock, Post-Punk, Coldwave, EBM}","year ≤ 1995 OR flagged as scene classic","bpm 80–140, sorted for energy arc","exclude: already played < 30 days"],
+          folder:"AI Generated",
+          matched:64,scanned:98412,
+          sample:[
+            {title:"Bela Lugosi's Dead",artist:"Bauhaus",bpm:"98",year:"1979"},
+            {title:"A Forest",artist:"The Cure",bpm:"117",year:"1980"},
+            {title:"She's In Parties",artist:"Bauhaus",bpm:"104",year:"1983"},
+            {title:"Lucretia My Reflection",artist:"The Sisters of Mercy",bpm:"124",year:"1987"},
+            {title:"Fade to Grey",artist:"Visage",bpm:"104",year:"1980"},
+            {title:"Dominion / Mother Russia",artist:"The Sisters of Mercy",bpm:"130",year:"1987"}
+          ]
+        };
+      }
+      this.setState({aiStatus:"done",aiResult:result});
+    },1400);
+  };
+  startKnobDrag=(e,current,min,max,onChange)=>{
+    e.preventDefault();
+    const startY=e.clientY;
+    const move=(ev)=>{const delta=startY-ev.clientY;const val=Math.max(min,Math.min(max,current+delta*(max-min)/140));onChange(val);};
+    const up=()=>{window.removeEventListener("mousemove",move);window.removeEventListener("mouseup",up);};
+    window.addEventListener("mousemove",move);window.addEventListener("mouseup",up);
+  };
+  dropOnPlaylist=(e,plId)=>{
+    e.preventDefault();const d=this.state.dragging;if(!d||d.type!=="track")return;
+    this.setState({playlists:this.state.playlists.map(p=>p.id===plId&&!p.trackIds.includes(d.id)?{...p,trackIds:[...p.trackIds,d.id]}:p),dragging:null,flashPlaylistId:plId});
+    setTimeout(()=>this.setState({flashPlaylistId:null}),900);
+  };
+  toggleHistoryPlaylistOpen=(id)=>this.setState(s=>({historyOpenPlaylistId:s.historyOpenPlaylistId===id?null:id}));
+  dropOnPlaylistAt=(e,plId,index)=>{
+    e.preventDefault();e.stopPropagation();const d=this.state.dragging;if(!d||d.type!=="track")return;
+    this.setState({playlists:this.state.playlists.map(p=>{
+      if(p.id!==plId)return p;
+      const ids=p.trackIds.filter(x=>x!==d.id);
+      const insertAt=Math.min(index,ids.length);
+      ids.splice(insertAt,0,d.id);
+      return {...p,trackIds:ids};
+    }),dragging:null,flashPlaylistId:plId});
+    setTimeout(()=>this.setState({flashPlaylistId:null}),900);
+  };
+  toggleDupMark=(gid,iid)=>this.setState({duplicateGroups:this.state.duplicateGroups.map(g=>g.id!==gid?g:{...g,items:g.items.map(it=>it.id===iid?{...it,marked:!it.marked}:it)})});
+  removeMarked=(gid)=>this.setState({duplicateGroups:this.state.duplicateGroups.map(g=>g.id!==gid?g:{...g,items:g.items.filter(it=>!it.marked)}).filter(g=>g.items.length>1)});
+  removeAllMarked=()=>this.setState({duplicateGroups:this.state.duplicateGroups.map(g=>({...g,items:g.items.filter(it=>!it.marked)})).filter(g=>g.items.length>1)});
+  toggleSources=()=>this.setState(s=>({sourcesPanelOpen:!s.sourcesPanelOpen}));
+
+  renderVals(){
+    const s=this.state;
+    const findTrack=id=>s.tracks.find(t=>t.id===id);
+    const findPlaylist=id=>s.playlists.find(p=>p.id===id);
+
+    const recentAdded=s.tracks.filter(t=>["Jun 12, 2026","May 28, 2026","May 3, 2026"].includes(t.added)).length;
+    const topRated=s.tracks.filter(t=>t.rating>=4).length;
+    const neverPlayed=s.tracks.filter(t=>t.plays===0).length;
+
+    const playlistTree=s.playlists.map(p=>{
+      const isOpen=s.historyOpenPlaylistId===p.id;
+      return {
+        id:p.id,name:p.name,count:p.trackIds.length,isOpen,arrow:isOpen?"▾":"▸",
+        onToggleOpen:()=>this.toggleHistoryPlaylistOpen(p.id),
+        rowStyle:(s.currentPlaylistId===p.id?"background:"+ACCENT_SOFT+";color:"+ACCENT+";":s.flashPlaylistId===p.id?"background:"+ACCENT_SOFT+";color:#c9cbd1;":"color:#c9cbd1;"),
+        onClick:()=>this.selectPlaylist(p.id),onDrop:(e)=>this.dropOnPlaylist(e,p.id),onDragOver:this.allowDrop
+      };
+    });
+    const libraryTree=[];
+    const walkFolders=(parentId,depth)=>{
+      s.folders.filter(f=>f.parentId===parentId).forEach(f=>{
+        const expanded=!!s.folderExpanded[f.id];
+        const childPls=s.playlists.filter(p=>p.folderId===f.id);
+        const childFolderCount=s.folders.filter(x=>x.parentId===f.id).length;
+        libraryTree.push({
+          key:f.id,isFolder:true,name:f.name,arrow:expanded?"▾":"▸",
+          padLeft:10+depth*13,meta:(childFolderCount?childFolderCount+" fld · ":"")+childPls.length+" pl",
+          onClick:()=>this.toggleFolder(f.id)
+        });
+        if(expanded){
+          walkFolders(f.id,depth+1);
+          childPls.forEach(p=>libraryTree.push({
+            key:p.id,isPlaylist:true,name:p.name,count:p.trackIds.length,isSmart:!!p.smart,smartMark:p.smart?"✦":"",
+            padLeft:10+(depth+1)*13,
+            rowStyle:(s.currentPlaylistId===p.id?"background:"+ACCENT_SOFT+";color:"+ACCENT+";":s.flashPlaylistId===p.id?"background:"+ACCENT_SOFT+";color:#c9cbd1;":"color:#c9cbd1;"),
+            onClick:()=>this.selectPlaylist(p.id),onDrop:(e)=>this.dropOnPlaylist(e,p.id),onDragOver:this.allowDrop
+          }));
+        }
+      });
+    };
+    walkFolders(null,0);
+    s.playlists.filter(p=>!p.folderId).forEach(p=>libraryTree.push({
+      key:p.id,isPlaylist:true,name:p.name,count:p.trackIds.length,isSmart:!!p.smart,smartMark:p.smart?"✦":"",padLeft:10,
+      rowStyle:(s.currentPlaylistId===p.id?"background:"+ACCENT_SOFT+";color:"+ACCENT+";":s.flashPlaylistId===p.id?"background:"+ACCENT_SOFT+";color:#c9cbd1;":"color:#c9cbd1;"),
+      onClick:()=>this.selectPlaylist(p.id),onDrop:(e)=>this.dropOnPlaylist(e,p.id),onDragOver:this.allowDrop
+    }));
+
+    const aiIdle=s.aiStatus==="idle",aiThinking=s.aiStatus==="thinking",aiDone=s.aiStatus==="done";
+    const aiRes=s.aiResult;
+    const aiView={
+      open:s.aiPanelOpen,prompt:s.aiPrompt,model:s.aiModel,
+      idle:aiIdle,thinking:aiThinking,
+      done:aiDone&&!!aiRes,
+      isBatch:aiDone&&aiRes&&aiRes.kind==="batch",
+      isSingle:aiDone&&aiRes&&aiRes.kind==="single",
+      title:aiRes?aiRes.title:"",summary:aiRes?aiRes.summary:"",
+      rules:aiRes?aiRes.rules:[],created:aiRes&&aiRes.created?aiRes.created:[],
+      sample:aiRes&&aiRes.sample?aiRes.sample:[],
+      folder:aiRes&&aiRes.folder?aiRes.folder:"",
+      matched:aiRes?aiRes.matched.toLocaleString("en-US"):0,scanned:aiRes?aiRes.scanned.toLocaleString("en-US"):0,
+      onToggle:this.toggleAiPanel,onPromptChange:this.setAiPrompt,onModelChange:this.setAiModel,onRun:this.runAiPrompt,
+      examples:[
+        {text:"Bau mir eine Smart Playlist für einen Goth/Darkwave-Abend mit den wichtigsten Darkwave-Klassikern",onClick:()=>this.useAiExample("Bau mir eine Smart Playlist für einen Goth/Darkwave-Abend mit den wichtigsten Darkwave-Klassikern")},
+        {text:"Erstelle Smart Playlists von Remixes/Bootlegs und sortiere sie in die jeweiligen Genre-Ordner",onClick:()=>this.useAiExample("Erstelle Smart Playlists von Remixes/Bootlegs und sortiere sie in die jeweiligen Genre-Ordner")}
+      ]
+    };
+
+    const smartTree=[
+      {id:"sm_recent",name:"Recently Added",count:recentAdded},
+      {id:"sm_top",name:"Top Rated",count:topRated},
+      {id:"sm_never",name:"Never Played",count:neverPlayed}
+    ].map(p=>({...p,rowStyle:s.currentPlaylistId===p.id?"background:"+ACCENT_SOFT+";color:"+ACCENT+";":"color:#c9cbd1;",onClick:()=>this.selectPlaylist(p.id)}));
+
+    const playlistTrackIds=(plid)=>{
+      if(plid==="all")return null;
+      if(plid==="sm_recent")return s.tracks.filter(t=>["Jun 12, 2026","May 28, 2026","May 3, 2026"].includes(t.added)).map(t=>t.id);
+      if(plid==="sm_top")return s.tracks.filter(t=>t.rating>=4).map(t=>t.id);
+      if(plid==="sm_never")return s.tracks.filter(t=>t.plays===0).map(t=>t.id);
+      const pl=findPlaylist(plid);return pl?pl.trackIds:null;
+    };
+
+    let libTracks=s.tracks.slice();
+    const libIds=playlistTrackIds(s.currentPlaylistId);
+    if(libIds)libTracks=libTracks.filter(t=>libIds.includes(t.id));
+    if(s.search.trim()){const q=s.search.toLowerCase();libTracks=libTracks.filter(t=>t.title.toLowerCase().includes(q)||t.artist.toLowerCase().includes(q));}
+    const dir=s.sortDir==="asc"?1:-1;
+    libTracks.sort((a,b)=>{const av=a[s.sortCol],bv=b[s.sortCol];if(typeof av==="number")return (av-bv)*dir;return String(av).localeCompare(String(bv))*dir;});
+
+    const mapRow=(t)=>({
+      id:t.id,title:t.title,artist:t.artist,bpm:t.bpm,key:t.key||"—",genre:t.genre,
+      genrePillStyle:"background:"+t.color+" / 0.16;color:"+t.color+";",
+      rowStyle:(s.selectedTrackId===t.id?"background:#1b1d22;":"")+"",
+      playing:s.playingTrackId===t.id&&s.isPlaying,notPlaying:!(s.playingTrackId===t.id&&s.isPlaying),
+      playBtnStyle:"background:"+ACCENT+";",
+      plays:t.plays,added:t.added,duration:t.duration,
+      energyDots:[1,2,3,4,5].map(n=>({style:n<=t.energy?"background:"+ACCENT+";":"background:#2b2e35;"})),
+      stars:[1,2,3,4,5].map(n=>({style:n<=t.rating?"color:"+ACCENT+";":"color:#3a3d45;",onClick:()=>this.setRating(t.id,n)})),
+      isEditingTags:s.editingCell===t.id,isNotEditingTags:s.editingCell!==t.id,
+      tagsDraft:s.tagsDraft,
+      tagChips:t.tags.map(tg=>({name:tg})),noTags:t.tags.length===0,
+      onClick:()=>this.selectTrack(t.id),onPlay:()=>this.togglePlay(t.id),
+      onLoadA:()=>this.loadToDeck("A",t.id),onLoadB:()=>this.loadToDeck("B",t.id),
+      onEditTags:()=>this.startEditTags(t),onDraftChange:this.draftTags,onCommitTags:()=>this.commitTags(t.id),
+      onTagsKeyDown:(e)=>{if(e.key==="Enter")this.commitTags(t.id);},
+      onDragStart:(e)=>this.onDragStartTrack(e,t)
+    });
+    const visibleTracks=libTracks.map(mapRow);
+
+    const loadedId=s.playingTrackId||s.selectedTrackId;
+    const loaded=findTrack(loadedId)||s.tracks[0];
+    const waveformBars=loaded.wave;
+    const hotcueMarkers=loaded.hotcues.map(c=>({...c,leftPct:c.frac*100}));
+    const currentTimeLabel=formatTime(loaded.durationSec*(s.playbackProgress/100));
+
+    const favoritesView=s.favorites.map((slot,i)=>({
+      index:i,index1:i+1,filled:!!slot,label:slot?slot.name:"Empty",typeLabel:slot?(slot.type==="playlist"?"Playlist":"Track"):"Slot",
+      style:slot?"background:"+ACCENT_SOFT+";border:1px solid oklch(0.82 0.19 155 / 0.4);":"background:#141519;border:1px dashed #2b2e35;",
+      onDrop:(e)=>this.dropOnSlot(e,i),onDragOver:this.allowDrop,onClick:()=>this.loadFavorite(slot),onClear:(e)=>this.clearSlot(e,i)
+    }));
+
+    const combinedTree=playlistTree.concat(smartTree);
+    const buildPanel=(panelKey)=>{
+      const deck=s[panelKey];
+      let ptracks=s.tracks;
+      const ids=playlistTrackIds(deck.playlistId);
+      if(ids)ptracks=ptracks.filter(t=>ids.includes(t.id));
+      const loadedT=findTrack(deck.loadedTrackId)||s.tracks[0];
+      const panelLetter=panelKey==="deckA"?"A":"B";
+      const hotcuesView=deck.hotcues.map((frac,idx)=>({
+        index:idx,index1:idx+1,filled:frac!=null,leftPct:frac!=null?frac:0,tickColor:CUE_COLORS[idx%CUE_COLORS.length],
+        style:frac!=null?"background:"+CUE_COLORS[idx%CUE_COLORS.length]+";color:#0a0b0d;":"background:#1b1d22;color:#5b5e66;border:1px solid #2b2e35;",
+        onClick:()=>this.hotcuePad(panelLetter,idx),onRemove:(e)=>this.removeHotcue(panelLetter,idx,e)
+      }));
+      return {
+        tracks:ptracks.slice(0,24).map(t=>({
+          id:t.id,title:t.title,artist:t.artist,bpm:t.bpm,key:t.key||"—",
+          rowStyle:deck.loadedTrackId===t.id?"background:"+ACCENT_SOFT+";":"",
+          onLoad:()=>this.loadToDeck(panelLetter,t.id),onDragStart:(e)=>this.onDragStartTrack(e,t)
+        })),
+        loaded:{title:loadedT.title,artist:loadedT.artist,bpm:loadedT.bpm,key:loadedT.key||"—",progress:deck.progress,isPlaying:deck.isPlaying,isNotPlaying:!deck.isPlaying,wave:loadedT.wave,
+          pitch:deck.pitch,pitchLabel:(deck.pitch>0?"+":"")+deck.pitch.toFixed(1)+"%",
+          volume:deck.volume,eqHigh:deck.eqHigh,eqMid:deck.eqMid,eqLow:deck.eqLow,
+          eqHighAngle:-135+(deck.eqHigh/100)*270,eqMidAngle:-135+(deck.eqMid/100)*270,eqLowAngle:-135+(deck.eqLow/100)*270,volumeAngle:-135+(deck.volume/100)*270,
+          onEqHighKnobDown:(e)=>this.startKnobDrag(e,deck.eqHigh,0,100,(v)=>this.setDeckField(panelLetter,"eqHigh",v)),
+          onEqMidKnobDown:(e)=>this.startKnobDrag(e,deck.eqMid,0,100,(v)=>this.setDeckField(panelLetter,"eqMid",v)),
+          onEqLowKnobDown:(e)=>this.startKnobDrag(e,deck.eqLow,0,100,(v)=>this.setDeckField(panelLetter,"eqLow",v)),
+          onVolumeKnobDown:(e)=>this.startKnobDrag(e,deck.volume,0,100,(v)=>this.setDeckField(panelLetter,"volume",v)),
+          gain:deck.gain,gainAngle:-135+(deck.gain/100)*270,
+          onGainKnobDown:(e)=>this.startKnobDrag(e,deck.gain,0,100,(v)=>this.setDeckField(panelLetter,"gain",v)),
+          volumeFaderPct:deck.volume,
+          onVolumeFaderDown:(e)=>this.startKnobDrag(e,deck.volume,0,100,(v)=>this.setDeckField(panelLetter,"volume",v)),
+          pitchFaderPct:((deck.pitch+8)/16)*100,
+          onPitchFaderDown:(e)=>this.startKnobDrag(e,deck.pitch,-8,8,(v)=>this.setDeckField(panelLetter,"pitch",v)),
+          waveOverview:loadedT.wave.filter((_,i)=>i%3===0)},
+        hotcuesView,
+        onSeek:(e)=>this.seekDeck(panelLetter,e),
+        onCue:()=>this.cueDeck(panelLetter),
+        onBeatjumpM4:()=>this.beatjump(panelLetter,-8),onBeatjumpM1:()=>this.beatjump(panelLetter,-2),
+        onBeatjumpP1:()=>this.beatjump(panelLetter,2),onBeatjumpP4:()=>this.beatjump(panelLetter,8),
+        onPitchChange:(e)=>this.setDeckField(panelLetter,"pitch",parseFloat(e.target.value)),
+        onVolumeChange:(e)=>this.setDeckField(panelLetter,"volume",parseFloat(e.target.value)),
+        onEQHighChange:(e)=>this.setDeckField(panelLetter,"eqHigh",parseFloat(e.target.value)),
+        onEQMidChange:(e)=>this.setDeckField(panelLetter,"eqMid",parseFloat(e.target.value)),
+        onEQLowChange:(e)=>this.setDeckField(panelLetter,"eqLow",parseFloat(e.target.value)),
+        playlists:combinedTree.map(p=>({id:p.id,name:p.name,chipStyle:deck.playlistId===p.id?"background:"+ACCENT+";color:#0a0b0d;font-weight:600;":"background:#1b1d22;color:#a9acb4;",onClick:()=>this.setPanelPlaylist(panelLetter,p.id)})),
+        playlistRows:combinedTree.map(p=>({id:p.id,name:p.name,count:p.count,rowStyle:deck.playlistId===p.id?"background:"+ACCENT_SOFT+";color:"+ACCENT+";":"color:#c9cbd1;",onClick:()=>this.setPanelPlaylist(panelLetter,p.id)})),
+        browser:this.buildBrowserTree(s,"planner"+panelLetter,deck.playlistId,(id)=>this.setPanelPlaylist(panelLetter,id),true),
+        filesTree:FILE_TREE.map((f,idx)=>({id:"file"+idx,name:f.name,padLeft:14+f.indent*14,active:deck.playlistId==="file"+idx,rowStyle:deck.playlistId==="file"+idx?"background:"+ACCENT_SOFT+";color:"+ACCENT+";":"color:#c9cbd1;",onClick:()=>this.setPanelPlaylist(panelLetter,"file"+idx)})),
+        isPlaylistsTab:deck.browserTab==="playlists",isFilesTab:deck.browserTab==="files",
+        onTabPlaylists:()=>this.setBrowserTab(panelLetter,"playlists"),onTabFiles:()=>this.setBrowserTab(panelLetter,"files"),
+        playlistsTabStyle:deck.browserTab==="playlists"?"color:"+ACCENT+";border-bottom:2px solid "+ACCENT+";":"color:#5b5e66;border-bottom:2px solid transparent;",
+        filesTabStyle:deck.browserTab==="files"?"color:"+ACCENT+";border-bottom:2px solid "+ACCENT+";":"color:#5b5e66;border-bottom:2px solid transparent;",
+        loopOn:deck.loopOn,loopBeats:deck.loopBeats,loopWidthPct:Math.min(40,deck.loopBeats*1.2),
+        syncOn:deck.syncOn,jogAngle:deck.jogAngle,
+        syncStyle:deck.syncOn?"background:"+ACCENT+";color:#0a0b0d;":"background:#1b1d22;color:#a9acb4;border:1px solid #2b2e35;",
+        loopStyle:deck.loopOn?"background:"+ACCENT+";color:#0a0b0d;":"background:#1b1d22;color:#a9acb4;border:1px solid #2b2e35;",
+        vuHeightPct:Math.round(deck.volume*(0.55+0.45*Math.abs(Math.sin(deck.progress/4.5)))),
+        onToggleLoop:()=>this.toggleLoop(panelLetter),onLoopHalve:()=>this.setLoopBeats(panelLetter,0.5),onLoopDouble:()=>this.setLoopBeats(panelLetter,2),
+        onToggleSync:()=>this.toggleSync(panelLetter)
+      };
+    };
+    const panelA=buildPanel("deckA");
+    const panelB=buildPanel("deckB");
+
+    const totalTracks=s.tracks.length;
+    const totalPlaylists=s.playlists.length+3;
+    const totalPlays=s.tracks.reduce((a,t)=>a+t.plays,0);
+    const totalSeconds=s.tracks.reduce((a,t)=>a+t.plays*t.durationSec,0);
+    const hoursMixed=(totalSeconds/3600).toFixed(1);
+    const healthyCount=s.tracks.filter(t=>t.key&&t.tags.length>0).length;
+    const healthyPct=Math.round((healthyCount/totalTracks)*100);
+    const topPlayed=s.tracks.slice().sort((a,b)=>b.plays-a.plays).slice(0,8);
+    const maxPlays=topPlayed[0].plays||1;
+    const topPlayedView=topPlayed.map(t=>({title:t.title,artist:t.artist,plays:t.plays,widthPct:(t.plays/maxPlays)*100,color:t.color}));
+    const genreCounts=GENRES.map(g=>({name:g,count:s.tracks.filter(t=>t.genre===g).length,color:GENRE_COLOR[g]}));
+    const genreDist=genreCounts.map(g=>({...g,widthPct:(g.count/totalTracks)*100}));
+    const weekly=[3.2,5.1,2.8,6.4,4.0,7.2,5.5,8.1];
+    const maxWeek=Math.max(...weekly);
+    const weeklyView=weekly.map((h,i)=>({label:"W"+(i+1),heightPct:(h/maxWeek)*100,hours:h}));
+
+    const dupGroupsView=s.duplicateGroups.map(g=>({
+      id:g.id,title:g.title,artist:g.artist,
+      items:g.items.map(it=>({...it,tagText:it.marked?"marked for removal":"keep",rowStyle:it.marked?"background:"+DANGER_SOFT+";":"background:#1b1d22;",checkStyle:it.marked?"background:"+DANGER+";":"border:1.5px solid #3a3d45;",onToggle:()=>this.toggleDupMark(g.id,it.id)})),
+      markedCount:g.items.filter(i=>i.marked).length,onRemove:()=>this.removeMarked(g.id)
+    }));
+    const knobAngle=(val,min,max)=>-135+((val-min)/(max-min))*270;
+    const djFilesTree=FILE_TREE.map((f,idx)=>({id:"file"+idx,name:f.name,padLeft:14+f.indent*14,rowStyle:s.currentPlaylistId==="file"+idx?"background:"+ACCENT_SOFT+";color:"+ACCENT+";":"color:#c9cbd1;",onClick:()=>this.selectPlaylist("file"+idx)}));
+    const isDjPlaylistsTab=s.djBrowserTab==="playlists",isDjFilesTab=s.djBrowserTab==="files";
+    const onDjTabPlaylists=()=>this.setDjBrowserTab("playlists"),onDjTabFiles=()=>this.setDjBrowserTab("files");
+    const djPlaylistsTabStyle=isDjPlaylistsTab?"color:"+ACCENT+";border-bottom:2px solid "+ACCENT+";":"color:#5b5e66;border-bottom:2px solid transparent;";
+    const djFilesTabStyle=isDjFilesTab?"color:"+ACCENT+";border-bottom:2px solid "+ACCENT+";":"color:#5b5e66;border-bottom:2px solid transparent;";
+    const masterTrack=(s.deckA.isPlaying?findTrack(s.deckA.loadedTrackId):s.deckB.isPlaying?findTrack(s.deckB.loadedTrackId):findTrack(s.deckA.loadedTrackId))||s.tracks[0];
+    const masterBpm=masterTrack? (masterTrack.bpm*(1+(s.deckA.isPlaying?s.deckA.pitch:s.deckB.isPlaying?s.deckB.pitch:0)/100)).toFixed(1):"—";
+    const FX_COLORS=["oklch(0.75 0.15 250)","oklch(0.75 0.15 25)","oklch(0.78 0.13 300)","oklch(0.78 0.14 90)"];
+    const ang=(v)=>-135+(v/100)*270;
+    const PARAM_LABELS=["RATE","DEPTH","FEEDBACK"];
+    const fxView=s.fxUnits.slice(0,s.fxUnitCount).map((f,idx)=>{
+      const col=FX_COLORS[idx%FX_COLORS.length];
+      const isSingle=f.mode==="single";
+      return {
+        id:f.id,color:col,isSingle,isGroup:!isSingle,
+        modeLabel:isSingle?"SINGLE":"GROUP",target:f.target,
+        headType:f.slots[0].type,
+        wet:f.wet,wetAngle:ang(f.wet),
+        onStyle:f.on?"background:"+col+";color:#0a0b0d;":"background:#1b1d22;color:#a9acb4;border:1px solid #2b2e35;",
+        modeStyle:isSingle?"background:#1b1d22;color:#a9acb4;border:1px solid #2b2e35;":"background:"+col+"22;color:"+col+";border:1px solid "+col+";",
+        onToggle:()=>this.toggleFx(f.id),onToggleMode:()=>this.toggleFxMode(f.id),onCycleTarget:()=>this.cycleFxTarget(f.id),
+        onCycleHeadType:()=>this.cycleFxSlotType(f.id,0),
+        onWetKnobDown:(e)=>this.startKnobDrag(e,f.wet,0,100,(v)=>this.setFxWet(f.id,v)),
+        params:f.params.map((p,i)=>({
+          key:f.id+"p"+i,label:PARAM_LABELS[i],value:p,angle:ang(p),color:col,
+          onKnobDown:(e)=>this.startKnobDrag(e,p,0,100,(v)=>this.setFxParamAt(f.id,i,v))
+        })),
+        slots:f.slots.map((sl,i)=>({
+          key:f.id+"s"+i,type:sl.type,amt:sl.amt,angle:ang(sl.amt),color:col,
+          btnStyle:sl.on?"background:"+col+";color:#0a0b0d;":"background:#1b1d22;color:#5b5e66;border:1px solid #2b2e35;",
+          onToggle:()=>this.toggleFxSlot(f.id,i),onCycleType:()=>this.cycleFxSlotType(f.id,i),
+          onKnobDown:(e)=>this.startKnobDrag(e,sl.amt,0,100,(v)=>this.setFxSlotAmt(f.id,i,v))
+        }))
+      };
+    });
+    const fxEnabled=s.fxUnitCount>0;
+    const fxCountLabel=s.fxUnitCount===0?"Off":s.fxUnitCount+" units";
+    const onCycleFxCount=this.cycleFxUnitCount;
+
+    const totalDupFiles=s.duplicateGroups.reduce((a,g)=>a+g.items.length,0);
+    const totalMarked=s.duplicateGroups.reduce((a,g)=>a+g.items.filter(i=>i.marked).length,0);
+    const totalMarkedSize=s.duplicateGroups.reduce((a,g)=>a+g.items.filter(i=>i.marked).reduce((x,i)=>x+i.sizeMB,0),0);
+
+    return {
+      macProps:{width:1440,height:920,title:"Nexus — DJ Library Manager"},
+      isLibrary:s.page==="library",isLibraryOff:s.page!=="library",
+      isPlanner:s.page==="planner",isPlannerOff:s.page!=="planner",
+      isAnalytics:s.page==="analytics",isAnalyticsOff:s.page!=="analytics",
+      isDuplicates:s.page==="duplicates",isDuplicatesOff:s.page!=="duplicates",
+      isDjApp:s.page==="djapp",isDjAppOff:s.page!=="djapp",
+      isHistory:s.page==="history",isHistoryOff:s.page!=="history",
+      goLibrary:this.goLibrary,goPlanner:this.goPlanner,goAnalytics:this.goAnalytics,goDuplicates:this.goDuplicates,goDjApp:this.goDjApp,goHistory:this.goHistory,
+      sourcesPanelOpen:s.sourcesPanelOpen,toggleSources:this.toggleSources,sources:SOURCES,
+
+      search:s.search,setSearch:this.setSearch,playlistTree,smartTree,visibleTracks,
+      currentPlaylistName:s.currentPlaylistId==="all"?"Collection":(findPlaylist(s.currentPlaylistId)?findPlaylist(s.currentPlaylistId).name:(smartTree.find(p=>p.id===s.currentPlaylistId)?smartTree.find(p=>p.id===s.currentPlaylistId).name:"Collection")),
+      selectAll:()=>this.selectPlaylist("all"),allActive:s.currentPlaylistId==="all",
+      setSortTitle:()=>this.setSort("title"),setSortArtist:()=>this.setSort("artist"),setSortBpm:()=>this.setSort("bpm"),setSortPlays:()=>this.setSort("plays"),
+      titleArrow:s.sortCol==="title"?(s.sortDir==="asc"?"↑":"↓"):"",artistArrow:s.sortCol==="artist"?(s.sortDir==="asc"?"↑":"↓"):"",bpmArrow:s.sortCol==="bpm"?(s.sortDir==="asc"?"↑":"↓"):"",playsArrow:s.sortCol==="plays"?(s.sortDir==="asc"?"↑":"↓"):"",
+
+      loaded,loadedTitle:loaded.title,loadedArtist:loaded.artist,loadedBpm:loaded.bpm,loadedKey:loaded.key||"—",
+      loadedGenre:loaded.genre,loadedGenrePillStyle:"background:"+loaded.color+" / 0.16;color:"+loaded.color+";",
+      loadedDuration:loaded.duration,loadedSource:loaded.source,currentTimeLabel,
+      isPlaying:s.isPlaying&&s.playingTrackId===loaded.id,isNotPlaying:!(s.isPlaying&&s.playingTrackId===loaded.id),
+      onTogglePlay:()=>this.togglePlay(loaded.id),transportBtnStyle:"background:"+ACCENT+";",
+      waveformBars,hotcueMarkers,progressPercent:s.playbackProgress,onSeek:this.seekTo,
+
+      crossfader:s.crossfader,setCrossfader:this.setCrossfader,
+      favoritesView,showFavBar:s.expandedPanel===null,
+      panelA,panelB,onFocusA:()=>this.focusPanel("A"),onFocusB:()=>this.focusPanel("B"),
+      showPanelA:s.expandedPanel!=="B",showPanelB:s.expandedPanel!=="A",
+      panelAWidthStyle:s.expandedPanel==="A"?"flex:1;":"flex:1 1 50%;",
+      panelBWidthStyle:s.expandedPanel==="B"?"flex:1;":"flex:1 1 50%;",
+      expandedIsA:s.expandedPanel==="A",expandedIsNotA:s.expandedPanel!=="A",
+      expandedIsB:s.expandedPanel==="B",expandedIsNotB:s.expandedPanel!=="B",
+      toggleExpandA:()=>this.toggleExpand("A"),toggleExpandB:()=>this.toggleExpand("B"),
+      onToggleDeckPlayA:()=>this.toggleDeckPlay("A"),onToggleDeckPlayB:()=>this.toggleDeckPlay("B"),
+
+      totalTracks,totalPlaylists,totalPlays,hoursMixed,healthyPct,topPlayedView,genreDist,weeklyView,
+
+      dupGroupsView,totalDupFiles,totalMarked,totalMarkedSize,noDuplicates:dupGroupsView.length===0,
+      removeAllMarked:this.removeAllMarked,
+
+      libraryTree,aiView,
+      collectionRowStyle:s.currentPlaylistId==="all"?"background:oklch(0.82 0.19 155 / 0.14);color:oklch(0.82 0.19 155);":"color:#c9cbd1;",
+      libraryBrowser:this.buildBrowserTree(s,"library",s.currentPlaylistId,(id)=>this.selectPlaylist(id),true),
+      djBrowser:this.buildBrowserTree(s,"djapp",s.currentPlaylistId,(id)=>this.selectPlaylist(id),true),
+      masterBpm,fxView,fxEnabled,fxCountLabel,onCycleFxCount,djFilesTree,isDjPlaylistsTab,isDjFilesTab,onDjTabPlaylists,onDjTabFiles,djPlaylistsTabStyle,djFilesTabStyle,
+
+      ...this.buildHistoryVals(s,findTrack,playlistTree,smartTree,totalTracks)
+    };
+  }
+}
+</script>
+</body>
+</html>

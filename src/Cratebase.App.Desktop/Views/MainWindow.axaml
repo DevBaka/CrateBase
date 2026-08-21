@@ -1,93 +1,180 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:Cratebase.App.Desktop.ViewModels"
+        xmlns:conv="using:Cratebase.App.Desktop.Converters"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="760"
+        mc:Ignorable="d" d:DesignWidth="1300" d:DesignHeight="820"
         x:Class="Cratebase.App.Desktop.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="Cratebase" Width="1200" Height="760">
+        Title="Cratebase" Width="1300" Height="820"
+        Background="{StaticResource BgWindowBrush}">
+
+    <Window.Resources>
+        <conv:SecondsToTimeStringConverter x:Key="SecondsToTime" />
+        <conv:SectionToBackgroundConverter x:Key="SectionBg" />
+        <conv:SectionToForegroundConverter x:Key="SectionFg" />
+        <conv:GenreToForegroundConverter x:Key="GenreFg" />
+        <conv:GenreToBackgroundConverter x:Key="GenreBg" />
+    </Window.Resources>
 
     <DockPanel>
-        <!-- Kopfleiste: Bibliothek erweitern + Suche -->
-        <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,Auto,*,Auto" Margin="12,12,12,6">
-            <Button Grid.Column="0" Content="Ordner hinzufügen…" Click="OnAddFolderClick" IsEnabled="{Binding !IsScanning}" />
-            <Button Grid.Column="1" Content="Traktor-Collection importieren…" Margin="6,0,0,0" Click="OnImportTraktorClick" IsEnabled="{Binding !IsScanning}" />
-            <TextBox Grid.Column="2" Margin="12,0" PlaceholderText="Suche (Titel, Artist, Album)…" Text="{Binding SearchText}" />
-            <TextBlock Grid.Column="3" VerticalAlignment="Center" MaxWidth="420"
-                       TextTrimming="CharacterEllipsis" Text="{Binding StatusMessage}" />
-        </Grid>
+        <!-- ================= Top-Nav ================= -->
+        <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,*,Auto" Margin="16,10"
+              Height="36">
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="4">
+                <Button Content="Bibliothek" Command="{Binding GoToSectionCommand}" CommandParameter="Library"
+                        BorderThickness="0" Padding="12,7" CornerRadius="8" FontSize="13"
+                        Background="{Binding CurrentSection, Converter={StaticResource SectionBg}, ConverterParameter=Library}"
+                        Foreground="{Binding CurrentSection, Converter={StaticResource SectionFg}, ConverterParameter=Library}" />
+                <Button Content="Set Planner" Command="{Binding GoToSectionCommand}" CommandParameter="Planner"
+                        BorderThickness="0" Padding="12,7" CornerRadius="8" FontSize="13"
+                        Background="{Binding CurrentSection, Converter={StaticResource SectionBg}, ConverterParameter=Planner}"
+                        Foreground="{Binding CurrentSection, Converter={StaticResource SectionFg}, ConverterParameter=Planner}" />
+                <Button Content="Analytics" Command="{Binding GoToSectionCommand}" CommandParameter="Analytics"
+                        BorderThickness="0" Padding="12,7" CornerRadius="8" FontSize="13"
+                        Background="{Binding CurrentSection, Converter={StaticResource SectionBg}, ConverterParameter=Analytics}"
+                        Foreground="{Binding CurrentSection, Converter={StaticResource SectionFg}, ConverterParameter=Analytics}" />
+                <Button Content="Duplicates" Command="{Binding GoToSectionCommand}" CommandParameter="Duplicates"
+                        BorderThickness="0" Padding="12,7" CornerRadius="8" FontSize="13"
+                        Background="{Binding CurrentSection, Converter={StaticResource SectionBg}, ConverterParameter=Duplicates}"
+                        Foreground="{Binding CurrentSection, Converter={StaticResource SectionFg}, ConverterParameter=Duplicates}" />
+                <Button Content="DJ App" Command="{Binding GoToSectionCommand}" CommandParameter="DjApp"
+                        BorderThickness="0" Padding="12,7" CornerRadius="8" FontSize="13"
+                        Background="{Binding CurrentSection, Converter={StaticResource SectionBg}, ConverterParameter=DjApp}"
+                        Foreground="{Binding CurrentSection, Converter={StaticResource SectionFg}, ConverterParameter=DjApp}" />
+                <Button Content="Verlauf" Command="{Binding GoToSectionCommand}" CommandParameter="History"
+                        BorderThickness="0" Padding="12,7" CornerRadius="8" FontSize="13"
+                        Background="{Binding CurrentSection, Converter={StaticResource SectionBg}, ConverterParameter=History}"
+                        Foreground="{Binding CurrentSection, Converter={StaticResource SectionFg}, ConverterParameter=History}" />
+            </StackPanel>
 
-        <!-- Transportleiste unten -->
-        <Border DockPanel.Dock="Bottom" Padding="12" BorderThickness="0,1,0,0"
-                BorderBrush="{DynamicResource SystemBaseLowColor}">
-            <Grid ColumnDefinitions="220,Auto,Auto,Auto,*,Auto,120">
-                <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding NowPlayingTitle}" FontWeight="Bold" TextTrimming="CharacterEllipsis" />
-                    <TextBlock Text="{Binding NowPlayingArtist}" Opacity="0.7" TextTrimming="CharacterEllipsis" />
-                </StackPanel>
-
-                <Button Grid.Column="1" Content="⏮" Margin="12,0,4,0" Command="{Binding PlayPreviousCommand}" />
-                <Button Grid.Column="2" Content="⏯" Margin="4,0" FontSize="16" Command="{Binding PlayPauseCommand}" />
-                <Button Grid.Column="3" Content="⏭" Margin="4,0" Command="{Binding PlayNextCommand}" />
-
-                <Grid Grid.Column="4" ColumnDefinitions="Auto,*,Auto" Margin="16,0" VerticalAlignment="Center">
-                    <TextBlock Grid.Column="0" Width="44" Text="{Binding PositionSeconds, StringFormat={}{0:0}}" />
-                    <Slider Grid.Column="1" Minimum="0" Maximum="{Binding DurationSeconds}" Value="{Binding PositionSeconds, Mode=TwoWay}" />
-                    <TextBlock Grid.Column="2" Width="44" Text="{Binding DurationSeconds, StringFormat={}{0:0}}" />
-                </Grid>
-
-                <TextBlock Grid.Column="5" Text="🔊" VerticalAlignment="Center" Margin="4,0" />
-                <Slider Grid.Column="6" Minimum="0" Maximum="100" Value="{Binding Volume, Mode=TwoWay}" VerticalAlignment="Center" />
-            </Grid>
-        </Border>
-
-        <!-- Hauptbereich: Playlist-Baum links, Track-Liste rechts -->
-        <Grid ColumnDefinitions="280,*">
-            <DockPanel Grid.Column="0" Margin="12,0,6,12">
-                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="4" Margin="0,0,0,6">
-                    <Button Content="+ Ordner" Command="{Binding CreateFolderCommand}" />
-                    <Button Content="+ Playlist" Command="{Binding CreatePlaylistCommand}" />
-                    <Button Content="Löschen" Command="{Binding DeleteSelectedNodeCommand}" />
-                </StackPanel>
-
-                <TreeView ItemsSource="{Binding RootNodes}" SelectedItem="{Binding SelectedNode, Mode=TwoWay}">
-                    <TreeView.ItemTemplate>
-                        <TreeDataTemplate ItemsSource="{Binding Children}">
-                            <TextBlock Text="{Binding DisplayName}" />
-                        </TreeDataTemplate>
-                    </TreeView.ItemTemplate>
-                </TreeView>
-            </DockPanel>
-
-            <DockPanel Grid.Column="1" Margin="6,0,12,12">
-                <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto,Auto" Margin="0,6,0,0">
-                    <TextBlock Grid.Column="0" VerticalAlignment="Center">
-                        <Run Text="{Binding LoadedCount}" /><Run Text=" von " /><Run Text="{Binding TotalCount}" /><Run Text=" geladen" />
+            <Border Grid.Column="2" Background="{StaticResource BgElevatedBrush}" BorderBrush="{StaticResource BorderBrush1}"
+                    BorderThickness="1" CornerRadius="8" Padding="10,7">
+                <StackPanel Orientation="Horizontal" Spacing="7">
+                    <Ellipse Width="7" Height="7" Fill="{StaticResource AccentGreenBrush}" />
+                    <TextBlock FontFamily="{StaticResource MonoFont}" FontSize="11.5" Foreground="{StaticResource TextMutedBrush}">
+                        <Run Text="{Binding TotalCount}" /><Run Text=" Tracks in der Sammlung" />
                     </TextBlock>
-                    <Button Grid.Column="1" Content="Mehr laden" Margin="0,0,8,0"
-                            Command="{Binding LoadMoreCommand}" IsVisible="{Binding CanLoadMore}" />
-                    <Button Grid.Column="2" Content="Zu Playlist hinzufügen" Command="{Binding AddSelectedTrackToPlaylistCommand}" />
-                </Grid>
-
-                <DataGrid Name="TrackGrid"
-                          ItemsSource="{Binding Tracks}"
-                          SelectedItem="{Binding SelectedTrack, Mode=TwoWay}"
-                          AutoGenerateColumns="False"
-                          IsReadOnly="True"
-                          GridLinesVisibility="Horizontal"
-                          DoubleTapped="OnTrackGridDoubleTapped">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Titel" Binding="{Binding DisplayTitle}" Width="2*" />
-                        <DataGridTextColumn Header="Artist" Binding="{Binding DisplayArtist}" Width="1.5*" />
-                        <DataGridTextColumn Header="Album" Binding="{Binding Album}" Width="1.5*" />
-                        <DataGridTextColumn Header="Genre" Binding="{Binding GenreRaw}" Width="*" />
-                        <DataGridTextColumn Header="BPM" Binding="{Binding Bpm}" Width="70" />
-                        <DataGridTextColumn Header="Dauer" Binding="{Binding DisplayDuration}" Width="70" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </DockPanel>
+                </StackPanel>
+            </Border>
         </Grid>
+
+        <!-- ================= Content ================= -->
+        <Panel>
+
+            <!-- Bibliothek (funktional) -->
+            <Grid ColumnDefinitions="240,*" IsVisible="{Binding IsLibrarySection}">
+
+                <!-- Sidebar: Playlist-Baum -->
+                <DockPanel Grid.Column="0" Margin="12,0,0,12" Background="{StaticResource BgSurfaceBrush}">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="4" Margin="10,10,10,8">
+                        <Button Content="+ Ordner" FontSize="11" Padding="8,5" Command="{Binding CreateFolderCommand}" />
+                        <Button Content="+ Playlist" FontSize="11" Padding="8,5" Command="{Binding CreatePlaylistCommand}" />
+                        <Button Content="Löschen" FontSize="11" Padding="8,5" Command="{Binding DeleteSelectedNodeCommand}" />
+                    </StackPanel>
+
+                    <TreeView ItemsSource="{Binding RootNodes}" SelectedItem="{Binding SelectedNode, Mode=TwoWay}"
+                              Background="Transparent" Padding="4,0" BorderThickness="0">
+                        <TreeView.ItemTemplate>
+                            <TreeDataTemplate ItemsSource="{Binding Children}">
+                                <TextBlock Text="{Binding DisplayName}" FontSize="12.5" Padding="6,5" />
+                            </TreeDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </DockPanel>
+
+                <!-- Track-Bereich + Transportleiste -->
+                <DockPanel Grid.Column="1" Margin="0,0,12,12">
+
+                    <!-- Kopfzeile: Ordner/Import-Buttons + Suche + Status -->
+                    <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,Auto,*,Auto" Margin="14,0,0,10">
+                        <Button Grid.Column="0" Content="Ordner hinzufügen…" Click="OnAddFolderClick" IsEnabled="{Binding !IsScanning}" />
+                        <Button Grid.Column="1" Content="Traktor-Collection importieren…" Margin="6,0,0,0" Click="OnImportTraktorClick" IsEnabled="{Binding !IsScanning}" />
+                        <TextBox Grid.Column="2" Margin="12,0" PlaceholderText="Suche (Titel, Artist, Album)…" Text="{Binding SearchText}" />
+                        <TextBlock Grid.Column="3" VerticalAlignment="Center" MaxWidth="380" FontSize="11.5" Foreground="{StaticResource TextFaintBrush}"
+                                   TextTrimming="CharacterEllipsis" Text="{Binding StatusMessage}" />
+                    </Grid>
+
+                    <!-- Transportleiste unten -->
+                    <Border DockPanel.Dock="Bottom" Padding="18,12" Background="{StaticResource BgSurfaceBrush}"
+                            BorderThickness="0,1,0,0" BorderBrush="{StaticResource BorderBrush1}">
+                        <Grid ColumnDefinitions="200,Auto,Auto,Auto,*,Auto,120">
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding NowPlayingTitle}" FontSize="13.5" FontWeight="Bold" TextTrimming="CharacterEllipsis" />
+                                <TextBlock Text="{Binding NowPlayingArtist}" FontSize="12" Foreground="{StaticResource TextMutedBrush}" TextTrimming="CharacterEllipsis" />
+                            </StackPanel>
+
+                            <Button Grid.Column="1" Content="⏮" Margin="14,0,4,0" Padding="9,7" Command="{Binding PlayPreviousCommand}" />
+                            <Button Grid.Column="2" Content="⏯" Margin="4,0" Padding="9,7" FontSize="15"
+                                    Background="{StaticResource AccentGreenBrush}" Foreground="{StaticResource BgWindowBrush}"
+                                    Command="{Binding PlayPauseCommand}" />
+                            <Button Grid.Column="3" Content="⏭" Margin="4,0" Padding="9,7" Command="{Binding PlayNextCommand}" />
+
+                            <Grid Grid.Column="4" ColumnDefinitions="Auto,*,Auto" Margin="18,0" VerticalAlignment="Center">
+                                <TextBlock Grid.Column="0" Width="42" FontFamily="{StaticResource MonoFont}" FontSize="11.5"
+                                           Foreground="{StaticResource TextMutedBrush}" Text="{Binding PositionSeconds, Converter={StaticResource SecondsToTime}}" />
+                                <Slider Grid.Column="1" Minimum="0" Maximum="{Binding DurationSeconds}" Value="{Binding PositionSeconds, Mode=TwoWay}" />
+                                <TextBlock Grid.Column="2" Width="42" FontFamily="{StaticResource MonoFont}" FontSize="11.5"
+                                           Foreground="{StaticResource TextMutedBrush}" HorizontalAlignment="Right" Text="{Binding DurationSeconds, Converter={StaticResource SecondsToTime}}" />
+                            </Grid>
+
+                            <TextBlock Grid.Column="5" Text="🔊" VerticalAlignment="Center" Margin="4,0" FontSize="13" />
+                            <Slider Grid.Column="6" Minimum="0" Maximum="100" Value="{Binding Volume, Mode=TwoWay}" VerticalAlignment="Center" />
+                        </Grid>
+                    </Border>
+
+                    <!-- Fußzeile der Liste: geladen / mehr laden / zu Playlist -->
+                    <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto,Auto" Margin="14,6">
+                        <TextBlock Grid.Column="0" VerticalAlignment="Center" FontFamily="{StaticResource MonoFont}" FontSize="11" Foreground="{StaticResource TextFaintBrush}">
+                            <Run Text="{Binding LoadedCount}" /><Run Text=" von " /><Run Text="{Binding TotalCount}" /><Run Text=" geladen" />
+                        </TextBlock>
+                        <Button Grid.Column="1" Content="Mehr laden" Margin="0,0,8,0"
+                                Command="{Binding LoadMoreCommand}" IsVisible="{Binding CanLoadMore}" />
+                        <Button Grid.Column="2" Content="Zu Playlist hinzufügen" Command="{Binding AddSelectedTrackToPlaylistCommand}" />
+                    </Grid>
+
+                    <!-- Track-Tabelle -->
+                    <DataGrid Name="TrackGrid" Margin="6,0,0,0"
+                              ItemsSource="{Binding Tracks}"
+                              SelectedItem="{Binding SelectedTrack, Mode=TwoWay}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              GridLinesVisibility="Horizontal"
+                              DoubleTapped="OnTrackGridDoubleTapped">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Titel" Binding="{Binding DisplayTitle}" Width="*" FontWeight="SemiBold" />
+                            <DataGridTextColumn Header="Artist" Binding="{Binding DisplayArtist}" Width="180" />
+                            <DataGridTextColumn Header="Album" Binding="{Binding Album}" Width="180" />
+                            <DataGridTemplateColumn Header="Genre" Width="140">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{Binding GenreRaw, Converter={StaticResource GenreBg}}"
+                                                CornerRadius="5" Padding="7,2" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                IsVisible="{Binding GenreRaw, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                            <TextBlock Text="{Binding GenreRaw}" FontSize="10.5"
+                                                       Foreground="{Binding GenreRaw, Converter={StaticResource GenreFg}}" />
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="BPM" Binding="{Binding Bpm}" Width="64" FontFamily="{StaticResource MonoFont}" />
+                            <DataGridTextColumn Header="Key" Binding="{Binding MusicalKey}" Width="56" FontFamily="{StaticResource MonoFont}" />
+                            <DataGridTextColumn Header="Dauer" Binding="{Binding DisplayDuration}" Width="70" FontFamily="{StaticResource MonoFont}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </Grid>
+
+            <!-- Platzhalter für Set Planner / Analytics / Duplicates / DJ App / Verlauf -->
+            <Grid IsVisible="{Binding !IsLibrarySection}">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8" MaxWidth="420">
+                    <TextBlock Text="{Binding PlaceholderSectionTitle}" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" />
+                    <TextBlock Text="Kommt in einer späteren Phase – noch nicht gebaut." FontSize="13"
+                               Foreground="{StaticResource TextMutedBrush}" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" />
+                </StackPanel>
+            </Grid>
+        </Panel>
     </DockPanel>
 </Window>

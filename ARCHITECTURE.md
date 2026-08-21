@@ -465,3 +465,41 @@ Angewendet auf die echte, aktive `cratebase.db` (Backup vorher gezogen: `crateba
 - Nur Reader, kein Writer — Änderungen in Cratebase fließen nicht zurück nach Traktor (per Phasenplan explizit "Writer danach").
 - Kein Cleanup entfernter Playlist-Mitgliedschaften bei Re-Import (nur additiv, s. 9.2).
 - Rekordbox/Mixxx/Serato/VirtualDJ folgen als eigene `ICollectionImporter`-Implementierungen nach demselben Muster — nicht Teil dieses Durchgangs.
+
+## 10. Visuelles Redesign: Anlehnung an "DJ Library App.dc.html"
+
+Ein per Claude Design erstelltes Mockup (`DJ Library App.dc.html`, ins Repo gelegt) diente als
+Vorbild für ein moderneres, dichteres UI — nicht 1:1 übernommen, aber die Farbsprache exakt und
+die Struktur (Top-Nav mit mehreren App-Bereichen) im Ansatz.
+
+### 10.1 Was übernommen wurde
+
+- **Farbpalette 1:1**: Die oklch-Werte des Mockups nach Hex umgerechnet (Skript im Gesprächsverlauf) — Fenster-Hintergrund `#0A0B0D`, Panels `#0E0F12`/`#141519`, Akzent-Grün `#33E78C`, Akzent-Lila `#C4A4FE` (für spätere KI-Features reserviert), Rot `#FF645F` (für spätere Duplicates/Warnungen).
+- **Typografie**: Sora (UI/Headings) und JetBrains Mono (Zahlen: BPM, Dauer, Counts) als echte, eingebettete Fonts (OFL-lizenziert von Google Fonts, `Assets/Fonts/`) — nicht nur eine Annäherung über Systemschriften.
+- **Fest auf Dark-Theme** statt Systemtheme zu folgen (`RequestedThemeVariant="Dark"`) — bewusste Entscheidung, DJ-Software läuft praktisch immer dunkel.
+- **Top-Nav-Struktur**: Bibliothek / Set Planner / Analytics / Duplicates / DJ App / Verlauf als Tabs — spiegelt, wohin die App laut Vision wachsen soll.
+- **Genre-Pills**: farbige Chips (Hash-basierte Palette) statt reinem Text, wie im Mockup.
+
+### 10.2 Bewusst NICHT übernommen (Scope-Cut, kein Redesign nötig)
+
+Das Mockup zeigt eine deutlich größere App als der aktuelle Funktionsumfang — Analytics-Dashboard
+mit Charts, Duplicate-Finder, Session-Verlauf, und vor allem ein vollständiges Zwei-Deck-Mixer-UI
+(Jogwheels, EQ-Knobs, Crossfader, Loop/Hotcue-Pads) für "Set Planner" und "DJ App". Das jetzt in
+einem Rutsch nachzubauen wäre vorgetäuschter Funktionsumfang ohne echte Substanz dahinter
+(Analytics bräuchte z.B. echte Play-Count-Auswertung, die Decks bräuchten Pitch/Time-Stretching,
+das noch nicht entschiedene Audio-Engine-Fragen berührt, s. 4.A). Stattdessen:
+
+- Nur "Bibliothek" ist funktional (Scanner, Player, Playlist-Baum, Traktor-Import — alles aus Phase 0-2).
+- Die anderen fünf Tabs sind echte, klickbare Navigationspunkte, zeigen aber ehrlich
+  "Kommt in einer späteren Phase" statt leerer/vorgetäuschter Widgets.
+- Keine erfundene Waveform-Grafik in der Transportleiste (das Mockup zeigt Balken-Wellenformen —
+  wir haben noch keine echte Peak-Analyse, s. Phase 1/Analysis-Job-Queue in ARCHITECTURE.md
+  Abschnitt 2.8f.; ein Fake-Waveform aus Zufallsbalken wäre irreführend gewesen).
+
+### 10.3 Offen / nächster Schritt für dieses Redesign
+
+DataGrid-Spaltenbreiten liefen anfangs über den Fensterrand hinaus (mehrere konkurrierende
+`*`-Spalten) — auf feste Breiten + eine einzelne flexible Titel-Spalte umgestellt (Standard-Fix,
+im Code). Ein finaler visueller Abgleich nach diesem Fix steht noch aus (Screenshot-Automatisierung
+ist auf dem Zielsystem gerade durch ein Vollbild-Fenster blockiert) — bitte einmal selbst
+gegenprüfen, ob die Tabelle jetzt sauber ins Fenster passt.

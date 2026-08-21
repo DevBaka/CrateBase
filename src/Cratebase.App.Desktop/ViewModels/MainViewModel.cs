@@ -54,6 +54,37 @@ public partial class MainViewModel : ViewModelBase
 
     public ObservableCollection<Track> Tracks { get; } = [];
 
+    // --- Sektions-Navigation (Top-Nav wie im Claude-Design-Vorbild) ---
+    // Nur "Library" ist tatsächlich gebaut. Die anderen fünf sind bewusst als Platzhalter da,
+    // statt sie wegzulassen: die Navigationsstruktur (Set Planner/Analytics/Duplicates/DJ App/
+    // History) ist Teil dessen, wohin die App laut Vision wachsen soll, auch wenn die einzelnen
+    // Features noch nicht existieren - lieber ehrlich "kommt später" zeigen als so tun, als gäbe
+    // es die Idee nicht.
+
+    [ObservableProperty]
+    public partial string CurrentSection { get; set; } = "Library";
+
+    public bool IsLibrarySection => CurrentSection == "Library";
+
+    public string PlaceholderSectionTitle => CurrentSection switch
+    {
+        "Planner" => "Set Planner",
+        "Analytics" => "Analytics",
+        "Duplicates" => "Duplicates",
+        "DjApp" => "DJ App",
+        "History" => "Verlauf",
+        _ => CurrentSection,
+    };
+
+    partial void OnCurrentSectionChanged(string value)
+    {
+        OnPropertyChanged(nameof(IsLibrarySection));
+        OnPropertyChanged(nameof(PlaceholderSectionTitle));
+    }
+
+    [RelayCommand]
+    private void GoToSection(string section) => CurrentSection = section;
+
     [ObservableProperty]
     public partial PlaylistTreeItemViewModel? SelectedNode { get; set; }
 
