@@ -99,6 +99,42 @@ public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) :
             cancellationToken: ct));
     }
 
+    public async Task UpdateAsync(Track track, CancellationToken ct = default)
+    {
+        using var connection = connectionFactory.CreateConnection();
+
+        var parameters = new
+        {
+            track.Id,
+            track.Title,
+            track.Artist,
+            track.Album,
+            track.AlbumArtist,
+            track.TrackNumber,
+            track.Year,
+            track.GenreRaw,
+            track.Comment,
+            track.Bpm,
+            track.MusicalKey,
+            track.Rating,
+            track.PlayCount,
+            LastPlayedAtUtc = SqliteDateTime.ToText(track.LastPlayedAtUtc),
+            DateModifiedUtc = SqliteDateTime.ToText(track.DateModifiedUtc),
+        };
+
+        await connection.ExecuteAsync(new CommandDefinition(
+            """
+            UPDATE track SET
+                title = @Title, artist = @Artist, album = @Album, album_artist = @AlbumArtist,
+                track_number = @TrackNumber, year = @Year, genre_raw = @GenreRaw, comment = @Comment,
+                bpm = @Bpm, musical_key = @MusicalKey, rating = @Rating, play_count = @PlayCount,
+                last_played_at = @LastPlayedAtUtc, date_modified = @DateModifiedUtc
+            WHERE id = @Id;
+            """,
+            parameters,
+            cancellationToken: ct));
+    }
+
     public async Task<IReadOnlyDictionary<string, TrackFingerprint>> GetFingerprintsByPathAsync(long libraryRootId, CancellationToken ct = default)
     {
         using var connection = connectionFactory.CreateConnection();

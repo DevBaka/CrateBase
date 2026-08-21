@@ -7,6 +7,7 @@ using Cratebase.Audio;
 using Cratebase.Core.Abstractions;
 using Cratebase.Data;
 using Cratebase.Data.Repositories;
+using Cratebase.Import;
 using Cratebase.Scanning;
 using Cratebase.Tagging;
 
@@ -36,12 +37,14 @@ public partial class App : Application
             ITrackRepository trackRepository = new TrackRepository(connectionFactory);
             ILibraryRootRepository libraryRootRepository = new LibraryRootRepository(connectionFactory);
             IPlaylistRepository playlistRepository = new PlaylistRepository(connectionFactory);
+            ICuePointRepository cuePointRepository = new CuePointRepository(connectionFactory);
             ITagReader tagReader = new TagLibTagReader();
             ILibraryScanner libraryScanner = new LibraryScanner(trackRepository, libraryRootRepository, tagReader);
+            ICollectionImporter traktorImporter = new TraktorCollectionImporter(trackRepository, libraryRootRepository, playlistRepository, cuePointRepository);
 
             _audioPlayer = new LibVlcAudioPlayer();
 
-            var viewModel = new MainViewModel(trackRepository, libraryRootRepository, playlistRepository, libraryScanner, _audioPlayer);
+            var viewModel = new MainViewModel(trackRepository, libraryRootRepository, playlistRepository, libraryScanner, _audioPlayer, traktorImporter);
 
             var mainWindow = new MainWindow { DataContext = viewModel };
             mainWindow.Opened += async (_, _) => await viewModel.InitializeAsync();

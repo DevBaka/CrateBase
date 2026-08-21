@@ -3,7 +3,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Cratebase.Core\Cratebase.Core.csproj" />
     <ProjectReference Include="..\Cratebase.Tagging\Cratebase.Tagging.csproj" />
-    <ProjectReference Include="..\Cratebase.Data\Cratebase.Data.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

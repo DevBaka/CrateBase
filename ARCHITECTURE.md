@@ -403,3 +403,65 @@ Solution `Cratebase.slnx` unter `src/`, sechs Projekte exakt nach der Modulaufte
 - Kein Umbenennen von Playlist-Knoten in der UI (Repository-Methode existiert, UI fehlt).
 - Suche ist `LIKE`-basiert, nicht FTS5 (funktioniert bei 97k Tracks bereits performant genug, s. 8.1 — FTS5 bleibt die spätere Verfeinerung aus Abschnitt 6, keine Notwendigkeit, kein Blocker).
 - Kein Filesystem-Watcher, nur manueller Rescan (Watcher ist explizit Teil der ursprünglichen Vision, aber nicht MVP-kritisch für den Import-Anschluss).
+
+## 9. Phase 2 (Start): Traktor-Import
+
+Erster DJ-Software-Reader (s. Phasenplan: "Reader zuerst, Writer danach"). Neues Modul
+`Cratebase.Import` (nur gegen `Cratebase.Core`-Interfaces, wie `Cratebase.Scanning` — Prinzip
+aus Abschnitt 3 bestätigt sich hier ein zweites Mal problemlos).
+
+### 9.1 Warum Traktor zuerst
+
+Deine reale Sammlung hatte einen `TraktorStems`-Ordner und tatsächlich fand sich unter
+`Native Instruments/Traktor 4.5.0/collection.nml` eine aktive, **40.344 Tracks** große Collection
+mit vollem Playlist-Baum — Traktor ist bestätigt deine tatsächlich genutzte Software, nicht nur
+eine Annahme.
+
+### 9.2 Funktionsweise
+
+- **`TraktorNmlReader`**: liest die COLLECTION per `XmlReader` gestreamt (Datei real 57,5 MB bei
+  40k Tracks — würde als `XDocument.Load` unserem eigenen Skalierungsprinzip widersprechen),
+  PLAYLISTS als ein `XElement` (dort nur ~2,4 MB, unproblematisch).
+- **`TraktorPathResolver`**: löst Traktors eigene Pfade (`VOLUME="M:" DIR="/:Musik/:.../:"`) gegen
+  bereits über den eigenen Scanner bekannte Tracks auf — per Ordnersegment-Überlappung zwischen
+  Traktor-Pfad und `LibraryRoot.Path`, verifiziert durch einen tatsächlichen Treffer in der DB.
+  Kein manuelles Laufwerksbuchstaben-Mapping nötig, kein Raten: kein Treffer ⇒ Track bleibt
+  unverknüpft, wird gezählt, nie stillschweigend falsch zugeordnet.
+- **Cue-Points**: Traktors `CUE_V2`-Typen (0=Hot-Cue, 1=Fade-In, 2=Fade-Out, 3=Load, 4=Grid,
+  5=Loop — an echten Daten verifiziert) landen in der neuen `cue_point`-Tabelle
+  (`source='imported:traktor'`). Ein erneuter Import ersetzt nur Cue-Points dieser Quelle
+  (Delete+Insert pro Track), manuell angelegte Cues blieben unberührt.
+- **Playlisten**: Traktors kompletter `$ROOT`-Baum wird unter einem eigenen Ordner
+  **"Traktor Import"** gespiegelt (bewusst getrennt vom Rest des Playlist-Baums, solange 4.E
+  ungeklärt ist), idempotent (Re-Import legt keine Duplikate an, matched über Name+Parent).
+- **Track-Anreicherung**: Genre/Key/Comment/BPM/Rating/PlayCount/LastPlayed werden nur befüllt,
+  wenn bei uns noch leer/0 — "Traktor füllt Lücken", überschreibt nie. Braucht dafür
+  `ITrackRepository.UpdateAsync` (neu, s. 9.3) statt dem scan-schützenden `UpsertAsync`.
+
+### 9.3 Ein während der Implementierung gefundener und gefixter Bug
+
+`ReadOuterXml()` positioniert den `XmlReader` schon auf den nächsten Knoten; ein zusätzliches
+`reader.Read()` am Schleifenkopf hat dadurch systematisch jeden zweiten Collection-Eintrag
+übersprungen — beim ersten Testlauf gegen die echte Datei kamen 20.172 statt 40.344 Tracks an
+(exakt die Hälfte). Ohne den Testlauf gegen echte, großformatige Daten wäre das nicht
+aufgefallen (mit einer Handvoll Test-Tracks bleibt der Effekt unter der Wahrnehmungsschwelle -
+ein Beleg mehr für "an echten ~100k-Daten testen" statt nur an synthetischen Kleinbeispielen).
+
+### 9.4 Real validiert (auf deiner tatsächlichen, jetzt auch angewendeten Collection)
+
+| Metrik | Wert |
+|---|---|
+| Collection-Einträge gelesen | 40.344 |
+| Tracks zugeordnet | 33.958 (84,2%) |
+| Tracks nicht zugeordnet | 6.386 (vermutlich Traktor-Factory-Sounds/andere Quellen außerhalb `/Musik/Musik`) |
+| Cue-Points importiert | 57.015 |
+| Playlist-Knoten angelegt | 662 |
+| Playlist-Track-Zuordnungen | 11.897 |
+
+Angewendet auf die echte, aktive `cratebase.db` (Backup vorher gezogen: `cratebase.db.backup-pre-traktor-import-*`).
+
+### 9.5 Bekannte Grenzen dieses ersten Readers
+
+- Nur Reader, kein Writer — Änderungen in Cratebase fließen nicht zurück nach Traktor (per Phasenplan explizit "Writer danach").
+- Kein Cleanup entfernter Playlist-Mitgliedschaften bei Re-Import (nur additiv, s. 9.2).
+- Rekordbox/Mixxx/Serato/VirtualDJ folgen als eigene `ICollectionImporter`-Implementierungen nach demselben Muster — nicht Teil dieses Durchgangs.

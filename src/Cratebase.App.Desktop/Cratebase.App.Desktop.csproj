@@ -34,5 +34,6 @@
     <ProjectReference Include="..\Cratebase.Scanning\Cratebase.Scanning.csproj" />
     <ProjectReference Include="..\Cratebase.Tagging\Cratebase.Tagging.csproj" />
     <ProjectReference Include="..\Cratebase.Audio\Cratebase.Audio.csproj" />
+    <ProjectReference Include="..\Cratebase.Import\Cratebase.Import.csproj" />
   </ItemGroup>
 </Project>

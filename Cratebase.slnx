@@ -4,6 +4,7 @@
     <Project Path="src/Cratebase.Audio/Cratebase.Audio.csproj" />
     <Project Path="src/Cratebase.Core/Cratebase.Core.csproj" />
     <Project Path="src/Cratebase.Data/Cratebase.Data.csproj" />
+    <Project Path="src/Cratebase.Import/Cratebase.Import.csproj" />
     <Project Path="src/Cratebase.Scanning/Cratebase.Scanning.csproj" />
     <Project Path="src/Cratebase.Tagging/Cratebase.Tagging.csproj" />
   </Folder>

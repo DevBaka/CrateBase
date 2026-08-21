@@ -38,6 +38,28 @@ public partial class MainWindow : Window
         }
     }
 
+    private async void OnImportTraktorClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        var topLevel = GetTopLevel(this);
+        if (topLevel is null || DataContext is not MainViewModel viewModel)
+        {
+            return;
+        }
+
+        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = "Traktor collection.nml auswählen",
+            AllowMultiple = false,
+            FileTypeFilter = [new FilePickerFileType("Traktor Collection") { Patterns = ["*.nml"] }],
+        });
+
+        var file = files.Count > 0 ? files[0].TryGetLocalPath() : null;
+        if (file is not null)
+        {
+            await viewModel.ImportTraktorCommand.ExecuteAsync(file);
+        }
+    }
+
     private void OnTrackGridDoubleTapped(object? sender, TappedEventArgs e)
     {
         if (DataContext is MainViewModel viewModel)

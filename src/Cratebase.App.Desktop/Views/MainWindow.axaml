@@ -11,10 +11,11 @@
 
     <DockPanel>
         <!-- Kopfleiste: Bibliothek erweitern + Suche -->
-        <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,*,Auto" Margin="12,12,12,6">
+        <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,Auto,*,Auto" Margin="12,12,12,6">
             <Button Grid.Column="0" Content="Ordner hinzufügen…" Click="OnAddFolderClick" IsEnabled="{Binding !IsScanning}" />
-            <TextBox Grid.Column="1" Margin="12,0" PlaceholderText="Suche (Titel, Artist, Album)…" Text="{Binding SearchText}" />
-            <TextBlock Grid.Column="2" VerticalAlignment="Center" MaxWidth="420"
+            <Button Grid.Column="1" Content="Traktor-Collection importieren…" Margin="6,0,0,0" Click="OnImportTraktorClick" IsEnabled="{Binding !IsScanning}" />
+            <TextBox Grid.Column="2" Margin="12,0" PlaceholderText="Suche (Titel, Artist, Album)…" Text="{Binding SearchText}" />
+            <TextBlock Grid.Column="3" VerticalAlignment="Center" MaxWidth="420"
                        TextTrimming="CharacterEllipsis" Text="{Binding StatusMessage}" />
         </Grid>
 

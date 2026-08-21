@@ -1,16 +1,17 @@
 namespace Cratebase.Data;
 
 /// <summary>
-/// DDL für das MVP-Schema. Nur die Tabellen, die Scanner/Player/Playlist-Baum
-/// tatsächlich benutzen (LibraryRoot, Track, PlaylistNode, PlaylistTrack) –
-/// CuePoint, SmartPlaylistRule, Tag/TrackTag, ExternalMapping, AnalysisJob,
-/// AiSuggestion, Midi/Slots folgen gemäß ARCHITECTURE.md Abschnitt 2 in
-/// späteren Phasen als eigene Migration, statt hier schon spekulativ
-/// mitzuschleppen. <see cref="schema_version"/> ist der Ansatzpunkt dafür.
+/// DDL für das MVP-Schema. Enthält inzwischen zusätzlich zu den Phase-1-Tabellen
+/// (LibraryRoot, Track, PlaylistNode, PlaylistTrack) die für den Traktor-Import
+/// (Phase 2) nötige cue_point-Tabelle. SmartPlaylistRule, Tag/TrackTag,
+/// ExternalMapping, AnalysisJob, AiSuggestion, Midi/Slots folgen gemäß
+/// ARCHITECTURE.md Abschnitt 2 weiterhin als eigene, additive Migrationen –
+/// alle CREATE-Statements sind bewusst "IF NOT EXISTS", sodass diese Datei auf
+/// einer bereits befüllten DB gefahrlos erneut läuft (s. DatabaseInitializer).
 /// </summary>
 internal static class Schema
 {
-    public const int CurrentVersion = 1;
+    public const int CurrentVersion = 2;
 
     public const string Sql = """
         PRAGMA foreign_keys = ON;
@@ -89,5 +90,19 @@ internal static class Schema
 
         CREATE INDEX IF NOT EXISTS ix_playlist_track_playlist ON playlist_track(playlist_node_id);
         CREATE INDEX IF NOT EXISTS ix_playlist_track_track ON playlist_track(track_id);
+
+        CREATE TABLE IF NOT EXISTS cue_point (
+            id              INTEGER PRIMARY KEY AUTOINCREMENT,
+            track_id        INTEGER NOT NULL REFERENCES track(id) ON DELETE CASCADE,
+            type            TEXT NOT NULL,
+            slot_index      INTEGER NULL,
+            position_ms     INTEGER NOT NULL,
+            loop_length_ms  INTEGER NULL,
+            label           TEXT NULL,
+            source          TEXT NOT NULL
+        );
+
+        CREATE INDEX IF NOT EXISTS ix_cue_point_track ON cue_point(track_id);
+        CREATE INDEX IF NOT EXISTS ix_cue_point_track_source ON cue_point(track_id, source);
         """;
 }

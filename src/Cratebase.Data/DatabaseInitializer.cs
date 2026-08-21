@@ -15,19 +15,19 @@ public static class DatabaseInitializer
             createCommand.ExecuteNonQuery();
         }
 
-        using (var checkCommand = connection.CreateCommand())
+        // Alle CREATE TABLE-Statements in Schema.Sql sind additiv (IF NOT EXISTS) – neue Tabellen
+        // für eine bestehende DB kosten also nur diesen Aufruf, keine echte Migration. Die
+        // schema_version-Zeile wird trotzdem gepflegt (insert-or-update), als Ansatzpunkt für den
+        // Tag, an dem eine Änderung mal *nicht* additiv ist und echte Migrationslogik braucht.
+        using (var upsertVersionCommand = connection.CreateCommand())
         {
-            checkCommand.Transaction = transaction;
-            checkCommand.CommandText = "SELECT COUNT(*) FROM schema_version;";
-            var hasVersion = (long)checkCommand.ExecuteScalar()! > 0;
-            if (!hasVersion)
-            {
-                using var insertCommand = connection.CreateCommand();
-                insertCommand.Transaction = transaction;
-                insertCommand.CommandText = "INSERT INTO schema_version (version) VALUES (@version);";
-                insertCommand.Parameters.AddWithValue("@version", Schema.CurrentVersion);
-                insertCommand.ExecuteNonQuery();
-            }
+            upsertVersionCommand.Transaction = transaction;
+            upsertVersionCommand.CommandText = """
+                DELETE FROM schema_version;
+                INSERT INTO schema_version (version) VALUES (@version);
+                """;
+            upsertVersionCommand.Parameters.AddWithValue("@version", Schema.CurrentVersion);
+            upsertVersionCommand.ExecuteNonQuery();
         }
 
         transaction.Commit();

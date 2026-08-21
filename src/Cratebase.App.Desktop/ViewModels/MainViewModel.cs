@@ -22,6 +22,7 @@ public partial class MainViewModel : ViewModelBase
     private readonly IPlaylistRepository _playlistRepository;
     private readonly ILibraryScanner _libraryScanner;
     private readonly IAudioPlayer _audioPlayer;
+    private readonly ICollectionImporter _traktorImporter;
 
     private readonly Dictionary<long, LibraryRoot> _libraryRootsById = new();
     private int _offset;
@@ -33,13 +34,15 @@ public partial class MainViewModel : ViewModelBase
         ILibraryRootRepository libraryRootRepository,
         IPlaylistRepository playlistRepository,
         ILibraryScanner libraryScanner,
-        IAudioPlayer audioPlayer)
+        IAudioPlayer audioPlayer,
+        ICollectionImporter traktorImporter)
     {
         _trackRepository = trackRepository;
         _libraryRootRepository = libraryRootRepository;
         _playlistRepository = playlistRepository;
         _libraryScanner = libraryScanner;
         _audioPlayer = audioPlayer;
+        _traktorImporter = traktorImporter;
 
         // Feuern auf einem LibVLC-Thread (s. IAudioPlayer-Doku) – zurück auf den UI-Thread posten,
         // bevor gebundene Properties gesetzt werden.
@@ -138,6 +141,41 @@ public partial class MainViewModel : ViewModelBase
         catch (Exception ex)
         {
             StatusMessage = $"Scan fehlgeschlagen: {ex.Message}";
+        }
+        finally
+        {
+            IsScanning = false;
+        }
+    }
+
+    /// <summary>Wird vom Code-behind nach dem NML-Auswahldialog aufgerufen (s. MainWindow.axaml.cs).</summary>
+    [RelayCommand]
+    private async Task ImportTraktorAsync(string nmlPath)
+    {
+        if (IsScanning || string.IsNullOrWhiteSpace(nmlPath))
+        {
+            return;
+        }
+
+        IsScanning = true; // teilt sich die "gerade beschäftigt"-Sperre mit dem Scan - beides schreibt in dieselbe DB
+        try
+        {
+            var progress = new Progress<ImportProgress>(p =>
+            {
+                StatusMessage = p.CurrentItem is null
+                    ? $"Traktor-Import fertig: {p.TracksMatched} zugeordnet, {p.TracksUnmatched} nicht gefunden (noch nicht gescannt?), {p.CuePointsImported} Cue-Points."
+                    : $"Traktor-Import … {p.EntriesSeen} Einträge gelesen ({p.TracksMatched} zugeordnet) – {p.CurrentItem}";
+            });
+
+            var summary = await _traktorImporter.ImportAsync(nmlPath, progress);
+            StatusMessage = $"Traktor-Import fertig: {summary.TracksMatched}/{summary.TotalEntries} Tracks zugeordnet, " +
+                             $"{summary.CuePointsImported} Cue-Points, {summary.PlaylistsCreated} Playlist-Knoten, {summary.PlaylistTracksLinked} Playlist-Zuordnungen.";
+            await ReloadPlaylistTreeAsync();
+            await ReloadTracksAsync(reset: true);
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Traktor-Import fehlgeschlagen: {ex.Message}";
         }
         finally
         {
