@@ -6,8 +6,17 @@ Lokaler Musik-Manager & DJ-Collection-Tool. Plattformunabhängige Desktop-App (L
 
 ## Starten
 
+Voraussetzung: [.NET SDK 8](https://dotnet.microsoft.com/download) installiert.
+
+- **Linux/Mac:** `./start.sh` (oder Doppelklick, falls der Dateimanager das anbietet)
+- **Windows:** `start.bat` doppelklicken
+
+Beide Skripte liegen im Repo-Root und starten direkt `Cratebase.App.Desktop`. `start.sh` fällt
+automatisch auf `~/.dotnet` zurück, falls `dotnet` nicht im PATH steht (z.B. auf rpm-ostree/
+immutable Linux-Distros ohne System-Paket).
+
+Manuell geht's auch so:
 ```
-export DOTNET_ROOT="$HOME/.dotnet" PATH="$HOME/.dotnet:$PATH"   # falls dotnet nicht schon im PATH ist
 dotnet run --project src/Cratebase.App.Desktop/Cratebase.App.Desktop.csproj
 ```
 
