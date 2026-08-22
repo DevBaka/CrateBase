@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Globalization;
 using Avalonia.Threading;
 using Cratebase.Core.Abstractions;
 using Cratebase.Core.Models;
@@ -127,6 +128,18 @@ public partial class MainViewModel : ViewModelBase
     public partial bool ShowDurationColumn { get; set; } = true;
 
     [ObservableProperty]
+    public partial bool ShowSubGenreColumn { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool ShowCommentColumn { get; set; }
+
+    [ObservableProperty]
+    public partial bool ShowComment2Column { get; set; }
+
+    [ObservableProperty]
+    public partial bool ShowColorColumn { get; set; }
+
+    [ObservableProperty]
     public partial bool ShowPathColumn { get; set; } = true;
 
     // --- Sidebar-Auswahl (ein Baum, s. RootNodes-Doku) ---
@@ -215,10 +228,10 @@ public partial class MainViewModel : ViewModelBase
 
     // --- Datei-Browser (jetzt Teil desselben Baums, s. RootNodes) ---
 
-    public ObservableCollection<FileBrowserEntryViewModel> FolderFiles { get; } = [];
-
-    [ObservableProperty]
-    public partial FileBrowserEntryViewModel? SelectedFolderFile { get; set; }
+    /// <summary>Zeigt dieselben Spalten wie die Bibliothek (Titel/Artist/Genre/BPM/... - s. Nutzer-Feedback
+    /// "warum nur Dateinamen") - für bereits gescannte Dateien echte, aus der DB nachgeladene Track-Objekte,
+    /// für den Rest "synthetische" Tracks (Id=0, s. Track.IsSynthetic) nur mit Dateiname/Pfad befüllt.</summary>
+    public ObservableCollection<Track> FolderTracks { get; } = [];
 
     [ObservableProperty]
     public partial int FolderScannedCount { get; set; }
@@ -226,16 +239,16 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     public partial int FolderTotalCount { get; set; }
 
-    /// <summary>Zeigt, was wirklich auf der Platte liegt (nicht nur, was schon in der DB steht) – Inhalt des
-    /// gewählten Ordners, mit <see cref="IncludeSubfolders"/> rekursiv, sonst nur die direkten Dateien.</summary>
-    /// <summary>Mehr als das zeigt die Liste nicht an (Größe/Scan-Status bleiben trotzdem für ALLE
-    /// gefundenen Dateien korrekt gezählt, s. unten) - bei "Unterordner einbeziehen" auf einem großen
-    /// Root (z.B. der ganzen Bibliothek) sonst zehntausende Zeilen mit je einem Stat-Syscall.</summary>
+    /// <summary>Mehr als das zeigt die Liste nicht an (Anzahl gescannt/gesamt bleibt trotzdem für ALLE
+    /// gefundenen Dateien korrekt, s. unten) - bei "Unterordner einbeziehen" auf einem großen Root
+    /// (z.B. der ganzen Bibliothek) sonst zehntausende Zeilen.</summary>
     private const int FolderFilesDisplayCap = 3000;
 
+    /// <summary>Zeigt, was wirklich auf der Platte liegt (nicht nur, was schon in der DB steht) – Inhalt des
+    /// gewählten Ordners, mit <see cref="IncludeSubfolders"/> rekursiv, sonst nur die direkten Dateien.</summary>
     private async Task ReloadFolderFilesAsync()
     {
-        FolderFiles.Clear();
+        FolderTracks.Clear();
         FolderScannedCount = 0;
         FolderTotalCount = 0;
 
@@ -261,15 +274,16 @@ public partial class MainViewModel : ViewModelBase
         var searchOption = IncludeSubfolders ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
         var rootPathForRelative = matchedRoot?.Path;
 
-        // Enumeration, Fingerprint-Abgleich UND die (blockierenden) Datei-Stat-Aufrufe laufen
-        // komplett im Hintergrund-Thread - vorher liefen die Stat-Aufrufe pro Datei in einer
-        // foreach-Schleife auf dem UI-Thread, bei "Unterordner einbeziehen" auf einem großen
-        // Ordner (z.B. dem kompletten Bibliotheks-Root) spürbar langsam/einfrierend.
-        var (entries, totalFound, scannedCount) = await Task.Run(() =>
+        // Enumeration + Fingerprint-Abgleich (billige Dictionary-Lookups, kein I/O) laufen im
+        // Hintergrund für ALLE gefundenen Dateien; welche Track-Id (falls vorhanden) zu welcher
+        // angezeigten Datei gehört, wird hier gesammelt - die vollen Metadaten kommen danach in
+        // einem einzigen Bulk-Fetch (GetByIdsAsync), nicht mit einer Abfrage pro Datei.
+        var (displayed, scannedTrackIds, totalFound, scannedCount) = await Task.Run(() =>
         {
             var files = SafeListAudioFiles(node.FullPath, searchOption);
             var scanned = 0;
-            var built = new List<FileBrowserEntryViewModel>(Math.Min(files.Count, FolderFilesDisplayCap));
+            var shown = new List<(string File, string RelativePath, long? TrackId)>(Math.Min(files.Count, FolderFilesDisplayCap));
+            var ids = new List<long>();
 
             for (var i = 0; i < files.Count; i++)
             {
@@ -277,36 +291,47 @@ public partial class MainViewModel : ViewModelBase
                 var relativePath = rootPathForRelative is not null
                     ? Path.GetRelativePath(rootPathForRelative, file).Replace(Path.DirectorySeparatorChar, '/')
                     : file;
-                var isScanned = fingerprints?.ContainsKey(relativePath) == true;
-                if (isScanned)
+
+                long? trackId = null;
+                if (fingerprints is not null && fingerprints.TryGetValue(relativePath, out var fp))
                 {
+                    trackId = fp.TrackId;
                     scanned++;
                 }
 
-                if (i >= FolderFilesDisplayCap)
+                if (i < FolderFilesDisplayCap)
                 {
-                    continue; // weiterzählen für scanned/totalFound, aber keinen Eintrag mehr bauen (kein Stat-Aufruf)
+                    shown.Add((file, relativePath, trackId));
+                    if (trackId is not null)
+                    {
+                        ids.Add(trackId.Value);
+                    }
                 }
-
-                double sizeMb;
-                try
-                {
-                    sizeMb = new FileInfo(file).Length / (1024.0 * 1024.0);
-                }
-                catch (Exception)
-                {
-                    sizeMb = 0;
-                }
-
-                built.Add(new FileBrowserEntryViewModel(Path.GetFileName(file), file, relativePath, sizeMb, isScanned));
             }
 
-            return (built, files.Count, scanned);
+            return (shown, ids, files.Count, scanned);
         });
 
-        foreach (var entry in entries)
+        var fullTracksById = (await _trackRepository.GetByIdsAsync(scannedTrackIds)).ToDictionary(t => t.Id);
+
+        foreach (var (file, relativePath, trackId) in displayed)
         {
-            FolderFiles.Add(entry);
+            if (trackId is not null && fullTracksById.TryGetValue(trackId.Value, out var realTrack))
+            {
+                FolderTracks.Add(realTrack);
+            }
+            else
+            {
+                FolderTracks.Add(new Track
+                {
+                    LibraryRootId = matchedRoot?.Id ?? 0,
+                    RelativePath = relativePath,
+                    Format = Path.GetExtension(file).TrimStart('.').ToLowerInvariant(),
+                    DateAddedUtc = DateTime.UtcNow,
+                    DateModifiedUtc = DateTime.UtcNow,
+                    // Titel/Artist/etc. bleiben null -> DisplayTitle fällt auf den Dateinamen zurück.
+                });
+            }
         }
 
         FolderScannedCount = scannedCount;
@@ -622,28 +647,6 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
-    [RelayCommand]
-    private async Task PlayFolderFileAsync(FileBrowserEntryViewModel entry)
-    {
-        if (!entry.IsScanned)
-        {
-            StatusMessage = "Diese Datei ist noch nicht gescannt – erst „Diesen Ordner scannen“, dann abspielbar.";
-            return;
-        }
-
-        var root = FindLibraryRootForPath(entry.FullPath);
-        if (root is null)
-        {
-            return;
-        }
-
-        var track = await _trackRepository.FindByPathAsync(root.Id, entry.RelativePath);
-        if (track is not null)
-        {
-            PlayTrack(track);
-        }
-    }
-
     /// <summary>Wird vom Code-behind nach dem NML-Auswahldialog aufgerufen (s. MainWindow.axaml.cs).</summary>
     [RelayCommand]
     private async Task ImportTraktorAsync(string nmlPath)
@@ -858,14 +861,228 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     public partial Track? SelectedTrack { get; set; }
 
+    // --- Tag-Editor ("Edit-Modus") ---
+    // Eigene Felder statt direkt an Track-Properties zu binden: Track ist bewusst ein reines
+    // Datenmodell ohne INotifyPropertyChanged (Cratebase.Core kennt kein UI-Framework, s.
+    // ARCHITECTURE.md Abschnitt 3) - Bindings brauchen deshalb einen ObservableObject-Umweg über
+    // das ViewModel, mit explizitem Speichern statt Live-Sync in beide Richtungen.
+
+    [ObservableProperty]
+    public partial bool IsEditMode { get; set; }
+
+    [RelayCommand]
+    private void ToggleEditMode() => IsEditMode = !IsEditMode;
+
+    [ObservableProperty]
+    public partial string? EditTitle { get; set; }
+
+    [ObservableProperty]
+    public partial string? EditArtist { get; set; }
+
+    [ObservableProperty]
+    public partial string? EditAlbum { get; set; }
+
+    [ObservableProperty]
+    public partial string? EditGenre { get; set; }
+
+    [ObservableProperty]
+    public partial string? EditSubGenre { get; set; }
+
+    [ObservableProperty]
+    public partial string? EditComment { get; set; }
+
+    [ObservableProperty]
+    public partial string? EditComment2 { get; set; }
+
+    [ObservableProperty]
+    public partial string? EditColorTag { get; set; }
+
+    [ObservableProperty]
+    public partial string? EditBpmText { get; set; }
+
+    [ObservableProperty]
+    public partial string? EditKey { get; set; }
+
+    /// <summary>Autocomplete-Vorschläge je Feld - "was ich dort einspeichere, soll ich per Dropdown wieder
+    /// finden" (Nutzer-Feedback): einfach alle schon in der DB benutzten Werte dieser Spalte, keine
+    /// separate Vokabular-Tabelle nötig. Einmal geladen, wenn der Edit-Modus aktiviert wird, und nach
+    /// jedem Speichern neu (damit ein gerade neu getippter Wert sofort für den nächsten Track vorschlägt).</summary>
+    public ObservableCollection<string> GenreSuggestions { get; } = [];
+    public ObservableCollection<string> SubGenreSuggestions { get; } = [];
+    public ObservableCollection<string> CommentSuggestions { get; } = [];
+    public ObservableCollection<string> Comment2Suggestions { get; } = [];
+    public ObservableCollection<string> ColorSuggestions { get; } = [];
+
+    private bool _isLoadingEditFields;
+
+    partial void OnIsEditModeChanged(bool value)
+    {
+        if (!value)
+        {
+            return;
+        }
+
+        _ = LoadEditSuggestionsAsync();
+        LoadEditFieldsFromSelectedTrack();
+    }
+
+    partial void OnSelectedTrackChanged(Track? value)
+    {
+        if (IsEditMode)
+        {
+            LoadEditFieldsFromSelectedTrack();
+        }
+    }
+
+    /// <summary>Füllt die Edit-Felder aus dem gerade gewählten Track - der Guard verhindert, dass dieses
+    /// reine Anzeigen selbst schon als "Feld geändert" durchgeht (hier gibt's aktuell keine Auto-Save-
+    /// Logik pro Tastendruck, aber die Guard-Variable ist der klare Ansatzpunkt, falls das mal dazukommt).</summary>
+    private void LoadEditFieldsFromSelectedTrack()
+    {
+        _isLoadingEditFields = true;
+        try
+        {
+            var track = SelectedTrack;
+            EditTitle = track?.Title;
+            EditArtist = track?.Artist;
+            EditAlbum = track?.Album;
+            EditGenre = track?.GenreRaw;
+            EditSubGenre = track?.SubGenre;
+            EditComment = track?.Comment;
+            EditComment2 = track?.Comment2;
+            EditColorTag = track?.ColorTag;
+            EditBpmText = track?.Bpm?.ToString("0.##", CultureInfo.InvariantCulture);
+            EditKey = track?.MusicalKey;
+        }
+        finally
+        {
+            _isLoadingEditFields = false;
+        }
+    }
+
+    private async Task LoadEditSuggestionsAsync()
+    {
+        async Task Fill(ObservableCollection<string> target, TrackTextField field)
+        {
+            var values = await _trackRepository.GetDistinctTextValuesAsync(field);
+            target.Clear();
+            foreach (var value in values)
+            {
+                target.Add(value);
+            }
+        }
+
+        await Task.WhenAll(
+            Fill(GenreSuggestions, TrackTextField.GenreRaw),
+            Fill(SubGenreSuggestions, TrackTextField.SubGenre),
+            Fill(CommentSuggestions, TrackTextField.Comment),
+            Fill(Comment2Suggestions, TrackTextField.Comment2),
+            Fill(ColorSuggestions, TrackTextField.ColorTag));
+    }
+
+    /// <summary>Wird vom Code-behind ausgelöst, wenn eines der Edit-Felder den Fokus verliert (s. MainWindow.axaml.cs) -
+    /// bewusst kein Speichern pro Tastendruck (unnötig viele DB-Writes), aber auch kein separater "Speichern"-Button
+    /// nötig ("einfach und schnell bearbeiten", Nutzer-Feedback).</summary>
+    [RelayCommand]
+    private async Task SaveEditedMetadataAsync()
+    {
+        if (_isLoadingEditFields || SelectedTrack is not { IsSynthetic: false } track)
+        {
+            return; // nichts gewählt, oder eine noch nicht gescannte Datei ohne DB-Datensatz zum Speichern
+        }
+
+        var changed = false;
+        changed |= SetIfDifferent(track, t => t.Title, (t, v) => t.Title = v, NullIfBlank(EditTitle));
+        changed |= SetIfDifferent(track, t => t.Artist, (t, v) => t.Artist = v, NullIfBlank(EditArtist));
+        changed |= SetIfDifferent(track, t => t.Album, (t, v) => t.Album = v, NullIfBlank(EditAlbum));
+        changed |= SetIfDifferent(track, t => t.GenreRaw, (t, v) => t.GenreRaw = v, NullIfBlank(EditGenre));
+        changed |= SetIfDifferent(track, t => t.SubGenre, (t, v) => t.SubGenre = v, NullIfBlank(EditSubGenre));
+        changed |= SetIfDifferent(track, t => t.Comment, (t, v) => t.Comment = v, NullIfBlank(EditComment));
+        changed |= SetIfDifferent(track, t => t.Comment2, (t, v) => t.Comment2 = v, NullIfBlank(EditComment2));
+        changed |= SetIfDifferent(track, t => t.ColorTag, (t, v) => t.ColorTag = v, NullIfBlank(EditColorTag));
+        changed |= SetIfDifferent(track, t => t.MusicalKey, (t, v) => t.MusicalKey = v, NullIfBlank(EditKey));
+
+        var parsedBpm = ParseBpm(EditBpmText);
+        if (track.Bpm != parsedBpm)
+        {
+            track.Bpm = parsedBpm;
+            changed = true;
+        }
+
+        if (!changed)
+        {
+            return;
+        }
+
+        track.DateModifiedUtc = DateTime.UtcNow;
+        await _trackRepository.UpdateAsync(track);
+        StatusMessage = $"„{track.DisplayTitle}“ gespeichert.";
+
+        RefreshTrackInLists(track);
+        await LoadEditSuggestionsAsync(); // neu getippte Werte sofort als Vorschlag verfügbar
+    }
+
+    private static bool SetIfDifferent(Track track, Func<Track, string?> get, Action<Track, string?> set, string? newValue)
+    {
+        if (string.Equals(get(track), newValue, StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        set(track, newValue);
+        return true;
+    }
+
+    private static string? NullIfBlank(string? value) => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+
+    private static double? ParseBpm(string? text) =>
+        !string.IsNullOrWhiteSpace(text) && double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out var bpm)
+            ? bpm
+            : null;
+
+    /// <summary>Track ist absichtlich kein ObservableObject (s. Kommentar oben) - ein In-Place-Ändern der
+    /// Properties allein aktualisiert deshalb keine gebundene DataGrid-Zeile. Entfernen+Wiedereinfügen an
+    /// derselben Stelle zwingt die betroffenen Listen zu einem frischen Re-Bind, ohne dass Track dafür
+    /// INotifyPropertyChanged bräuchte. SelectedTrack kurz auf null und zurück, weil ein erneutes Zuweisen
+    /// derselben Objektreferenz sonst als "unverändert" gilt und keine Reselektion auslöst.</summary>
+    private void RefreshTrackInLists(Track track)
+    {
+        ReplaceInCollection(Tracks, track);
+        ReplaceInCollection(FolderTracks, track);
+
+        if (SelectedTrack is not null && ReferenceEquals(SelectedTrack, track))
+        {
+            SelectedTrack = null;
+            SelectedTrack = track;
+        }
+    }
+
+    private static void ReplaceInCollection(ObservableCollection<Track> collection, Track track)
+    {
+        for (var i = 0; i < collection.Count; i++)
+        {
+            if (collection[i].Id == track.Id)
+            {
+                collection.RemoveAt(i);
+                collection.Insert(i, track);
+                return;
+            }
+        }
+    }
+
     // --- Wiedergabe ---
 
     [RelayCommand]
     private void PlaySelectedTrack()
     {
-        if (SelectedTrack is not null)
+        switch (SelectedTrack)
         {
-            PlayTrack(SelectedTrack);
+            case { IsSynthetic: false } track:
+                PlayTrack(track);
+                break;
+            case { IsSynthetic: true }:
+                StatusMessage = "Diese Datei ist noch nicht gescannt – erst „Diesen Ordner scannen“, dann abspielbar.";
+                break;
         }
     }
 

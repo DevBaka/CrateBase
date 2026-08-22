@@ -68,12 +68,14 @@ public partial class MainWindow : Window
         }
     }
 
-    /// <summary>Doppelklick im Datei-Browser lädt den Song direkt (statt nur über den ▶-Button je Zeile).</summary>
-    private void OnFolderFileDoubleTapped(object? sender, TappedEventArgs e)
+    /// <summary>Speichert die Edit-Felder, sobald eines davon den Fokus verliert (Tab, Klick auf ein
+    /// anderes Feld, Klick auf einen anderen Track) - kein separater "Speichern"-Button nötig. Im
+    /// Code-behind statt per Binding im ViewModel, weil LostFocus als reines UI-Ereignis dort hingehört.</summary>
+    private void OnEditFieldLostFocus(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        if (DataContext is MainViewModel { SelectedFolderFile: { } entry } viewModel)
+        if (DataContext is MainViewModel viewModel && viewModel.SaveEditedMetadataCommand.CanExecute(null))
         {
-            viewModel.PlayFolderFileCommand.Execute(entry);
+            viewModel.SaveEditedMetadataCommand.Execute(null);
         }
     }
 

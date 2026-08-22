@@ -689,3 +689,112 @@ Alle drei Fixes bauen sauber und die App startet weiterhin fehlerfrei. Die eigen
 GUI beobachten/bestätigen (Wayland-Klick-Automatisierung bleibt auf dem Zielsystem unzuverlässig,
 s. frühere Abschnitte) - bitte einmal selbst gegenprüfen, ob "Diesen Ordner scannen" jetzt ohne
 Hänger durchläuft und der Baum aufgeklappt bleibt.
+
+## 14. Tag-Editor: Metadaten-Spalten im Datei-Browser + Edit-Modus
+
+Ausgangslage: der Datei-Browser (Abschnitt 12/13) zeigte pro Datei nur Dateiname, Größe und
+Scan-Status - kein Titel, Artist, Genre, BPM etc., selbst wenn die Datei längst gescannt und in
+der DB war. Zusätzlich gab es keine Möglichkeit, Metadaten überhaupt zu bearbeiten - Genre,
+Kommentare, Farbmarkierung mussten extern gesetzt werden.
+
+### 14.1 Schema: sub_genre, comment2, color_tag
+
+Neue `track`-Spalten `sub_genre`, `comment2`, `color_tag` (alle `TEXT NULL`, Freitext - auch
+`color_tag`: bewusst keine feste Palette/Enum, sondern wie Genre/Kommentar per Autocomplete aus
+bereits benutzten Werten befüllt). `Schema.CurrentVersion` auf 3, Migration über
+`DatabaseInitializer.ApplyTrackColumnMigrations`: `PRAGMA table_info(track)` prüft, welche Spalten
+schon existieren (SQLite kennt kein `ALTER TABLE ... ADD COLUMN IF NOT EXISTS`), fehlende werden
+per `ALTER TABLE` nachgezogen. Idempotent (gegen eine Kopie der echten ~100k-Tracks-DB doppelt
+ausgeführt, kein Fehler) und deckt sowohl bestehende als auch frische DBs ab (letztere bekommen
+die Spalten schon direkt aus der CREATE-TABLE-DDL).
+
+### 14.2 Genre/Kommentar werden "sticky" - Rescan überschreibt sie nicht mehr
+
+Bisher hat jeder Rescan `genre_raw` und `comment` aus den Datei-Tags neu geschrieben (wie
+Titel/Artist/BPM auch). Das ist ein Problem, sobald man diese Felder manuell im Tag-Editor
+pflegt: ein späterer Rescan (z.B. weil neue Dateien dazukamen) hätte die manuelle Arbeit wieder
+verworfen. `TrackRepository.UpsertAsync` behandelt `genre_raw`/`comment` deshalb jetzt wie
+`rating`/`play_count`: im `ON CONFLICT ... DO UPDATE SET` werden sie **nicht** mehr überschrieben,
+sobald ein Track einmal existiert - nur beim allerersten `INSERT` (neuer Track) kommen sie noch
+aus den gescannten Tags. Manuelle Edits (Tag-Editor) und DJ-Software-Importe (Traktor etc., die
+über `UpdateAsync` laufen, nicht `UpsertAsync`) sind davon nicht betroffen und überschreiben
+weiterhin gezielt.
+
+### 14.3 Datei-Browser zeigt jetzt echte Track-Daten
+
+`MainViewModel.FolderTracks` (`ObservableCollection<Track>`) ersetzt das bisherige
+`FolderFiles`/`FileBrowserEntryViewModel`-Paar. `ReloadFolderFilesAsync` läuft weiterhin komplett
+in `Task.Run` (Lehren aus 13.3 bleiben gültig): Enumeration + Fingerprint-Abgleich über *alle*
+gefundenen Dateien (günstig, nur Pfad-Lookup), aber ein **einziger** `GetByIdsAsync`-Bulk-Call für
+die vollen Track-Objekte der angezeigten (gedeckelten, `FolderFilesDisplayCap = 3000`) Teilmenge -
+kein Query pro Datei. Noch nicht gescannte Dateien bekommen einen synthetischen `Track` mit
+`Id = 0` (`Track.IsSynthetic`) und nur Pfad/Format gefüllt; `PlaySelectedTrack` und der Tag-Editor
+lehnen solche Platzhalter mit einer klaren Statusmeldung ab, statt mit `NullReferenceException`
+oder stillem Nichtstun zu reagieren. Die Datei-Browser-`DataGrid` teilt sich Spaltenlayout und
+`SelectedTrack`-Bindung mit der Bibliotheks-`DataGrid` (bewusst dupliziertes `DataGrid.Columns` in
+der AXAML statt Sharing-Mechanismus - Avalonia bietet dafür keinen praktikablen Weg, und zwei
+kurze Column-Listen sind wartbarer als eine künstliche Abstraktion dafür).
+
+### 14.4 Edit-Modus
+
+Toggle-Button in der Bibliotheks-Kopfzeile (`IsEditMode`) blendet ein Panel zwischen Songliste und
+Transportleiste ein (`Border` mit `DockPanel.Dock="Bottom"`, `IsVisible="{Binding IsEditMode}"`).
+Die Songliste schrumpft dabei ganz ohne eigene Row-Umschaltlogik - sie sitzt im letzten,
+undockten `Panel`, das per Avalonia-`DockPanel`-Verhalten (`LastChildFill`) automatisch den nach
+allen `Dock`-Kindern verbleibenden Platz bekommt.
+
+Editierbare Felder: Titel/Artist/Album/BPM/Key als normale `TextBox`, Genre/Sub-Genre/Kommentar/
+Kommentar 2/Farbe als `AutoCompleteBox` (`FilterMode="Contains"`) - letztere fünf, weil dafür auch
+Vorschläge existieren (s. 14.5). `Track` ist bewusst kein `ObservableObject` (Cratebase.Core bleibt
+frei von UI-Framework-Referenzen), deshalb binden die Panel-Felder nicht direkt an
+`SelectedTrack.X`, sondern an eigene `Edit*`-Properties im ViewModel, die bei Trackwechsel
+(`OnSelectedTrackChanged`) bzw. beim Aktivieren des Edit-Modus (`OnIsEditModeChanged`) aus dem
+gewählten Track befüllt werden.
+
+Gespeichert wird nicht pro Tastendruck, sondern wenn ein Feld den Fokus verliert
+(`LostFocus="OnEditFieldLostFocus"` im Code-behind → `SaveEditedMetadataCommand`) - Tab, Klick auf
+ein anderes Feld oder Klick auf einen anderen Track lösen das aus. `SaveEditedMetadataAsync`
+vergleicht jedes `Edit*`-Feld gegen den aktuellen Wert auf `SelectedTrack`, schreibt nur bei
+tatsächlicher Änderung (`UpdateAsync`, kein Upsert - das würde `LastPlayedAtUtc`/`Rating` etc.
+unnötig anfassen), und aktualisiert danach die Vorschlagslisten neu, damit ein frisch getippter
+Wert sofort für den nächsten Track vorschlägt. Da `Track` kein `INotifyPropertyChanged` hat, würde
+das reine In-Place-Ändern der Properties keine gebundene `DataGrid`-Zeile visuell aktualisieren -
+`RefreshTrackInLists` entfernt den Track darum aus `Tracks`/`FolderTracks` und fügt ihn an
+derselben Stelle wieder ein (erzwingt Re-Bind der Zeile), und setzt `SelectedTrack` kurz auf
+`null` und zurück (sonst gilt ein erneutes Zuweisen derselben Referenz als "unverändert", keine
+Reselektion).
+
+### 14.5 Autocomplete-Vorschläge aus bereits benutzten Werten
+
+Kein separates Vokabular: `ITrackRepository.GetDistinctTextValuesAsync(TrackTextField)` liefert
+einfach `SELECT DISTINCT <spalte> FROM track WHERE <spalte> IS NOT NULL AND TRIM(<spalte>) != ''
+ORDER BY <spalte> COLLATE NOCASE` - `TrackTextField` ist ein Enum (`GenreRaw`, `SubGenre`,
+`Comment`, `Comment2`, `ColorTag`), damit kein roher Spaltenname von außen durchgereicht wird.
+Gegen die echte ~100k-Tracks-DB liefert das für `GenreRaw` z.B. 1.410 unterschiedliche Werte - die
+`AutoCompleteBox`-Instanzen im Edit-Panel filtern das serverseitig schon distincte, aber
+client-seitig gefilterte (`FilterMode="Contains"`) `ItemsSource` weiter auf das, was gerade
+getippt wird (z.B. "ban" findet "banger"), auswählbar per Enter oder Mausklick auf den Vorschlag.
+
+### 14.6 Verifiziert
+
+Datenschicht (Schema/Migration/Repository) gegen eine Kopie der echten Produktions-DB getestet
+(Migration doppelt ausgeführt: kein Fehler; `UpdateAsync` setzt alle fünf neuen/geänderten Felder
+korrekt; simulierter Rescan via `UpsertAsync` lässt `GenreRaw`/`Comment` unangetastet;
+`GetDistinctTextValuesAsync` liefert echte 1.410 Genre-Werte; `GetByIdsAsync` filtert unbekannte
+IDs korrekt raus). Build sauber (0 Fehler/Warnungen). Die komplette Feature-Kette wurde zusätzlich
+**live gegen die echte, laufende App mit der echten ~99k-Tracks-Bibliothek** durchgeklickt (nicht
+nur isoliert getestet): Edit-Modus ein-/ausschalten, Panel erscheint/verschwindet zwischen Liste
+und Transportleiste, Track auswählen befüllt die Felder korrekt, ein in "Kommentar" getippter Wert
+("banger") wird beim Verlassen des Felds tatsächlich in der Produktions-DB persistiert (per
+direkter SQLite-Abfrage bestätigt), und beim erneuten Tippen eines Präfixes ("ban") in einem
+anderen Track erscheint ein Autocomplete-Dropdown mit real existierenden, das Präfix enthaltenden
+Kommentarwerten aus der Bibliothek. Alle für diesen Test gesetzten Werte wurden danach wieder auf
+ihren ursprünglichen (leeren) Zustand zurückgesetzt, die Produktions-DB ist unverändert gegenüber
+vor diesem Test. Der Datei-Browser mit den neuen Spalten wurde ebenfalls live bestätigt (Auswahl
+eines Schnellzugriff-Ordners zeigt dieselben Spalten wie die Bibliotheksansicht).
+
+Bekannte Einschränkung: manche real vorhandenen `comment`-Werte in der Bibliothek sind sehr lange
+Promo-Freitexte (aus ID3-Kommentar-Tags einzelner Release-Dateien, nicht durch dieses Feature
+erzeugt) - das macht die Autocomplete-Liste für dieses Feld unübersichtlicher als z.B. bei Genre.
+Kein Bug dieses Features, aber ein möglicher Kandidat für eine spätere Verbesserung (z.B. Kappung
+sehr langer Vorschlagswerte in der Anzeige).

@@ -11,7 +11,22 @@ namespace Cratebase.Data;
 /// </summary>
 internal static class Schema
 {
-    public const int CurrentVersion = 2;
+    public const int CurrentVersion = 3;
+
+    /// <summary>
+    /// Spalten, die nachträglich zu einer bestehenden `track`-Tabelle dazukamen (Tag-Editor,
+    /// s. ARCHITECTURE.md Abschnitt 14). SQLite kennt kein "ALTER TABLE ... ADD COLUMN IF NOT
+    /// EXISTS" - DatabaseInitializer prüft deshalb selbst per PRAGMA table_info, ob die Spalte
+    /// schon existiert, bevor es das ALTER ausführt (sonst Fehler bei jedem zweiten Start).
+    /// Für brandneue DBs stehen dieselben Spalten zusätzlich direkt im CREATE TABLE unten -
+    /// die Prüfung sorgt dann einfach dafür, dass hier nichts doppelt versucht wird.
+    /// </summary>
+    public static readonly (string Column, string Ddl)[] TrackColumnMigrations =
+    [
+        ("comment2", "ALTER TABLE track ADD COLUMN comment2 TEXT NULL;"),
+        ("sub_genre", "ALTER TABLE track ADD COLUMN sub_genre TEXT NULL;"),
+        ("color_tag", "ALTER TABLE track ADD COLUMN color_tag TEXT NULL;"),
+    ];
 
     public const string Sql = """
         PRAGMA foreign_keys = ON;
@@ -47,7 +62,10 @@ internal static class Schema
             track_number     INTEGER NULL,
             year             INTEGER NULL,
             genre_raw        TEXT NULL,
+            sub_genre        TEXT NULL,
             comment          TEXT NULL,
+            comment2         TEXT NULL,
+            color_tag        TEXT NULL,
 
             bpm              REAL NULL,
             musical_key      TEXT NULL,

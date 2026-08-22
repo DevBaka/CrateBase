@@ -30,7 +30,13 @@ public sealed class Track
     public int? TrackNumber { get; set; }
     public int? Year { get; set; }
     public string? GenreRaw { get; set; }
+    public string? SubGenre { get; set; }
     public string? Comment { get; set; }
+    public string? Comment2 { get; set; }
+
+    /// <summary>Freitext-Farbmarkierung (wie Rekordbox/Serato-Farbtags) - bewusst kein Enum/feste
+    /// Palette, damit sie sich wie Genre/Kommentar per Autocomplete aus bereits benutzten Werten füllt.</summary>
+    public string? ColorTag { get; set; }
 
     public double? Bpm { get; set; }
     public string? MusicalKey { get; set; }
@@ -54,4 +60,8 @@ public sealed class Track
     public string DisplayArtist => string.IsNullOrWhiteSpace(Artist) ? "Unbekannt" : Artist!;
 
     public string DisplayDuration => Duration.ToString(Duration.TotalHours >= 1 ? @"h\:mm\:ss" : @"m\:ss");
+
+    /// <summary>True für vom Datei-Browser erzeugte Platzhalter (noch nicht gescannte Datei, Id nie
+    /// vergeben) - echte, gespeicherte Tracks haben immer Id &gt; 0 (AUTOINCREMENT beginnt bei 1).</summary>
+    public bool IsSynthetic => Id == 0;
 }

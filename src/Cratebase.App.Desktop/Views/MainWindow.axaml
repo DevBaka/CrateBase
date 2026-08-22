@@ -134,7 +134,19 @@
                 <DockPanel Grid.Column="1" Margin="0,0,12,12">
 
                     <!-- Kopfzeile: Ordner/Import-Buttons + Spalten + Unterordner-Schalter + Suche + Status -->
-                    <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto" Margin="14,0,0,10">
+                    <Grid DockPanel.Dock="Top" Margin="14,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <!-- Feste Mindestbreite statt reinem "*": bei vielen Buttons links soll die Suche
+                                 nicht auf (fast) 0 zusammengequetscht werden - dann eher die Statusmeldung rechts
+                                 kürzer anzeigen (die hat schon TextTrimming+MaxWidth). -->
+                            <ColumnDefinition Width="*" MinWidth="200" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
                         <Button Grid.Column="0" Content="Ordner hinzufügen…" Click="OnAddFolderClick" IsEnabled="{Binding !IsScanning}" />
                         <Button Grid.Column="1" Content="Traktor-Collection importieren…" Margin="6,0,0,0" Click="OnImportTraktorClick" IsEnabled="{Binding !IsScanning}" />
                         <Button Grid.Column="2" Content="Spalten ▾" Margin="6,0,0,0" IsVisible="{Binding IsShowingTrackGrid}">
@@ -144,19 +156,26 @@
                                         <TextBlock Text="Sichtbare Spalten" FontSize="11" Foreground="{StaticResource TextFaintBrush}" />
                                         <CheckBox Content="Album" FontSize="12.5" IsChecked="{Binding ShowAlbumColumn}" />
                                         <CheckBox Content="Genre" FontSize="12.5" IsChecked="{Binding ShowGenreColumn}" />
+                                        <CheckBox Content="Sub-Genre" FontSize="12.5" IsChecked="{Binding ShowSubGenreColumn}" />
                                         <CheckBox Content="BPM" FontSize="12.5" IsChecked="{Binding ShowBpmColumn}" />
                                         <CheckBox Content="Key" FontSize="12.5" IsChecked="{Binding ShowKeyColumn}" />
                                         <CheckBox Content="Dauer" FontSize="12.5" IsChecked="{Binding ShowDurationColumn}" />
+                                        <CheckBox Content="Kommentar" FontSize="12.5" IsChecked="{Binding ShowCommentColumn}" />
+                                        <CheckBox Content="Kommentar 2" FontSize="12.5" IsChecked="{Binding ShowComment2Column}" />
+                                        <CheckBox Content="Farbe" FontSize="12.5" IsChecked="{Binding ShowColorColumn}" />
                                         <CheckBox Content="Pfad" FontSize="12.5" IsChecked="{Binding ShowPathColumn}" />
                                     </StackPanel>
                                 </Flyout>
                             </Button.Flyout>
                         </Button>
-                        <CheckBox Grid.Column="3" Content="Unterordner einbeziehen" FontSize="11.5" Margin="10,0,0,0"
+                        <ToggleButton Grid.Column="3" Content="✎ Edit-Modus" Margin="6,0,0,0" IsVisible="{Binding IsShowingTrackGrid}"
+                                      IsChecked="{Binding IsEditMode, Mode=TwoWay}"
+                                      ToolTip.Tip="Metadaten (Genre, Sub-Genre, Kommentare, Farbe, Titel, Artist, BPM, Key …) direkt in der App bearbeiten." />
+                        <CheckBox Grid.Column="4" Content="Unterordner einbeziehen" FontSize="11.5" Margin="10,0,0,0"
                                   VerticalAlignment="Center" IsChecked="{Binding IncludeSubfolders}"
                                   ToolTip.Tip="Zeigt auch Tracks/Dateien aus verschachtelten Playlisten bzw. Unterordnern, nicht nur die direkten. Gilt pro Ordner und wird sich für diese Sitzung gemerkt - andere Ordner sind davon unabhängig." />
-                        <TextBox Grid.Column="4" Margin="12,0" PlaceholderText="Suche (Titel, Artist, Album)…" Text="{Binding SearchText}" IsVisible="{Binding IsShowingTrackGrid}" />
-                        <TextBlock Grid.Column="5" VerticalAlignment="Center" MaxWidth="340" FontSize="11.5" Foreground="{StaticResource TextFaintBrush}"
+                        <TextBox Grid.Column="5" Margin="12,0" PlaceholderText="Suche (Titel, Artist, Album)…" Text="{Binding SearchText}" IsVisible="{Binding IsShowingTrackGrid}" />
+                        <TextBlock Grid.Column="6" VerticalAlignment="Center" MaxWidth="300" FontSize="11.5" Foreground="{StaticResource TextFaintBrush}"
                                    TextTrimming="CharacterEllipsis" Text="{Binding StatusMessage}" />
                     </Grid>
 
@@ -188,6 +207,75 @@
                             <TextBlock Grid.Column="5" Text="🔊" VerticalAlignment="Center" Margin="4,0" FontSize="13" />
                             <Slider Grid.Column="6" Minimum="0" Maximum="100" Value="{Binding Volume, Mode=TwoWay}" VerticalAlignment="Center" />
                         </Grid>
+                    </Border>
+
+                    <!-- Tag-Editor: erscheint zwischen Songliste und Transportleiste, wenn Edit-Modus aktiv ist
+                         ("Im Edit mode soll die song liste etwas verkleinert werden...", Nutzer-Feedback). Feste
+                         Höhe statt eigener Row-Umschaltlogik - die Songliste sitzt im Panel darüber, das per
+                         DockPanel-LastChildFill automatisch schrumpft, sobald dieser Block eingeblendet wird. -->
+                    <Border DockPanel.Dock="Bottom" IsVisible="{Binding IsEditMode}" Padding="18,12"
+                            Background="{StaticResource BgSurfaceBrush}" BorderThickness="0,1,0,0" BorderBrush="{StaticResource BorderBrush1}">
+                        <StackPanel Spacing="8">
+                            <TextBlock FontSize="11.5" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}">
+                                <Run Text="Metadaten bearbeiten" /><Run Text=" — " /><Run Text="{Binding SelectedTrack.DisplayTitle}" />
+                            </TextBlock>
+
+                            <Grid ColumnDefinitions="2*,1.4*,1.4*,0.7*,0.6*" ColumnSpacing="10">
+                                <StackPanel Grid.Column="0" Spacing="3">
+                                    <TextBlock Text="Titel" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
+                                    <TextBox Text="{Binding EditTitle, Mode=TwoWay}" LostFocus="OnEditFieldLostFocus" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Spacing="3">
+                                    <TextBlock Text="Artist" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
+                                    <TextBox Text="{Binding EditArtist, Mode=TwoWay}" LostFocus="OnEditFieldLostFocus" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Spacing="3">
+                                    <TextBlock Text="Album" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
+                                    <TextBox Text="{Binding EditAlbum, Mode=TwoWay}" LostFocus="OnEditFieldLostFocus" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="3" Spacing="3">
+                                    <TextBlock Text="BPM" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
+                                    <TextBox Text="{Binding EditBpmText, Mode=TwoWay}" FontFamily="{StaticResource MonoFont}" LostFocus="OnEditFieldLostFocus" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="4" Spacing="3">
+                                    <TextBlock Text="Key" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
+                                    <TextBox Text="{Binding EditKey, Mode=TwoWay}" FontFamily="{StaticResource MonoFont}" LostFocus="OnEditFieldLostFocus" />
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Genre/Sub-Genre/Kommentar/Kommentar 2/Farbe: AutoCompleteBox statt TextBox - schlägt
+                                 beim Tippen bereits benutzte Werte vor (Contains-Filter, z.B. "ban" findet "banger"),
+                                 auswählbar per Enter oder Mausklick, ohne fertig tippen zu müssen (Nutzer-Feedback).
+                                 Neu getippte Werte landen einfach als normaler Feldwert - beim Speichern lädt
+                                 LoadEditSuggestionsAsync die Vorschlagsliste neu, der neue Wert taucht dann mit auf. -->
+                            <Grid ColumnDefinitions="1.2*,1.2*,1.2*,1.2*,0.8*" ColumnSpacing="10">
+                                <StackPanel Grid.Column="0" Spacing="3">
+                                    <TextBlock Text="Genre" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
+                                    <AutoCompleteBox Text="{Binding EditGenre, Mode=TwoWay}" ItemsSource="{Binding GenreSuggestions}"
+                                                      FilterMode="Contains" MinimumPrefixLength="1" LostFocus="OnEditFieldLostFocus" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Spacing="3">
+                                    <TextBlock Text="Sub-Genre" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
+                                    <AutoCompleteBox Text="{Binding EditSubGenre, Mode=TwoWay}" ItemsSource="{Binding SubGenreSuggestions}"
+                                                      FilterMode="Contains" MinimumPrefixLength="1" LostFocus="OnEditFieldLostFocus" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Spacing="3">
+                                    <TextBlock Text="Kommentar" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
+                                    <AutoCompleteBox Text="{Binding EditComment, Mode=TwoWay}" ItemsSource="{Binding CommentSuggestions}"
+                                                      FilterMode="Contains" MinimumPrefixLength="1" LostFocus="OnEditFieldLostFocus" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="3" Spacing="3">
+                                    <TextBlock Text="Kommentar 2" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
+                                    <AutoCompleteBox Text="{Binding EditComment2, Mode=TwoWay}" ItemsSource="{Binding Comment2Suggestions}"
+                                                      FilterMode="Contains" MinimumPrefixLength="1" LostFocus="OnEditFieldLostFocus" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="4" Spacing="3">
+                                    <TextBlock Text="Farbe" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
+                                    <AutoCompleteBox Text="{Binding EditColorTag, Mode=TwoWay}" ItemsSource="{Binding ColorSuggestions}"
+                                                      FilterMode="Contains" MinimumPrefixLength="1" LostFocus="OnEditFieldLostFocus" />
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
                     </Border>
 
                     <!-- Fußzeile der Liste: geladen / mehr laden / zu Playlist -->
@@ -226,18 +314,29 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Sub-Genre" Binding="{Binding SubGenre}" Width="120" MinWidth="80"
+                                                     IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowSubGenreColumn}" />
                                 <DataGridTextColumn Header="BPM" Binding="{Binding Bpm}" Width="80" MinWidth="56" FontFamily="{StaticResource MonoFont}"
                                                      IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowBpmColumn}" />
                                 <DataGridTextColumn Header="Key" Binding="{Binding MusicalKey}" Width="70" MinWidth="48" FontFamily="{StaticResource MonoFont}"
                                                      IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowKeyColumn}" />
                                 <DataGridTextColumn Header="Dauer" Binding="{Binding DisplayDuration}" Width="80" MinWidth="56" FontFamily="{StaticResource MonoFont}"
                                                      IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowDurationColumn}" />
+                                <DataGridTextColumn Header="Kommentar" Binding="{Binding Comment}" Width="160" MinWidth="80"
+                                                     IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowCommentColumn}" />
+                                <DataGridTextColumn Header="Kommentar 2" Binding="{Binding Comment2}" Width="160" MinWidth="80"
+                                                     IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowComment2Column}" />
+                                <DataGridTextColumn Header="Farbe" Binding="{Binding ColorTag}" Width="90" MinWidth="60"
+                                                     IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowColorColumn}" />
                                 <DataGridTextColumn Header="Pfad" Binding="{Binding RelativePath}" Width="260" MinWidth="120" FontFamily="{StaticResource MonoFont}" FontSize="11"
                                                      IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowPathColumn}" />
                             </DataGrid.Columns>
                         </DataGrid>
 
-                        <!-- Datei-Browser: was wirklich auf der Platte liegt -->
+                        <!-- Datei-Browser: was wirklich auf der Platte liegt - dieselben Spalten wie die Bibliothek
+                             (gescannte Dateien liefern echte Tracks aus der DB, noch nicht gescannte einen Platzhalter
+                             mit nur Dateiname/Pfad, s. ReloadFolderFilesAsync/Track.IsSynthetic), dieselbe SelectedTrack-
+                             Bindung, damit Doppelklick, Edit-Modus und die Transportleiste unverändert weiterlaufen. -->
                         <Grid IsVisible="{Binding IsShowingFileList}" Margin="6,0,0,0" RowDefinitions="Auto,*">
                             <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="8,0,8,10">
                                 <TextBlock Grid.Column="0" VerticalAlignment="Center" FontFamily="{StaticResource MonoFont}" FontSize="11.5" Foreground="{StaticResource TextMutedBrush}">
@@ -246,26 +345,48 @@
                                 <Button Grid.Column="1" Content="Diesen Ordner scannen" Command="{Binding ScanSelectedFolderCommand}" IsEnabled="{Binding !IsScanning}" />
                             </Grid>
 
-                            <ListBox Grid.Row="1" Name="FolderFilesList" ItemsSource="{Binding FolderFiles}"
-                                     SelectedItem="{Binding SelectedFolderFile, Mode=TwoWay}"
-                                     Background="Transparent" BorderThickness="0" Padding="4,0"
-                                     DoubleTapped="OnFolderFileDoubleTapped">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" Margin="4,3">
-                                            <TextBlock Grid.Column="0" Text="{Binding Name}" FontSize="12.5" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
-                                            <TextBlock Grid.Column="1" Text="{Binding SizeMb, StringFormat='{}{0:0.#} MB'}" FontFamily="{StaticResource MonoFont}" FontSize="11"
-                                                       Foreground="{StaticResource TextFaintBrush}" Margin="12,0" VerticalAlignment="Center" />
-                                            <Border Grid.Column="2" CornerRadius="5" Padding="6,2" Background="{StaticResource BgChipBrush}" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding ScannedLabel}" FontSize="10.5" Foreground="{StaticResource TextMutedBrush}" />
-                                            </Border>
-                                            <Button Grid.Column="3" Content="▶" FontSize="10" Padding="8,3" Margin="8,0,0,0" IsVisible="{Binding IsScanned}"
-                                                    Command="{Binding $parent[ListBox].((vm:MainViewModel)DataContext).PlayFolderFileCommand}"
-                                                    CommandParameter="{Binding}" />
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                            <DataGrid Grid.Row="1" Name="FolderFilesGrid"
+                                      ItemsSource="{Binding FolderTracks}"
+                                      SelectedItem="{Binding SelectedTrack, Mode=TwoWay}"
+                                      AutoGenerateColumns="False"
+                                      IsReadOnly="True"
+                                      CanUserResizeColumns="True"
+                                      GridLinesVisibility="Horizontal"
+                                      DoubleTapped="OnTrackGridDoubleTapped">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Titel" Binding="{Binding DisplayTitle}" Width="2*" MinWidth="160" FontWeight="SemiBold" />
+                                    <DataGridTextColumn Header="Artist" Binding="{Binding DisplayArtist}" Width="180" MinWidth="90" />
+                                    <DataGridTextColumn Header="Album" Binding="{Binding Album}" Width="180" MinWidth="90" IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowAlbumColumn}" />
+                                    <DataGridTemplateColumn Header="Genre" Width="140" MinWidth="90" IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowGenreColumn}">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{Binding GenreRaw, Converter={StaticResource GenreBg}}"
+                                                        CornerRadius="5" Padding="7,2" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                        IsVisible="{Binding GenreRaw, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                                    <TextBlock Text="{Binding GenreRaw}" FontSize="10.5"
+                                                               Foreground="{Binding GenreRaw, Converter={StaticResource GenreFg}}" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Sub-Genre" Binding="{Binding SubGenre}" Width="120" MinWidth="80"
+                                                         IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowSubGenreColumn}" />
+                                    <DataGridTextColumn Header="BPM" Binding="{Binding Bpm}" Width="80" MinWidth="56" FontFamily="{StaticResource MonoFont}"
+                                                         IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowBpmColumn}" />
+                                    <DataGridTextColumn Header="Key" Binding="{Binding MusicalKey}" Width="70" MinWidth="48" FontFamily="{StaticResource MonoFont}"
+                                                         IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowKeyColumn}" />
+                                    <DataGridTextColumn Header="Dauer" Binding="{Binding DisplayDuration}" Width="80" MinWidth="56" FontFamily="{StaticResource MonoFont}"
+                                                         IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowDurationColumn}" />
+                                    <DataGridTextColumn Header="Kommentar" Binding="{Binding Comment}" Width="160" MinWidth="80"
+                                                         IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowCommentColumn}" />
+                                    <DataGridTextColumn Header="Kommentar 2" Binding="{Binding Comment2}" Width="160" MinWidth="80"
+                                                         IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowComment2Column}" />
+                                    <DataGridTextColumn Header="Farbe" Binding="{Binding ColorTag}" Width="90" MinWidth="60"
+                                                         IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowColorColumn}" />
+                                    <DataGridTextColumn Header="Pfad" Binding="{Binding RelativePath}" Width="260" MinWidth="120" FontFamily="{StaticResource MonoFont}" FontSize="11"
+                                                         IsVisible="{Binding $parent[Window].((vm:MainViewModel)DataContext).ShowPathColumn}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </Grid>
                     </Panel>
                 </DockPanel>

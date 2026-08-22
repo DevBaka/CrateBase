@@ -5,6 +5,17 @@ namespace Cratebase.Core.Abstractions;
 /// <summary>Bekannter Datei-Fingerabdruck für die inkrementelle Scan-Erkennung (s. ILibraryScanner).</summary>
 public readonly record struct TrackFingerprint(long TrackId, long FileSizeBytes, DateTime FileModifiedAtUtc);
 
+/// <summary>Freitext-Spalten, für die der Tag-Editor Autocomplete aus bereits benutzten Werten anbietet -
+/// bewusst ein Enum statt roher Spaltennamen als Parameter, damit kein SQL-Identifier von außen durchgereicht wird.</summary>
+public enum TrackTextField
+{
+    GenreRaw,
+    SubGenre,
+    Comment,
+    Comment2,
+    ColorTag,
+}
+
 /// <summary>
 /// Einziger Zugriffspunkt auf Track-Daten. Nur die Implementierung in Cratebase.Data
 /// spricht SQL – alle anderen Module (Scanning, UI) sehen nur dieses Interface.
@@ -14,6 +25,13 @@ public readonly record struct TrackFingerprint(long TrackId, long FileSizeBytes,
 public interface ITrackRepository
 {
     Task<Track?> GetByIdAsync(long id, CancellationToken ct = default);
+
+    /// <summary>Bulk-Variante für den Datei-Browser: viele Tracks auf einmal statt N Einzelabfragen.</summary>
+    Task<IReadOnlyList<Track>> GetByIdsAsync(IReadOnlyCollection<long> ids, CancellationToken ct = default);
+
+    /// <summary>Alle nicht-leeren, unterschiedlichen Werte eines Freitextfelds über die ganze Bibliothek -
+    /// Grundlage für die Tag-Editor-Autocomplete-Vorschläge (s. TrackTextField-Doku).</summary>
+    Task<IReadOnlyList<string>> GetDistinctTextValuesAsync(TrackTextField field, CancellationToken ct = default);
 
     /// <summary>Für den Datei-Browser: liefert den Track zu einem bekannten (library_root_id, relative_path)-Paar, oder null, falls die Datei noch nicht gescannt ist.</summary>
     Task<Track?> FindByPathAsync(long libraryRootId, string relativePath, CancellationToken ct = default);

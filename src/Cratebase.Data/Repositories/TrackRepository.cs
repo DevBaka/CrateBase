@@ -11,7 +11,8 @@ public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) :
         t.file_size AS FileSizeBytes, t.file_mtime AS FileModifiedAtUtc, t.format AS Format,
         t.duration_ms AS DurationMs, t.bitrate_kbps AS BitrateKbps, t.sample_rate_hz AS SampleRateHz, t.channels AS Channels,
         t.title AS Title, t.artist AS Artist, t.album AS Album, t.album_artist AS AlbumArtist,
-        t.track_number AS TrackNumber, t.year AS Year, t.genre_raw AS GenreRaw, t.comment AS Comment,
+        t.track_number AS TrackNumber, t.year AS Year, t.genre_raw AS GenreRaw, t.sub_genre AS SubGenre,
+        t.comment AS Comment, t.comment2 AS Comment2, t.color_tag AS ColorTag,
         t.bpm AS Bpm, t.musical_key AS MusicalKey, t.rating AS Rating, t.play_count AS PlayCount, t.last_played_at AS LastPlayedAtUtc,
         t.date_added AS DateAddedUtc, t.date_modified AS DateModifiedUtc, t.missing_since AS MissingSinceUtc
         """;
@@ -23,11 +24,54 @@ public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) :
             $"SELECT {SelectColumns} FROM track t WHERE t.id = @id;", new { id }, cancellationToken: ct));
     }
 
+    public async Task<IReadOnlyList<Track>> GetByIdsAsync(IReadOnlyCollection<long> ids, CancellationToken ct = default)
+    {
+        if (ids.Count == 0)
+        {
+            return [];
+        }
+
+        using var connection = connectionFactory.CreateConnection();
+        var rows = await connection.QueryAsync<Track>(new CommandDefinition(
+            $"SELECT {SelectColumns} FROM track t WHERE t.id IN @ids;", new { ids }, cancellationToken: ct));
+        return rows.ToList();
+    }
+
+    public async Task<IReadOnlyList<string>> GetDistinctTextValuesAsync(TrackTextField field, CancellationToken ct = default)
+    {
+        var column = field switch
+        {
+            TrackTextField.GenreRaw => "genre_raw",
+            TrackTextField.SubGenre => "sub_genre",
+            TrackTextField.Comment => "comment",
+            TrackTextField.Comment2 => "comment2",
+            TrackTextField.ColorTag => "color_tag",
+            _ => throw new ArgumentOutOfRangeException(nameof(field)),
+        };
+
+        using var connection = connectionFactory.CreateConnection();
+        // column kommt ausschließlich aus dem obigen, festen switch (nie aus Nutzereingabe) -
+        // Interpolation hier ist kein Injection-Risiko, s. TrackTextField-Doku im Interface.
+        var rows = await connection.QueryAsync<string>(new CommandDefinition(
+            $"""
+            SELECT DISTINCT {column} FROM track
+            WHERE {column} IS NOT NULL AND TRIM({column}) != ''
+            ORDER BY {column} COLLATE NOCASE;
+            """,
+            cancellationToken: ct));
+        return rows.ToList();
+    }
+
     /// <summary>
-    /// Insert-or-Update über den UNIQUE(library_root_id, relative_path)-Index. Rating,
-    /// PlayCount, LastPlayedAtUtc und DateAddedUtc werden bei einem Konflikt (Track war
-    /// schon bekannt) bewusst NICHT überschrieben – das sind Nutzerdaten, ein Rescan darf
-    /// sie nicht zurücksetzen, selbst wenn sich Tags in der Datei geändert haben.
+    /// Insert-or-Update über den UNIQUE(library_root_id, relative_path)-Index. Rating, PlayCount,
+    /// LastPlayedAtUtc, DateAddedUtc UND (seit dem Tag-Editor) auch GenreRaw/Comment werden bei
+    /// einem Konflikt (Track war schon bekannt) bewusst NICHT überschrieben – sobald ein Track
+    /// einmal in der DB steht, gewinnt eine manuelle Bearbeitung dauerhaft gegen einen späteren
+    /// Rescan, selbst wenn sich das Tag in der Datei extern geändert hat. SubGenre/Comment2/
+    /// ColorTag haben ohnehin keine Entsprechung in Datei-Tags und tauchen deshalb gar nicht erst
+    /// im ON CONFLICT-Zweig auf - die kommen ausschließlich über <see cref="UpdateAsync"/> (Tag-
+    /// Editor) rein. Für die Erstanlage (kein Konflikt) fließen GenreRaw/Comment weiterhin ganz
+    /// normal aus der gescannten Datei ein.
     /// </summary>
     public async Task<long> UpsertAsync(Track track, CancellationToken ct = default)
     {
@@ -87,8 +131,6 @@ public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) :
                 album_artist = excluded.album_artist,
                 track_number = excluded.track_number,
                 year = excluded.year,
-                genre_raw = excluded.genre_raw,
-                comment = excluded.comment,
                 bpm = excluded.bpm,
                 musical_key = excluded.musical_key,
                 date_modified = excluded.date_modified,
@@ -122,7 +164,10 @@ public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) :
             track.TrackNumber,
             track.Year,
             track.GenreRaw,
+            track.SubGenre,
             track.Comment,
+            track.Comment2,
+            track.ColorTag,
             track.Bpm,
             track.MusicalKey,
             track.Rating,
@@ -135,7 +180,8 @@ public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) :
             """
             UPDATE track SET
                 title = @Title, artist = @Artist, album = @Album, album_artist = @AlbumArtist,
-                track_number = @TrackNumber, year = @Year, genre_raw = @GenreRaw, comment = @Comment,
+                track_number = @TrackNumber, year = @Year, genre_raw = @GenreRaw, sub_genre = @SubGenre,
+                comment = @Comment, comment2 = @Comment2, color_tag = @ColorTag,
                 bpm = @Bpm, musical_key = @MusicalKey, rating = @Rating, play_count = @PlayCount,
                 last_played_at = @LastPlayedAtUtc, date_modified = @DateModifiedUtc
             WHERE id = @Id;
