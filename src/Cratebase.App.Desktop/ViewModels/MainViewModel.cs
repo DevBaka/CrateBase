@@ -1382,33 +1382,72 @@ public partial class MainViewModel : ViewModelBase
         IsPlaying = false;
     }
 
+    /// <summary>Aus welcher Liste "Weiter"/"Zurück" den nächsten Track nimmt - gesetzt beim Abspielen
+    /// (s. PlayTrack) auf die Liste, aus der der Track tatsächlich gestartet wurde (Bibliothek/Playlist
+    /// vs. Datei-Browser-Ordner), NICHT auf die gerade sichtbare Ansicht. Sonst würde "Weiter" beim
+    /// Abspielen aus einem Ordner im Datei-Browser den Index in Tracks (der Bibliotheks-Seite) statt in
+    /// FolderTracks nachschlagen - da der Track dort typischerweise gar nicht vorkommt (IndexOf == -1),
+    /// landete "Weiter" bislang faktisch beim ersten Track der aktuell geladenen Bibliotheks-Seite statt
+    /// beim nächsten Track im Ordner (gemeldeter Bug: "auf einmal spielt er irgendwas komplett anderes").
+    /// Bleibt außerdem auf der gestarteten Liste, auch wenn währenddessen zu einer anderen Ansicht
+    /// gewechselt wird - wer aus einem Ordner heraus abspielt, bekommt "Weiter" auch dann noch aus
+    /// diesem Ordner, wenn er zwischenzeitlich anderswo hin navigiert.</summary>
+    private ObservableCollection<Track>? _activePlaybackList;
+
     [RelayCommand]
     private void PlayNext()
     {
-        if (Tracks.Count == 0)
+        var list = _activePlaybackList ?? Tracks;
+        var nextIndex = FindNextPlayableIndex(list, _currentTrackIndex, step: 1);
+        if (nextIndex is null)
         {
             return;
         }
 
-        _currentTrackIndex = Math.Min(_currentTrackIndex + 1, Tracks.Count - 1);
-        PlayTrack(Tracks[_currentTrackIndex]);
+        _currentTrackIndex = nextIndex.Value;
+        PlayTrack(list[_currentTrackIndex], list);
     }
 
     [RelayCommand]
     private void PlayPrevious()
     {
-        if (Tracks.Count == 0)
+        var list = _activePlaybackList ?? Tracks;
+        var previousIndex = FindNextPlayableIndex(list, _currentTrackIndex, step: -1);
+        if (previousIndex is null)
         {
             return;
         }
 
-        _currentTrackIndex = Math.Max(_currentTrackIndex - 1, 0);
-        PlayTrack(Tracks[_currentTrackIndex]);
+        _currentTrackIndex = previousIndex.Value;
+        PlayTrack(list[_currentTrackIndex], list);
     }
 
-    private void PlayTrack(Track track)
+    /// <summary>Sucht ab (fromIndex + step) in dieselbe Richtung den nächsten tatsächlich abspielbaren
+    /// (nicht-synthetischen, s. Track.IsSynthetic) Track - überspringt noch nicht gescannte
+    /// Platzhalter-Dateien im Datei-Browser transparent, statt beim Weiterspringen an einer
+    /// unspielbaren Datei zu scheitern. Liefert null, wenn kein weiterer abspielbarer Track in dieser
+    /// Richtung existiert (bewusst kein Zurückspringen auf Anfang/Ende - "Weiter" am Listenende tut
+    /// dann einfach nichts, statt denselben Track erneut zu starten).</summary>
+    private static int? FindNextPlayableIndex(IReadOnlyList<Track> list, int fromIndex, int step)
     {
-        _currentTrackIndex = Tracks.IndexOf(track);
+        var index = fromIndex + step;
+        while (index >= 0 && index < list.Count)
+        {
+            if (!list[index].IsSynthetic)
+            {
+                return index;
+            }
+
+            index += step;
+        }
+
+        return null;
+    }
+
+    private void PlayTrack(Track track, ObservableCollection<Track>? sourceList = null)
+    {
+        _activePlaybackList = sourceList ?? (IsShowingFileList ? FolderTracks : Tracks);
+        _currentTrackIndex = _activePlaybackList.IndexOf(track);
         _audioPlayer.Load(ResolveAbsolutePath(track));
         _audioPlayer.Play();
 

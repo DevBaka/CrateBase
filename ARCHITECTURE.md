@@ -946,3 +946,43 @@ fremden Fenstern gelandet (s. Abschnitt 15.4), weshalb weitere GUI-Automatisieru
 Sicherheitsgründen unterlassen wurde. Bitte den vollen Flow (Profil erstellen → Playlist per
 Rechtsklick einem Slot zuweisen → Speichern → Profil wechseln → zurückwechseln → Slot anklicken zum
 Navigieren → "+" zum Hinzufügen eines Tracks) einmal selbst durchklicken.
+
+## 17. Fix: "Weiter" spielte einen zufälligen Bibliotheks-Track statt den nächsten im Ordner
+
+Gemeldetes Symptom: Im Datei-Browser einen Song aus einem Ordner starten (z.B. Musik/Beatport/Deep
+House) - nach dessen Ende (oder per "Weiter"-Button) spielt plötzlich ein völlig unabhängiger Track
+aus einem anderen Genre, nicht der nächste Song im selben Ordner.
+
+### Ursache
+
+`PlayNext`/`PlayPrevious`/`PlayTrack` haben ausschließlich mit `Tracks` (der paginierten
+Bibliotheks-/Playlist-Liste) gerechnet, unabhängig davon, ob der abgespielte Track eigentlich aus
+`FolderTracks` (Datei-Browser, s. Abschnitt 14.3) kam. `PlayTrack` hat `_currentTrackIndex` per
+`Tracks.IndexOf(track)` gesetzt - kam der Track aus dem Datei-Browser, steht er dort aber oft gar
+nicht drin (andere Collection, oder schlicht nicht auf der aktuell geladenen Bibliotheks-Seite), also
+lieferte `IndexOf` **-1**. Beim nächsten "Weiter" wurde daraus `Math.Min(-1 + 1, Tracks.Count - 1)`
+= **Index 0** - es wurde also praktisch immer der erste Track der aktuell geladenen Bibliotheks-Seite
+gespielt, unabhängig vom Ordner/Genre, aus dem eigentlich gerade abgespielt wurde. Das erklärt exakt
+das gemeldete Verhalten ("plötzlich Frenchcore statt der nächste Deep-House-Track").
+
+### Fix
+
+`PlayTrack` merkt sich jetzt in `_activePlaybackList`, aus welcher Liste der Track tatsächlich
+gestartet wurde (`FolderTracks`, wenn der Datei-Browser sichtbar war, sonst `Tracks`) - `PlayNext`/
+`PlayPrevious` schlagen den nächsten Index in genau dieser Liste nach, nicht mehr blind in `Tracks`.
+Die Zuordnung bleibt außerdem bestehen, auch wenn währenddessen zu einer anderen Ansicht navigiert
+wird - wer aus einem Ordner heraus abspielt, bekommt "Weiter" auch dann noch aus diesem Ordner.
+Nebenbei behoben: der Datei-Browser kann noch nicht gescannte Platzhatzer-Dateien enthalten
+(`Track.IsSynthetic`, s. 14.3) - "Weiter"/"Zurück" überspringen diese jetzt transparent, statt beim
+Versuch, eine Platzhalter-"Datei" abzuspielen, ins Leere zu laufen. Kein Zurückspringen auf
+Anfang/Ende mehr am Listenrand - "Weiter" am letzten Track tut jetzt einfach nichts, statt denselben
+Track erneut zu starten (vorheriges `Math.Min`/`Math.Max`-Clamping-Verhalten).
+
+### Verifiziert
+
+Build sauber, App startet fehlerfrei. Die Kernlogik (`FindNextPlayableIndex`) ist eine reine,
+zustandslose statische Methode und wurde per Code-Review gegen die relevanten Randfälle durchdacht
+(leere Liste, nur synthetische Tracks übrig, Listenende) - ein Live-Durchklicken des kompletten
+Szenarios (Ordner öffnen, Song abspielen, Ende abwarten, prüfen dass wirklich der nächste Ordner-Song
+kommt) war in dieser Session aus den in Abschnitt 15.4/16.4 genannten Gründen nicht mehr sicher
+automatisierbar - bitte selbst gegenprüfen.
