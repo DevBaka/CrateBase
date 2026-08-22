@@ -155,6 +155,17 @@ public partial class MainViewModel : ViewModelBase
         OnPropertyChanged(nameof(IsShowingFileList));
         OnPropertyChanged(nameof(IsShowingTrackGrid));
 
+        // "Unterordner einbeziehen" gilt bewusst nur für den gerade gewählten Ordner, nicht global/
+        // dauerhaft: sonst könnte ein für z.B. "Hardstyle" aktivierter Schalter unbemerkt auch auf
+        // den Wurzelordner durchschlagen, sobald man als nächstes dorthin wechselt (genau das
+        // wollte der Nutzer explizit nicht) - jeder Ordnerwechsel setzt ihn deshalb zurück, man
+        // aktiviert ihn bewusst pro Ordner neu.
+        if (IncludeSubfolders)
+        {
+            IncludeSubfolders = false; // löst selbst schon einen Reload aus, s. OnIncludeSubfoldersChanged
+            return;
+        }
+
         if (value is FileSystemNodeViewModel)
         {
             _ = ReloadFolderFilesAsync();
