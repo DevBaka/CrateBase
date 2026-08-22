@@ -154,7 +154,7 @@
                         </Button>
                         <CheckBox Grid.Column="3" Content="Unterordner einbeziehen" FontSize="11.5" Margin="10,0,0,0"
                                   VerticalAlignment="Center" IsChecked="{Binding IncludeSubfolders}"
-                                  ToolTip.Tip="Zeigt auch Tracks/Dateien aus verschachtelten Playlisten bzw. Unterordnern, nicht nur die direkten. Gilt nur für den gerade gewählten Ordner - bei jedem Ordnerwechsel wird der Schalter zurückgesetzt." />
+                                  ToolTip.Tip="Zeigt auch Tracks/Dateien aus verschachtelten Playlisten bzw. Unterordnern, nicht nur die direkten. Gilt pro Ordner und wird sich für diese Sitzung gemerkt - andere Ordner sind davon unabhängig." />
                         <TextBox Grid.Column="4" Margin="12,0" PlaceholderText="Suche (Titel, Artist, Album)…" Text="{Binding SearchText}" IsVisible="{Binding IsShowingTrackGrid}" />
                         <TextBlock Grid.Column="5" VerticalAlignment="Center" MaxWidth="340" FontSize="11.5" Foreground="{StaticResource TextFaintBrush}"
                                    TextTrimming="CharacterEllipsis" Text="{Binding StatusMessage}" />

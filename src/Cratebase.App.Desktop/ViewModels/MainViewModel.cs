@@ -146,23 +146,43 @@ public partial class MainViewModel : ViewModelBase
 
     /// <summary>"Auf Wunsch" (s. Nutzer-Feedback): Ordner/Playlist-Ordner zeigen standardmäßig nur ihren
     /// direkten Inhalt; mit diesem Schalter rekursiv alles darunter (verschachtelte Playlisten bzw.
-    /// Unterordner-Dateien) - für Playlist-Ordner UND Dateisystem-Ordner gemeinsam genutzt.</summary>
+    /// Unterordner-Dateien) - für Playlist-Ordner UND Dateisystem-Ordner gemeinsam genutzt. Der Zustand
+    /// gilt pro Ordner (s. _includeSubfoldersByKey) und bleibt für die laufende Sitzung gemerkt - aktiviert
+    /// man ihn z.B. für "Hardstyle", steht er beim nächsten Besuch dort wieder an, während der Wurzelordner
+    /// unabhängig davon aus bleibt (kein globales/dauerhaft-sitzenbleibendes Flag, s. Nutzer-Feedback).
+    /// Überlebt aktuell keinen App-Neustart (reines In-Memory-Dictionary), das wäre ein separater Ausbau.</summary>
     [ObservableProperty]
     public partial bool IncludeSubfolders { get; set; }
+
+    private readonly Dictionary<string, bool> _includeSubfoldersByKey = new();
+    private string? _currentSidebarKey;
+
+    private static string GetSidebarKey(object? item) => item switch
+    {
+        FileSystemNodeViewModel fs => "fs:" + fs.FullPath.TrimEnd('/', '\\').ToLowerInvariant(),
+        PlaylistTreeItemViewModel { Node: { } node } => "pl:" + node.Id,
+        PlaylistTreeItemViewModel => "pl:root", // "Bibliothek" (Node == null)
+        _ => "none",
+    };
 
     partial void OnSelectedSidebarItemChanged(object? value)
     {
         OnPropertyChanged(nameof(IsShowingFileList));
         OnPropertyChanged(nameof(IsShowingTrackGrid));
 
-        // "Unterordner einbeziehen" gilt bewusst nur für den gerade gewählten Ordner, nicht global/
-        // dauerhaft: sonst könnte ein für z.B. "Hardstyle" aktivierter Schalter unbemerkt auch auf
-        // den Wurzelordner durchschlagen, sobald man als nächstes dorthin wechselt (genau das
-        // wollte der Nutzer explizit nicht) - jeder Ordnerwechsel setzt ihn deshalb zurück, man
-        // aktiviert ihn bewusst pro Ordner neu.
-        if (IncludeSubfolders)
+        // Zustand des bisherigen Ordners merken, bevor wir umschalten...
+        if (_currentSidebarKey is not null)
         {
-            IncludeSubfolders = false; // löst selbst schon einen Reload aus, s. OnIncludeSubfoldersChanged
+            _includeSubfoldersByKey[_currentSidebarKey] = IncludeSubfolders;
+        }
+
+        // ...und für den neuen Ordner den gemerkten Zustand wiederherstellen (Default: aus).
+        _currentSidebarKey = GetSidebarKey(value);
+        var remembered = _includeSubfoldersByKey.GetValueOrDefault(_currentSidebarKey);
+
+        if (IncludeSubfolders != remembered)
+        {
+            IncludeSubfolders = remembered; // löst selbst schon einen Reload aus, s. OnIncludeSubfoldersChanged
             return;
         }
 
@@ -178,6 +198,11 @@ public partial class MainViewModel : ViewModelBase
 
     partial void OnIncludeSubfoldersChanged(bool value)
     {
+        if (_currentSidebarKey is not null)
+        {
+            _includeSubfoldersByKey[_currentSidebarKey] = value;
+        }
+
         if (IsShowingFileList)
         {
             _ = ReloadFolderFilesAsync();
