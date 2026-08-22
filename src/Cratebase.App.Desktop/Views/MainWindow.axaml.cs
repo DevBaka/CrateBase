@@ -87,6 +87,26 @@ public partial class MainWindow : Window
         }
     }
 
+    /// <summary>ContextMenu-Einträge der Favoriten-Slots (s. MainWindow.axaml) - Click-Event statt
+    /// Command-Binding, weil ein ContextMenu als eigener Popup-Zweig kein zuverlässiges $parent[...]-
+    /// Binding zurück zum ViewModel erlaubt (s. Kommentar dort). DataContext des MenuItem ist der Slot
+    /// (normale Vererbung aus dem ContextMenu-Besitzer), this.DataContext ist das Fenster-ViewModel.</summary>
+    private void OnAssignPlaylistToSlotClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is MenuItem { DataContext: FavoriteSlotViewModel slot } && DataContext is MainViewModel viewModel)
+        {
+            viewModel.AssignSelectedPlaylistToSlotCommand.Execute(slot.Index);
+        }
+    }
+
+    private void OnClearFavoriteSlotClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is MenuItem { DataContext: FavoriteSlotViewModel slot } && DataContext is MainViewModel viewModel)
+        {
+            viewModel.ClearFavoriteSlotCommand.Execute(slot.Index);
+        }
+    }
+
     /// <summary>Speichert die Edit-Felder, sobald eines davon den Fokus verliert (Tab, Klick auf ein
     /// anderes Feld, Klick auf einen anderen Track) - kein separater "Speichern"-Button nötig. Im
     /// Code-behind statt per Binding im ViewModel, weil LostFocus als reines UI-Ereignis dort hingehört.</summary>

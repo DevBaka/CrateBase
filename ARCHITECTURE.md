@@ -1051,3 +1051,50 @@ Favoriten-Button erscheint weiterhin in der Kopfzeile. Ein Live-Durchklicken/-Zi
 dem Baum auf einen Slot ziehen, Track aus der Liste auf einen belegten Slot ziehen, Rechtsklick-Menü
 prüfen) war in dieser Session nicht mehr sicher automatisierbar (s. Abschnitt 15.4/16.4) - bitte
 selbst gegenprüfen.
+
+## 19. Fix: Slot-Zuweisung ("Aktuelle Playlist hier ablegen" + Drag&Drop) funktionierte nicht
+
+Nutzer-Feedback (nach Abschnitt 18): weiterhin keine Zuweisung möglich, weder per Rechtsklick noch
+per Drag&Drop, weder bei aus Traktor importierten noch bei neu angelegten Playlisten.
+
+### 19.1 Wahrscheinlichste Hauptursache: kein Profil vorhanden
+
+`AssignPlaylistToSlot` (der gemeinsame Kern hinter Rechtsklick UND Drag&Drop) bricht sofort ab,
+wenn `SelectedFavoriteProfile` `null` ist ("Bitte zuerst ein Profil anlegen oder auswählen.") - nur
+als leicht zu übersehende Statusmeldung rechts in der Kopfzeile, kein Dialog, keine Hervorhebung.
+Ohne zuvor bewusst ein Profil über "+ Als neues Profil speichern" angelegt zu haben (was aus der UI
+nicht zwingend offensichtlich ist), lief **jede** Zuweisung - unabhängig vom Mechanismus oder der
+Playlist - ins Leere. Das erklärt ein durchgängiges "geht nirgends", wie gemeldet.
+
+Fix: Beim ersten Öffnen des Favoriten-Panels (`IsFavoritesMode` wird `true`) wird automatisch ein
+Profil "Profil 1" angelegt und aktiviert, falls noch keins existiert - Zuweisen funktioniert damit
+sofort, ohne dass der Nutzer erst wissen muss, dass ein Profil Voraussetzung ist. Umbenennen/
+Duplizieren bleibt jederzeit über "Als neues Profil speichern" möglich.
+
+### 19.2 Zusätzliche Absicherung: Rechtsklick-Menü ohne Binding durch das Popup
+
+`$parent[Window]` (Abschnitt 18.2) hat das Problem nicht zuverlässig behoben - ein `ContextMenu`
+hängt als eigener Popup-Zweig offenbar generell nicht verlässlich im selben Binding-Auflösungspfad
+wie sein Besitzer-Control, unabhängig vom gewählten Vorfahren-Typ. Fix: die beiden `MenuItem`s
+binden nicht mehr per `Command`/`$parent[...]`, sondern über normale `Click`-Events, die im
+Code-behind direkt `((MenuItem)sender).DataContext` (der Slot, per normaler DataContext-Vererbung
+aus dem ContextMenu-Besitzer) und `this.DataContext` (das Fenster-ViewModel, kein Ahnen-Binding
+nötig) verwenden - kein `$parent`-Mechanismus mehr im Spiel, der durch einen Popup-Zweig laufen
+müsste.
+
+### 19.3 Verifiziert
+
+Build sauber. Live gegen die echte Bibliothek getestet: nach dem Fix wurden während des Testens
+tatsächlich mehrere Slots erfolgreich befüllt (u.a. via Rechtsklick) und - Beweis, dass die gesamte
+Kette inkl. Persistierung funktioniert - in `favorite_profiles.json` mit den korrekten Playlist-Ids
+wiedergefunden, inklusive eines automatisch angelegten "Profil 1". Ein bereits vom Nutzer selbst
+angelegtes Profil "DnB" mit 6 befüllten Slots (Playlisten aus dem Traktor-Import, Ordner
+Genres/DnB/Jump Up) war schon vor diesem Test-Durchlauf vorhanden - ein Hinweis, dass Zuweisung für
+diese Playlisten vermutlich schon vorher (zumindest per Drag&Drop) teilweise funktioniert hat,
+Rechtsklick aber nicht (s. 19.2). Die GUI-Automatisierung geriet während des Tests zweimal aus dem
+Fenster (u.a. kurzzeitig in die private Steam-Freundesliste - dort wurde nichts ausgelöst außer
+Cursor-Navigation, keine Nachricht o.ä. verschickt) und wurde danach aus Vorsichtsgründen beendet,
+bevor der komplette Regressionstest (insbesondere: eine brandneue, gerade erst angelegte Playlist
+zuweisen) manuell nachvollzogen werden konnte. Bitte gezielt genau das noch einmal gegenprüfen: eine
+neue Playlist anlegen und direkt (ohne Neustart) per Rechtsklick und per Drag&Drop einem Slot
+zuweisen.

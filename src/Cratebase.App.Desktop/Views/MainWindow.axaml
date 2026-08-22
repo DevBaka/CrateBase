@@ -261,12 +261,14 @@
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <!-- $parent[Window] statt $parent[ItemsControl]: Letzteres löst aus dem
-                                                 ContextMenu heraus (eigener Popup-Zweig, kein normaler visueller
-                                                 Nachfahre der ItemsControl) nicht zuverlässig auf - "Aktuelle
-                                                 Playlist hier ablegen" tat dadurch nichts. $parent[Window] ist
-                                                 bereits an anderer Stelle (DataGridColumn.IsVisible) bewährt robust
-                                                 gegen genau solche "losgelöste Popup/Vorlage"-Fälle. -->
+                                            <!-- Click-Events statt Command-Binding fürs ContextMenu: ein ContextMenu
+                                                 hängt als eigener Popup-Zweig nicht zuverlässig im selben Binding-Pfad
+                                                 wie die ItemsControl, die es geöffnet hat - weder $parent[ItemsControl]
+                                                 noch $parent[Window] lösten das zuverlässig auf ("Aktuelle Playlist
+                                                 hier ablegen" tat nichts). Ein Click-Event routet dagegen normal, und
+                                                 im Code-behind holen wir uns DataContext (Slot) direkt vom sender und
+                                                 Window.DataContext (ViewModel) direkt von this - kein Ahnen-Binding
+                                                 mehr nötig, s. MainWindow.axaml.cs OnAssignPlaylistToSlotClick. -->
                                             <Border Width="150" Margin="0,0,8,8" Padding="8,6" CornerRadius="6"
                                                     Background="{StaticResource BgChipBrush}" BorderThickness="1" BorderBrush="{StaticResource BorderBrush1}"
                                                     DragDrop.AllowDrop="True"
@@ -274,12 +276,8 @@
                                                     DragDrop.DragLeave="OnFavoriteSlotDragLeave" DragDrop.Drop="OnFavoriteSlotDrop">
                                                 <Border.ContextMenu>
                                                     <ContextMenu>
-                                                        <MenuItem Header="Aktuelle Playlist hier ablegen"
-                                                                  Command="{Binding $parent[Window].((vm:MainViewModel)DataContext).AssignSelectedPlaylistToSlotCommand}"
-                                                                  CommandParameter="{Binding Index}" />
-                                                        <MenuItem Header="Slot leeren"
-                                                                  Command="{Binding $parent[Window].((vm:MainViewModel)DataContext).ClearFavoriteSlotCommand}"
-                                                                  CommandParameter="{Binding Index}" />
+                                                        <MenuItem Header="Aktuelle Playlist hier ablegen" Click="OnAssignPlaylistToSlotClick" />
+                                                        <MenuItem Header="Slot leeren" Click="OnClearFavoriteSlotClick" />
                                                     </ContextMenu>
                                                 </Border.ContextMenu>
                                                 <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">

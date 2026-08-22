@@ -525,6 +525,23 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private void ToggleFavoritesMode() => IsFavoritesMode = !IsFavoritesMode;
 
+    /// <summary>Legt beim ersten Öffnen des Favoriten-Panels automatisch ein Profil an, falls noch
+    /// keins existiert - ohne das war JEDE Slot-Zuweisung (Rechtsklick UND Drag&amp;Drop) folgenlos
+    /// abgebrochen, weil AssignPlaylistToSlot ein aktives Profil voraussetzt und nur eine leicht zu
+    /// übersehende Statusmeldung gesetzt hat ("Bitte zuerst ein Profil anlegen..."). Der Nutzer muss
+    /// so nicht erst wissen/erraten, dass er vor der ersten Zuweisung ein Profil braucht - er kann es
+    /// später jederzeit über "Als neues Profil speichern" umbenennen/duplizieren.</summary>
+    partial void OnIsFavoritesModeChanged(bool value)
+    {
+        if (value && FavoriteProfiles.Count == 0)
+        {
+            var profile = new FavoriteProfile { Name = "Profil 1" };
+            FavoriteProfiles.Add(profile);
+            SelectedFavoriteProfile = profile;
+            _ = PersistFavoriteSettingsAsync();
+        }
+    }
+
     public ObservableCollection<FavoriteProfile> FavoriteProfiles { get; } = [];
 
     [ObservableProperty]
