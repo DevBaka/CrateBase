@@ -149,7 +149,11 @@
                         </Grid.ColumnDefinitions>
                         <Button Grid.Column="0" Content="Ordner hinzufügen…" Click="OnAddFolderClick" IsEnabled="{Binding !IsScanning}" />
                         <Button Grid.Column="1" Content="Traktor-Collection importieren…" Margin="6,0,0,0" Click="OnImportTraktorClick" IsEnabled="{Binding !IsScanning}" />
-                        <Button Grid.Column="2" Content="Spalten ▾" Margin="6,0,0,0" IsVisible="{Binding IsShowingTrackGrid}">
+                        <!-- Spalten-Auswahl und Edit-Modus gelten für Bibliothek UND Datei-Browser gleichermaßen
+                             (beide DataGrids teilen sich Spaltenlayout und SelectedTrack, s. ARCHITECTURE.md 14.3) -
+                             deshalb keine IsShowingTrackGrid-Einschränkung wie bei Suche/Fußzeile, die nur für die
+                             Bibliotheksliste sinnvoll sind. -->
+                        <Button Grid.Column="2" Content="Spalten ▾" Margin="6,0,0,0">
                             <Button.Flyout>
                                 <Flyout Placement="BottomEdgeAlignedLeft">
                                     <StackPanel Spacing="9" Margin="6" MinWidth="150">
@@ -168,7 +172,7 @@
                                 </Flyout>
                             </Button.Flyout>
                         </Button>
-                        <ToggleButton Grid.Column="3" Content="✎ Edit-Modus" Margin="6,0,0,0" IsVisible="{Binding IsShowingTrackGrid}"
+                        <ToggleButton Grid.Column="3" Content="✎ Edit-Modus" Margin="6,0,0,0"
                                       IsChecked="{Binding IsEditMode, Mode=TwoWay}"
                                       ToolTip.Tip="Metadaten (Genre, Sub-Genre, Kommentare, Farbe, Titel, Artist, BPM, Key …) direkt in der App bearbeiten." />
                         <CheckBox Grid.Column="4" Content="Unterordner einbeziehen" FontSize="11.5" Margin="10,0,0,0"
