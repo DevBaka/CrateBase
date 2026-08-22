@@ -35,10 +35,13 @@ public interface ITrackRepository
     Task<int> MarkMissingExceptAsync(long libraryRootId, IReadOnlyCollection<string> presentRelativePaths, DateTime scanTimeUtc, CancellationToken ct = default);
 
     /// <summary>
-    /// Suche/Filter über die Bibliothek (oder eine einzelne Playlist, wenn <paramref name="playlistNodeId"/> gesetzt ist).
+    /// Suche/Filter über die Bibliothek, oder über eine Menge von Playlisten, wenn <paramref name="playlistNodeIds"/>
+    /// gesetzt ist (mehrere IDs = Ordner-Aggregation über alle darin verschachtelten Playlisten, s. MainViewModel).
+    /// Bei genau einer Id wird nach der manuellen Playlist-Reihenfolge sortiert, bei mehreren (kein einzelnes
+    /// "richtiges" Ordering über verschiedene Playlisten hinweg) nach Artist/Album/Titel wie in der Bibliotheksansicht.
     /// <paramref name="searchText"/> filtert auf Titel/Artist/Album (SQL LIKE über indizierte Spalten – FTS5 ist eine spätere Optimierung, keine Verhaltensänderung).
     /// </summary>
-    Task<IReadOnlyList<Track>> SearchAsync(string? searchText, long? playlistNodeId, bool includeMissing, int limit, int offset, CancellationToken ct = default);
+    Task<IReadOnlyList<Track>> SearchAsync(string? searchText, IReadOnlyCollection<long>? playlistNodeIds, bool includeMissing, int limit, int offset, CancellationToken ct = default);
 
-    Task<int> CountAsync(string? searchText, long? playlistNodeId, bool includeMissing, CancellationToken ct = default);
+    Task<int> CountAsync(string? searchText, IReadOnlyCollection<long>? playlistNodeIds, bool includeMissing, CancellationToken ct = default);
 }

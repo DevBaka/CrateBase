@@ -26,6 +26,7 @@ public partial class MainViewModel : ViewModelBase
     private readonly ITagReader _tagReader;
     private readonly IWaveformGenerator _waveformGenerator;
     private readonly IWaveformCache _waveformCache;
+    private readonly IQuickAccessStore _quickAccessStore;
 
     private readonly Dictionary<long, LibraryRoot> _libraryRootsById = new();
     private readonly Dictionary<long, IReadOnlyDictionary<string, TrackFingerprint>> _fingerprintsByRoot = new();
@@ -43,7 +44,8 @@ public partial class MainViewModel : ViewModelBase
         ICollectionImporter traktorImporter,
         ITagReader tagReader,
         IWaveformGenerator waveformGenerator,
-        IWaveformCache waveformCache)
+        IWaveformCache waveformCache,
+        IQuickAccessStore quickAccessStore)
     {
         _trackRepository = trackRepository;
         _libraryRootRepository = libraryRootRepository;
@@ -54,6 +56,7 @@ public partial class MainViewModel : ViewModelBase
         _tagReader = tagReader;
         _waveformGenerator = waveformGenerator;
         _waveformCache = waveformCache;
+        _quickAccessStore = quickAccessStore;
 
         // Feuern auf einem LibVLC-Thread (s. IAudioPlayer-Doku) – zurück auf den UI-Thread posten,
         // bevor gebundene Properties gesetzt werden.
@@ -61,7 +64,17 @@ public partial class MainViewModel : ViewModelBase
         _audioPlayer.PlaybackEnded += (_, _) => Dispatcher.UIThread.Post(() => PlayNextCommand.Execute(null));
     }
 
-    public ObservableCollection<PlaylistTreeItemViewModel> RootNodes { get; } = [];
+    /// <summary>
+    /// Ein Baum, gemischt aus <see cref="PlaylistTreeItemViewModel"/> (Bibliothek + Playlisten,
+    /// immer zuerst) und <see cref="FileSystemNodeViewModel"/> (Festplatten/Schnellzugriffe, danach
+    /// angehängt) - bewusst EIN Baum statt zweier per Button umschaltbarer Ansichten, damit
+    /// Festplatten "direkt dort, wo die Playlisten sind" ausklappbar sind. Avalonia löst das
+    /// passende DataTemplate pro Element automatisch über den Laufzeittyp auf (s. MainWindow.axaml,
+    /// TreeView.DataTemplates). <see cref="ReplacePlaylistNodes"/>/<see cref="ReplaceFilesystemNodes"/>
+    /// tauschen jeweils nur ihre Hälfte aus, damit z.B. eine Playlist-Umbenennung nicht den
+    /// Aufklapp-Zustand des Dateisystem-Baums zurücksetzt (und umgekehrt).
+    /// </summary>
+    public ObservableCollection<object> RootNodes { get; } = [];
 
     public ObservableCollection<Track> Tracks { get; } = [];
 
@@ -116,33 +129,60 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     public partial bool ShowPathColumn { get; set; } = true;
 
-    // --- Sidebar-Modus: Playlist-Baum vs. Datei-Browser ---
+    // --- Sidebar-Auswahl (ein Baum, s. RootNodes-Doku) ---
 
     [ObservableProperty]
-    public partial string SidebarMode { get; set; } = "Playlists";
+    public partial object? SelectedSidebarItem { get; set; }
 
-    public bool IsPlaylistsMode => SidebarMode == "Playlists";
-    public bool IsFilesMode => SidebarMode == "Files";
+    /// <summary>Playlist-Baum-Auswahl, oder null, wenn gerade ein Dateisystem-Knoten gewählt ist.</summary>
+    private PlaylistTreeItemViewModel? SelectedPlaylistNode => SelectedSidebarItem as PlaylistTreeItemViewModel;
 
-    partial void OnSidebarModeChanged(string value)
+    /// <summary>Dateisystem-Auswahl, oder null, wenn gerade ein Playlist-Knoten gewählt ist.</summary>
+    private FileSystemNodeViewModel? SelectedFileSystemNode => SelectedSidebarItem as FileSystemNodeViewModel;
+
+    public bool IsShowingFileList => SelectedFileSystemNode is not null;
+
+    public bool IsShowingTrackGrid => !IsShowingFileList;
+
+    /// <summary>"Auf Wunsch" (s. Nutzer-Feedback): Ordner/Playlist-Ordner zeigen standardmäßig nur ihren
+    /// direkten Inhalt; mit diesem Schalter rekursiv alles darunter (verschachtelte Playlisten bzw.
+    /// Unterordner-Dateien) - für Playlist-Ordner UND Dateisystem-Ordner gemeinsam genutzt.</summary>
+    [ObservableProperty]
+    public partial bool IncludeSubfolders { get; set; }
+
+    partial void OnSelectedSidebarItemChanged(object? value)
     {
-        OnPropertyChanged(nameof(IsPlaylistsMode));
-        OnPropertyChanged(nameof(IsFilesMode));
-        if (IsFilesMode && FileSystemRoots.Count == 0)
+        OnPropertyChanged(nameof(IsShowingFileList));
+        OnPropertyChanged(nameof(IsShowingTrackGrid));
+
+        if (value is FileSystemNodeViewModel)
         {
-            RebuildFileSystemRoots();
+            _ = ReloadFolderFilesAsync();
+        }
+        else
+        {
+            _ = ReloadTracksAsync(reset: true);
         }
     }
 
-    [RelayCommand]
-    private void SetSidebarMode(string mode) => SidebarMode = mode;
+    partial void OnIncludeSubfoldersChanged(bool value)
+    {
+        if (IsShowingFileList)
+        {
+            _ = ReloadFolderFilesAsync();
+        }
+        else
+        {
+            _ = ReloadTracksAsync(reset: true);
+        }
+    }
 
-    public ObservableCollection<FileSystemNodeViewModel> FileSystemRoots { get; } = [];
+    // --- Datei-Browser (jetzt Teil desselben Baums, s. RootNodes) ---
 
     public ObservableCollection<FileBrowserEntryViewModel> FolderFiles { get; } = [];
 
     [ObservableProperty]
-    public partial FileSystemNodeViewModel? SelectedFileSystemNode { get; set; }
+    public partial FileBrowserEntryViewModel? SelectedFolderFile { get; set; }
 
     [ObservableProperty]
     public partial int FolderScannedCount { get; set; }
@@ -150,10 +190,8 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     public partial int FolderTotalCount { get; set; }
 
-    partial void OnSelectedFileSystemNodeChanged(FileSystemNodeViewModel? value) => _ = ReloadFolderFilesAsync();
-
-    /// <summary>Datei-Browser zeigt, was wirklich auf der Platte liegt (nicht nur, was schon in der DB steht) –
-    /// direkte Kinder des gewählten Ordners, unabhängig davon, ob sie schon gescannt sind.</summary>
+    /// <summary>Zeigt, was wirklich auf der Platte liegt (nicht nur, was schon in der DB steht) – Inhalt des
+    /// gewählten Ordners, mit <see cref="IncludeSubfolders"/> rekursiv, sonst nur die direkten Dateien.</summary>
     private async Task ReloadFolderFilesAsync()
     {
         FolderFiles.Clear();
@@ -161,23 +199,34 @@ public partial class MainViewModel : ViewModelBase
         FolderTotalCount = 0;
 
         var node = SelectedFileSystemNode;
-        if (node is null || !_libraryRootsById.TryGetValue(node.LibraryRootId, out var root))
+        if (node is null)
         {
             return;
         }
 
-        if (!_fingerprintsByRoot.TryGetValue(node.LibraryRootId, out var fingerprints))
+        var matchedRoot = FindLibraryRootForPath(node.FullPath);
+        IReadOnlyDictionary<string, TrackFingerprint>? fingerprints = null;
+        if (matchedRoot is not null)
         {
-            fingerprints = await _trackRepository.GetFingerprintsByPathAsync(node.LibraryRootId);
-            _fingerprintsByRoot[node.LibraryRootId] = fingerprints;
+            if (!_fingerprintsByRoot.TryGetValue(matchedRoot.Id, out var fp))
+            {
+                fp = await _trackRepository.GetFingerprintsByPathAsync(matchedRoot.Id);
+                _fingerprintsByRoot[matchedRoot.Id] = fp;
+            }
+
+            fingerprints = fp;
         }
 
-        var files = await Task.Run(() => SafeListAudioFiles(node.FullPath));
+        var searchOption = IncludeSubfolders ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+        var files = await Task.Run(() => SafeListAudioFiles(node.FullPath, searchOption));
+
         var scanned = 0;
         foreach (var file in files)
         {
-            var relativePath = Path.GetRelativePath(root.Path, file).Replace(Path.DirectorySeparatorChar, '/');
-            var isScanned = fingerprints.ContainsKey(relativePath);
+            var relativePath = matchedRoot is not null
+                ? Path.GetRelativePath(matchedRoot.Path, file).Replace(Path.DirectorySeparatorChar, '/')
+                : file;
+            var isScanned = fingerprints?.ContainsKey(relativePath) == true;
             if (isScanned)
             {
                 scanned++;
@@ -200,11 +249,11 @@ public partial class MainViewModel : ViewModelBase
         FolderTotalCount = FolderFiles.Count;
     }
 
-    private List<string> SafeListAudioFiles(string path)
+    private List<string> SafeListAudioFiles(string path, SearchOption searchOption)
     {
         try
         {
-            return Directory.EnumerateFiles(path)
+            return Directory.EnumerateFiles(path, "*", searchOption)
                 .Where(_tagReader.CanRead)
                 .OrderBy(f => f, StringComparer.OrdinalIgnoreCase)
                 .ToList();
@@ -215,48 +264,152 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
-    private void RebuildFileSystemRoots()
+    /// <summary>Bestmögliche (längster Pfad-Präfix) LibraryRoot-Übereinstimmung für einen absoluten Pfad -
+    /// ein Dateisystem-Knoten kennt selbst keine LibraryRootId mehr (s. FileSystemNodeViewModel-Doku),
+    /// das erlaubt beliebige Schnellzugriff-Pfade, auch wenn sie noch nicht gescannt sind.</summary>
+    private LibraryRoot? FindLibraryRootForPath(string absolutePath)
     {
-        FileSystemRoots.Clear();
-        foreach (var root in _libraryRootsById.Values.OrderBy(r => r.Label, StringComparer.OrdinalIgnoreCase))
+        LibraryRoot? best = null;
+        var bestLength = -1;
+        foreach (var root in _libraryRootsById.Values)
         {
-            FileSystemRoots.Add(new FileSystemNodeViewModel(root.Label, root.Path, root.Id));
+            var normalizedRoot = root.Path.TrimEnd('/', '\\');
+            if (absolutePath.StartsWith(normalizedRoot, StringComparison.OrdinalIgnoreCase) && normalizedRoot.Length > bestLength)
+            {
+                best = root;
+                bestLength = normalizedRoot.Length;
+            }
+        }
+
+        return best;
+    }
+
+    private static bool PathsEqual(string a, string b) =>
+        string.Equals(a.TrimEnd('/', '\\'), b.TrimEnd('/', '\\'), StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsPathNestedUnder(string path, string possibleParent)
+    {
+        var normalizedParent = possibleParent.TrimEnd('/', '\\');
+        var normalizedPath = path.TrimEnd('/', '\\');
+        return normalizedPath.Length > normalizedParent.Length
+            && normalizedPath.StartsWith(normalizedParent, StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// Nur "oberste" LibraryRoots + Schnellzugriffe landen als eigene Top-Level-Zeile im Baum.
+    /// "Diesen Ordner scannen" (s. ScanSelectedFolderAsync) legt für Unterordner einen eigenen,
+    /// verschachtelten LibraryRoot an (pragmatisch, s. ARCHITECTURE.md 11.2) - ohne diesen Filter
+    /// würde so ein Unterordner zusätzlich als redundanter zweiter Top-Level-Eintrag auftauchen,
+    /// obwohl er schon über den übergeordneten Root erreichbar ist.
+    /// </summary>
+    private List<FileSystemNodeViewModel> BuildFilesystemNodesList()
+    {
+        var allRoots = _libraryRootsById.Values.ToList();
+        var topLevelRoots = allRoots.Where(root => !allRoots.Any(other => other.Id != root.Id && IsPathNestedUnder(root.Path, other.Path)));
+
+        var list = new List<FileSystemNodeViewModel>();
+        foreach (var root in topLevelRoots.OrderBy(r => r.Label, StringComparer.OrdinalIgnoreCase))
+        {
+            list.Add(new FileSystemNodeViewModel(root.Label, root.Path));
+        }
+
+        foreach (var quickAccess in QuickAccessFolders)
+        {
+            if (allRoots.Any(r => PathsEqual(r.Path, quickAccess.Path) || IsPathNestedUnder(quickAccess.Path, r.Path)))
+            {
+                continue; // schon über eine (Vorfahren-)Bibliothek erreichbar, keine doppelte Zeile
+            }
+
+            list.Add(new FileSystemNodeViewModel(quickAccess.Name, quickAccess.Path));
+        }
+
+        return list;
+    }
+
+    /// <summary>Tauscht nur die Dateisystem-Hälfte von RootNodes aus (Festplatten + Schnellzugriffe) - der
+    /// Playlist-Teil (immer zuerst in RootNodes) bleibt unangetastet. Bewusst kein RootNodes.Clear() für
+    /// den kompletten Austausch: das feuert eine "Reset"-Notification, auf die TreeView mit Verlust der
+    /// aktuellen Selektion reagiert (beobachtet: Bibliothek-Auswahl sprang nach einem Rebuild auf einen
+    /// Zufallsknoten) - nur gezieltes Remove/Insert der betroffenen Elemente ist dagegen unauffällig.</summary>
+    private void ReplaceFilesystemNodes(List<FileSystemNodeViewModel> newNodes)
+    {
+        var firstFilesystemIndex = RootNodes.Count;
+        for (var i = 0; i < RootNodes.Count; i++)
+        {
+            if (RootNodes[i] is FileSystemNodeViewModel)
+            {
+                firstFilesystemIndex = i;
+                break;
+            }
+        }
+
+        while (RootNodes.Count > firstFilesystemIndex)
+        {
+            RootNodes.RemoveAt(RootNodes.Count - 1);
+        }
+
+        foreach (var node in newNodes)
+        {
+            RootNodes.Add(node);
         }
     }
 
-    /// <summary>Scannt den im Datei-Browser gerade ausgewählten Ordner (nicht die ganze Bibliothek neu) – nützlich, um gezielt Lücken zu schließen.</summary>
-    [RelayCommand]
-    private async Task ScanSelectedFolderAsync()
+    /// <summary>Tauscht nur die Playlist-Hälfte aus - s. ReplaceFilesystemNodes-Doku, umgekehrt.</summary>
+    private void ReplacePlaylistNodes(List<PlaylistTreeItemViewModel> newNodes)
     {
-        if (SelectedFileSystemNode is { } node)
+        var oldPlaylistCount = 0;
+        foreach (var item in RootNodes)
         {
-            await ScanFolderAsync(node.FullPath);
-            _fingerprintsByRoot.Remove(node.LibraryRootId); // Fingerprints sind jetzt veraltet, neu laden beim nächsten Ordnerklick
-            await ReloadFolderFilesAsync();
+            if (item is not PlaylistTreeItemViewModel)
+            {
+                break;
+            }
+
+            oldPlaylistCount++;
+        }
+
+        for (var i = oldPlaylistCount - 1; i >= 0; i--)
+        {
+            RootNodes.RemoveAt(i);
+        }
+
+        for (var i = 0; i < newNodes.Count; i++)
+        {
+            RootNodes.Insert(i, newNodes[i]);
         }
     }
 
+    // --- Schnellzugriffe (Einstellungen) ---
+
+    public ObservableCollection<QuickAccessFolder> QuickAccessFolders { get; } = [];
+
+    /// <summary>Wird vom Code-behind nach dem Ordner-Auswahldialog aufgerufen (s. MainWindow.axaml.cs).</summary>
     [RelayCommand]
-    private async Task PlayFolderFileAsync(FileBrowserEntryViewModel entry)
+    private async Task AddQuickAccessAsync(string path)
     {
-        if (!entry.IsScanned || SelectedFileSystemNode is not { } node)
+        if (string.IsNullOrWhiteSpace(path) || QuickAccessFolders.Any(q => PathsEqual(q.Path, path)))
         {
-            StatusMessage = "Diese Datei ist noch nicht gescannt – erst „Diesen Ordner scannen“, dann abspielbar.";
             return;
         }
 
-        var track = await _trackRepository.FindByPathAsync(node.LibraryRootId, entry.RelativePath);
-        if (track is not null)
-        {
-            PlayTrack(track);
-        }
+        var name = Path.GetFileName(path.TrimEnd(Path.DirectorySeparatorChar));
+        QuickAccessFolders.Add(new QuickAccessFolder(string.IsNullOrEmpty(name) ? path : name, path));
+        await _quickAccessStore.SaveAsync(QuickAccessFolders);
+        ReplaceFilesystemNodes(BuildFilesystemNodesList());
     }
 
-    [ObservableProperty]
-    public partial PlaylistTreeItemViewModel? SelectedNode { get; set; }
+    [RelayCommand]
+    private async Task RemoveQuickAccessAsync(QuickAccessFolder folder)
+    {
+        var existing = QuickAccessFolders.FirstOrDefault(q => q.Path == folder.Path);
+        if (existing is not null)
+        {
+            QuickAccessFolders.Remove(existing);
+        }
 
-    [ObservableProperty]
-    public partial Track? SelectedTrack { get; set; }
+        await _quickAccessStore.SaveAsync(QuickAccessFolders);
+        ReplaceFilesystemNodes(BuildFilesystemNodesList());
+    }
 
     [ObservableProperty]
     public partial string? SearchText { get; set; }
@@ -314,9 +467,17 @@ public partial class MainViewModel : ViewModelBase
             _libraryRootsById[root.Id] = root;
         }
 
-        RebuildFileSystemRoots();
-        await ReloadPlaylistTreeAsync();
-        await ReloadTracksAsync(reset: true);
+        foreach (var folder in await _quickAccessStore.LoadAsync())
+        {
+            QuickAccessFolders.Add(folder);
+        }
+
+        // RebuildPlaylistNodesAsync wählt "Bibliothek" und stößt darüber (Property-Setter,
+        // s. OnSelectedSidebarItemChanged) einmalig ReloadTracksAsync an - kein zusätzlicher
+        // expliziter Aufruf hier nötig (der würde nur mit dem fire-and-forget-Aufruf aus dem
+        // Setter um den finalen Zustand konkurrieren).
+        await RebuildPlaylistNodesAsync();
+        ReplaceFilesystemNodes(BuildFilesystemNodesList());
         _audioPlayer.Volume = (float)(Volume / 100.0);
     }
 
@@ -335,7 +496,7 @@ public partial class MainViewModel : ViewModelBase
             var label = Path.GetFileName(folderPath.TrimEnd(Path.DirectorySeparatorChar));
             var root = await _libraryRootRepository.AddOrGetAsync(folderPath, string.IsNullOrEmpty(label) ? folderPath : label);
             _libraryRootsById[root.Id] = root;
-            RebuildFileSystemRoots();
+            ReplaceFilesystemNodes(BuildFilesystemNodesList()); // neue Bibliothek kann neu im Baum auftauchen
 
             // Progress<T> fängt den aktuellen SynchronizationContext (UI-Thread) beim Erstellen ein,
             // der Callback braucht deshalb kein manuelles Dispatcher.Post.
@@ -357,6 +518,42 @@ public partial class MainViewModel : ViewModelBase
         finally
         {
             IsScanning = false;
+        }
+    }
+
+    /// <summary>Scannt den im Datei-Browser gerade ausgewählten Ordner (nicht die ganze Bibliothek neu) – nützlich,
+    /// um gezielt Lücken zu schließen. Baut bewusst NICHT den Dateisystem-Baum neu auf (der Ordner steht ja
+    /// schon als Knoten da, sonst hätte man ihn nicht auswählen können) - der Aufklapp-Zustand bleibt erhalten.</summary>
+    [RelayCommand]
+    private async Task ScanSelectedFolderAsync()
+    {
+        if (SelectedFileSystemNode is { } node)
+        {
+            await ScanFolderAsync(node.FullPath);
+            _fingerprintsByRoot.Clear(); // einfachheitshalber: irgendein Root könnte betroffen sein
+            await ReloadFolderFilesAsync();
+        }
+    }
+
+    [RelayCommand]
+    private async Task PlayFolderFileAsync(FileBrowserEntryViewModel entry)
+    {
+        if (!entry.IsScanned)
+        {
+            StatusMessage = "Diese Datei ist noch nicht gescannt – erst „Diesen Ordner scannen“, dann abspielbar.";
+            return;
+        }
+
+        var root = FindLibraryRootForPath(entry.FullPath);
+        if (root is null)
+        {
+            return;
+        }
+
+        var track = await _trackRepository.FindByPathAsync(root.Id, entry.RelativePath);
+        if (track is not null)
+        {
+            PlayTrack(track);
         }
     }
 
@@ -382,7 +579,7 @@ public partial class MainViewModel : ViewModelBase
             var summary = await _traktorImporter.ImportAsync(nmlPath, progress);
             StatusMessage = $"Traktor-Import fertig: {summary.TracksMatched}/{summary.TotalEntries} Tracks zugeordnet, " +
                              $"{summary.CuePointsImported} Cue-Points, {summary.PlaylistsCreated} Playlist-Knoten, {summary.PlaylistTracksLinked} Playlist-Zuordnungen.";
-            await ReloadPlaylistTreeAsync();
+            await RebuildPlaylistNodesAsync();
             await ReloadTracksAsync(reset: true);
         }
         catch (Exception ex)
@@ -400,29 +597,50 @@ public partial class MainViewModel : ViewModelBase
 
     partial void OnSearchTextChanged(string? value) => _ = ReloadTracksAsync(reset: true);
 
-    partial void OnSelectedNodeChanged(PlaylistTreeItemViewModel? value) => _ = ReloadTracksAsync(reset: true);
-
     private async Task ReloadTracksAsync(bool reset)
     {
+        if (IsShowingFileList)
+        {
+            return; // Dateisystem-Ansicht zeigt keine Track-Tabelle, s. ReloadFolderFilesAsync
+        }
+
         if (reset)
         {
             _offset = 0;
             Tracks.Clear();
         }
 
-        if (SelectedNode?.Node is { NodeType: PlaylistNodeType.Folder })
+        IReadOnlyCollection<long>? playlistNodeIds = null;
+
+        if (SelectedPlaylistNode?.Node is { NodeType: PlaylistNodeType.Folder } folderNode)
         {
-            // Ordner selbst enthalten keine Tracks, nur Playlisten/Unterordner (s. ARCHITECTURE.md 2.3).
-            // Rekursive Aggregation über alle enthaltenen Playlisten ist ein Folgeschritt, kein MVP-Scope.
-            TotalCount = 0;
-            LoadedCount = 0;
-            StatusMessage = "Dieser Ordner enthält selbst keine Tracks – wähle eine Playlist darin aus.";
-            OnPropertyChanged(nameof(CanLoadMore));
-            return;
+            if (!IncludeSubfolders)
+            {
+                TotalCount = 0;
+                LoadedCount = 0;
+                StatusMessage = "Dieser Ordner enthält selbst keine Tracks – „Unterordner einbeziehen“ aktivieren oder eine Playlist darin wählen.";
+                OnPropertyChanged(nameof(CanLoadMore));
+                return;
+            }
+
+            var nestedIds = CollectPlaylistIds(SelectedPlaylistNode!);
+            if (nestedIds.Count == 0)
+            {
+                TotalCount = 0;
+                LoadedCount = 0;
+                StatusMessage = "Dieser Ordner enthält keine Playlisten mit Tracks.";
+                OnPropertyChanged(nameof(CanLoadMore));
+                return;
+            }
+
+            playlistNodeIds = nestedIds;
+        }
+        else if (SelectedPlaylistNode?.Node is { NodeType: PlaylistNodeType.Playlist } playlistNode)
+        {
+            playlistNodeIds = [playlistNode.Id];
         }
 
-        var playlistNodeId = SelectedNode?.Node?.Id;
-        var results = await _trackRepository.SearchAsync(SearchText, playlistNodeId, includeMissing: false, PageSize, _offset, CancellationToken.None);
+        var results = await _trackRepository.SearchAsync(SearchText, playlistNodeIds, includeMissing: false, PageSize, _offset, CancellationToken.None);
         foreach (var track in results)
         {
             Tracks.Add(track);
@@ -430,11 +648,32 @@ public partial class MainViewModel : ViewModelBase
 
         _offset += results.Count;
         LoadedCount = Tracks.Count;
-        TotalCount = await _trackRepository.CountAsync(SearchText, playlistNodeId, includeMissing: false, CancellationToken.None);
+        TotalCount = await _trackRepository.CountAsync(SearchText, playlistNodeIds, includeMissing: false, CancellationToken.None);
         OnPropertyChanged(nameof(CanLoadMore));
     }
 
-    private async Task ReloadPlaylistTreeAsync()
+    /// <summary>Sammelt rekursiv alle Playlist-Ids (keine Ordner) unter einem Baum-Knoten - für "Unterordner einbeziehen".</summary>
+    private static List<long> CollectPlaylistIds(PlaylistTreeItemViewModel node)
+    {
+        var ids = new List<long>();
+        void Walk(PlaylistTreeItemViewModel current)
+        {
+            if (current.Node is { NodeType: PlaylistNodeType.Playlist } playlist)
+            {
+                ids.Add(playlist.Id);
+            }
+
+            foreach (var child in current.Children)
+            {
+                Walk(child);
+            }
+        }
+
+        Walk(node);
+        return ids;
+    }
+
+    private async Task RebuildPlaylistNodesAsync()
     {
         var nodes = await _playlistRepository.GetAllNodesAsync();
         var byId = nodes.ToDictionary(n => n.Id, n => new PlaylistTreeItemViewModel(n, n.Name));
@@ -453,20 +692,23 @@ public partial class MainViewModel : ViewModelBase
             }
         }
 
-        var previouslySelectedId = SelectedNode?.Node?.Id;
+        var previouslySelectedId = SelectedPlaylistNode?.Node?.Id;
+        var hadNoPlaylistSelection = SelectedSidebarItem is null;
 
-        RootNodes.Clear();
-        foreach (var root in roots)
+        ReplacePlaylistNodes(roots);
+
+        if (hadNoPlaylistSelection)
         {
-            RootNodes.Add(root);
+            SelectedSidebarItem = roots[0];
         }
-
-        SelectedNode = previouslySelectedId is null
-            ? RootNodes[0]
-            : FindNode(RootNodes, previouslySelectedId.Value) ?? RootNodes[0];
+        else if (previouslySelectedId is not null)
+        {
+            SelectedSidebarItem = FindPlaylistNode(roots, previouslySelectedId.Value) ?? roots[0];
+        }
+        // War zuvor ein Dateisystem-Knoten gewählt, bleibt das unangetastet (SelectedSidebarItem ändert sich nicht).
     }
 
-    private static PlaylistTreeItemViewModel? FindNode(IEnumerable<PlaylistTreeItemViewModel> nodes, long id)
+    private static PlaylistTreeItemViewModel? FindPlaylistNode(IEnumerable<PlaylistTreeItemViewModel> nodes, long id)
     {
         foreach (var node in nodes)
         {
@@ -475,7 +717,7 @@ public partial class MainViewModel : ViewModelBase
                 return node;
             }
 
-            var match = FindNode(node.Children, id);
+            var match = FindPlaylistNode(node.Children, id);
             if (match is not null)
             {
                 return match;
@@ -488,43 +730,46 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async Task CreateFolderAsync()
     {
-        var parentId = SelectedNode?.Node?.Id;
+        var parentId = SelectedPlaylistNode?.Node?.Id;
         await _playlistRepository.CreateAsync("Neuer Ordner", PlaylistNodeType.Folder, parentId);
-        await ReloadPlaylistTreeAsync();
+        await RebuildPlaylistNodesAsync();
     }
 
     [RelayCommand]
     private async Task CreatePlaylistAsync()
     {
-        var parentId = SelectedNode?.Node?.Id;
+        var parentId = SelectedPlaylistNode?.Node?.Id;
         await _playlistRepository.CreateAsync("Neue Playlist", PlaylistNodeType.Playlist, parentId);
-        await ReloadPlaylistTreeAsync();
+        await RebuildPlaylistNodesAsync();
     }
 
     [RelayCommand]
     private async Task DeleteSelectedNodeAsync()
     {
-        if (SelectedNode?.Node is null)
+        if (SelectedPlaylistNode?.Node is null)
         {
-            return; // "Bibliothek" ist kein echter Knoten und nicht löschbar.
+            return; // "Bibliothek" ist kein echter Knoten und nicht löschbar, Dateisystem-Knoten sind nicht löschbar.
         }
 
-        await _playlistRepository.DeleteAsync(SelectedNode.Node.Id);
-        await ReloadPlaylistTreeAsync();
+        await _playlistRepository.DeleteAsync(SelectedPlaylistNode.Node.Id);
+        await RebuildPlaylistNodesAsync();
     }
 
     [RelayCommand]
     private async Task AddSelectedTrackToPlaylistAsync()
     {
-        if (SelectedNode?.Node is not { NodeType: PlaylistNodeType.Playlist } || SelectedTrack is null)
+        if (SelectedPlaylistNode?.Node is not { NodeType: PlaylistNodeType.Playlist } || SelectedTrack is null)
         {
             StatusMessage = "Wähle eine Playlist im Baum und einen Track in der Liste aus.";
             return;
         }
 
-        await _playlistRepository.AddTracksAsync(SelectedNode.Node.Id, [SelectedTrack.Id]);
-        StatusMessage = $"„{SelectedTrack.DisplayTitle}“ zu „{SelectedNode.DisplayName}“ hinzugefügt.";
+        await _playlistRepository.AddTracksAsync(SelectedPlaylistNode.Node.Id, [SelectedTrack.Id]);
+        StatusMessage = $"„{SelectedTrack.DisplayTitle}“ zu „{SelectedPlaylistNode.DisplayName}“ hinzugefügt.";
     }
+
+    [ObservableProperty]
+    public partial Track? SelectedTrack { get; set; }
 
     // --- Wiedergabe ---
 

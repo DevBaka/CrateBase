@@ -559,3 +559,81 @@ Waveform-Generierung selbst wurde isoliert gegen eine echte Datei aus der Sammlu
 tatsächliche Waveform-Balken beim Abspielen eines Tracks (Screenshot-Klick-Automatisierung war auf
 dem Zielsystem durch Wayland/XWayland-Koordinaten-Mismatch zu unzuverlässig für gezielte Klicks) —
 bitte einmal selbst gegenprüfen.
+
+## 12. Zweite Nutzer-Feedback-Runde: EIN Baum, Schnellzugriffe, rekursive Aggregation
+
+### 12.1 Sidebar-Baum vereinheitlicht (kein Umschalt-Button mehr)
+
+Der bisherige "Playlists"/"Ordner"-Umschalter ist weg. `RootNodes` ist jetzt
+`ObservableCollection<object>` - gemischt aus `PlaylistTreeItemViewModel` (Bibliothek +
+Playlisten, immer zuerst) und `FileSystemNodeViewModel` (Festplatten + Schnellzugriffe, dahinter
+angehängt). Avalonia löst pro Element automatisch das passende `TreeDataTemplate` über den
+Laufzeittyp auf (`TreeView.DataTemplates`, `DataType="vm:..."`), keine Typ-Verzweigung im
+ViewModel nötig. `SelectedSidebarItem` (object?) ersetzt die getrennten Auswahl-Properties; ein
+Typ-Check (`is PlaylistTreeItemViewModel` / `is FileSystemNodeViewModel`) entscheidet, ob die
+Track-Tabelle oder der Datei-Browser angezeigt wird (`IsShowingTrackGrid`/`IsShowingFileList`).
+
+**Zwei Bugs dabei gefunden und gefixt, beide über echte Nutzung sichtbar geworden (nicht beim
+Bauen):**
+
+- Lazy-Expand-Style (`IsExpanded`-Zwei-Wege-Binding für den Dateisystem-Teil) auf ALLE
+  `TreeViewItem`s angewendet hätte bei kompilierten Bindings zur Laufzeit eine
+  `InvalidCastException` geworfen, sobald ein Playlist-Knoten (kein `IsExpanded`) getroffen wird.
+  Fix: `{ReflectionBinding IsExpanded, Mode=TwoWay}` statt kompilierter Bindung - schlägt an
+  Playlist-Zeilen einfach folgenlos fehl, statt abzustürzen.
+- `RootNodes.Clear()` beim kompletten Neuaufbau feuert eine "Reset"-Notification, auf die
+  `TreeView` mit Verlust der aktuellen Selektion reagiert - beim Testen sprang die Auswahl nach
+  einem Rebuild unerwartet auf einen anderen Knoten, der Track-Zähler blieb bei 0 hängen (die
+  Bibliotheks-Auswahl ging verloren, bevor der finale Track-Reload lief). Fix:
+  `ReplacePlaylistNodes`/`ReplaceFilesystemNodes` tauschen jetzt nur ihre jeweilige Hälfte per
+  gezieltem Insert/Remove statt eines kompletten Clear+Neuaufbau.
+- Zusätzlich beim Testen entdeckt (kein Bug, aber unschöne Konsequenz des "Diesen Ordner
+  scannen"-Designs aus 11.2): ein gescannter *Unterordner* landet als eigener, verschachtelter
+  LibraryRoot in der DB und wäre ohne Filter als redundanter zweiter Top-Level-Eintrag neben
+  seinem eigentlichen übergeordneten Root aufgetaucht. `BuildFilesystemNodesList` zeigt jetzt nur
+  noch LibraryRoots, die nicht schon unter einem anderen bekannten Root liegen.
+
+### 12.2 Schnellzugriffe (Einstellungen)
+
+Neuer "⚙ Einstellungen"-Button in der Top-Nav mit Flyout: Liste aktueller Schnellzugriff-Ordner
+(entfernbar) + "+ Ordner hinzufügen…". Neues Modell `QuickAccessFolder` (Name+Path), persistiert
+über `IQuickAccessStore`/`JsonQuickAccessStore` als einfache JSON-Datei
+(`~/.local/share/Cratebase/quickaccess.json`) - bewusst außerhalb der SQLite-DB, da reine
+Nutzereinstellung statt Domänendaten. Ein Schnellzugriff-Ordner muss **nicht** vorher gescannt
+sein, um im Baum aufzutauchen und durchsucht werden zu können (`FileSystemNodeViewModel` kennt
+seit diesem Umbau ohnehin keine `LibraryRootId` mehr, s. 12.1 - Zuordnung zu einer eventuell
+passenden Bibliothek läuft über `FindLibraryRootForPath`, Pfad-Präfix-Abgleich).
+
+### 12.3 Rekursive Aggregation ("auf Wunsch")
+
+Neuer Schalter "Unterordner einbeziehen" (`IncludeSubfolders`, Default aus) wirkt auf beide
+Ordner-Arten:
+
+- **Playlist-Ordner**: `CollectPlaylistIds` sammelt rekursiv alle Playlist-Ids (keine
+  Unter-Ordner-Ids) unter dem gewählten Knoten. `ITrackRepository.SearchAsync`/`CountAsync` nehmen
+  jetzt `IReadOnlyCollection<long>? playlistNodeIds` statt einer einzelnen Id entgegen (`IN
+  @playlistNodeIds` per Dapper-Listen-Expansion). Bei mehreren Playlisten kann ein Track über
+  mehrere davon mehrfach treffen - `SELECT DISTINCT`/`COUNT(DISTINCT t.id)` dedupliziert. Bei
+  genau einer Playlist bleibt die manuelle Track-Reihenfolge (`pt.position`) erhalten, bei
+  mehreren wird nach Artist/Album/Titel sortiert (kein einzelnes "richtiges" Ordering über
+  verschiedene Playlisten hinweg).
+- **Dateisystem-Ordner**: `SearchOption.AllDirectories` statt `TopDirectoryOnly` beim Auflisten.
+
+Real getestet (Kopie der echten DB, "Traktor Import"-Ordner mit 553 verschachtelten Playlisten):
+7.779 aggregierte Tracks, 500 Zeilen abgerufen, alle 500 mit eindeutiger Track-Id (Dedup
+funktioniert), Suchtext+Aggregation kombiniert liefert plausible Treffer.
+
+### 12.4 Doppelklick lädt den Song
+
+Datei-Browser-Liste hat jetzt `SelectedFolderFile` + `DoubleTapped`-Handler (Code-behind, analog
+zur bestehenden Track-Tabelle) zusätzlich zum bisherigen ▶-Button pro Zeile.
+
+### 12.5 Verifiziert / offen
+
+Per Screenshot bestätigt: EIN Baum mit Bibliothek/Playlisten/Musik-Laufwerk (echte Ordnerstruktur
+sichtbar beim Aufklappen), korrekter Wechsel zwischen Track-Tabelle und Datei-Browser je nach
+Auswahl, Einstellungen-Button, "Unterordner einbeziehen"-Schalter, korrekter Gesamt-Tracks-Zähler
+nach dem Start (99.153, kein "hängt bei 0" mehr). SQL-Aggregation isoliert gegen echte,
+große Daten verifiziert (s. 12.3). Nicht per Klick verifiziert (gleiche Einschränkung wie in
+11.4): Schnellzugriff-Ordner tatsächlich über den Einstellungen-Dialog hinzufügen, Doppelklick im
+Datei-Browser, "Unterordner einbeziehen" tatsächlich anklicken.

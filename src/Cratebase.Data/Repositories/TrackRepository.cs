@@ -212,14 +212,20 @@ public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) :
         return affected;
     }
 
-    public async Task<IReadOnlyList<Track>> SearchAsync(string? searchText, long? playlistNodeId, bool includeMissing, int limit, int offset, CancellationToken ct = default)
+    public async Task<IReadOnlyList<Track>> SearchAsync(string? searchText, IReadOnlyCollection<long>? playlistNodeIds, bool includeMissing, int limit, int offset, CancellationToken ct = default)
     {
         using var connection = connectionFactory.CreateConnection();
-        var (whereSql, parameters) = BuildFilter(searchText, playlistNodeId, includeMissing);
-        var joinSql = playlistNodeId is not null
-            ? "JOIN playlist_track pt ON pt.track_id = t.id AND pt.playlist_node_id = @playlistNodeId"
+        var (whereSql, parameters) = BuildFilter(searchText, playlistNodeIds, includeMissing);
+        var hasPlaylistFilter = playlistNodeIds is { Count: > 0 };
+        var joinSql = hasPlaylistFilter
+            ? "JOIN playlist_track pt ON pt.track_id = t.id AND pt.playlist_node_id IN @playlistNodeIds"
             : "";
-        var orderSql = playlistNodeId is not null
+        // Bei mehreren Playlisten (Ordner-Aggregation) kann ein Track über mehrere davon mehrfach
+        // treffen - DISTINCT dedupliziert. Bei genau einer Playlist bleibt die manuelle
+        // Track-Reihenfolge (pt.position) erhalten, die DISTINCT+ORDER-BY-Kombination unnötig macht.
+        var isAggregated = playlistNodeIds is { Count: > 1 };
+        var selectClause = isAggregated ? $"DISTINCT {SelectColumns}" : SelectColumns;
+        var orderSql = playlistNodeIds is { Count: 1 }
             ? "ORDER BY pt.position"
             : "ORDER BY t.artist, t.album, t.track_number, t.title";
 
@@ -227,7 +233,7 @@ public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) :
         parameters.Add("offset", offset);
 
         var sql = $"""
-            SELECT {SelectColumns}
+            SELECT {selectClause}
             FROM track t
             {joinSql}
             {whereSql}
@@ -239,19 +245,21 @@ public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) :
         return rows.ToList();
     }
 
-    public async Task<int> CountAsync(string? searchText, long? playlistNodeId, bool includeMissing, CancellationToken ct = default)
+    public async Task<int> CountAsync(string? searchText, IReadOnlyCollection<long>? playlistNodeIds, bool includeMissing, CancellationToken ct = default)
     {
         using var connection = connectionFactory.CreateConnection();
-        var (whereSql, parameters) = BuildFilter(searchText, playlistNodeId, includeMissing);
-        var joinSql = playlistNodeId is not null
-            ? "JOIN playlist_track pt ON pt.track_id = t.id AND pt.playlist_node_id = @playlistNodeId"
+        var (whereSql, parameters) = BuildFilter(searchText, playlistNodeIds, includeMissing);
+        var hasPlaylistFilter = playlistNodeIds is { Count: > 0 };
+        var joinSql = hasPlaylistFilter
+            ? "JOIN playlist_track pt ON pt.track_id = t.id AND pt.playlist_node_id IN @playlistNodeIds"
             : "";
+        var countExpr = playlistNodeIds is { Count: > 1 } ? "COUNT(DISTINCT t.id)" : "COUNT(*)";
 
-        var sql = $"SELECT COUNT(*) FROM track t {joinSql} {whereSql};";
+        var sql = $"SELECT {countExpr} FROM track t {joinSql} {whereSql};";
         return await connection.ExecuteScalarAsync<int>(new CommandDefinition(sql, parameters, cancellationToken: ct));
     }
 
-    private static (string WhereSql, DynamicParameters Parameters) BuildFilter(string? searchText, long? playlistNodeId, bool includeMissing)
+    private static (string WhereSql, DynamicParameters Parameters) BuildFilter(string? searchText, IReadOnlyCollection<long>? playlistNodeIds, bool includeMissing)
     {
         var conditions = new List<string>();
         var parameters = new DynamicParameters();
@@ -267,9 +275,9 @@ public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) :
             parameters.Add("searchPattern", $"%{searchText.Trim()}%");
         }
 
-        if (playlistNodeId is not null)
+        if (playlistNodeIds is { Count: > 0 })
         {
-            parameters.Add("playlistNodeId", playlistNodeId.Value);
+            parameters.Add("playlistNodeIds", playlistNodeIds);
         }
 
         var whereSql = conditions.Count > 0 ? "WHERE " + string.Join(" AND ", conditions) : "";

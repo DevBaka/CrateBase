@@ -67,4 +67,34 @@ public partial class MainWindow : Window
             viewModel.PlaySelectedTrackCommand.Execute(null);
         }
     }
+
+    /// <summary>Doppelklick im Datei-Browser lädt den Song direkt (statt nur über den ▶-Button je Zeile).</summary>
+    private void OnFolderFileDoubleTapped(object? sender, TappedEventArgs e)
+    {
+        if (DataContext is MainViewModel { SelectedFolderFile: { } entry } viewModel)
+        {
+            viewModel.PlayFolderFileCommand.Execute(entry);
+        }
+    }
+
+    private async void OnAddQuickAccessClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        var topLevel = GetTopLevel(this);
+        if (topLevel is null || DataContext is not MainViewModel viewModel)
+        {
+            return;
+        }
+
+        var folders = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+        {
+            Title = "Schnellzugriff-Ordner auswählen",
+            AllowMultiple = false,
+        });
+
+        var folder = folders.Count > 0 ? folders[0].TryGetLocalPath() : null;
+        if (folder is not null)
+        {
+            await viewModel.AddQuickAccessCommand.ExecuteAsync(folder);
+        }
+    }
 }

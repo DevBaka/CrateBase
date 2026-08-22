@@ -22,7 +22,7 @@
 
     <DockPanel>
         <!-- ================= Top-Nav ================= -->
-        <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,*,Auto" Margin="16,10"
+        <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,*,Auto,Auto" Margin="16,10"
               Height="36">
             <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="4">
                 <Button Content="Bibliothek" Command="{Binding GoToSectionCommand}" CommandParameter="Library"
@@ -51,7 +51,36 @@
                         Foreground="{Binding CurrentSection, Converter={StaticResource SectionFg}, ConverterParameter=History}" />
             </StackPanel>
 
-            <Border Grid.Column="2" Background="{StaticResource BgElevatedBrush}" BorderBrush="{StaticResource BorderBrush1}"
+            <Button Grid.Column="2" Content="⚙ Einstellungen" Margin="0,0,8,0">
+                <Button.Flyout>
+                    <Flyout Placement="BottomEdgeAlignedRight">
+                        <StackPanel Spacing="10" Margin="8" MinWidth="280">
+                            <TextBlock Text="Schnellzugriffe" FontWeight="Bold" FontSize="13" />
+                            <TextBlock FontSize="10.5" Foreground="{StaticResource TextFaintBrush}" TextWrapping="Wrap"
+                                       Text="Ordner, die im Baum links direkt neben den Playlisten ausklappbar erscheinen (z.B. M:/Musik oder /home/dj/Music)." />
+                            <ItemsControl ItemsSource="{Binding QuickAccessFolders}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid ColumnDefinitions="*,Auto" Margin="0,3">
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding Name}" FontSize="12" FontWeight="SemiBold" />
+                                                <TextBlock Text="{Binding Path}" FontSize="10" Foreground="{StaticResource TextFaintBrush}" TextTrimming="CharacterEllipsis" />
+                                            </StackPanel>
+                                            <Button Grid.Column="1" Content="×" FontSize="12" Padding="8,2"
+                                                    Command="{Binding $parent[ItemsControl].((vm:MainViewModel)DataContext).RemoveQuickAccessCommand}"
+                                                    CommandParameter="{Binding}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Button Content="+ Ordner hinzufügen…" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                                    Click="OnAddQuickAccessClick" />
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+
+            <Border Grid.Column="3" Background="{StaticResource BgElevatedBrush}" BorderBrush="{StaticResource BorderBrush1}"
                     BorderThickness="1" CornerRadius="8" Padding="10,7">
                 <StackPanel Orientation="Horizontal" Spacing="7">
                     <Ellipse Width="7" Height="7" Fill="{StaticResource AccentGreenBrush}" />
@@ -68,61 +97,47 @@
             <!-- Bibliothek (funktional) -->
             <Grid ColumnDefinitions="240,*" IsVisible="{Binding IsLibrarySection}">
 
-                <!-- Sidebar: Playlists- oder Datei-Browser-Baum -->
+                <!-- Sidebar: EIN Baum für Bibliothek/Playlisten UND Festplatten/Schnellzugriffe -->
                 <DockPanel Grid.Column="0" Margin="12,0,0,12" Background="{StaticResource BgSurfaceBrush}">
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="4" Margin="10,10,10,4">
-                        <Button Content="Playlists" FontSize="11" Padding="8,5" Command="{Binding SetSidebarModeCommand}" CommandParameter="Playlists"
-                                Background="{Binding SidebarMode, Converter={StaticResource SectionBg}, ConverterParameter=Playlists}"
-                                Foreground="{Binding SidebarMode, Converter={StaticResource SectionFg}, ConverterParameter=Playlists}" />
-                        <Button Content="Ordner" FontSize="11" Padding="8,5" Command="{Binding SetSidebarModeCommand}" CommandParameter="Files"
-                                Background="{Binding SidebarMode, Converter={StaticResource SectionBg}, ConverterParameter=Files}"
-                                Foreground="{Binding SidebarMode, Converter={StaticResource SectionFg}, ConverterParameter=Files}" />
-                    </StackPanel>
-
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="4" Margin="10,4,10,8" IsVisible="{Binding IsPlaylistsMode}">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="4" Margin="10,10,10,8" IsVisible="{Binding IsShowingTrackGrid}">
                         <Button Content="+ Ordner" FontSize="11" Padding="8,5" Command="{Binding CreateFolderCommand}" />
                         <Button Content="+ Playlist" FontSize="11" Padding="8,5" Command="{Binding CreatePlaylistCommand}" />
                         <Button Content="Löschen" FontSize="11" Padding="8,5" Command="{Binding DeleteSelectedNodeCommand}" />
                     </StackPanel>
 
-                    <TextBlock DockPanel.Dock="Top" Margin="12,2,10,8" FontSize="10.5" Foreground="{StaticResource TextFaintBrush}"
-                               TextWrapping="Wrap" IsVisible="{Binding IsFilesMode}"
-                               Text="Zeigt, was wirklich auf der Platte liegt – auch ungescannte Dateien." />
-
-                    <Panel>
-                        <TreeView IsVisible="{Binding IsPlaylistsMode}" ItemsSource="{Binding RootNodes}" SelectedItem="{Binding SelectedNode, Mode=TwoWay}"
-                                  Background="Transparent" Padding="4,0" BorderThickness="0">
-                            <TreeView.ItemTemplate>
-                                <TreeDataTemplate ItemsSource="{Binding Children}">
-                                    <TextBlock Text="{Binding DisplayName}" FontSize="12.5" Padding="6,5" />
-                                </TreeDataTemplate>
-                            </TreeView.ItemTemplate>
-                        </TreeView>
-
-                        <TreeView IsVisible="{Binding IsFilesMode}" ItemsSource="{Binding FileSystemRoots}" SelectedItem="{Binding SelectedFileSystemNode, Mode=TwoWay}"
-                                  Background="Transparent" Padding="4,0" BorderThickness="0">
-                            <TreeView.Styles>
-                                <Style Selector="TreeViewItem" x:DataType="vm:FileSystemNodeViewModel">
-                                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                                </Style>
-                            </TreeView.Styles>
-                            <TreeView.ItemTemplate>
-                                <TreeDataTemplate ItemsSource="{Binding Children}">
-                                    <TextBlock Text="{Binding Name}" FontSize="12.5" Padding="6,5" />
-                                </TreeDataTemplate>
-                            </TreeView.ItemTemplate>
-                        </TreeView>
-                    </Panel>
+                    <TreeView ItemsSource="{Binding RootNodes}" SelectedItem="{Binding SelectedSidebarItem, Mode=TwoWay}"
+                              Background="Transparent" Padding="4,0" BorderThickness="0">
+                        <!-- ReflectionBinding statt compiled Binding: der Baum mischt zwei Item-Typen (Playlist- und
+                             Dateisystem-Knoten), nur letztere kennen IsExpanded. Eine compilierte Bindung würde bei
+                             der falschen Typ-Kombination zur Laufzeit werfen; ReflectionBinding schlägt an
+                             Playlist-Zeilen einfach folgenlos fehl (kein IsExpanded dort), statt abzustürzen. -->
+                        <TreeView.Styles>
+                            <Style Selector="TreeViewItem">
+                                <Setter Property="IsExpanded" Value="{ReflectionBinding IsExpanded, Mode=TwoWay}" />
+                            </Style>
+                        </TreeView.Styles>
+                        <TreeView.DataTemplates>
+                            <TreeDataTemplate DataType="vm:PlaylistTreeItemViewModel" ItemsSource="{Binding Children}">
+                                <TextBlock Text="{Binding DisplayName}" FontSize="12.5" Padding="6,5" />
+                            </TreeDataTemplate>
+                            <TreeDataTemplate DataType="vm:FileSystemNodeViewModel" ItemsSource="{Binding Children}">
+                                <StackPanel Orientation="Horizontal" Spacing="7" Margin="6,5">
+                                    <Border Width="8" Height="8" CornerRadius="2" Background="{StaticResource TextFaintBrush}" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding Name}" FontSize="12.5" />
+                                </StackPanel>
+                            </TreeDataTemplate>
+                        </TreeView.DataTemplates>
+                    </TreeView>
                 </DockPanel>
 
                 <!-- Track-/Datei-Bereich + Transportleiste -->
                 <DockPanel Grid.Column="1" Margin="0,0,12,12">
 
-                    <!-- Kopfzeile: Ordner/Import-Buttons + Suche + Spalten + Status -->
-                    <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,Auto,Auto,*,Auto" Margin="14,0,0,10">
+                    <!-- Kopfzeile: Ordner/Import-Buttons + Spalten + Unterordner-Schalter + Suche + Status -->
+                    <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto" Margin="14,0,0,10">
                         <Button Grid.Column="0" Content="Ordner hinzufügen…" Click="OnAddFolderClick" IsEnabled="{Binding !IsScanning}" />
                         <Button Grid.Column="1" Content="Traktor-Collection importieren…" Margin="6,0,0,0" Click="OnImportTraktorClick" IsEnabled="{Binding !IsScanning}" />
-                        <Button Grid.Column="2" Content="Spalten ▾" Margin="6,0,0,0" IsVisible="{Binding IsPlaylistsMode}">
+                        <Button Grid.Column="2" Content="Spalten ▾" Margin="6,0,0,0" IsVisible="{Binding IsShowingTrackGrid}">
                             <Button.Flyout>
                                 <Flyout Placement="BottomEdgeAlignedLeft">
                                     <StackPanel Spacing="9" Margin="6" MinWidth="150">
@@ -137,8 +152,11 @@
                                 </Flyout>
                             </Button.Flyout>
                         </Button>
-                        <TextBox Grid.Column="3" Margin="12,0" PlaceholderText="Suche (Titel, Artist, Album)…" Text="{Binding SearchText}" IsVisible="{Binding IsPlaylistsMode}" />
-                        <TextBlock Grid.Column="4" VerticalAlignment="Center" MaxWidth="380" FontSize="11.5" Foreground="{StaticResource TextFaintBrush}"
+                        <CheckBox Grid.Column="3" Content="Unterordner einbeziehen" FontSize="11.5" Margin="10,0,0,0"
+                                  VerticalAlignment="Center" IsChecked="{Binding IncludeSubfolders}"
+                                  ToolTip.Tip="Zeigt auch Tracks/Dateien aus verschachtelten Playlisten bzw. Unterordnern, nicht nur die direkten." />
+                        <TextBox Grid.Column="4" Margin="12,0" PlaceholderText="Suche (Titel, Artist, Album)…" Text="{Binding SearchText}" IsVisible="{Binding IsShowingTrackGrid}" />
+                        <TextBlock Grid.Column="5" VerticalAlignment="Center" MaxWidth="340" FontSize="11.5" Foreground="{StaticResource TextFaintBrush}"
                                    TextTrimming="CharacterEllipsis" Text="{Binding StatusMessage}" />
                     </Grid>
 
@@ -172,8 +190,8 @@
                         </Grid>
                     </Border>
 
-                    <!-- Fußzeile der Liste: geladen / mehr laden / zu Playlist (nur Playlists-Modus) -->
-                    <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto,Auto" Margin="14,6" IsVisible="{Binding IsPlaylistsMode}">
+                    <!-- Fußzeile der Liste: geladen / mehr laden / zu Playlist -->
+                    <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto,Auto" Margin="14,6" IsVisible="{Binding IsShowingTrackGrid}">
                         <TextBlock Grid.Column="0" VerticalAlignment="Center" FontFamily="{StaticResource MonoFont}" FontSize="11" Foreground="{StaticResource TextFaintBrush}">
                             <Run Text="{Binding LoadedCount}" /><Run Text=" von " /><Run Text="{Binding TotalCount}" /><Run Text=" geladen" />
                         </TextBlock>
@@ -183,8 +201,8 @@
                     </Grid>
 
                     <Panel>
-                        <!-- Track-Tabelle (Playlists-Modus) -->
-                        <DataGrid Name="TrackGrid" Margin="6,0,0,0" IsVisible="{Binding IsPlaylistsMode}"
+                        <!-- Track-Tabelle -->
+                        <DataGrid Name="TrackGrid" Margin="6,0,0,0" IsVisible="{Binding IsShowingTrackGrid}"
                                   ItemsSource="{Binding Tracks}"
                                   SelectedItem="{Binding SelectedTrack, Mode=TwoWay}"
                                   AutoGenerateColumns="False"
@@ -219,8 +237,8 @@
                             </DataGrid.Columns>
                         </DataGrid>
 
-                        <!-- Datei-Browser (Ordner-Modus): was wirklich auf der Platte liegt -->
-                        <Grid IsVisible="{Binding IsFilesMode}" Margin="6,0,0,0" RowDefinitions="Auto,*">
+                        <!-- Datei-Browser: was wirklich auf der Platte liegt -->
+                        <Grid IsVisible="{Binding IsShowingFileList}" Margin="6,0,0,0" RowDefinitions="Auto,*">
                             <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="8,0,8,10">
                                 <TextBlock Grid.Column="0" VerticalAlignment="Center" FontFamily="{StaticResource MonoFont}" FontSize="11.5" Foreground="{StaticResource TextMutedBrush}">
                                     <Run Text="{Binding FolderScannedCount}" /><Run Text=" von " /><Run Text="{Binding FolderTotalCount}" /><Run Text=" Dateien in diesem Ordner gescannt" />
@@ -228,7 +246,10 @@
                                 <Button Grid.Column="1" Content="Diesen Ordner scannen" Command="{Binding ScanSelectedFolderCommand}" IsEnabled="{Binding !IsScanning}" />
                             </Grid>
 
-                            <ListBox Grid.Row="1" ItemsSource="{Binding FolderFiles}" Background="Transparent" BorderThickness="0" Padding="4,0">
+                            <ListBox Grid.Row="1" Name="FolderFilesList" ItemsSource="{Binding FolderFiles}"
+                                     SelectedItem="{Binding SelectedFolderFile, Mode=TwoWay}"
+                                     Background="Transparent" BorderThickness="0" Padding="4,0"
+                                     DoubleTapped="OnFolderFileDoubleTapped">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Grid ColumnDefinitions="*,Auto,Auto,Auto" Margin="4,3">

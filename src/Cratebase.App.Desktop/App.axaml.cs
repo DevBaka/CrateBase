@@ -44,12 +44,13 @@ public partial class App : Application
             ICollectionImporter traktorImporter = new TraktorCollectionImporter(trackRepository, libraryRootRepository, playlistRepository, cuePointRepository);
             IWaveformGenerator waveformGenerator = new FfmpegWaveformGenerator();
             IWaveformCache waveformCache = new FileWaveformCache(GetWaveformCacheDir());
+            IQuickAccessStore quickAccessStore = new JsonQuickAccessStore(GetQuickAccessFilePath());
 
             _audioPlayer = new LibVlcAudioPlayer();
 
             var viewModel = new MainViewModel(
                 trackRepository, libraryRootRepository, playlistRepository, libraryScanner, _audioPlayer,
-                traktorImporter, tagReader, waveformGenerator, waveformCache);
+                traktorImporter, tagReader, waveformGenerator, waveformCache, quickAccessStore);
 
             var mainWindow = new MainWindow { DataContext = viewModel };
             mainWindow.Opened += async (_, _) => await viewModel.InitializeAsync();
@@ -76,5 +77,11 @@ public partial class App : Application
     {
         var baseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         return Path.Combine(baseDir, "Cratebase", "waveforms");
+    }
+
+    private static string GetQuickAccessFilePath()
+    {
+        var baseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        return Path.Combine(baseDir, "Cratebase", "quickaccess.json");
     }
 }
