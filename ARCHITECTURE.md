@@ -986,3 +986,68 @@ zustandslose statische Methode und wurde per Code-Review gegen die relevanten Ra
 Szenarios (Ordner öffnen, Song abspielen, Ende abwarten, prüfen dass wirklich der nächste Ordner-Song
 kommt) war in dieser Session aus den in Abschnitt 15.4/16.4 genannten Gründen nicht mehr sicher
 automatisierbar - bitte selbst gegenprüfen.
+
+## 18. Favoriten-Panel nach unten verschoben, Kontextmenü-Fix, Drag&Drop
+
+Nutzer-Feedback: "Aktuelle playlist hier ablegen" (Rechtsklick-Kontextmenü auf einem Favoriten-Slot)
+tat nichts; das Favoriten-Panel sollte wie der Tag-Editor unten, direkt über der Transportleiste
+sitzen statt oben unter der Kopfzeile; Drag&Drop sollte ebenfalls funktionieren.
+
+### 18.1 Panel-Position
+
+Die Favoriten-`Border` ist jetzt `DockPanel.Dock="Bottom"`, direkt nach der Transportleiste und vor
+dem Tag-Editor-Panel deklariert - dieselbe Mechanik wie beim Edit-Modus (s. Abschnitt 14.4): die
+Songliste sitzt im letzten, undockten `Panel` und schrumpft automatisch, wenn eines der beiden (oder
+beide gleichzeitig) eingeblendet werden.
+
+### 18.2 Ursache für "Aktuelle Playlist hier ablegen macht nichts"
+
+Die `MenuItem`-Commands im `ContextMenu` banden bisher über `$parent[ItemsControl]` an das
+ViewModel - das funktioniert für normale Inhalte einer `ItemsControl`-Vorlage (bewährt z.B. bei der
+QuickAccess-Flyout-Liste, Abschnitt 12.2), aber ein `ContextMenu` hängt als eigener Popup-Zweig nicht
+zuverlässig im selben visuellen Pfad wie die `ItemsControl`, die es geöffnet hat - die Bindung lief
+darum ins Leere. Fix: `$parent[Window]` statt `$parent[ItemsControl]` - dasselbe an anderer Stelle
+bereits bewährte Muster (`DataGridColumn.IsVisible`, das ebenfalls kein normaler visueller Nachfahre
+ist) funktioniert auch aus einem Popup-Kontext heraus zuverlässig.
+
+### 18.3 Drag&Drop
+
+Avalonia 12.1.1 nutzt eine neuere Drag&Drop-API (`DataTransfer`/`DataFormat<T>` statt des
+deprecateten `DataObject`/`IDataObject`) - per Reflektion gegen die installierte Avalonia.Base.dll
+verifiziert, bevor Code dagegen geschrieben wurde (`DataFormat.CreateInProcessFormat<T>` verlangt
+einen Referenztyp, deshalb Playlist-/Track-Id als `string` statt `long` transportiert).
+
+- **Drag-Quellen** (Code-behind, da Avalonia-Drag&Drop aus einer laufenden Pointer-Geste heraus
+  startet, kein reines Binding-Konzept): `PointerPressed` merkt sich Startpunkt + die
+  `PointerPressedEventArgs` (von `DoDragDropAsync` explizit verlangt, nicht die laufenden
+  `PointerEventArgs` von `PointerMoved`); `PointerMoved` prüft ab ein paar Pixeln Bewegung bei
+  weiterhin gedrückter linker Maustaste, ob es sich um eine echte Drag-Geste handelt (sonst würde
+  jeder normale Klick/Doppelklick/Baum-Auf-Zuklappen einen Drag auslösen), liest den DataContext am
+  `PointerEventArgs.Source` hoch bis zum passenden Typ (`PlaylistTreeItemViewModel` im Baum,
+  `Track` im DataGrid) und startet `DragDrop.DoDragDropAsync`.
+- **Drop-Ziel**: jede Slot-`Border` hat `DragDrop.AllowDrop="True"` sowie `DragDrop.DragEnter/
+  DragOver/DragLeave/Drop`-Handler (als **attached** Events - `DragEnter="..."` allein kompiliert
+  nicht, `Border` kennt dieses Event nicht direkt). Visuelles Feedback beim Drüberziehen (grüner,
+  dickerer Rahmen) direkt in Code-behind statt über eine neue Style-Klasse, da nur dieser eine Ort
+  das braucht. `AssignPlaylistToSlot(long, int)`/`AddTrackToFavoriteSlotAsync(long, int)` sind neue,
+  öffentliche ViewModel-Methoden (nicht `[RelayCommand]`, da aus Code-behind statt XAML-Binding
+  aufgerufen) - anders als die bereits vorhandenen `AssignSelectedPlaylistToSlotCommand`/
+  `AddSelectedTrackToFavoriteSlotCommand` nicht auf die aktuelle Baum-/Track-Auswahl angewiesen,
+  sondern nehmen die gezogene Playlist/den gezogenen Track direkt per Id entgegen - Drag&Drop
+  funktioniert also unabhängig davon, was gerade im Baum oder in der Liste ausgewählt ist.
+
+### 18.4 Aufräumen
+
+Beim Testen der vorherigen Feature-Runde war über einen automatisierten Fehlklick eine leere
+Playlist "Neue Playlist" in der echten Produktions-DB angelegt worden - vor dieser Session bemerkt
+und wieder gelöscht (leer, keine Tracks betroffen).
+
+### 18.5 Verifiziert
+
+Build sauber (0 Fehler/Warnungen). Die Drag&Drop-API-Verwendung wurde per Reflektion gegen die
+tatsächlich installierte Avalonia-Version geprüft, bevor der Code geschrieben wurde (nicht nur aus
+älterer Avalonia-11-Dokumentation übernommen, die hier nicht mehr stimmt). App startet fehlerfrei,
+Favoriten-Button erscheint weiterhin in der Kopfzeile. Ein Live-Durchklicken/-Ziehen (Playlist aus
+dem Baum auf einen Slot ziehen, Track aus der Liste auf einen belegten Slot ziehen, Rechtsklick-Menü
+prüfen) war in dieser Session nicht mehr sicher automatisierbar (s. Abschnitt 15.4/16.4) - bitte
+selbst gegenprüfen.

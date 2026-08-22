@@ -585,9 +585,23 @@ public partial class MainViewModel : ViewModelBase
     }
 
     /// <summary>Weist die aktuell im Baum ausgewählte Playlist (derselbe Auswahlmechanismus wie
-    /// AddSelectedTrackToPlaylistCommand) dem angegebenen Slot des aktiven Profils zu.</summary>
+    /// AddSelectedTrackToPlaylistCommand) dem angegebenen Slot des aktiven Profils zu - Kontextmenü-Weg.</summary>
     [RelayCommand]
     private void AssignSelectedPlaylistToSlot(int slotIndex)
+    {
+        if (SelectedPlaylistNode?.Node is not { NodeType: PlaylistNodeType.Playlist } playlistNode)
+        {
+            StatusMessage = "Wähle zuerst eine Playlist im Baum aus.";
+            return;
+        }
+
+        AssignPlaylistToSlot(playlistNode.Id, slotIndex);
+    }
+
+    /// <summary>Weist eine Playlist per Id einem Slot zu - der Drag&amp;Drop-Weg (s. MainWindow.axaml.cs
+    /// OnFavoriteSlotDrop): anders als AssignSelectedPlaylistToSlot nicht auf die aktuelle Baum-Auswahl
+    /// angewiesen, sondern nimmt direkt die gezogene Playlist, egal was gerade im Baum ausgewählt ist.</summary>
+    public void AssignPlaylistToSlot(long playlistNodeId, int slotIndex)
     {
         if (SelectedFavoriteProfile is null)
         {
@@ -595,10 +609,10 @@ public partial class MainViewModel : ViewModelBase
             return;
         }
 
-        if (SelectedPlaylistNode?.Node is not { NodeType: PlaylistNodeType.Playlist } playlistNode)
+        var match = FindPlaylistNode(RootNodes.OfType<PlaylistTreeItemViewModel>(), playlistNodeId);
+        if (match?.Node is not { NodeType: PlaylistNodeType.Playlist } playlistNode)
         {
-            StatusMessage = "Wähle zuerst eine Playlist im Baum aus.";
-            return;
+            return; // Ordner oder nicht (mehr) vorhanden - keine gültige Ziel-Playlist
         }
 
         SelectedFavoriteProfile.Slots[slotIndex] = playlistNode.Id;
@@ -655,6 +669,26 @@ public partial class MainViewModel : ViewModelBase
 
         await _playlistRepository.AddTracksAsync(id, [track.Id]);
         StatusMessage = $"„{track.DisplayTitle}“ zu „{slot.PlaylistName}“ hinzugefügt.";
+    }
+
+    /// <summary>Fügt einen Track per Id einem Slot hinzu - der Drag&amp;Drop-Weg (s. MainWindow.axaml.cs
+    /// OnFavoriteSlotDrop): anders als AddSelectedTrackToFavoriteSlotAsync nicht auf die aktuelle
+    /// Track-Auswahl angewiesen, sondern nimmt direkt den gezogenen Track.</summary>
+    public async Task AddTrackToFavoriteSlotAsync(long trackId, int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= FavoriteSlots.Count)
+        {
+            return;
+        }
+
+        var slot = FavoriteSlots[slotIndex];
+        if (slot.PlaylistNodeId is not { } playlistId)
+        {
+            return;
+        }
+
+        await _playlistRepository.AddTracksAsync(playlistId, [trackId]);
+        StatusMessage = $"Track zu „{slot.PlaylistName}“ hinzugefügt.";
     }
 
     [RelayCommand]

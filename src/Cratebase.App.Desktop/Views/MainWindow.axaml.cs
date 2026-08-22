@@ -1,12 +1,31 @@
+using System.Globalization;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Cratebase.App.Desktop.ViewModels;
+using Cratebase.Core.Models;
 
 namespace Cratebase.App.Desktop.Views;
 
 public partial class MainWindow : Window
 {
+    // Eigene In-Process-Datenformate für Drag&Drop auf die Favoriten-Slots (s. OnFavoriteSlotDrop) -
+    // eine Playlist aus dem Baum oder ein Track aus der Liste tragen jeweils nur ihre Id, der Slot löst
+    // den Rest über das ViewModel auf (AssignPlaylistToSlot/AddTrackToFavoriteSlotAsync). In-Process
+    // reicht, weil hier nie über Prozessgrenzen (andere App) gezogen wird. DataFormat&lt;T&gt; verlangt
+    // einen Referenztyp, deshalb Id als String statt long (Roundtrip über long.Parse beim Lesen).
+    private static readonly DataFormat<string> PlaylistDragFormat = DataFormat.CreateInProcessFormat<string>("application/x-cratebase-playlist-id");
+    private static readonly DataFormat<string> TrackDragFormat = DataFormat.CreateInProcessFormat<string>("application/x-cratebase-track-id");
+
+    // Nur EIN Startpunkt/EventArgs-Paar gleichzeitig nötig - TreeView und DataGrids feuern
+    // PointerPressed/PointerMoved nie gleichzeitig füreinander (jeweils eigene, sich nicht
+    // überlappende Controls).
+    private Point? _dragStartPoint;
+    private PointerPressedEventArgs? _dragPressedArgs;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -98,5 +117,155 @@ public partial class MainWindow : Window
         {
             await viewModel.AddQuickAccessCommand.ExecuteAsync(folder);
         }
+    }
+
+    // --- Drag&Drop: Playlist aus dem Baum bzw. Track aus der Liste auf einen Favoriten-Slot ziehen ---
+    // Avalonia-Drag&Drop startet aus einer laufenden Pointer-Geste heraus (kein reines XAML/Binding-
+    // Konzept), deshalb hier im Code-behind statt im ViewModel - genau wie die Ordnerauswahl-Dialoge
+    // oben ein reiner UI-Concern. Avalonia 12 nutzt die neuere DataTransfer/DataFormat-API (DataObject
+    // ist deprecated) - CreateInProcessFormat reicht hier völlig, die Daten wandern nie außerhalb des
+    // Prozesses (kein Drag zu/von einer anderen Anwendung nötig).
+
+    private void OnPlaylistTreePointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        _dragStartPoint = e.GetPosition(null);
+        _dragPressedArgs = e;
+    }
+
+    private async void OnPlaylistTreePointerMoved(object? sender, PointerEventArgs e)
+    {
+        if (TryBeginDragGesture(e, sender as Visual) is not { } pressedArgs)
+        {
+            return;
+        }
+
+        if (FindDataContext<PlaylistTreeItemViewModel>(e.Source as StyledElement) is not { IsPlaylist: true, Node: { } node })
+        {
+            return; // Ordner/"Bibliothek"-Wurzel lassen sich nicht auf einen Slot ziehen, nur echte Playlisten
+        }
+
+        var transfer = new DataTransfer();
+        transfer.Add(DataTransferItem.Create(PlaylistDragFormat, node.Id.ToString(CultureInfo.InvariantCulture)));
+        await DragDrop.DoDragDropAsync(pressedArgs, transfer, DragDropEffects.Copy);
+    }
+
+    private void OnTrackGridPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        _dragStartPoint = e.GetPosition(null);
+        _dragPressedArgs = e;
+    }
+
+    private async void OnTrackGridPointerMoved(object? sender, PointerEventArgs e)
+    {
+        if (TryBeginDragGesture(e, sender as Visual) is not { } pressedArgs)
+        {
+            return;
+        }
+
+        if (FindDataContext<Track>(e.Source as StyledElement) is not { IsSynthetic: false } track)
+        {
+            return; // noch nicht gescannte Platzhalter-Zeilen (s. Track.IsSynthetic) lassen sich nicht ziehen
+        }
+
+        var transfer = new DataTransfer();
+        transfer.Add(DataTransferItem.Create(TrackDragFormat, track.Id.ToString(CultureInfo.InvariantCulture)));
+        await DragDrop.DoDragDropAsync(pressedArgs, transfer, DragDropEffects.Copy);
+    }
+
+    /// <summary>Gemeinsame Geste-Erkennung für beide Drag-Quellen: erst ab ein paar Pixeln Bewegung bei
+    /// weiterhin gedrückter linker Maustaste als echten Drag werten, sonst würde jeder normale Klick
+    /// (Auswahl, Doppelklick zum Abspielen, Baum auf-/zuklappen) sofort einen Drag auslösen. Liefert die
+    /// beim ursprünglichen PointerPressed gemerkten EventArgs zurück (DoDragDropAsync verlangt explizit
+    /// PointerPressedEventArgs, nicht die laufenden PointerEventArgs von PointerMoved) und feuert pro
+    /// Geste nur einmal (setzt die Merker danach zurück).</summary>
+    private PointerPressedEventArgs? TryBeginDragGesture(PointerEventArgs e, Visual? relativeTo)
+    {
+        if (_dragStartPoint is not { } start || _dragPressedArgs is not { } pressed || !e.GetCurrentPoint(relativeTo).Properties.IsLeftButtonPressed)
+        {
+            return null;
+        }
+
+        var current = e.GetPosition(null);
+        if (Math.Abs(current.X - start.X) < 4 && Math.Abs(current.Y - start.Y) < 4)
+        {
+            return null;
+        }
+
+        _dragStartPoint = null;
+        _dragPressedArgs = null;
+        return pressed;
+    }
+
+    private static T? FindDataContext<T>(StyledElement? element)
+        where T : class
+    {
+        while (element is not null)
+        {
+            if (element.DataContext is T match)
+            {
+                return match;
+            }
+
+            element = element.Parent as StyledElement;
+        }
+
+        return null;
+    }
+
+    private void OnFavoriteSlotDragEnter(object? sender, DragEventArgs e)
+    {
+        if (sender is not Border border)
+        {
+            return;
+        }
+
+        if (IsAcceptableFavoriteSlotDrag(e))
+        {
+            border.BorderBrush = this.FindResource("AccentGreenBrush") as IBrush;
+            border.BorderThickness = new Thickness(2);
+            e.DragEffects = DragDropEffects.Copy;
+        }
+        else
+        {
+            e.DragEffects = DragDropEffects.None;
+        }
+    }
+
+    private void OnFavoriteSlotDragOver(object? sender, DragEventArgs e) =>
+        e.DragEffects = IsAcceptableFavoriteSlotDrag(e) ? DragDropEffects.Copy : DragDropEffects.None;
+
+    private void OnFavoriteSlotDragLeave(object? sender, RoutedEventArgs e) => ResetFavoriteSlotDragVisual(sender);
+
+    private async void OnFavoriteSlotDrop(object? sender, DragEventArgs e)
+    {
+        ResetFavoriteSlotDragVisual(sender);
+
+        if (sender is not Control { DataContext: FavoriteSlotViewModel slot } || DataContext is not MainViewModel viewModel)
+        {
+            return;
+        }
+
+        if (e.DataTransfer.TryGetValue(PlaylistDragFormat) is { } playlistIdText && long.TryParse(playlistIdText, CultureInfo.InvariantCulture, out var playlistId))
+        {
+            viewModel.AssignPlaylistToSlot(playlistId, slot.Index);
+        }
+        else if (e.DataTransfer.TryGetValue(TrackDragFormat) is { } trackIdText && long.TryParse(trackIdText, CultureInfo.InvariantCulture, out var trackId))
+        {
+            await viewModel.AddTrackToFavoriteSlotAsync(trackId, slot.Index);
+        }
+    }
+
+    private static bool IsAcceptableFavoriteSlotDrag(DragEventArgs e) =>
+        e.DataTransfer.Contains(PlaylistDragFormat) || e.DataTransfer.Contains(TrackDragFormat);
+
+    private void ResetFavoriteSlotDragVisual(object? sender)
+    {
+        if (sender is not Border border)
+        {
+            return;
+        }
+
+        border.BorderBrush = this.FindResource("BorderBrush1") as IBrush;
+        border.BorderThickness = new Thickness(1);
     }
 }
