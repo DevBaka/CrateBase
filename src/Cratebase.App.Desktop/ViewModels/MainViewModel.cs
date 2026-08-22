@@ -192,6 +192,11 @@ public partial class MainViewModel : ViewModelBase
 
     /// <summary>Zeigt, was wirklich auf der Platte liegt (nicht nur, was schon in der DB steht) – Inhalt des
     /// gewählten Ordners, mit <see cref="IncludeSubfolders"/> rekursiv, sonst nur die direkten Dateien.</summary>
+    /// <summary>Mehr als das zeigt die Liste nicht an (Größe/Scan-Status bleiben trotzdem für ALLE
+    /// gefundenen Dateien korrekt gezählt, s. unten) - bei "Unterordner einbeziehen" auf einem großen
+    /// Root (z.B. der ganzen Bibliothek) sonst zehntausende Zeilen mit je einem Stat-Syscall.</summary>
+    private const int FolderFilesDisplayCap = 3000;
+
     private async Task ReloadFolderFilesAsync()
     {
         FolderFiles.Clear();
@@ -218,35 +223,63 @@ public partial class MainViewModel : ViewModelBase
         }
 
         var searchOption = IncludeSubfolders ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-        var files = await Task.Run(() => SafeListAudioFiles(node.FullPath, searchOption));
+        var rootPathForRelative = matchedRoot?.Path;
 
-        var scanned = 0;
-        foreach (var file in files)
+        // Enumeration, Fingerprint-Abgleich UND die (blockierenden) Datei-Stat-Aufrufe laufen
+        // komplett im Hintergrund-Thread - vorher liefen die Stat-Aufrufe pro Datei in einer
+        // foreach-Schleife auf dem UI-Thread, bei "Unterordner einbeziehen" auf einem großen
+        // Ordner (z.B. dem kompletten Bibliotheks-Root) spürbar langsam/einfrierend.
+        var (entries, totalFound, scannedCount) = await Task.Run(() =>
         {
-            var relativePath = matchedRoot is not null
-                ? Path.GetRelativePath(matchedRoot.Path, file).Replace(Path.DirectorySeparatorChar, '/')
-                : file;
-            var isScanned = fingerprints?.ContainsKey(relativePath) == true;
-            if (isScanned)
+            var files = SafeListAudioFiles(node.FullPath, searchOption);
+            var scanned = 0;
+            var built = new List<FileBrowserEntryViewModel>(Math.Min(files.Count, FolderFilesDisplayCap));
+
+            for (var i = 0; i < files.Count; i++)
             {
-                scanned++;
+                var file = files[i];
+                var relativePath = rootPathForRelative is not null
+                    ? Path.GetRelativePath(rootPathForRelative, file).Replace(Path.DirectorySeparatorChar, '/')
+                    : file;
+                var isScanned = fingerprints?.ContainsKey(relativePath) == true;
+                if (isScanned)
+                {
+                    scanned++;
+                }
+
+                if (i >= FolderFilesDisplayCap)
+                {
+                    continue; // weiterzählen für scanned/totalFound, aber keinen Eintrag mehr bauen (kein Stat-Aufruf)
+                }
+
+                double sizeMb;
+                try
+                {
+                    sizeMb = new FileInfo(file).Length / (1024.0 * 1024.0);
+                }
+                catch (Exception)
+                {
+                    sizeMb = 0;
+                }
+
+                built.Add(new FileBrowserEntryViewModel(Path.GetFileName(file), file, relativePath, sizeMb, isScanned));
             }
 
-            double sizeMb;
-            try
-            {
-                sizeMb = new FileInfo(file).Length / (1024.0 * 1024.0);
-            }
-            catch (Exception)
-            {
-                sizeMb = 0;
-            }
+            return (built, files.Count, scanned);
+        });
 
-            FolderFiles.Add(new FileBrowserEntryViewModel(Path.GetFileName(file), file, relativePath, sizeMb, isScanned));
+        foreach (var entry in entries)
+        {
+            FolderFiles.Add(entry);
         }
 
-        FolderScannedCount = scanned;
-        FolderTotalCount = FolderFiles.Count;
+        FolderScannedCount = scannedCount;
+        FolderTotalCount = totalFound;
+
+        if (totalFound > FolderFilesDisplayCap)
+        {
+            StatusMessage = $"Zeige die ersten {FolderFilesDisplayCap} von {totalFound} Dateien – für die ganze Bibliothek eher „Bibliothek“ statt „Unterordner einbeziehen“ auf dem Wurzelordner nutzen.";
+        }
     }
 
     private List<string> SafeListAudioFiles(string path, SearchOption searchOption)
@@ -493,10 +526,21 @@ public partial class MainViewModel : ViewModelBase
         IsScanning = true;
         try
         {
+            // Zeigt dieser Pfad schon irgendwo im Baum (als eigener Root oder als Unterordner
+            // eines bekannten Roots)? Nur wenn nicht, kann sich das sichtbare Ergebnis von
+            // BuildFilesystemNodesList() überhaupt ändern - ReplaceFilesystemNodes trotzdem immer
+            // aufzurufen (frühere Version) hat bei jedem "Diesen Ordner scannen" den kompletten
+            // Dateisystem-Teil neu erzeugt und damit jeden Aufklapp-Zustand zurückgesetzt, obwohl
+            // sich am sichtbaren Baum nichts geändert hätte.
+            var pathAlreadyVisible = _libraryRootsById.Values.Any(r => PathsEqual(r.Path, folderPath) || IsPathNestedUnder(folderPath, r.Path));
+
             var label = Path.GetFileName(folderPath.TrimEnd(Path.DirectorySeparatorChar));
             var root = await _libraryRootRepository.AddOrGetAsync(folderPath, string.IsNullOrEmpty(label) ? folderPath : label);
             _libraryRootsById[root.Id] = root;
-            ReplaceFilesystemNodes(BuildFilesystemNodesList()); // neue Bibliothek kann neu im Baum auftauchen
+            if (!pathAlreadyVisible)
+            {
+                ReplaceFilesystemNodes(BuildFilesystemNodesList()); // wirklich neuer, sichtbarer Eintrag
+            }
 
             // Progress<T> fängt den aktuellen SynchronizationContext (UI-Thread) beim Erstellen ein,
             // der Callback braucht deshalb kein manuelles Dispatcher.Post.
@@ -507,7 +551,13 @@ public partial class MainViewModel : ViewModelBase
                     : $"Scanne … {p.FilesSeen} Dateien gesehen ({p.FilesAdded} neu) – {p.CurrentRelativePath}";
             });
 
-            await _libraryScanner.ScanAsync(root, progress);
+            // Task.Run: LibraryScanner liest Tags synchron (TagLib-Sharp macht blockierende
+            // Datei-I/O) - ohne das hier auf einen Threadpool-Thread zu verlagern, würde das
+            // direkt auf dem UI-Thread laufen und die App für die Dauer des Scans einfrieren
+            // (beobachtet: kurzes Hängen beim Klick auf "Diesen Ordner scannen"). progress
+            // bleibt trotzdem sicher, da Progress<T> den UI-SynchronizationContext beim Erstellen
+            // eingefangen hat, unabhängig davon, von welchem Thread aus Report() aufgerufen wird.
+            await Task.Run(() => _libraryScanner.ScanAsync(root, progress));
             _fingerprintsByRoot.Remove(root.Id); // Fingerprints sind nach dem Scan veraltet
             await ReloadTracksAsync(reset: true);
         }
@@ -522,8 +572,9 @@ public partial class MainViewModel : ViewModelBase
     }
 
     /// <summary>Scannt den im Datei-Browser gerade ausgewählten Ordner (nicht die ganze Bibliothek neu) – nützlich,
-    /// um gezielt Lücken zu schließen. Baut bewusst NICHT den Dateisystem-Baum neu auf (der Ordner steht ja
-    /// schon als Knoten da, sonst hätte man ihn nicht auswählen können) - der Aufklapp-Zustand bleibt erhalten.</summary>
+    /// um gezielt Lücken zu schließen. Der Ordner steht schon als Knoten im Baum (sonst hätte man ihn nicht
+    /// auswählen können), ScanFolderAsync baut den Dateisystem-Teil deshalb NICHT neu auf - der Aufklapp-Zustand
+    /// bleibt erhalten.</summary>
     [RelayCommand]
     private async Task ScanSelectedFolderAsync()
     {

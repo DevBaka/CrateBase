@@ -637,3 +637,55 @@ nach dem Start (99.153, kein "hängt bei 0" mehr). SQL-Aggregation isoliert gege
 große Daten verifiziert (s. 12.3). Nicht per Klick verifiziert (gleiche Einschränkung wie in
 11.4): Schnellzugriff-Ordner tatsächlich über den Einstellungen-Dialog hinzufügen, Doppelklick im
 Datei-Browser, "Unterordner einbeziehen" tatsächlich anklicken.
+
+## 13. Drittes Nutzer-Feedback: "Diesen Ordner scannen" hängt kurz, Baum klappt zu
+
+Konkret gemeldet: Klick auf "Diesen Ordner scannen" lässt die App kurz hängen, danach ist die
+Sidebar wieder eingeklappt; außerdem zeigt der Klick auf den Hauptordner ("Musik") nicht alle
+Songs.
+
+### 13.1 UI-Thread blockiert während des Scans
+
+`LibraryScanner.ScanAsync` liest Tags synchron (TagLib-Sharp macht blockierende Datei-I/O) - ohne
+`Task.Run`-Wrapper lief das direkt auf dem Thread, der `await _libraryScanner.ScanAsync(...)`
+aufgerufen hat. Beim ursprünglichen 100k-Track-Vollscan (s. Abschnitt 8) fiel das nicht auf, weil
+der über eine isolierte Konsolen-Testanwendung lief, nie über die echte GUI/das ViewModel - das
+war schlicht nie End-to-End durch den UI-Thread-Pfad getestet. Fix: `await Task.Run(() =>
+_libraryScanner.ScanAsync(root, progress))`. `Progress&lt;T&gt;` bleibt dabei sicher, weil es den
+UI-`SynchronizationContext` beim Erstellen einfängt, unabhängig davon, von welchem Thread aus
+`Report()` aufgerufen wird.
+
+### 13.2 Sidebar klappt nach jedem Scan zu
+
+`ScanSelectedFolderAsync` ruft intern `ScanFolderAsync` auf, und die rief bislang *immer*
+`ReplaceFilesystemNodes(BuildFilesystemNodesList())` auf - das erzeugt für den kompletten
+Dateisystem-Teil des Baums frische `FileSystemNodeViewModel`-Instanzen, deren `IsExpanded` wieder
+bei `false` startet. Bei "Diesen Ordner scannen" ändert sich der sichtbare Baum aber nie (der
+gescannte Ordner steht ja schon als Knoten da, sonst hätte man ihn nicht auswählen können) - der
+Rebuild war schlicht unnötig. Fix: vorher prüfen, ob der Pfad schon irgendwo im Baum sichtbar ist
+(als eigener Root oder als Unterordner eines bekannten Roots, per den schon vorhandenen
+`PathsEqual`/`IsPathNestedUnder`-Helfern aus 12.1) - nur bei einem wirklich neuen, sichtbaren
+Eintrag (z.B. über "Ordner hinzufügen…" auf einen komplett neuen Ort) wird noch neu aufgebaut.
+
+### 13.3 Datei-Browser bei "Unterordner einbeziehen" auf großen Ordnern langsam
+
+Kein Tiefen-Limit (`SearchOption.AllDirectories` ist in .NET uneingeschränkt rekursiv - das war
+schon vorher korrekt), sondern ein Performance-Problem: pro gefundener Datei lief ein
+`FileInfo(...).Length`-Stat-Aufruf (blockierende I/O) plus der Aufbau des Listeneintrags in einer
+`foreach`-Schleife auf dem UI-Thread, nachdem nur die Dateisystem-Enumeration selbst in
+`Task.Run` lief. Bei "Unterordner einbeziehen" auf dem kompletten Bibliotheks-Root (~100k
+Dateien) macht das zehntausende blockierende Stat-Aufrufe direkt auf dem UI-Thread - wirkt wie
+"nicht alle Songs werden angezeigt", weil die Liste noch minutenlang weiterbaut oder feststeckt.
+Fix: Enumeration, Fingerprint-Abgleich UND die Stat-Aufrufe laufen jetzt komplett in einem
+einzigen `Task.Run`; zusätzlich eine Anzeige-Obergrenze (`FolderFilesDisplayCap = 3000`) - Anzahl
+gescannt/gesamt bleibt trotzdem für *alle* gefundenen Dateien korrekt (der günstige
+Fingerprint-Abgleich läuft über die volle Liste, nur die teuren Stat-Aufrufe sind gedeckelt), bei
+Überschreitung ein Hinweis, für die komplette Bibliothek eher die Bibliotheksansicht zu nutzen.
+
+### 13.4 Verifiziert
+
+Alle drei Fixes bauen sauber und die App startet weiterhin fehlerfrei. Die eigentliche Symptomatik
+(spürbares kurzes Hängen, Baum-Kollaps) lässt sich nur durch tatsächliches Klicken in der laufenden
+GUI beobachten/bestätigen (Wayland-Klick-Automatisierung bleibt auf dem Zielsystem unzuverlässig,
+s. frühere Abschnitte) - bitte einmal selbst gegenprüfen, ob "Diesen Ordner scannen" jetzt ohne
+Hänger durchläuft und der Baum aufgeklappt bleibt.
