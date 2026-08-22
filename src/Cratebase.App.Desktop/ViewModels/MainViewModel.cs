@@ -960,25 +960,28 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
-    private async Task LoadEditSuggestionsAsync()
+    /// <summary>Lädt genau eine Vorschlagsliste neu (nicht alle fünf) - wird nach dem Speichern nur für das
+    /// tatsächlich geänderte Feld aufgerufen. Ein blindes Neuladen aller fünf Listen bei jedem Speichern hätte
+    /// auch die ItemsSource eines Feldes ersetzt, das der Nutzer gerade gar nicht bearbeitet hat - z.B. beim
+    /// Tab von Genre zu Sub-Genre würde das gerade frisch geöffnete Sub-Genre-Dropdown mitten in der
+    /// Interaktion unter der Maus/Tastatur weggezogen (Ursache für das gemeldete "Pfeiltasten/Klick im
+    /// Dropdown funktionieren nicht").</summary>
+    private async Task ReloadSuggestionsAsync(ObservableCollection<string> target, TrackTextField field)
     {
-        async Task Fill(ObservableCollection<string> target, TrackTextField field)
+        var values = await _trackRepository.GetDistinctTextValuesAsync(field);
+        target.Clear();
+        foreach (var value in values)
         {
-            var values = await _trackRepository.GetDistinctTextValuesAsync(field);
-            target.Clear();
-            foreach (var value in values)
-            {
-                target.Add(value);
-            }
+            target.Add(value);
         }
-
-        await Task.WhenAll(
-            Fill(GenreSuggestions, TrackTextField.GenreRaw),
-            Fill(SubGenreSuggestions, TrackTextField.SubGenre),
-            Fill(CommentSuggestions, TrackTextField.Comment),
-            Fill(Comment2Suggestions, TrackTextField.Comment2),
-            Fill(ColorSuggestions, TrackTextField.ColorTag));
     }
+
+    private Task LoadEditSuggestionsAsync() => Task.WhenAll(
+        ReloadSuggestionsAsync(GenreSuggestions, TrackTextField.GenreRaw),
+        ReloadSuggestionsAsync(SubGenreSuggestions, TrackTextField.SubGenre),
+        ReloadSuggestionsAsync(CommentSuggestions, TrackTextField.Comment),
+        ReloadSuggestionsAsync(Comment2Suggestions, TrackTextField.Comment2),
+        ReloadSuggestionsAsync(ColorSuggestions, TrackTextField.ColorTag));
 
     /// <summary>Wird vom Code-behind ausgelöst, wenn eines der Edit-Felder den Fokus verliert (s. MainWindow.axaml.cs) -
     /// bewusst kein Speichern pro Tastendruck (unnötig viele DB-Writes), aber auch kein separater "Speichern"-Button
@@ -992,20 +995,40 @@ public partial class MainViewModel : ViewModelBase
         }
 
         var changed = false;
-        changed |= SetIfDifferent(track, t => t.Title, (t, v) => t.Title = v, NullIfBlank(EditTitle));
-        changed |= SetIfDifferent(track, t => t.Artist, (t, v) => t.Artist = v, NullIfBlank(EditArtist));
-        changed |= SetIfDifferent(track, t => t.Album, (t, v) => t.Album = v, NullIfBlank(EditAlbum));
-        changed |= SetIfDifferent(track, t => t.GenreRaw, (t, v) => t.GenreRaw = v, NullIfBlank(EditGenre));
-        changed |= SetIfDifferent(track, t => t.SubGenre, (t, v) => t.SubGenre = v, NullIfBlank(EditSubGenre));
-        changed |= SetIfDifferent(track, t => t.Comment, (t, v) => t.Comment = v, NullIfBlank(EditComment));
-        changed |= SetIfDifferent(track, t => t.Comment2, (t, v) => t.Comment2 = v, NullIfBlank(EditComment2));
-        changed |= SetIfDifferent(track, t => t.ColorTag, (t, v) => t.ColorTag = v, NullIfBlank(EditColorTag));
-        changed |= SetIfDifferent(track, t => t.MusicalKey, (t, v) => t.MusicalKey = v, NullIfBlank(EditKey));
+        var suggestionReloads = new List<Task>();
 
-        var parsedBpm = ParseBpm(EditBpmText);
-        if (track.Bpm != parsedBpm)
+        void Track(Func<Track, string?> get, Action<Track, string?> set, string? newValue, TrackTextField? suggestionField = null)
         {
-            track.Bpm = parsedBpm;
+            if (!SetIfDifferent(track, get, set, newValue))
+            {
+                return;
+            }
+
+            changed = true;
+            if (suggestionField is { } field)
+            {
+                suggestionReloads.Add(ReloadSuggestionsAsync(SuggestionsFor(field), field));
+            }
+        }
+
+        Track(t => t.Title, (t, v) => t.Title = v, NullIfBlank(EditTitle));
+        Track(t => t.Artist, (t, v) => t.Artist = v, NullIfBlank(EditArtist));
+        Track(t => t.Album, (t, v) => t.Album = v, NullIfBlank(EditAlbum));
+        Track(t => t.GenreRaw, (t, v) => t.GenreRaw = v, NullIfBlank(EditGenre), TrackTextField.GenreRaw);
+        Track(t => t.SubGenre, (t, v) => t.SubGenre = v, NullIfBlank(EditSubGenre), TrackTextField.SubGenre);
+        Track(t => t.Comment, (t, v) => t.Comment = v, NullIfBlank(EditComment), TrackTextField.Comment);
+        Track(t => t.Comment2, (t, v) => t.Comment2 = v, NullIfBlank(EditComment2), TrackTextField.Comment2);
+        Track(t => t.ColorTag, (t, v) => t.ColorTag = v, NullIfBlank(EditColorTag), TrackTextField.ColorTag);
+        Track(t => t.MusicalKey, (t, v) => t.MusicalKey = v, NullIfBlank(EditKey));
+
+        // String-Vergleich statt geparster Doubles: EditBpmText kommt aus track.Bpm formatiert mit "0.##" -
+        // ein Re-Parse-und-Vergleich gegen den ORIGINAL-Double hätte bei mehr als zwei Nachkommastellen
+        // (z.B. 175.384) bei JEDEM Speichern (auch ohne dass der Nutzer das BPM-Feld angefasst hat) fälschlich
+        // "geändert" ergeben und die Präzision stillschweigend auf 175.38 abgeschnitten.
+        var originalBpmText = track.Bpm?.ToString("0.##", CultureInfo.InvariantCulture);
+        if (!string.Equals(originalBpmText, NullIfBlank(EditBpmText), StringComparison.Ordinal))
+        {
+            track.Bpm = ParseBpm(EditBpmText);
             changed = true;
         }
 
@@ -1019,8 +1042,21 @@ public partial class MainViewModel : ViewModelBase
         StatusMessage = $"„{track.DisplayTitle}“ gespeichert.";
 
         RefreshTrackInLists(track);
-        await LoadEditSuggestionsAsync(); // neu getippte Werte sofort als Vorschlag verfügbar
+        if (suggestionReloads.Count > 0)
+        {
+            await Task.WhenAll(suggestionReloads); // neu getippte Werte sofort als Vorschlag verfügbar
+        }
     }
+
+    private ObservableCollection<string> SuggestionsFor(TrackTextField field) => field switch
+    {
+        TrackTextField.GenreRaw => GenreSuggestions,
+        TrackTextField.SubGenre => SubGenreSuggestions,
+        TrackTextField.Comment => CommentSuggestions,
+        TrackTextField.Comment2 => Comment2Suggestions,
+        TrackTextField.ColorTag => ColorSuggestions,
+        _ => throw new ArgumentOutOfRangeException(nameof(field)),
+    };
 
     private static bool SetIfDifferent(Track track, Func<Track, string?> get, Action<Track, string?> set, string? newValue)
     {
@@ -1042,19 +1078,17 @@ public partial class MainViewModel : ViewModelBase
 
     /// <summary>Track ist absichtlich kein ObservableObject (s. Kommentar oben) - ein In-Place-Ändern der
     /// Properties allein aktualisiert deshalb keine gebundene DataGrid-Zeile. Entfernen+Wiedereinfügen an
-    /// derselben Stelle zwingt die betroffenen Listen zu einem frischen Re-Bind, ohne dass Track dafür
-    /// INotifyPropertyChanged bräuchte. SelectedTrack kurz auf null und zurück, weil ein erneutes Zuweisen
-    /// derselben Objektreferenz sonst als "unverändert" gilt und keine Reselektion auslöst.</summary>
+    /// derselben Stelle (mit derselben Objektreferenz) zwingt die betroffenen Listen zu einem frischen Re-Bind,
+    /// ohne dass Track dafür INotifyPropertyChanged bräuchte. Bewusst KEIN SelectedTrack = null; SelectedTrack =
+    /// track;-Dance mehr hier: das hat OnSelectedTrackChanged zweimal ausgelöst (einmal mit null!) und damit
+    /// mitten im Tab-Wechsel zum nächsten Feld dessen gerade geladene Edit-Werte wieder überschrieben - je nach
+    /// Timing sogar sichtbar als Sprung auf einen anderen Track. Die SelectedItem-Bindung zeigt nach wie vor auf
+    /// dieselbe Objektreferenz, die weiterhin (an derselben Stelle) in der Collection steht - das reicht für
+    /// DataGrid, um sie als ausgewählt zu behandeln.</summary>
     private void RefreshTrackInLists(Track track)
     {
         ReplaceInCollection(Tracks, track);
         ReplaceInCollection(FolderTracks, track);
-
-        if (SelectedTrack is not null && ReferenceEquals(SelectedTrack, track))
-        {
-            SelectedTrack = null;
-            SelectedTrack = track;
-        }
     }
 
     private static void ReplaceInCollection(ObservableCollection<Track> collection, Track track)

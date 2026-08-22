@@ -256,27 +256,32 @@
                                 <StackPanel Grid.Column="0" Spacing="3">
                                     <TextBlock Text="Genre" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
                                     <AutoCompleteBox Text="{Binding EditGenre, Mode=TwoWay}" ItemsSource="{Binding GenreSuggestions}"
-                                                      FilterMode="Contains" MinimumPrefixLength="1" LostFocus="OnEditFieldLostFocus" />
+                                                      FilterMode="Contains" MinimumPrefixLength="1" IsTextCompletionEnabled="True"
+                                                      LostFocus="OnEditFieldLostFocus" />
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" Spacing="3">
                                     <TextBlock Text="Sub-Genre" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
                                     <AutoCompleteBox Text="{Binding EditSubGenre, Mode=TwoWay}" ItemsSource="{Binding SubGenreSuggestions}"
-                                                      FilterMode="Contains" MinimumPrefixLength="1" LostFocus="OnEditFieldLostFocus" />
+                                                      FilterMode="Contains" MinimumPrefixLength="1" IsTextCompletionEnabled="True"
+                                                      LostFocus="OnEditFieldLostFocus" />
                                 </StackPanel>
                                 <StackPanel Grid.Column="2" Spacing="3">
                                     <TextBlock Text="Kommentar" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
                                     <AutoCompleteBox Text="{Binding EditComment, Mode=TwoWay}" ItemsSource="{Binding CommentSuggestions}"
-                                                      FilterMode="Contains" MinimumPrefixLength="1" LostFocus="OnEditFieldLostFocus" />
+                                                      FilterMode="Contains" MinimumPrefixLength="1" IsTextCompletionEnabled="True"
+                                                      LostFocus="OnEditFieldLostFocus" />
                                 </StackPanel>
                                 <StackPanel Grid.Column="3" Spacing="3">
                                     <TextBlock Text="Kommentar 2" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
                                     <AutoCompleteBox Text="{Binding EditComment2, Mode=TwoWay}" ItemsSource="{Binding Comment2Suggestions}"
-                                                      FilterMode="Contains" MinimumPrefixLength="1" LostFocus="OnEditFieldLostFocus" />
+                                                      FilterMode="Contains" MinimumPrefixLength="1" IsTextCompletionEnabled="True"
+                                                      LostFocus="OnEditFieldLostFocus" />
                                 </StackPanel>
                                 <StackPanel Grid.Column="4" Spacing="3">
                                     <TextBlock Text="Farbe" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
                                     <AutoCompleteBox Text="{Binding EditColorTag, Mode=TwoWay}" ItemsSource="{Binding ColorSuggestions}"
-                                                      FilterMode="Contains" MinimumPrefixLength="1" LostFocus="OnEditFieldLostFocus" />
+                                                      FilterMode="Contains" MinimumPrefixLength="1" IsTextCompletionEnabled="True"
+                                                      LostFocus="OnEditFieldLostFocus" />
                                 </StackPanel>
                             </Grid>
                         </StackPanel>

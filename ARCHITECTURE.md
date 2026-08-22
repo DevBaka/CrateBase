@@ -798,3 +798,65 @@ Promo-Freitexte (aus ID3-Kommentar-Tags einzelner Release-Dateien, nicht durch d
 erzeugt) - das macht die Autocomplete-Liste für dieses Feld unübersichtlicher als z.B. bei Genre.
 Kein Bug dieses Features, aber ein möglicher Kandidat für eine spätere Verbesserung (z.B. Kappung
 sehr langer Vorschlagswerte in der Anzeige).
+
+## 15. Fix: Dropdown-Vorschläge im Tag-Editor nicht bedienbar
+
+Gemeldetes Symptom: Im Edit-Modus tauchen beim Tippen (z.B. in Kommentar/Sub-Genre) die
+Autocomplete-Vorschläge zwar auf, lassen sich aber weder mit Pfeiltasten durchblättern, noch per
+Tab übernehmen, noch mit der Maus anklicken.
+
+### 15.1 Ursache 1: Speichern hat das gerade offene Dropdown unter der Maus/Tastatur weggezogen
+
+`SaveEditedMetadataAsync` (ausgelöst bei jedem Feld-Fokusverlust) rief bisher `RefreshTrackInLists`
+auf, was `SelectedTrack` kurz auf `null` und zurück setzte, um die DataGrid-Zeile neu zu binden
+(Track ist bewusst kein `ObservableObject`, s. 14.4). Das hat aber `OnSelectedTrackChanged` zweimal
+ausgelöst - einmal mit `null` - und dabei `LoadEditFieldsFromSelectedTrack()` erneut aufgerufen,
+was **alle** Edit-Felder (nicht nur das gerade verlassene) auf die (zwischenzeitlich neu geladenen)
+Track-Werte zurückgesetzt hat. Zusätzlich hat `LoadEditSuggestionsAsync()` danach blind **alle
+fünf** Vorschlagslisten neu geladen (`Clear()` + neu befüllen) - auch die des Feldes, in das der
+Nutzer per Tab gerade THIS MOMENT hineinwechselt und dessen Dropdown sich in genau diesem Moment
+öffnet. Ein Klick auf einen Vorschlag verschiebt in Avalonias `AutoCompleteBox` kurzzeitig den
+Fokus (PointerPressed auf das `ListBoxItem` im Popup) - das hat also mitten in der Klick-Geste
+selbst schon einen Save+Reload ausgelöst, der die gerade angezeigte Vorschlagsliste unter dem
+Klick ersetzt hat. Ergebnis: Klick "tut nichts", weil das angeklickte Listenelement durch den
+Reload längst durch ein anderes Objekt ersetzt war, bevor die Auswahl commit werden konnte.
+Nebenbefund beim Testen: dieselbe Ursache kann bei schnellem Tabben durch mehrere Felder sogar zu
+einem sichtbaren Sprung auf einen anderen Track in der Liste führen.
+
+Fix: `RefreshTrackInLists` fasst `SelectedTrack` nicht mehr an - Entfernen+Wiedereinfügen
+derselben Objektreferenz in `Tracks`/`FolderTracks` reicht aus, um die DataGrid-Zeile neu zu
+binden, ohne die Selektion zu stören. `SaveEditedMetadataAsync` lädt außerdem nur noch die
+Vorschlagsliste **des tatsächlich geänderten Feldes** neu, nicht mehr pauschal alle fünf.
+
+### 15.2 Ursache 2: Tab hat den markierten Vorschlag nie übernommen
+
+Avalonias `AutoCompleteBox` committet die per Pfeiltasten hervorgehobene Vorschlagszeile bei Tab
+nur, wenn `IsTextCompletionEnabled="True"` gesetzt ist - Standardwert ist `false`. War hier nicht
+gesetzt, d.h. Tab hat schlicht zum nächsten Feld gewechselt, ohne den markierten Vorschlag zu
+übernehmen (unabhängig von Ursache 15.1). Fix: `IsTextCompletionEnabled="True"` auf allen fünf
+AutoCompleteBox-Feldern ergänzt.
+
+### 15.3 Nebenbefund: BPM-Rundung bei jedem Speichern
+
+`EditBpmText` wird aus `track.Bpm` mit `"0.##"` (max. 2 Nachkommastellen) formatiert. Der
+Speichern-Vergleich hat bisher den geparsten `double` aus `EditBpmText` gegen den ORIGINAL-`double`
+verglichen - bei mehr als zwei Nachkommastellen (z.B. 175.384) war das nach jedem Blur auf das
+BPM-Feld fälschlich "geändert", auch ohne dass der Nutzer etwas eingegeben hat, und hat die
+Präzision beim Rückschreiben stillschweigend auf 175.38 gekappt. Fix: Vergleich läuft jetzt auf
+den formatierten STRINGS (`EditBpmText` gegen den mit demselben Format neu erzeugten String aus
+`track.Bpm`), nicht mehr auf den re-geparsten Doubles.
+
+### 15.4 Verifiziert / nicht verifiziert
+
+Datenschicht-Fixes (BPM-Vergleich) und die Entfernung des SelectedTrack-Null-Dance sind gebaut
+(0 Fehler/Warnungen) und die neue Logik wurde gegen die echte Bibliothek erneut durchgeklickt -
+Edit-Modus-Toggle und Feldauswahl funktionieren weiterhin einwandfrei. Das eigentliche gemeldete
+Interaktionsproblem (Pfeiltasten/Klick im offenen Dropdown) konnte in dieser Session NICHT mehr
+live nachgestellt werden: die Klick-Koordinaten-Kalibrierung auf diesem Wayland/XWayland-System
+ist zwischen App-Neustarts instabil (Fenstergeometrie ändert sich), und mehrere Klickversuche
+landeten zuletzt sogar in fremden Fenstern (Browser, Terminal) statt in Cratebase - GUI-
+Automatisierung wurde deshalb aus Sicherheitsgründen abgebrochen, bevor versehentlich etwas in
+einem falschen Fenster ausgelöst werden konnte. Die beiden behobenen Ursachen (15.1, 15.2) sind
+über Code-Review sehr plausibel für alle drei gemeldeten Symptome (Klick, Pfeiltasten indirekt
+über Fokus-Störung, Tab direkt über `IsTextCompletionEnabled`) - bitte nach diesem Fix einmal
+selbst gegenprüfen, ob Pfeiltasten/Tab/Klick im Dropdown jetzt funktionieren.
