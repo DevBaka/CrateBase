@@ -99,6 +99,15 @@ public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) :
             cancellationToken: ct));
     }
 
+    public async Task<Track?> FindByPathAsync(long libraryRootId, string relativePath, CancellationToken ct = default)
+    {
+        using var connection = connectionFactory.CreateConnection();
+        return await connection.QuerySingleOrDefaultAsync<Track>(new CommandDefinition(
+            $"SELECT {SelectColumns} FROM track t WHERE t.library_root_id = @libraryRootId AND t.relative_path = @relativePath;",
+            new { libraryRootId, relativePath },
+            cancellationToken: ct));
+    }
+
     public async Task UpdateAsync(Track track, CancellationToken ct = default)
     {
         using var connection = connectionFactory.CreateConnection();

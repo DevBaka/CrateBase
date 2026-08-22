@@ -23,11 +23,16 @@ public partial class MainViewModel : ViewModelBase
     private readonly ILibraryScanner _libraryScanner;
     private readonly IAudioPlayer _audioPlayer;
     private readonly ICollectionImporter _traktorImporter;
+    private readonly ITagReader _tagReader;
+    private readonly IWaveformGenerator _waveformGenerator;
+    private readonly IWaveformCache _waveformCache;
 
     private readonly Dictionary<long, LibraryRoot> _libraryRootsById = new();
+    private readonly Dictionary<long, IReadOnlyDictionary<string, TrackFingerprint>> _fingerprintsByRoot = new();
     private int _offset;
     private int _currentTrackIndex = -1;
     private bool _isApplyingPlayerPosition;
+    private long _waveformRequestId;
 
     public MainViewModel(
         ITrackRepository trackRepository,
@@ -35,7 +40,10 @@ public partial class MainViewModel : ViewModelBase
         IPlaylistRepository playlistRepository,
         ILibraryScanner libraryScanner,
         IAudioPlayer audioPlayer,
-        ICollectionImporter traktorImporter)
+        ICollectionImporter traktorImporter,
+        ITagReader tagReader,
+        IWaveformGenerator waveformGenerator,
+        IWaveformCache waveformCache)
     {
         _trackRepository = trackRepository;
         _libraryRootRepository = libraryRootRepository;
@@ -43,6 +51,9 @@ public partial class MainViewModel : ViewModelBase
         _libraryScanner = libraryScanner;
         _audioPlayer = audioPlayer;
         _traktorImporter = traktorImporter;
+        _tagReader = tagReader;
+        _waveformGenerator = waveformGenerator;
+        _waveformCache = waveformCache;
 
         // Feuern auf einem LibVLC-Thread (s. IAudioPlayer-Doku) – zurück auf den UI-Thread posten,
         // bevor gebundene Properties gesetzt werden.
@@ -84,6 +95,162 @@ public partial class MainViewModel : ViewModelBase
 
     [RelayCommand]
     private void GoToSection(string section) => CurrentSection = section;
+
+    // --- Spalten-Sichtbarkeit (Track-Tabelle) ---
+
+    [ObservableProperty]
+    public partial bool ShowAlbumColumn { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool ShowGenreColumn { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool ShowBpmColumn { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool ShowKeyColumn { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool ShowDurationColumn { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool ShowPathColumn { get; set; } = true;
+
+    // --- Sidebar-Modus: Playlist-Baum vs. Datei-Browser ---
+
+    [ObservableProperty]
+    public partial string SidebarMode { get; set; } = "Playlists";
+
+    public bool IsPlaylistsMode => SidebarMode == "Playlists";
+    public bool IsFilesMode => SidebarMode == "Files";
+
+    partial void OnSidebarModeChanged(string value)
+    {
+        OnPropertyChanged(nameof(IsPlaylistsMode));
+        OnPropertyChanged(nameof(IsFilesMode));
+        if (IsFilesMode && FileSystemRoots.Count == 0)
+        {
+            RebuildFileSystemRoots();
+        }
+    }
+
+    [RelayCommand]
+    private void SetSidebarMode(string mode) => SidebarMode = mode;
+
+    public ObservableCollection<FileSystemNodeViewModel> FileSystemRoots { get; } = [];
+
+    public ObservableCollection<FileBrowserEntryViewModel> FolderFiles { get; } = [];
+
+    [ObservableProperty]
+    public partial FileSystemNodeViewModel? SelectedFileSystemNode { get; set; }
+
+    [ObservableProperty]
+    public partial int FolderScannedCount { get; set; }
+
+    [ObservableProperty]
+    public partial int FolderTotalCount { get; set; }
+
+    partial void OnSelectedFileSystemNodeChanged(FileSystemNodeViewModel? value) => _ = ReloadFolderFilesAsync();
+
+    /// <summary>Datei-Browser zeigt, was wirklich auf der Platte liegt (nicht nur, was schon in der DB steht) –
+    /// direkte Kinder des gewählten Ordners, unabhängig davon, ob sie schon gescannt sind.</summary>
+    private async Task ReloadFolderFilesAsync()
+    {
+        FolderFiles.Clear();
+        FolderScannedCount = 0;
+        FolderTotalCount = 0;
+
+        var node = SelectedFileSystemNode;
+        if (node is null || !_libraryRootsById.TryGetValue(node.LibraryRootId, out var root))
+        {
+            return;
+        }
+
+        if (!_fingerprintsByRoot.TryGetValue(node.LibraryRootId, out var fingerprints))
+        {
+            fingerprints = await _trackRepository.GetFingerprintsByPathAsync(node.LibraryRootId);
+            _fingerprintsByRoot[node.LibraryRootId] = fingerprints;
+        }
+
+        var files = await Task.Run(() => SafeListAudioFiles(node.FullPath));
+        var scanned = 0;
+        foreach (var file in files)
+        {
+            var relativePath = Path.GetRelativePath(root.Path, file).Replace(Path.DirectorySeparatorChar, '/');
+            var isScanned = fingerprints.ContainsKey(relativePath);
+            if (isScanned)
+            {
+                scanned++;
+            }
+
+            double sizeMb;
+            try
+            {
+                sizeMb = new FileInfo(file).Length / (1024.0 * 1024.0);
+            }
+            catch (Exception)
+            {
+                sizeMb = 0;
+            }
+
+            FolderFiles.Add(new FileBrowserEntryViewModel(Path.GetFileName(file), file, relativePath, sizeMb, isScanned));
+        }
+
+        FolderScannedCount = scanned;
+        FolderTotalCount = FolderFiles.Count;
+    }
+
+    private List<string> SafeListAudioFiles(string path)
+    {
+        try
+        {
+            return Directory.EnumerateFiles(path)
+                .Where(_tagReader.CanRead)
+                .OrderBy(f => f, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+        }
+        catch (Exception)
+        {
+            return [];
+        }
+    }
+
+    private void RebuildFileSystemRoots()
+    {
+        FileSystemRoots.Clear();
+        foreach (var root in _libraryRootsById.Values.OrderBy(r => r.Label, StringComparer.OrdinalIgnoreCase))
+        {
+            FileSystemRoots.Add(new FileSystemNodeViewModel(root.Label, root.Path, root.Id));
+        }
+    }
+
+    /// <summary>Scannt den im Datei-Browser gerade ausgewählten Ordner (nicht die ganze Bibliothek neu) – nützlich, um gezielt Lücken zu schließen.</summary>
+    [RelayCommand]
+    private async Task ScanSelectedFolderAsync()
+    {
+        if (SelectedFileSystemNode is { } node)
+        {
+            await ScanFolderAsync(node.FullPath);
+            _fingerprintsByRoot.Remove(node.LibraryRootId); // Fingerprints sind jetzt veraltet, neu laden beim nächsten Ordnerklick
+            await ReloadFolderFilesAsync();
+        }
+    }
+
+    [RelayCommand]
+    private async Task PlayFolderFileAsync(FileBrowserEntryViewModel entry)
+    {
+        if (!entry.IsScanned || SelectedFileSystemNode is not { } node)
+        {
+            StatusMessage = "Diese Datei ist noch nicht gescannt – erst „Diesen Ordner scannen“, dann abspielbar.";
+            return;
+        }
+
+        var track = await _trackRepository.FindByPathAsync(node.LibraryRootId, entry.RelativePath);
+        if (track is not null)
+        {
+            PlayTrack(track);
+        }
+    }
 
     [ObservableProperty]
     public partial PlaylistTreeItemViewModel? SelectedNode { get; set; }
@@ -128,6 +295,17 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     public partial double Volume { get; set; } = 80;
 
+    [ObservableProperty]
+    public partial WaveformData? CurrentWaveform { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsWaveformLoading { get; set; }
+
+    /// <summary>Von WaveformView beim Klick aufgerufen (Bruchteil 0..1 der Breite) – setzt einfach PositionSeconds,
+    /// die restliche Seek-Logik läuft schon über OnPositionSecondsChanged.</summary>
+    [RelayCommand]
+    private void SeekToFraction(double fraction) => PositionSeconds = fraction * DurationSeconds;
+
     public async Task InitializeAsync()
     {
         var roots = await _libraryRootRepository.GetAllAsync();
@@ -136,6 +314,7 @@ public partial class MainViewModel : ViewModelBase
             _libraryRootsById[root.Id] = root;
         }
 
+        RebuildFileSystemRoots();
         await ReloadPlaylistTreeAsync();
         await ReloadTracksAsync(reset: true);
         _audioPlayer.Volume = (float)(Volume / 100.0);
@@ -156,6 +335,7 @@ public partial class MainViewModel : ViewModelBase
             var label = Path.GetFileName(folderPath.TrimEnd(Path.DirectorySeparatorChar));
             var root = await _libraryRootRepository.AddOrGetAsync(folderPath, string.IsNullOrEmpty(label) ? folderPath : label);
             _libraryRootsById[root.Id] = root;
+            RebuildFileSystemRoots();
 
             // Progress<T> fängt den aktuellen SynchronizationContext (UI-Thread) beim Erstellen ein,
             // der Callback braucht deshalb kein manuelles Dispatcher.Post.
@@ -167,6 +347,7 @@ public partial class MainViewModel : ViewModelBase
             });
 
             await _libraryScanner.ScanAsync(root, progress);
+            _fingerprintsByRoot.Remove(root.Id); // Fingerprints sind nach dem Scan veraltet
             await ReloadTracksAsync(reset: true);
         }
         catch (Exception ex)
@@ -417,6 +598,52 @@ public partial class MainViewModel : ViewModelBase
         DurationSeconds = track.DurationMs / 1000.0; // Fallback, bis LibVLC die echte Länge kennt (s. UpdatePlaybackPosition)
         PositionSeconds = 0;
         IsPlaying = true;
+
+        _ = LoadWaveformAsync(track);
+    }
+
+    /// <summary>Cache zuerst (schnell), sonst per ffmpeg neu generieren (s. IWaveformGenerator-Doku für die
+    /// Begründung/Grenzen). _waveformRequestId schützt davor, dass eine spät ankommende Waveform von einem
+    /// inzwischen verlassenen Track die Anzeige des aktuellen Tracks überschreibt.</summary>
+    private async Task LoadWaveformAsync(Track track)
+    {
+        var requestId = ++_waveformRequestId;
+        CurrentWaveform = null;
+
+        var cached = await _waveformCache.TryLoadAsync(track);
+        if (requestId != _waveformRequestId)
+        {
+            return;
+        }
+
+        if (cached is not null)
+        {
+            CurrentWaveform = cached;
+            return;
+        }
+
+        IsWaveformLoading = true;
+        try
+        {
+            var generated = await _waveformGenerator.GenerateAsync(ResolveAbsolutePath(track));
+            if (requestId != _waveformRequestId)
+            {
+                return;
+            }
+
+            if (generated is not null)
+            {
+                CurrentWaveform = generated;
+                await _waveformCache.SaveAsync(track, generated);
+            }
+        }
+        finally
+        {
+            if (requestId == _waveformRequestId)
+            {
+                IsWaveformLoading = false;
+            }
+        }
     }
 
     private void UpdatePlaybackPosition()
@@ -441,11 +668,17 @@ public partial class MainViewModel : ViewModelBase
     /// verhindert, dass jedes Wiedergabe-Tick als Nutzer-Seek interpretiert wird.</summary>
     partial void OnPositionSecondsChanged(double value)
     {
+        OnPropertyChanged(nameof(ProgressFraction));
         if (!_isApplyingPlayerPosition)
         {
             _audioPlayer.Seek(TimeSpan.FromSeconds(value));
         }
     }
+
+    partial void OnDurationSecondsChanged(double value) => OnPropertyChanged(nameof(ProgressFraction));
+
+    /// <summary>0..1, fürs WaveformView (das kennt keine Sekunden).</summary>
+    public double ProgressFraction => DurationSeconds > 0 ? PositionSeconds / DurationSeconds : 0;
 
     partial void OnVolumeChanged(double value) => _audioPlayer.Volume = (float)(value / 100.0);
 

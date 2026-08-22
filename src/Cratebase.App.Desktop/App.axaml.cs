@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Cratebase.Analysis;
 using Cratebase.App.Desktop.ViewModels;
 using Cratebase.App.Desktop.Views;
 using Cratebase.Audio;
@@ -41,10 +42,14 @@ public partial class App : Application
             ITagReader tagReader = new TagLibTagReader();
             ILibraryScanner libraryScanner = new LibraryScanner(trackRepository, libraryRootRepository, tagReader);
             ICollectionImporter traktorImporter = new TraktorCollectionImporter(trackRepository, libraryRootRepository, playlistRepository, cuePointRepository);
+            IWaveformGenerator waveformGenerator = new FfmpegWaveformGenerator();
+            IWaveformCache waveformCache = new FileWaveformCache(GetWaveformCacheDir());
 
             _audioPlayer = new LibVlcAudioPlayer();
 
-            var viewModel = new MainViewModel(trackRepository, libraryRootRepository, playlistRepository, libraryScanner, _audioPlayer, traktorImporter);
+            var viewModel = new MainViewModel(
+                trackRepository, libraryRootRepository, playlistRepository, libraryScanner, _audioPlayer,
+                traktorImporter, tagReader, waveformGenerator, waveformCache);
 
             var mainWindow = new MainWindow { DataContext = viewModel };
             mainWindow.Opened += async (_, _) => await viewModel.InitializeAsync();
@@ -65,5 +70,11 @@ public partial class App : Application
         var appDir = Path.Combine(baseDir, "Cratebase");
         Directory.CreateDirectory(appDir);
         return Path.Combine(appDir, "cratebase.db");
+    }
+
+    private static string GetWaveformCacheDir()
+    {
+        var baseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        return Path.Combine(baseDir, "Cratebase", "waveforms");
     }
 }

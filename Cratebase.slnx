@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/Cratebase.Analysis/Cratebase.Analysis.csproj" />
     <Project Path="src/Cratebase.App.Desktop/Cratebase.App.Desktop.csproj" />
     <Project Path="src/Cratebase.Audio/Cratebase.Audio.csproj" />
     <Project Path="src/Cratebase.Core/Cratebase.Core.csproj" />

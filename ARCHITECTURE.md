@@ -496,10 +496,66 @@ das noch nicht entschiedene Audio-Engine-Fragen berührt, s. 4.A). Stattdessen:
   wir haben noch keine echte Peak-Analyse, s. Phase 1/Analysis-Job-Queue in ARCHITECTURE.md
   Abschnitt 2.8f.; ein Fake-Waveform aus Zufallsbalken wäre irreführend gewesen).
 
-### 10.3 Offen / nächster Schritt für dieses Redesign
+### 10.3 Spaltenbreiten-Fix
 
 DataGrid-Spaltenbreiten liefen anfangs über den Fensterrand hinaus (mehrere konkurrierende
-`*`-Spalten) — auf feste Breiten + eine einzelne flexible Titel-Spalte umgestellt (Standard-Fix,
-im Code). Ein finaler visueller Abgleich nach diesem Fix steht noch aus (Screenshot-Automatisierung
-ist auf dem Zielsystem gerade durch ein Vollbild-Fenster blockiert) — bitte einmal selbst
-gegenprüfen, ob die Tabelle jetzt sauber ins Fenster passt.
+`*`-Spalten) — auf feste Breiten + eine einzelne flexible Titel-Spalte umgestellt. Per Screenshot
+bestätigt (s. 11.4).
+
+## 11. Nutzer-Feedback nach dem Redesign: vier Nachbesserungen
+
+Direktes Feedback zur Bibliotheksansicht — alle vier umgesetzt:
+
+### 11.1 Pfad-Spalte + Spalten-Auswahl
+
+Neue "Pfad"-Spalte (`Track.RelativePath`). Neuer "Spalten ▾"-Button mit Flyout (Checkboxen für
+Album/Genre/BPM/Key/Dauer/Pfad — Titel/Artist sind immer sichtbar). Umgesetzt über
+`DataGridColumn.IsVisible`-Bindings auf neue `ShowXColumn`-Bools im ViewModel — bindet direkt
+gegen das Fenster-`DataContext` (`$parent[Window]...`), da Spalten technisch nicht im Visual Tree
+hängen und deshalb nicht automatisch den `DataContext` der Zeile erben.
+
+### 11.2 Datei-Browser: was wirklich auf der Platte liegt
+
+Neuer Sidebar-Umschalter "Playlists" / "Ordner". Im "Ordner"-Modus: lazy geladener
+Dateisystem-Baum je LibraryRoot (Kinder erst beim Aufklappen, s.
+`FileSystemNodeViewModel` — sonst wäre das bei ~100k Dateien ein Full-Walk beim Start), rechts
+eine Liste der Dateien im gewählten Ordner mit "✓ gescannt" / "– nicht gescannt"-Markierung
+(Abgleich gegen `ITrackRepository.GetFingerprintsByPathAsync`, pro Root einmal geladen und
+gecacht, nicht pro Ordnerklick neu). "Diesen Ordner scannen" scannt gezielt nur den ausgewählten
+Unterordner (reine Wiederverwendung von `ScanFolderCommand` mit dem Unterordner als eigenem,
+verschachteltem LibraryRoot — pragmatisch, nicht ganz elegant, aber ohne Scanner-Änderung machbar).
+Gescannte Dateien sind direkt abspielbar (▶-Button, neue `ITrackRepository.FindByPathAsync`).
+
+### 11.3 RGB-Waveform statt Fortschritts-Slider
+
+Ersetzt den reinen Positions-Slider durch eine echte 3-Band-Waveform (rot=Bass, grün=Mitten,
+blau=Höhen) — neues Modul **Cratebase.Analysis**:
+
+- `FfmpegWaveformGenerator`: dekodiert per externem **ffmpeg-Prozess** (`-f f32le -ac 1 -ar 11025`)
+  zu rohem Mono-PCM, wendet drei einfache Einpol-IIR-Filter an (Tiefpass 200Hz, Bandpass
+  200-4000Hz, Hochpass 4000Hz — **kein FFT/Spektrogramm**, bewusst leichtgewichtig), berechnet
+  600 Peak-Spalten normiert auf 0..1. Getestet an einer echten Datei: 400-800ms Dekodierzeit,
+  plausible, genre-passende Band-Verteilung (Bass-lastiger EBM-Track: Low-Peak 1.0, High-Peak
+  nur 0.46).
+- **Bekannte neue Voraussetzung: `ffmpeg` muss installiert sein.** Fehlt es, liefert
+  `GenerateAsync` `null` statt zu werfen — WaveformView zeigt dann eine ruhige flache Linie statt
+  Balken, der Rest der App bleibt unberührt (getestet: fehlende Datei → `null`, kein Absturz).
+  Für eine spätere Distribution müsste ffmpeg entweder als Systemvoraussetzung dokumentiert oder
+  (wie bei libvlc) eine gebündelte Variante gefunden werden — hier bewusst nicht weiter verfolgt.
+- `FileWaveformCache`: eigene Binärdatei pro Track unter `~/.local/share/Cratebase/waveforms/`
+  (Cache-Key: Track-Id+Größe+mtime, s. Datei-Doku für die Grenzen davon) — **nicht** als DB-Blob,
+  konsistent mit ARCHITECTURE.md 2.9. Rundtrip (Speichern→Laden) verifiziert.
+- `WaveformView` (`Cratebase.App.Desktop/Controls`): eigener `Control` mit direktem
+  `DrawingContext`-Rendering (600 Balken pro Frame als ItemsControl wäre bei mehrmals pro Sekunde
+  aktualisierter Position spürbar langsamer), Klick-zum-Seeken.
+
+### 11.4 Verifiziert
+
+Screenshot nach allen vier Änderungen bestätigt: Pfad-Spalte sichtbar, BPM/Key/Dauer nicht mehr
+abgeschnitten, "Spalten ▾"-Button und "Playlists"/"Ordner"-Umschalter vorhanden, Waveform-Fläche
+rendert (leerer Zustand als ruhige Linie, korrekt, da noch kein Track lief). Die
+Waveform-Generierung selbst wurde isoliert gegen eine echte Datei aus der Sammlung getestet (s.
+11.3). Nicht per Klick in der laufenden GUI verifiziert: Datei-Browser-Baum aufklappen und
+tatsächliche Waveform-Balken beim Abspielen eines Tracks (Screenshot-Klick-Automatisierung war auf
+dem Zielsystem durch Wayland/XWayland-Koordinaten-Mismatch zu unzuverlässig für gezielte Klicks) —
+bitte einmal selbst gegenprüfen.

@@ -15,6 +15,9 @@ public interface ITrackRepository
 {
     Task<Track?> GetByIdAsync(long id, CancellationToken ct = default);
 
+    /// <summary>Für den Datei-Browser: liefert den Track zu einem bekannten (library_root_id, relative_path)-Paar, oder null, falls die Datei noch nicht gescannt ist.</summary>
+    Task<Track?> FindByPathAsync(long libraryRootId, string relativePath, CancellationToken ct = default);
+
     /// <summary>Fügt einen Track ein oder aktualisiert ihn (Match über LibraryRootId+RelativePath). Gibt die Id zurück.
     /// Rating/PlayCount/LastPlayedAtUtc/DateAddedUtc werden bei einem Konflikt NICHT überschrieben (s. Implementierung) -
     /// für Updates, die genau diese Felder setzen sollen (z.B. DJ-Software-Import), <see cref="UpdateAsync"/> verwenden.</summary>
