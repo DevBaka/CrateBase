@@ -45,12 +45,13 @@ public partial class App : Application
             IWaveformGenerator waveformGenerator = new FfmpegWaveformGenerator();
             IWaveformCache waveformCache = new FileWaveformCache(GetWaveformCacheDir());
             IQuickAccessStore quickAccessStore = new JsonQuickAccessStore(GetQuickAccessFilePath());
+            IFavoriteProfileStore favoriteProfileStore = new JsonFavoriteProfileStore(GetFavoriteProfilesFilePath());
 
             _audioPlayer = new LibVlcAudioPlayer();
 
             var viewModel = new MainViewModel(
                 trackRepository, libraryRootRepository, playlistRepository, libraryScanner, _audioPlayer,
-                traktorImporter, tagReader, waveformGenerator, waveformCache, quickAccessStore);
+                traktorImporter, tagReader, waveformGenerator, waveformCache, quickAccessStore, favoriteProfileStore);
 
             var mainWindow = new MainWindow { DataContext = viewModel };
             mainWindow.Opened += async (_, _) => await viewModel.InitializeAsync();
@@ -83,5 +84,11 @@ public partial class App : Application
     {
         var baseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         return Path.Combine(baseDir, "Cratebase", "quickaccess.json");
+    }
+
+    private static string GetFavoriteProfilesFilePath()
+    {
+        var baseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        return Path.Combine(baseDir, "Cratebase", "favorite_profiles.json");
     }
 }

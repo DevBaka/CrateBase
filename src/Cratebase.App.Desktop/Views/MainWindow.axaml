@@ -141,6 +141,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                             <!-- Feste Mindestbreite statt reinem "*": bei vielen Buttons links soll die Suche
                                  nicht auf (fast) 0 zusammengequetscht werden - dann eher die Statusmeldung rechts
                                  kürzer anzeigen (die hat schon TextTrimming+MaxWidth). -->
@@ -175,13 +176,92 @@
                         <ToggleButton Grid.Column="3" Content="✎ Edit-Modus" Margin="6,0,0,0"
                                       IsChecked="{Binding IsEditMode, Mode=TwoWay}"
                                       ToolTip.Tip="Metadaten (Genre, Sub-Genre, Kommentare, Farbe, Titel, Artist, BPM, Key …) direkt in der App bearbeiten." />
-                        <CheckBox Grid.Column="4" Content="Unterordner einbeziehen" FontSize="11.5" Margin="10,0,0,0"
+                        <ToggleButton Grid.Column="4" Content="★ Favoriten" Margin="6,0,0,0"
+                                      IsChecked="{Binding IsFavoritesMode, Mode=TwoWay}"
+                                      ToolTip.Tip="Nummerierte Playlist-Favoriten-Slots, gruppiert in Profilen (z.B. ein Profil je Genre) - schneller Zugriff ohne im Playlist-Baum zu suchen." />
+                        <CheckBox Grid.Column="5" Content="Unterordner einbeziehen" FontSize="11.5" Margin="10,0,0,0"
                                   VerticalAlignment="Center" IsChecked="{Binding IncludeSubfolders}"
                                   ToolTip.Tip="Zeigt auch Tracks/Dateien aus verschachtelten Playlisten bzw. Unterordnern, nicht nur die direkten. Gilt pro Ordner und wird sich für diese Sitzung gemerkt - andere Ordner sind davon unabhängig." />
-                        <TextBox Grid.Column="5" Margin="12,0" PlaceholderText="Suche (Titel, Artist, Album)…" Text="{Binding SearchText}" IsVisible="{Binding IsShowingTrackGrid}" />
-                        <TextBlock Grid.Column="6" VerticalAlignment="Center" MaxWidth="300" FontSize="11.5" Foreground="{StaticResource TextFaintBrush}"
+                        <TextBox Grid.Column="6" Margin="12,0" PlaceholderText="Suche (Titel, Artist, Album)…" Text="{Binding SearchText}" IsVisible="{Binding IsShowingTrackGrid}" />
+                        <TextBlock Grid.Column="7" VerticalAlignment="Center" MaxWidth="300" FontSize="11.5" Foreground="{StaticResource TextFaintBrush}"
                                    TextTrimming="CharacterEllipsis" Text="{Binding StatusMessage}" />
                     </Grid>
+
+                    <!-- Favoriten-Leiste: Playlist-Favoriten/Profile-Manager (Traktor-artige nummerierte
+                         Slots, aber frei wählbare Anzahl statt fester 12, gruppiert in wechselbaren Profilen -
+                         z.B. "Hardstyle" vs. "House" mit komplett unterschiedlicher Slot-Belegung). Wie beim
+                         Edit-Modus per Toggle ein-/ausblendbar, direkt unter der Kopfzeile statt am unteren
+                         Rand, weil es um Playlist-Navigation geht, nicht um Track-Metadaten. -->
+                    <Border DockPanel.Dock="Top" IsVisible="{Binding IsFavoritesMode}" Margin="14,0,0,10" Padding="12,10"
+                            Background="{StaticResource BgSurfaceBrush}" BorderThickness="1" BorderBrush="{StaticResource BorderBrush1}" CornerRadius="8">
+                        <StackPanel Spacing="10">
+                            <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto" ColumnSpacing="8">
+                                <TextBlock Grid.Column="0" Text="Profil" VerticalAlignment="Center" FontSize="11" Foreground="{StaticResource TextFaintBrush}" />
+                                <ComboBox Grid.Column="1" MinWidth="170" ItemsSource="{Binding FavoriteProfiles}" SelectedItem="{Binding SelectedFavoriteProfile, Mode=TwoWay}"
+                                          PlaceholderText="Kein Profil">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <Button Grid.Column="2" Content="💾 Speichern" Command="{Binding SaveFavoriteProfileCommand}"
+                                        IsEnabled="{Binding SelectedFavoriteProfile, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                                <Button Grid.Column="3" Content="Löschen" Command="{Binding DeleteFavoriteProfileCommand}"
+                                        IsEnabled="{Binding SelectedFavoriteProfile, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                                <TextBox Grid.Column="5" Width="170" PlaceholderText="Neuer Profilname…" Text="{Binding NewFavoriteProfileName, Mode=TwoWay}" />
+                                <Button Grid.Column="6" Content="+ Als neues Profil speichern" Command="{Binding SaveFavoriteProfileAsCommand}" />
+                            </Grid>
+
+                            <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="8">
+                                <TextBlock Grid.Column="0" Text="Slots:" VerticalAlignment="Center" FontSize="11" Foreground="{StaticResource TextFaintBrush}" />
+                                <NumericUpDown Grid.Column="1" Width="110" Minimum="1" Maximum="60" FormatString="0"
+                                               Value="{Binding FavoriteSlotCount, Mode=TwoWay}" />
+                                <TextBlock Grid.Column="2" VerticalAlignment="Center" FontSize="10.5" Foreground="{StaticResource TextFaintBrush}" TextWrapping="Wrap"
+                                           Text="Playlist im Baum links auswählen, dann Rechtsklick auf einen Slot zum Zuweisen/Leeren. Klick auf einen belegten Slot springt dorthin, „+“ fügt den in der Liste ausgewählten Track direkt dort hinzu." />
+                            </Grid>
+
+                            <ScrollViewer MaxHeight="190" VerticalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding FavoriteSlots}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Width="150" Margin="0,0,8,8" Padding="8,6" CornerRadius="6"
+                                                    Background="{StaticResource BgChipBrush}" BorderThickness="1" BorderBrush="{StaticResource BorderBrush1}">
+                                                <Border.ContextMenu>
+                                                    <ContextMenu>
+                                                        <MenuItem Header="Aktuelle Playlist hier ablegen"
+                                                                  Command="{Binding $parent[ItemsControl].((vm:MainViewModel)DataContext).AssignSelectedPlaylistToSlotCommand}"
+                                                                  CommandParameter="{Binding Index}" />
+                                                        <MenuItem Header="Slot leeren"
+                                                                  Command="{Binding $parent[ItemsControl].((vm:MainViewModel)DataContext).ClearFavoriteSlotCommand}"
+                                                                  CommandParameter="{Binding Index}" />
+                                                    </ContextMenu>
+                                                </Border.ContextMenu>
+                                                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="9.5" Foreground="{StaticResource TextFaintBrush}">
+                                                        <Run Text="Slot " /><Run Text="{Binding DisplayNumber}" />
+                                                    </TextBlock>
+                                                    <Button Grid.Row="0" Grid.Column="1" Content="+" FontSize="11" Padding="6,1" IsVisible="{Binding IsAssigned}"
+                                                            Command="{Binding $parent[ItemsControl].((vm:MainViewModel)DataContext).AddSelectedTrackToFavoriteSlotCommand}"
+                                                            CommandParameter="{Binding}" ToolTip.Tip="Ausgewählten Track hier hinzufügen" />
+                                                    <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                                                            Background="Transparent" BorderThickness="0" Padding="0,3,0,0" FontSize="12"
+                                                            Content="{Binding DisplayText}"
+                                                            Command="{Binding $parent[ItemsControl].((vm:MainViewModel)DataContext).ActivateFavoriteSlotCommand}"
+                                                            CommandParameter="{Binding}" />
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+                    </Border>
 
                     <!-- Transportleiste unten: RGB-Waveform statt reinem Fortschritts-Slider -->
                     <Border DockPanel.Dock="Bottom" Padding="18,12" Background="{StaticResource BgSurfaceBrush}"

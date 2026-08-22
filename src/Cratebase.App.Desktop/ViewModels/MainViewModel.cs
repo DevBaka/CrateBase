@@ -28,6 +28,7 @@ public partial class MainViewModel : ViewModelBase
     private readonly IWaveformGenerator _waveformGenerator;
     private readonly IWaveformCache _waveformCache;
     private readonly IQuickAccessStore _quickAccessStore;
+    private readonly IFavoriteProfileStore _favoriteProfileStore;
 
     private readonly Dictionary<long, LibraryRoot> _libraryRootsById = new();
     private readonly Dictionary<long, IReadOnlyDictionary<string, TrackFingerprint>> _fingerprintsByRoot = new();
@@ -46,7 +47,8 @@ public partial class MainViewModel : ViewModelBase
         ITagReader tagReader,
         IWaveformGenerator waveformGenerator,
         IWaveformCache waveformCache,
-        IQuickAccessStore quickAccessStore)
+        IQuickAccessStore quickAccessStore,
+        IFavoriteProfileStore favoriteProfileStore)
     {
         _trackRepository = trackRepository;
         _libraryRootRepository = libraryRootRepository;
@@ -58,6 +60,7 @@ public partial class MainViewModel : ViewModelBase
         _waveformGenerator = waveformGenerator;
         _waveformCache = waveformCache;
         _quickAccessStore = quickAccessStore;
+        _favoriteProfileStore = favoriteProfileStore;
 
         // Feuern auf einem LibVLC-Thread (s. IAudioPlayer-Doku) – zurück auf den UI-Thread posten,
         // bevor gebundene Properties gesetzt werden.
@@ -505,6 +508,225 @@ public partial class MainViewModel : ViewModelBase
         ReplaceFilesystemNodes(BuildFilesystemNodesList());
     }
 
+    // --- Playlist-Favoriten/Profile-Manager ---
+    // Traktor-artige, konfigurierbare Menge nummerierter Slots, jeder auf eine Playlist zeigend -
+    // schneller Zugriff (Klick = zur Playlist springen, "+"-Button = ausgewählten Track dort direkt
+    // einsortieren, s. AddSelectedTrackToPlaylistCommand für den bisherigen "über den Baum navigieren"-
+    // Weg) ohne jedes Mal im Playlist-Baum zu suchen. Mehrere benannte Profile (Slot-Belegungen) sind
+    // möglich, z.B. "Hardstyle" vs. "House" mit komplett unterschiedlicher Belegung derselben
+    // Slot-Nummern - Wechsel per Dropdown, explizites Speichern per Button (kein Autosave auf jede
+    // Zuweisung, s. Nutzer-Feedback "über nen Speichern-Button").
+
+    private bool _isLoadingFavorites;
+
+    [ObservableProperty]
+    public partial bool IsFavoritesMode { get; set; }
+
+    [RelayCommand]
+    private void ToggleFavoritesMode() => IsFavoritesMode = !IsFavoritesMode;
+
+    public ObservableCollection<FavoriteProfile> FavoriteProfiles { get; } = [];
+
+    [ObservableProperty]
+    public partial FavoriteProfile? SelectedFavoriteProfile { get; set; }
+
+    /// <summary>Wie viele Slots angezeigt werden - bewusst frei wählbar statt Traktors feste 12
+    /// (Nutzer-Feedback), global statt pro Profil (einfacher: ein Profil belegt einfach nur die
+    /// Slots, die es braucht, der Rest bleibt leer, unabhängig von dieser Zahl).</summary>
+    [ObservableProperty]
+    public partial int FavoriteSlotCount { get; set; } = 12;
+
+    public ObservableCollection<FavoriteSlotViewModel> FavoriteSlots { get; } = [];
+
+    [ObservableProperty]
+    public partial string? NewFavoriteProfileName { get; set; }
+
+    partial void OnSelectedFavoriteProfileChanged(FavoriteProfile? value) => RebuildFavoriteSlots();
+
+    partial void OnFavoriteSlotCountChanged(int value)
+    {
+        RebuildFavoriteSlots();
+        if (!_isLoadingFavorites)
+        {
+            _ = PersistFavoriteSettingsAsync(); // globale Anzeige-Einstellung, nicht Teil eines einzelnen Profils
+        }
+    }
+
+    /// <summary>Baut FavoriteSlots komplett neu aus dem aktiven Profil auf - läuft nach jeder
+    /// Zuweisung/Leerung/Profilwechsel/Slot-Anzahl-Änderung UND nach RebuildPlaylistNodesAsync
+    /// (falls sich Playlist-Namen geändert haben oder eine zugewiesene Playlist gelöscht wurde).
+    /// Bewusst Clear()+neu befüllen statt gezieltem Insert/Remove wie beim Baum (12.1) - hier gibt es
+    /// kein SelectedItem, das dabei verloren gehen könnte, die ItemsControl-Karten haben keinen
+    /// eigenen Zustand.</summary>
+    private void RebuildFavoriteSlots()
+    {
+        FavoriteSlots.Clear();
+        var profile = SelectedFavoriteProfile;
+        var playlistRoots = RootNodes.OfType<PlaylistTreeItemViewModel>().ToList();
+
+        for (var i = 0; i < FavoriteSlotCount; i++)
+        {
+            long? playlistId = null;
+            string? playlistName = null;
+            if (profile is not null && profile.Slots.TryGetValue(i, out var id))
+            {
+                var match = FindPlaylistNode(playlistRoots, id);
+                if (match is not null)
+                {
+                    playlistId = id;
+                    playlistName = match.DisplayName;
+                }
+                // match == null: die zugewiesene Playlist wurde gelöscht - Slot zeigt als leer an,
+                // die (jetzt tote) Zuweisung bleibt im Profil bis zur nächsten Zuweisung/Leerung stehen.
+            }
+
+            FavoriteSlots.Add(new FavoriteSlotViewModel(i, playlistId, playlistName));
+        }
+    }
+
+    /// <summary>Weist die aktuell im Baum ausgewählte Playlist (derselbe Auswahlmechanismus wie
+    /// AddSelectedTrackToPlaylistCommand) dem angegebenen Slot des aktiven Profils zu.</summary>
+    [RelayCommand]
+    private void AssignSelectedPlaylistToSlot(int slotIndex)
+    {
+        if (SelectedFavoriteProfile is null)
+        {
+            StatusMessage = "Bitte zuerst ein Profil anlegen oder auswählen.";
+            return;
+        }
+
+        if (SelectedPlaylistNode?.Node is not { NodeType: PlaylistNodeType.Playlist } playlistNode)
+        {
+            StatusMessage = "Wähle zuerst eine Playlist im Baum aus.";
+            return;
+        }
+
+        SelectedFavoriteProfile.Slots[slotIndex] = playlistNode.Id;
+        RebuildFavoriteSlots();
+        StatusMessage = $"„{playlistNode.Name}“ auf Slot {slotIndex + 1} gelegt - nicht vergessen zu speichern.";
+    }
+
+    [RelayCommand]
+    private void ClearFavoriteSlot(int slotIndex)
+    {
+        if (SelectedFavoriteProfile?.Slots.Remove(slotIndex) == true)
+        {
+            RebuildFavoriteSlots();
+        }
+    }
+
+    /// <summary>Klick auf einen belegten Slot: springt zur zugehörigen Playlist - derselbe Weg wie ein
+    /// Klick im Baum (SelectedSidebarItem-Setter löst OnSelectedSidebarItemChanged/ReloadTracksAsync aus).</summary>
+    [RelayCommand]
+    private void ActivateFavoriteSlot(FavoriteSlotViewModel slot)
+    {
+        if (slot.PlaylistNodeId is not { } id)
+        {
+            StatusMessage = "Slot ist leer - erst eine Playlist im Baum auswählen, dann per Rechtsklick hier ablegen.";
+            return;
+        }
+
+        var match = FindPlaylistNode(RootNodes.OfType<PlaylistTreeItemViewModel>(), id);
+        if (match is null)
+        {
+            StatusMessage = "Diese Playlist wurde nicht mehr gefunden (evtl. gelöscht).";
+            return;
+        }
+
+        SelectedSidebarItem = match;
+    }
+
+    /// <summary>Direkter "Song zu Playlist"-Weg über die Favoriten-Slots, ohne erst im Baum navigieren
+    /// zu müssen (Nutzer-Feedback: "Songs zu Playlisten hinzufügen können") - fügt den aktuell in der
+    /// Bibliothek/im Datei-Browser ausgewählten Track der Slot-Playlist hinzu.</summary>
+    [RelayCommand]
+    private async Task AddSelectedTrackToFavoriteSlotAsync(FavoriteSlotViewModel slot)
+    {
+        if (slot.PlaylistNodeId is not { } id)
+        {
+            return;
+        }
+
+        if (SelectedTrack is not { IsSynthetic: false } track)
+        {
+            StatusMessage = "Wähle zuerst einen Track aus.";
+            return;
+        }
+
+        await _playlistRepository.AddTracksAsync(id, [track.Id]);
+        StatusMessage = $"„{track.DisplayTitle}“ zu „{slot.PlaylistName}“ hinzugefügt.";
+    }
+
+    [RelayCommand]
+    private async Task SaveFavoriteProfileAsync()
+    {
+        if (SelectedFavoriteProfile is null)
+        {
+            StatusMessage = "Kein Profil ausgewählt.";
+            return;
+        }
+
+        await PersistFavoriteSettingsAsync();
+        StatusMessage = $"Profil „{SelectedFavoriteProfile.Name}“ gespeichert.";
+    }
+
+    /// <summary>Speichert die aktuelle Slot-Belegung als NEUES Profil unter NewFavoriteProfileName -
+    /// existiert der Name schon, wird das bestehende Profil überschrieben (wie ein "Speichern unter"
+    /// über eine vorhandene Datei).</summary>
+    [RelayCommand]
+    private async Task SaveFavoriteProfileAsAsync()
+    {
+        var name = NullIfBlank(NewFavoriteProfileName);
+        if (name is null)
+        {
+            StatusMessage = "Bitte einen Profilnamen eingeben.";
+            return;
+        }
+
+        var slots = SelectedFavoriteProfile is not null
+            ? new Dictionary<int, long>(SelectedFavoriteProfile.Slots)
+            : new Dictionary<int, long>();
+
+        var existing = FavoriteProfiles.FirstOrDefault(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase));
+        if (existing is not null)
+        {
+            existing.Slots = slots;
+            SelectedFavoriteProfile = existing;
+        }
+        else
+        {
+            var profile = new FavoriteProfile { Name = name, Slots = slots };
+            FavoriteProfiles.Add(profile);
+            SelectedFavoriteProfile = profile;
+        }
+
+        NewFavoriteProfileName = null;
+        await PersistFavoriteSettingsAsync();
+        StatusMessage = $"Profil „{name}“ gespeichert.";
+    }
+
+    [RelayCommand]
+    private async Task DeleteFavoriteProfileAsync()
+    {
+        if (SelectedFavoriteProfile is null)
+        {
+            return;
+        }
+
+        var name = SelectedFavoriteProfile.Name;
+        FavoriteProfiles.Remove(SelectedFavoriteProfile);
+        SelectedFavoriteProfile = FavoriteProfiles.FirstOrDefault();
+        await PersistFavoriteSettingsAsync();
+        StatusMessage = $"Profil „{name}“ gelöscht.";
+    }
+
+    private Task PersistFavoriteSettingsAsync() => _favoriteProfileStore.SaveAsync(new FavoriteProfileSettings
+    {
+        Profiles = FavoriteProfiles.ToList(),
+        ActiveProfileName = SelectedFavoriteProfile?.Name,
+        SlotCount = FavoriteSlotCount,
+    });
+
     [ObservableProperty]
     public partial string? SearchText { get; set; }
 
@@ -565,6 +787,18 @@ public partial class MainViewModel : ViewModelBase
         {
             QuickAccessFolders.Add(folder);
         }
+
+        var favoriteSettings = await _favoriteProfileStore.LoadAsync();
+        foreach (var profile in favoriteSettings.Profiles)
+        {
+            FavoriteProfiles.Add(profile);
+        }
+
+        _isLoadingFavorites = true;
+        FavoriteSlotCount = favoriteSettings.SlotCount > 0 ? favoriteSettings.SlotCount : 12;
+        SelectedFavoriteProfile = FavoriteProfiles.FirstOrDefault(p => p.Name == favoriteSettings.ActiveProfileName)
+            ?? FavoriteProfiles.FirstOrDefault();
+        _isLoadingFavorites = false;
 
         // RebuildPlaylistNodesAsync wählt "Bibliothek" und stößt darüber (Property-Setter,
         // s. OnSelectedSidebarItemChanged) einmalig ReloadTracksAsync an - kein zusätzlicher
@@ -796,6 +1030,8 @@ public partial class MainViewModel : ViewModelBase
             SelectedSidebarItem = FindPlaylistNode(roots, previouslySelectedId.Value) ?? roots[0];
         }
         // War zuvor ein Dateisystem-Knoten gewählt, bleibt das unangetastet (SelectedSidebarItem ändert sich nicht).
+
+        RebuildFavoriteSlots(); // Playlist-Namen/gelöschte Playlisten in den Favoriten-Slots aktuell halten
     }
 
     private static PlaylistTreeItemViewModel? FindPlaylistNode(IEnumerable<PlaylistTreeItemViewModel> nodes, long id)

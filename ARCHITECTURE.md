@@ -860,3 +860,89 @@ einem falschen Fenster ausgelöst werden konnte. Die beiden behobenen Ursachen (
 über Code-Review sehr plausibel für alle drei gemeldeten Symptome (Klick, Pfeiltasten indirekt
 über Fokus-Störung, Tab direkt über `IsTextCompletionEnabled`) - bitte nach diesem Fix einmal
 selbst gegenprüfen, ob Pfeiltasten/Tab/Klick im Dropdown jetzt funktionieren.
+
+## 16. Playlist-Favoriten/Profile-Manager
+
+Nutzer-Wunsch: schneller Playlist-Zugriff wie Traktors 12 Favoriten-Slots, aber mit frei wählbarer
+Anzahl (20-40 oder mehr) statt fest 12, und mit wechselbaren "Profilen" (z.B. ein Profil "Hardstyle"
+mit thematischen Playlisten in den Slots, ein anderes Profil "House" mit komplett anderer Belegung
+derselben Slot-Nummern). Zusätzlich: Songs sollen sich direkt über die Favoriten-Slots zu Playlisten
+hinzufügen lassen, ohne jedes Mal im Playlist-Baum navigieren zu müssen.
+
+### 16.1 Datenmodell und Persistenz
+
+`FavoriteProfile` (Cratebase.Core/Models/FavoriteProfile.cs): `Name` + `Dictionary<int, long> Slots`
+(Slot-Index → Playlist-Id). Bewusst sparse statt eines festen Arrays - ein Profil mit nur 9 belegten
+Slots zeigt bei z.B. 24 sichtbaren Slots einfach 15 leere, unabhängig von der global konfigurierten
+Slot-Anzahl (`FavoriteProfileSettings.SlotCount`, Default 12, per NumericUpDown in der UI frei
+wählbar 1-60). Persistiert als `~/.local/share/Cratebase/favorite_profiles.json` über
+`IFavoriteProfileStore`/`JsonFavoriteProfileStore` - exakt dasselbe Muster wie
+`IQuickAccessStore`/`JsonQuickAccessStore` (Abschnitt 12.2): reine App-Einstellung, keine
+Domänendaten, deshalb JSON statt SQLite-Tabelle. `Dictionary<int, long>` serialisiert über
+System.Text.Json anstandslos als JSON-Objekt mit String-Schlüsseln (`{"0": 101, "23": 999}`) - gegen
+eine isolierte Testanwendung verifiziert (Sparse-Slots mit Lücken, hohem Index 23, kaputte Datei
+verhindert den App-Start nicht).
+
+### 16.2 UI: Toggle wie Edit-Modus, aber oben statt unten
+
+Neuer "★ Favoriten"-Toggle-Button in der Kopfzeile, exakt dasselbe Muster wie "✎ Edit-Modus"
+(`IsFavoritesMode` TwoWay an `ToggleButton.IsChecked`, ein `Border` mit
+`IsVisible="{Binding IsFavoritesMode}"` blendet sich ein/aus). Anders als der Tag-Editor sitzt das
+Panel aber `DockPanel.Dock="Top"` direkt unter der Kopfzeile statt unten über der Transportleiste -
+es geht um Playlist-*Navigation*, nicht um Track-Metadaten, deshalb näher am Playlist-Baum in der
+Sidebar als am Player.
+
+Panel-Inhalt: Profil-Dropdown + "💾 Speichern"/"Löschen" für das aktive Profil, ein Textfeld +
+"+ Als neues Profil speichern" für neue Profile, ein `NumericUpDown` für die Slot-Anzahl, und darunter
+die Slots selbst als `ItemsControl` mit `WrapPanel` (bricht bei vielen Slots automatisch um,
+`ScrollViewer` mit `MaxHeight` verhindert, dass 40+ Slots den Bildschirm sprengen).
+
+### 16.3 Zuweisen/Bedienen der Slots - kein Drag&Drop, kein Such-Picker
+
+Um weder Drag&Drop (aufwändig in Avalonia) noch einen neuen Playlist-Such-Picker bauen zu müssen,
+wird der bereits vorhandene Auswahlmechanismus wiederverwendet: genau wie der bestehende
+"Zu Playlist hinzufügen"-Button (`AddSelectedTrackToPlaylistCommand`) sich auf die aktuell im
+Sidebar-Baum ausgewählte Playlist (`SelectedPlaylistNode`) stützt, tut das auch die
+Slot-Zuweisung. Pro Slot-Karte:
+- **Klick auf den Slot-Text** (falls belegt) → springt zur Playlist (setzt `SelectedSidebarItem` auf
+  den per `FindPlaylistNode` gefundenen Baum-Eintrag - derselbe Navigationsweg wie ein Klick im Baum
+  selbst, s. `OnSelectedSidebarItemChanged`).
+- **"+"-Button** (nur sichtbar wenn belegt) → fügt den aktuell in der Bibliothek/im Datei-Browser
+  ausgewählten Track (`SelectedTrack`) direkt dieser Playlist hinzu (`AddTracksAsync`, dieselbe
+  Repository-Methode wie der bestehende Button) - das ist der direkte "Songs zu Playlisten
+  hinzufügen"-Weg ohne Baum-Navigation.
+- **Rechtsklick (ContextMenu)** → "Aktuelle Playlist hier ablegen" (belegt den Slot mit
+  `SelectedPlaylistNode`) bzw. "Slot leeren". `$parent[ItemsControl]`-Bindings für die
+  Command-Weiterleitung aus dem DataTemplate heraus - dasselbe bereits bewährte Muster wie beim
+  "×"-Button der QuickAccess-Flyout-Liste (Abschnitt 12.2), hier zusätzlich aus einem `ContextMenu`
+  heraus (Popup-Inhalte hängen in Avalonia weiterhin logisch am Besitzer-Control, die Bindung
+  funktioniert genauso).
+
+Zuweisungen/Löschungen sind bewusst **nicht** Autosave - sie ändern nur das In-Memory-`Slots`-
+Dictionary des aktiven Profils; erst ein expliziter Klick auf "💾 Speichern" (überschreibt das aktive
+Profil) oder "+ Als neues Profil speichern" (legt ein neues an, oder überschreibt eins mit demselben
+Namen) schreibt nach `favorite_profiles.json` (Nutzer-Feedback: "über nen Speichern-Button"). Die
+Slot-*Anzahl* dagegen ist eine globale Anzeige-Einstellung, kein Teil eines einzelnen Profils, und
+wird sofort bei Änderung persistiert.
+
+`RebuildFavoriteSlots()` baut die angezeigte `FavoriteSlots`-Collection komplett neu auf - läuft
+nach jeder Zuweisung/Löschung, jedem Profilwechsel, jeder Slot-Anzahl-Änderung, UND nach jedem
+`RebuildPlaylistNodesAsync()` (falls sich Playlist-Namen geändert haben oder eine zugewiesene
+Playlist gelöscht wurde - der Slot zeigt dann einfach als leer an, ohne dass die tote Zuweisung im
+Profil sofort verschwindet).
+
+### 16.4 Verifiziert
+
+Build sauber (0 Fehler/Warnungen), alle Bindings sind compilierte Avalonia-Bindings gegen
+`x:DataType="vm:MainViewModel"` - ein falscher Property-/Command-Name hätte den Build fehlschlagen
+lassen, das allein bestätigt schon die strukturelle Verdrahtung. Die JSON-Persistenzschicht wurde
+zusätzlich über eine isolierte Konsolen-Testanwendung verifiziert (Default-Werte, Sparse-Dictionary-
+Roundtrip mit Lücken und hohem Index, kaputte Datei bricht den Ladevorgang sauber ab). Die App
+wurde gestartet und der "★ Favoriten"-Button erscheint korrekt in der Kopfzeile (Screenshot). Ein
+vollständiger Klick-Durchlauf (Profil anlegen, Slot zuweisen, Track hinzufügen, Navigation per Klick)
+konnte in dieser Session nicht mehr sicher automatisiert werden - die Klick-Koordinaten-Automatisierung
+erwies sich im Verlauf dieser Session als zunehmend unzuverlässig und ist zwischenzeitlich sogar in
+fremden Fenstern gelandet (s. Abschnitt 15.4), weshalb weitere GUI-Automatisierung aus
+Sicherheitsgründen unterlassen wurde. Bitte den vollen Flow (Profil erstellen → Playlist per
+Rechtsklick einem Slot zuweisen → Speichern → Profil wechseln → zurückwechseln → Slot anklicken zum
+Navigieren → "+" zum Hinzufügen eines Tracks) einmal selbst durchklicken.
