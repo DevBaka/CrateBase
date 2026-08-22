@@ -143,6 +143,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                             <!-- Feste Mindestbreite statt reinem "*": bei vielen Buttons links soll die Suche
                                  nicht auf (fast) 0 zusammengequetscht werden - dann eher die Statusmeldung rechts
                                  kürzer anzeigen (die hat schon TextTrimming+MaxWidth). -->
@@ -151,11 +152,13 @@
                         </Grid.ColumnDefinitions>
                         <Button Grid.Column="0" Content="Ordner hinzufügen…" Click="OnAddFolderClick" IsEnabled="{Binding !IsScanning}" />
                         <Button Grid.Column="1" Content="Traktor-Collection importieren…" Margin="6,0,0,0" Click="OnImportTraktorClick" IsEnabled="{Binding !IsScanning}" />
+                        <Button Grid.Column="2" Content="Nach Traktor exportieren…" Margin="6,0,0,0" Click="OnExportTraktorClick" IsEnabled="{Binding !IsScanning}"
+                                ToolTip.Tip="Schreibt den kompletten Playlist-Baum als eigenständige NML-Datei - zum manuellen Einlesen in Traktor über „Collection importieren“. Kein automatischer Sync, Traktors eigene Collection wird nie verändert." />
                         <!-- Spalten-Auswahl und Edit-Modus gelten für Bibliothek UND Datei-Browser gleichermaßen
                              (beide DataGrids teilen sich Spaltenlayout und SelectedTrack, s. ARCHITECTURE.md 14.3) -
                              deshalb keine IsShowingTrackGrid-Einschränkung wie bei Suche/Fußzeile, die nur für die
                              Bibliotheksliste sinnvoll sind. -->
-                        <Button Grid.Column="2" Content="Spalten ▾" Margin="6,0,0,0">
+                        <Button Grid.Column="3" Content="Spalten ▾" Margin="6,0,0,0">
                             <Button.Flyout>
                                 <Flyout Placement="BottomEdgeAlignedLeft">
                                     <StackPanel Spacing="9" Margin="6" MinWidth="150">
@@ -174,17 +177,17 @@
                                 </Flyout>
                             </Button.Flyout>
                         </Button>
-                        <ToggleButton Grid.Column="3" Content="✎ Edit-Modus" Margin="6,0,0,0"
+                        <ToggleButton Grid.Column="4" Content="✎ Edit-Modus" Margin="6,0,0,0"
                                       IsChecked="{Binding IsEditMode, Mode=TwoWay}"
                                       ToolTip.Tip="Metadaten (Genre, Sub-Genre, Kommentare, Farbe, Titel, Artist, BPM, Key …) direkt in der App bearbeiten." />
-                        <ToggleButton Grid.Column="4" Content="★ Favoriten" Margin="6,0,0,0"
+                        <ToggleButton Grid.Column="5" Content="★ Favoriten" Margin="6,0,0,0"
                                       IsChecked="{Binding IsFavoritesMode, Mode=TwoWay}"
                                       ToolTip.Tip="Nummerierte Playlist-Favoriten-Slots, gruppiert in Profilen (z.B. ein Profil je Genre) - schneller Zugriff ohne im Playlist-Baum zu suchen." />
-                        <CheckBox Grid.Column="5" Content="Unterordner einbeziehen" FontSize="11.5" Margin="10,0,0,0"
+                        <CheckBox Grid.Column="6" Content="Unterordner einbeziehen" FontSize="11.5" Margin="10,0,0,0"
                                   VerticalAlignment="Center" IsChecked="{Binding IncludeSubfolders}"
                                   ToolTip.Tip="Zeigt auch Tracks/Dateien aus verschachtelten Playlisten bzw. Unterordnern, nicht nur die direkten. Gilt pro Ordner und wird sich für diese Sitzung gemerkt - andere Ordner sind davon unabhängig." />
-                        <TextBox Grid.Column="6" Margin="12,0" PlaceholderText="Suche (Titel, Artist, Album)…" Text="{Binding SearchText}" IsVisible="{Binding IsShowingTrackGrid}" />
-                        <TextBlock Grid.Column="7" VerticalAlignment="Center" MaxWidth="300" FontSize="11.5" Foreground="{StaticResource TextFaintBrush}"
+                        <TextBox Grid.Column="7" Margin="12,0" PlaceholderText="Suche (Titel, Artist, Album)…" Text="{Binding SearchText}" IsVisible="{Binding IsShowingTrackGrid}" />
+                        <TextBlock Grid.Column="8" VerticalAlignment="Center" MaxWidth="300" FontSize="11.5" Foreground="{StaticResource TextFaintBrush}"
                                    TextTrimming="CharacterEllipsis" Text="{Binding StatusMessage}" />
                     </Grid>
 

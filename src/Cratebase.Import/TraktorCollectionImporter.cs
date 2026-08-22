@@ -61,9 +61,23 @@ public sealed class TraktorCollectionImporter(
             ? (0, 0)
             : await ImportPlaylistTreeAsync(traktorPlaylistRoot, resolver, ct);
 
+        await PersistLearnedTraktorMappingsAsync(resolver, ct);
+
         var summary = new ImportSummary(entriesSeen, tracksMatched, tracksUnmatched, playlistsCreated, tracksLinked, cuePointsImported);
         progress?.Report(new ImportProgress(entriesSeen, tracksMatched, tracksUnmatched, playlistsCreated, cuePointsImported, null));
         return summary;
+    }
+
+    /// <summary>Merkt sich für jeden LibraryRoot, wie Traktor ihn selbst benennt (s. LibraryRoot.
+    /// TraktorVolume-Doku und TraktorPathResolver.LearnedMappings) - Grundlage für den NML-Export
+    /// (s. ARCHITECTURE.md Abschnitt 20). Überschreibt einen zuvor gelernten Wert bewusst mit dem
+    /// aktuellen Import-Durchlauf (falls sich die Traktor-Ordnerstruktur seither geändert hat).</summary>
+    private async Task PersistLearnedTraktorMappingsAsync(TraktorPathResolver resolver, CancellationToken ct)
+    {
+        foreach (var (rootId, mapping) in resolver.LearnedMappings)
+        {
+            await libraryRootRepository.SetTraktorMappingAsync(rootId, mapping.Volume, string.Join("/:", mapping.DirSegments), ct);
+        }
     }
 
     private async Task<TraktorPathResolver> BuildResolverAsync(CancellationToken ct)
@@ -182,7 +196,14 @@ public sealed class TraktorCollectionImporter(
     {
         var existingNodes = await playlistRepository.GetAllNodesAsync(ct);
         // -1 als Sentinel für "Root-Ebene" (ParentId == null), da -1 nie eine echte Id ist.
-        var nodeIndex = existingNodes.ToDictionary(n => (n.ParentId ?? -1, n.Name), n => n.Id);
+        // Bewusst kein ToDictionary (würde bei zwei gleichnamigen Knoten unter demselben Parent -
+        // z.B. mehrfach angelegte "Neue Playlist" - mit "Ein Element mit demselben Schlüssel wurde
+        // bereits hinzugefügt" abstürzen und JEDEN Traktor-Import blockieren, nicht nur den Namens-
+        // konflikt selbst). GroupBy+First: bei Duplikaten zählt deterministisch der erste Treffer,
+        // der Import läuft trotzdem durch.
+        var nodeIndex = existingNodes
+            .GroupBy(n => (n.ParentId ?? -1, n.Name))
+            .ToDictionary(g => g.Key, g => g.First().Id);
 
         var counters = new ImportCounters();
         var importRootKey = (-1L, ImportRootFolderName);

@@ -33,4 +33,13 @@ public sealed record TraktorPath(string Volume, IReadOnlyList<string> DirSegment
 
     private static IReadOnlyList<string> SplitSegments(string dir) =>
         dir.Split("/:", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+    /// <summary>Gegenstück zu <see cref="FromCombinedKey"/> - für den NML-Export (s. TraktorNmlWriter).</summary>
+    public string ToCombinedKey() => string.Join("/:", new[] { Volume }.Concat(DirSegments).Append(FileName));
+
+    /// <summary>DIR-Attributwert für &lt;LOCATION&gt; im selben "/:"-umklammerten Format, das echte
+    /// Traktor-NML-Dateien verwenden (führendes und abschließendes "/:'') - SplitSegments (Lesen)
+    /// verwirft leere Einträge ohnehin, daher hier bewusst symmetrisch mit führendem/abschließendem
+    /// Trenner geschrieben, um so nah wie möglich am Original-Format zu bleiben.</summary>
+    public string ToLocationDir() => DirSegments.Count == 0 ? "/:" : "/:" + string.Join("/:", DirSegments) + "/:";
 }

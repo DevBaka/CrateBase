@@ -1098,3 +1098,97 @@ bevor der komplette Regressionstest (insbesondere: eine brandneue, gerade erst a
 zuweisen) manuell nachvollzogen werden konnte. Bitte gezielt genau das noch einmal gegenprüfen: eine
 neue Playlist anlegen und direkt (ohne Neustart) per Rechtsklick und per Drag&Drop einem Slot
 zuweisen.
+
+## 20. NML-Exporter: Cratebase-Playlisten in Traktor wiederfinden
+
+Nutzer-Frage: "Werden die Songs nach dem Speichern in Playlisten denn so auch in Traktor gefunden
+werden?" - Antwort war bis hierhin nein, der Traktor-Import (Abschnitt "Phase 2") ist eine
+Einbahnstraße (Traktor → Cratebase, einmaliger Snapshot). Ziel dieses Abschnitts: ein Weg, Playlisten
+(und Änderungen daran) auch wieder in Traktor sichtbar zu machen.
+
+### 20.1 Bewusst kein Schreiben in Traktors eigene collection.nml
+
+Traktors eigene Collection-Datei direkt zu überschreiben/patchen wäre der "unsichtbarste" Weg, birgt
+aber ein hohes Risiko: ein fehlerhaftes Format oder ein falscher Pfad-Bezug kann Traktors gesamte
+Bibliothek beschädigen, und Cratebase hat keine Möglichkeit, das echte Traktor-NML-Format gegen eine
+laufende Traktor-Installation zu verifizieren (keine Testinstanz verfügbar). Stattdessen: ein
+**Export-Button**, der eine eigenständige `.nml`-Datei schreibt, die der Nutzer selbst über Traktors
+eigene Funktion "Collection importieren" einliest (Traktors eigener, robuster Merge-Mechanismus -
+fügt neue Playlisten/Tracks hinzu, verändert nichts an der bestehenden Collection, was Cratebase
+selbst nicht angefasst hat). Kein automatischer/live Sync - explizit auf Nutzeraktion in beiden
+Programmen angewiesen, dafür ohne jedes Korruptionsrisiko für die echte Traktor-Bibliothek.
+
+### 20.2 Rückrichtung der Pfad-Auflösung
+
+Der bestehende `TraktorPathResolver` (Import-Richtung) findet für einen Traktor-Pfad einen Cratebase-
+Track, indem er die größte Overlap-Übereinstimmung zwischen den LETZTEN Segmenten von
+`LibraryRoot.Path` und den ERSTEN Segmenten des Traktor-Pfads sucht. Für den Export wird das
+umgekehrt gebraucht: aus einem Cratebase-Track (LibraryRootId + RelativePath) einen Pfad
+zurückrechnen, den Traktor selbst wiedererkennt.
+
+Lösung: `TraktorPathResolver` merkt sich jetzt zusätzlich (`LearnedMappings`), welcher
+Laufwerksbuchstabe und welche überlappenden Pfad-Segmente beim ERSTEN erfolgreichen Auflösen eines
+Tracks unter einem bestimmten Root ermittelt wurden (`TraktorRootMapping`). `TraktorCollectionImporter`
+persistiert das am Ende jedes Imports auf `library_root.traktor_volume`/`traktor_dir_prefix` (neue,
+per PRAGMA-table_info-Migration nachgezogene Spalten, s. Schema.cs `LibraryRootColumnMigrations` -
+exakt dasselbe Muster wie die Track-Spalten-Migrationen aus Abschnitt 14.1, jetzt auf eine zweite
+Tabelle verallgemeinert). Für JEDEN Track unter diesem Root (nicht nur die, die ursprünglich aus
+Traktor importiert wurden - auch später lokal dazugescannte Dateien!) lässt sich damit ein
+Traktor-Pfad zurückrechnen: `Volume + gespeicherte Präfix-Segmente + RelativePath`.
+
+Wichtige Konsequenz: **ein einmaliger erneuter Traktor-Import ist Voraussetzung**, bevor der Export
+für einen Root etwas liefert - ohne mindestens einen erfolgreich aufgelösten Track pro Root bleibt
+`TraktorVolume` `null`, und der Exporter überspringt alle Tracks dieses Roots bewusst (`TracksSkippedNoTraktorPath`
+in der Zusammenfassung), statt einen Pfad zu raten.
+
+### 20.3 TraktorNmlWriter
+
+Neues Interface `INmlExporter` (Cratebase.Core.Abstractions) + Implementierung `TraktorNmlWriter`
+(Cratebase.Import, spiegelt bewusst Struktur/Feldnamen von `TraktorNmlReader` - der einzige verfügbare
+Cross-Check ohne echte Traktor-Installation): baut den kompletten Cratebase-Playlist-Baum
+(`playlist_node`) rekursiv nach, sammelt dabei alle referenzierten Tracks dedupliziert für die
+COLLECTION (Tracks ohne auflösbaren Traktor-Pfad werden übersprungen, s. 20.2), und schreibt eine
+NML v19 mit `HEAD`/`MUSICFOLDERS`/`COLLECTION`/`SETS`/`PLAYLISTS` über `XmlWriter` (automatisches
+Escaping, kein manuelles String-Building). Playlist-Track-Referenzen nutzen `PRIMARYKEY KEY="Volume/:
+Segment/:.../:Datei"` (`TraktorPath.ToCombinedKey()`, neue Methode, Gegenstück zu
+`FromCombinedKey`), COLLECTION-`LOCATION` nutzt `DIR="/:Segment/:.../:")` (`ToLocationDir()`,
+führendes+abschließendes "/:'' wie in echten Traktor-NML-Dateien üblich).
+
+UI: neuer Button "Nach Traktor exportieren…" neben dem Import-Button, öffnet einen
+Speichern-Dialog (Standardname `Cratebase-Export.nml`), ruft `ExportToTraktorCommand` auf.
+
+### 20.4 Nebenbei gefundener und behobener Bug
+
+Beim Testen des erneuten Traktor-Imports (Voraussetzung für 20.2) stürzte
+`TraktorCollectionImporter.ImportPlaylistTreeAsync` ab: `existingNodes.ToDictionary(n => (n.ParentId,
+n.Name), ...)` wirft bei zwei gleichnamigen Playlisten unter demselben Elternordner ("Ein Element mit
+demselben Schlüssel wurde bereits hinzugefügt"). Die reale Bibliothek hatte durch frühere
+Test-Fehlklicke (s. Abschnitt 16.4/19.3) mehrere "Neue Playlist"-Einträge unter demselben Ordner -
+das hätte JEDEN künftigen Traktor-Import komplett blockiert, nicht nur den Namenskonflikt selbst.
+Fix: `GroupBy(...).ToDictionary(g => g.Key, g => g.First().Id)` - bei Duplikaten zählt deterministisch
+der erste Treffer, der Import läuft durch statt abzustürzen.
+
+### 20.5 Verifiziert
+
+Build sauber. **Vollständig gegen eine Kopie der echten Produktions-DB verifiziert** (isolierte
+Konsolen-Testanwendung, kein Risiko für die echten Daten):
+1. Synthetischer Traktor-Collection-Eintrag importiert → Root "Musik" lernt korrekt
+   `Volume=M:, Prefix=Musik/:Musik`.
+2. Export des kompletten, echten Playlist-Baums: **557 Playlisten, 7783 Tracks, 0 übersprungen**.
+3. Die exportierte Datei mit dem eigenen `TraktorNmlReader` zurückgelesen: Playlist- und
+   Track-Anzahl stimmen exakt mit der Export-Zusammenfassung überein.
+4. **Alle 11.906 exportierten Playlist-Track-Referenzen** (jede Zeile jeder der 557 Playlisten)
+   lösen über `TraktorPathResolver` wieder korrekt zur ursprünglichen Track-Id auf - vollständiger
+   Rundlauf-Beweis über den gesamten echten Datensatz, nicht nur eine Stichprobe.
+5. Stichprobe der erzeugten XML von Hand geprüft: korrektes Escaping (z.B. "Flesh &amp; Blood"),
+   plausible Struktur, Genre/Key/BPM/Kommentar korrekt übernommen.
+
+Die App wurde mit der echten Produktions-DB gestartet (vorher gesichert) - Migration lief
+fehlerfrei, "Nach Traktor exportieren…"-Button erscheint korrekt in der Kopfzeile.
+
+**Nicht möglich in dieser Session**: ein Test mit einer echten Traktor-Installation (keine
+verfügbar) - das Dateiformat wurde ausschließlich gegen den eigenen, aus echten NML-Dateien
+abgeleiteten Reader verifiziert, nicht gegen Traktor selbst. Vor dem ersten produktiven Einsatz:
+bitte einmal die Traktor-Collection erneut importieren (nötig, damit die Roots ihre Traktor-Zuordnung
+lernen), dann exportieren und die erzeugte Datei in einer Traktor-Instanz testweise importieren -
+idealerweise zuerst mit einer gesicherten/kopierten Traktor-Collection, nicht der einzigen echten.

@@ -79,6 +79,29 @@ public partial class MainWindow : Window
         }
     }
 
+    private async void OnExportTraktorClick(object? sender, RoutedEventArgs e)
+    {
+        var topLevel = GetTopLevel(this);
+        if (topLevel is null || DataContext is not MainViewModel viewModel)
+        {
+            return;
+        }
+
+        var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+        {
+            Title = "Playlisten als NML exportieren",
+            SuggestedFileName = "Cratebase-Export.nml",
+            DefaultExtension = "nml",
+            FileTypeChoices = [new FilePickerFileType("Traktor NML") { Patterns = ["*.nml"] }],
+        });
+
+        var path = file?.TryGetLocalPath();
+        if (path is not null)
+        {
+            await viewModel.ExportToTraktorCommand.ExecuteAsync(path);
+        }
+    }
+
     private void OnTrackGridDoubleTapped(object? sender, TappedEventArgs e)
     {
         if (DataContext is MainViewModel viewModel)

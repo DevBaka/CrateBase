@@ -42,6 +42,7 @@ public partial class App : Application
             ITagReader tagReader = new TagLibTagReader();
             ILibraryScanner libraryScanner = new LibraryScanner(trackRepository, libraryRootRepository, tagReader);
             ICollectionImporter traktorImporter = new TraktorCollectionImporter(trackRepository, libraryRootRepository, playlistRepository, cuePointRepository);
+            INmlExporter nmlExporter = new TraktorNmlWriter(trackRepository, libraryRootRepository, playlistRepository);
             IWaveformGenerator waveformGenerator = new FfmpegWaveformGenerator();
             IWaveformCache waveformCache = new FileWaveformCache(GetWaveformCacheDir());
             IQuickAccessStore quickAccessStore = new JsonQuickAccessStore(GetQuickAccessFilePath());
@@ -51,7 +52,8 @@ public partial class App : Application
 
             var viewModel = new MainViewModel(
                 trackRepository, libraryRootRepository, playlistRepository, libraryScanner, _audioPlayer,
-                traktorImporter, tagReader, waveformGenerator, waveformCache, quickAccessStore, favoriteProfileStore);
+                traktorImporter, tagReader, waveformGenerator, waveformCache, quickAccessStore, favoriteProfileStore,
+                nmlExporter);
 
             var mainWindow = new MainWindow { DataContext = viewModel };
             mainWindow.Opened += async (_, _) => await viewModel.InitializeAsync();

@@ -8,7 +8,8 @@ public sealed class LibraryRootRepository(SqliteConnectionFactory connectionFact
 {
     private const string SelectColumns = """
         id AS Id, path AS Path, label AS Label,
-        watch_enabled AS WatchEnabled, last_scanned_at AS LastScannedAtUtc
+        watch_enabled AS WatchEnabled, last_scanned_at AS LastScannedAtUtc,
+        traktor_volume AS TraktorVolume, traktor_dir_prefix AS TraktorDirPrefix
         """;
 
     public async Task<IReadOnlyList<LibraryRoot>> GetAllAsync(CancellationToken ct = default)
@@ -50,6 +51,15 @@ public sealed class LibraryRootRepository(SqliteConnectionFactory connectionFact
         await connection.ExecuteAsync(new CommandDefinition(
             "UPDATE library_root SET last_scanned_at = @whenUtc WHERE id = @id;",
             new { id, whenUtc = SqliteDateTime.ToText(whenUtc) },
+            cancellationToken: ct));
+    }
+
+    public async Task SetTraktorMappingAsync(long id, string volume, string dirPrefix, CancellationToken ct = default)
+    {
+        using var connection = connectionFactory.CreateConnection();
+        await connection.ExecuteAsync(new CommandDefinition(
+            "UPDATE library_root SET traktor_volume = @volume, traktor_dir_prefix = @dirPrefix WHERE id = @id;",
+            new { id, volume, dirPrefix },
             cancellationToken: ct));
     }
 }

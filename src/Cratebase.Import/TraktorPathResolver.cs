@@ -14,6 +14,14 @@ namespace Cratebase.Import;
 public sealed class TraktorPathResolver
 {
     private readonly List<RootIndex> _roots = [];
+    private readonly Dictionary<long, TraktorRootMapping> _learnedMappings = new();
+
+    /// <summary>Pro LibraryRoot.Id die beim Auflösen gelernte Traktor-Zuordnung (Laufwerksbuchstabe +
+    /// überlappende Pfad-Segmente, s. TraktorRootMapping) - für den NML-Export genutzt, damit
+    /// exportierte Playlist-Einträge auf einen Pfad zeigen, den Traktor selbst wiedererkennt. Nur die
+    /// ERSTE erfolgreiche Auflösung pro Root wird gemerkt (spätere Einträge desselben Roots liefern
+    /// ohnehin dieselben überlappenden Segmente, s. TryResolveTrackId).</summary>
+    public IReadOnlyDictionary<long, TraktorRootMapping> LearnedMappings => _learnedMappings;
 
     /// <summary>Lädt die bekannten relative_paths eines Roots einmalig vor (nicht pro Traktor-Eintrag neu abfragen).</summary>
     public void AddRoot(LibraryRoot root, IReadOnlyDictionary<string, long> relativePathToTrackId)
@@ -44,6 +52,11 @@ public sealed class TraktorPathResolver
 
                 if (root.KnownRelativePaths.TryGetValue(candidateRelativePath, out var trackId))
                 {
+                    if (!_learnedMappings.ContainsKey(root.Root.Id))
+                    {
+                        _learnedMappings[root.Root.Id] = new TraktorRootMapping(path.Volume, path.DirSegments.Take(overlap).ToList());
+                    }
+
                     return trackId;
                 }
             }
@@ -80,3 +93,10 @@ public sealed class TraktorPathResolver
 
     private sealed record RootIndex(LibraryRoot Root, string[] PathSegments, Dictionary<string, long> KnownRelativePaths);
 }
+
+/// <summary>Wie Traktor einen bestimmten LibraryRoot selbst benennt - Laufwerksbuchstabe plus die
+/// Pfad-Segmente, die beim Import als mit diesem Root überlappend erkannt wurden (s.
+/// TraktorPathResolver.LearnedMappings). Grundlage für den NML-Export: jeder Track unter diesem Root
+/// (egal ob ursprünglich aus Traktor importiert oder nur lokal gescannt) lässt sich daraus einen
+/// Traktor-verständlichen Pfad zurückrechnen (Volume + DirSegments + RelativePath-Rest).</summary>
+public sealed record TraktorRootMapping(string Volume, IReadOnlyList<string> DirSegments);

@@ -11,7 +11,7 @@ namespace Cratebase.Data;
 /// </summary>
 internal static class Schema
 {
-    public const int CurrentVersion = 3;
+    public const int CurrentVersion = 4;
 
     /// <summary>
     /// Spalten, die nachträglich zu einer bestehenden `track`-Tabelle dazukamen (Tag-Editor,
@@ -28,6 +28,17 @@ internal static class Schema
         ("color_tag", "ALTER TABLE track ADD COLUMN color_tag TEXT NULL;"),
     ];
 
+    /// <summary>Spalten für den NML-Export (s. ARCHITECTURE.md Abschnitt 20) - merkt sich pro
+    /// LibraryRoot, wie Traktor denselben Ordner selbst benennt (Laufwerksbuchstabe + Pfad-Segmente
+    /// in Traktors "/:"-Notation), automatisch gelernt beim Traktor-Import (s. TraktorPathResolver).
+    /// Ohne das könnten neu exportierte Playlisten-Einträge nicht auf einen Pfad zurückgeführt
+    /// werden, den Traktor selbst wiedererkennt.</summary>
+    public static readonly (string Column, string Ddl)[] LibraryRootColumnMigrations =
+    [
+        ("traktor_volume", "ALTER TABLE library_root ADD COLUMN traktor_volume TEXT NULL;"),
+        ("traktor_dir_prefix", "ALTER TABLE library_root ADD COLUMN traktor_dir_prefix TEXT NULL;"),
+    ];
+
     public const string Sql = """
         PRAGMA foreign_keys = ON;
 
@@ -40,7 +51,9 @@ internal static class Schema
             path            TEXT NOT NULL UNIQUE,
             label           TEXT NOT NULL,
             watch_enabled   INTEGER NOT NULL DEFAULT 1,
-            last_scanned_at TEXT NULL
+            last_scanned_at TEXT NULL,
+            traktor_volume     TEXT NULL,
+            traktor_dir_prefix TEXT NULL
         );
 
         CREATE TABLE IF NOT EXISTS track (

@@ -18,7 +18,8 @@ public static class DatabaseInitializer
             createCommand.ExecuteNonQuery();
         }
 
-        ApplyTrackColumnMigrations(connection, transaction);
+        ApplyColumnMigrations(connection, transaction, "track", Schema.TrackColumnMigrations);
+        ApplyColumnMigrations(connection, transaction, "library_root", Schema.LibraryRootColumnMigrations);
 
         // schema_version wird gepflegt (insert-or-update), primär informativ - die eigentliche
         // Idempotenz läuft über "IF NOT EXISTS" (Tabellen) bzw. PRAGMA table_info (Spalten), nicht
@@ -42,15 +43,16 @@ public static class DatabaseInitializer
     /// jeder zweite Start (Spalte existiert schon) mit einem SQL-Fehler abbrechen. PRAGMA
     /// table_info listet die tatsächlich vorhandenen Spalten, unabhängig davon, ob die DB frisch
     /// (Spalten kamen direkt aus dem CREATE TABLE) oder eine ältere, bereits befüllte DB ist
-    /// (Spalten fehlen noch, ALTER TABLE muss laufen).
+    /// (Spalten fehlen noch, ALTER TABLE muss laufen). Generisch über den Tabellennamen, damit
+    /// dasselbe Muster für track UND library_root (NML-Export-Spalten, s. Schema.cs) gilt.
     /// </summary>
-    private static void ApplyTrackColumnMigrations(SqliteConnection connection, SqliteTransaction transaction)
+    private static void ApplyColumnMigrations(SqliteConnection connection, SqliteTransaction transaction, string tableName, (string Column, string Ddl)[] migrations)
     {
         var existingColumns = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         using (var pragmaCommand = connection.CreateCommand())
         {
             pragmaCommand.Transaction = transaction;
-            pragmaCommand.CommandText = "PRAGMA table_info(track);";
+            pragmaCommand.CommandText = $"PRAGMA table_info({tableName});";
             using var reader = pragmaCommand.ExecuteReader();
             var nameOrdinal = reader.GetOrdinal("name");
             while (reader.Read())
@@ -59,7 +61,7 @@ public static class DatabaseInitializer
             }
         }
 
-        foreach (var (column, ddl) in Schema.TrackColumnMigrations)
+        foreach (var (column, ddl) in migrations)
         {
             if (existingColumns.Contains(column))
             {

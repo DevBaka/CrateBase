@@ -29,6 +29,7 @@ public partial class MainViewModel : ViewModelBase
     private readonly IWaveformCache _waveformCache;
     private readonly IQuickAccessStore _quickAccessStore;
     private readonly IFavoriteProfileStore _favoriteProfileStore;
+    private readonly INmlExporter _nmlExporter;
 
     private readonly Dictionary<long, LibraryRoot> _libraryRootsById = new();
     private readonly Dictionary<long, IReadOnlyDictionary<string, TrackFingerprint>> _fingerprintsByRoot = new();
@@ -48,7 +49,8 @@ public partial class MainViewModel : ViewModelBase
         IWaveformGenerator waveformGenerator,
         IWaveformCache waveformCache,
         IQuickAccessStore quickAccessStore,
-        IFavoriteProfileStore favoriteProfileStore)
+        IFavoriteProfileStore favoriteProfileStore,
+        INmlExporter nmlExporter)
     {
         _trackRepository = trackRepository;
         _libraryRootRepository = libraryRootRepository;
@@ -61,6 +63,7 @@ public partial class MainViewModel : ViewModelBase
         _waveformCache = waveformCache;
         _quickAccessStore = quickAccessStore;
         _favoriteProfileStore = favoriteProfileStore;
+        _nmlExporter = nmlExporter;
 
         // Feuern auf einem LibVLC-Thread (s. IAudioPlayer-Doku) – zurück auf den UI-Thread posten,
         // bevor gebundene Properties gesetzt werden.
@@ -960,6 +963,37 @@ public partial class MainViewModel : ViewModelBase
         catch (Exception ex)
         {
             StatusMessage = $"Traktor-Import fehlgeschlagen: {ex.Message}";
+        }
+        finally
+        {
+            IsScanning = false;
+        }
+    }
+
+    /// <summary>Wird vom Code-behind nach dem Speichern-Dialog aufgerufen (s. MainWindow.axaml.cs) -
+    /// schreibt eine eigenständige NML-Datei mit dem kompletten Cratebase-Playlist-Baum, zum
+    /// manuellen Import in Traktor über "Collection importieren" (bewusst kein automatischer/live
+    /// Sync und kein Schreiben in Traktors eigene collection.nml, s. ARCHITECTURE.md Abschnitt 20).</summary>
+    [RelayCommand]
+    private async Task ExportToTraktorAsync(string outputPath)
+    {
+        if (IsScanning || string.IsNullOrWhiteSpace(outputPath))
+        {
+            return;
+        }
+
+        IsScanning = true; // teilt sich die "gerade beschäftigt"-Sperre mit Scan/Import - alle drei lesen/schreiben dieselbe DB
+        try
+        {
+            var summary = await _nmlExporter.ExportAsync(outputPath);
+            StatusMessage = summary.TracksSkippedNoTraktorPath == 0
+                ? $"Nach „{Path.GetFileName(outputPath)}“ exportiert: {summary.PlaylistsExported} Playlisten, {summary.TracksExported} Tracks. In Traktor über „Collection importieren“ einlesen."
+                : $"Nach „{Path.GetFileName(outputPath)}“ exportiert: {summary.PlaylistsExported} Playlisten, {summary.TracksExported} Tracks, " +
+                  $"{summary.TracksSkippedNoTraktorPath} übersprungen (Ordner ohne bekannte Traktor-Zuordnung - einmal aus Traktor importieren, dann erneut exportieren).";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Traktor-Export fehlgeschlagen: {ex.Message}";
         }
         finally
         {
