@@ -1192,3 +1192,128 @@ abgeleiteten Reader verifiziert, nicht gegen Traktor selbst. Vor dem ersten prod
 bitte einmal die Traktor-Collection erneut importieren (nötig, damit die Roots ihre Traktor-Zuordnung
 lernen), dann exportieren und die erzeugte Datei in einer Traktor-Instanz testweise importieren -
 idealerweise zuerst mit einer gesicherten/kopierten Traktor-Collection, nicht der einzigen echten.
+
+## 21. Set Recorder: Aufnahme + automatische Zeitstempel-Tracklist
+
+Neuer Reiter "🎙 Set Recorder": Audioaufnahme des DJ-Sets (Line-In/Audio-Interface) plus eine
+Tracklist mit Zeitstempeln im selbst wählbaren Format, gedacht zum Beilegen bei Set-Uploads
+(Wunschformat des Nutzers: `00:00 Artist - Titel (Remix)`).
+
+### 21.1 Aufnahme: ffmpeg statt LibVLC-Capture oder NAudio
+
+Drei Optionen abgewogen: NAudio (nur Windows, scheidet aus - die App ist plattformübergreifend
+angelegt), LibVLC-Aufnahmegeräte (in Cratebase noch nicht für Audio-Capture genutzt, unklare
+Geräte-Enumeration je Plattform), oder ein externer `ffmpeg`-Prozess. Gewählt: **ffmpeg**, weil
+`Cratebase.Analysis.FfmpegWaveformGenerator` bereits denselben Prozess-Aufruf-Stil etabliert hat
+(Konsistenz) und ffmpeg verlustfreie Formate (FLAC, WAV) nativ und robust beherrscht.
+`FfmpegAudioRecorder` (Cratebase.Audio) implementiert `IAudioRecorder`:
+
+- **Geräte-Liste** je Plattform verschieden ermittelt: Linux über `pactl list short sources`,
+  Windows über `ffmpeg -f dshow -list_devices true -i dummy`, macOS über
+  `ffmpeg -f avfoundation -list_devices true -i ""`. **Nur Linux wurde gegen echte Hardware
+  getestet** (PreSonus Studio 24c) - Windows/macOS folgen der dokumentierten ffmpeg-Konvention,
+  sind aber ungetestet.
+- **Formate**: FLAC (verlustfrei, komprimiert, Standardauswahl), WAV (verlustfrei, unkomprimiert),
+  MP3 320kbps.
+- **Start**: `-y -loglevel error <Input-Args> <Codec-Args> -f <Muxer> <outputPath>`, danach
+  `BeginErrorReadLine()` und eine reine `HasExited`-Prüfung nach 500ms Anlaufzeit (Begründung s.
+  21.3).
+- **Stop**: `"q"` in `Process.StandardInput` schreiben (nicht `Kill()`) - beendet FLAC/WAV/MP3
+  sauber inkl. Container-Finalisierung; `Kill()` hätte bei FLAC einen beschädigten/unvollständigen
+  Container hinterlassen können.
+
+### 21.2 Zwei beim Testen gefundene ffmpeg-Bugs
+
+1. **"Unable to choose an output format"**: ffmpeg leitet den Muxer standardmäßig aus der
+   Dateiendung ab - bei einer nicht eindeutigen/fehlenden Endung (im eigenen Testharness zunächst
+   `.audio` verwendet) bricht der Start sofort ab. Das ist kein reines Testartefakt, sondern ein
+   echtes Produktionsrisiko: ein Nutzer, der "FLAC" wählt, aber manuell `.mp3` als Dateinamen
+   eingibt, hätte denselben Fehler getroffen. Fix: **expliziter `-f <Muxer>`-Parameter**, der Codec
+   und Dateiendung vollständig entkoppelt - der Muxer folgt jetzt ausschließlich der
+   `RecordingFormat`-Auswahl, nicht dem Dateinamen. Zusätzlich schlägt
+   `FfmpegAudioRecorder.GetFileExtension(RecordingFormat)` dem Speichern-Dialog immer die passende
+   Endung vor.
+2. **FLAC-Schreibpuffer**: ein ursprünglicher Startup-Check ("Datei nach kurzer Wartezeit >0 Bytes?")
+   sollte hängende ffmpeg-Prozesse (unbekannter Gerätename) früh erkennen - hat aber eine ECHTE,
+   funktionierende FLAC-Aufnahme fälschlich als fehlgeschlagen gemeldet, weil FLAC-Container
+   deutlich länger als 800ms brauchen, bis der erste Block auf die Platte geschrieben wird. Fix:
+   der Dateigrößen-Check wurde komplett entfernt, es bleibt nur `!process.HasExited` nach der
+   Anlaufzeit. **Bekannte, akzeptierte Einschränkung**: ein wirklich hängender ffmpeg-Prozess (z.B.
+   bei einem ungültigen Gerätenamen) wird dadurch nicht sofort erkannt, sondern erst wenn der Nutzer
+   die Aufnahme stoppen will und keine Datei vorfindet. Bewusster Trade-off gegen das
+   False-Positive-Risiko.
+
+### 21.3 Übergänge markieren: manuell und automatisch
+
+- **Manuell**: Button "+ Übergang markieren" legt sofort einen `SetTracklistMarker` an der
+  aktuellen `Stopwatch.Elapsed`-Position an; Artist/Titel sind optional (leer lassbar, später direkt
+  in der Tracklist-Liste nachtragbar - jede Marker-Zeile ist ein editierbares Artist-/Titel-Feld statt
+  reinem Text).
+- **Automatisch**: `INowPlayingReader` liest wahlweise (a) eine reine Now-Playing-Textdatei (vom
+  DJ-Programm oder einem Broadcast-Tool laufend überschrieben, `FileShare.ReadWrite` gelesen) oder
+  (b) Traktors History-NML - dort wird der zuletzt gespielte Track aus der neuesten Playlist mit
+  "History" im Namen über `TraktorPathResolver`/`ToCombinedKey()` aufgelöst. Ein `DispatcherTimer`
+  (1,5s) pollt die Quelle; ändert sich der gelesene "aktuelle Track"-String gegenüber dem zuletzt
+  gesehenen, wird automatisch ein Marker mit `SplitArtistTitle` (Trennung an " - ") angelegt.
+  Polling statt `FileSystemWatcher` - bewusst dieselbe Begründung wie an anderer Stelle in der App
+  (robuster gegenüber Netzlaufwerken/Editoren, die beim Speichern die Datei ersetzen statt
+  überschreiben).
+
+### 21.4 Bug gefunden beim Live-Test: Auto-Erkennung nach Aufnahmestart umgeschaltet wirkungslos
+
+Der Timer für die automatische Erkennung wurde ursprünglich nur EINMALIG in `StartRecordingAsync`
+aufgesetzt (`if (IsAutoDetectEnabled && Pfad gesetzt) { Timer starten }`). Beim Live-Test über die
+echte GUI (Aufnahme zuerst gestartet, Checkbox/Dateipfad erst danach gesetzt - ein realistischer
+Bedienablauf) blieb das komplett wirkungslos: kein Timer, nie ein automatischer Marker, keine
+Fehlermeldung. Fix: `UpdateAutoDetectTimerState()` prüft jetzt reaktiv `IsRecording &&
+IsAutoDetectEnabled && Pfad gesetzt` und wird aus `partial void OnIsAutoDetectEnabledChanged(...)`
+und `partial void OnAutoDetectFilePathChanged(...)` aufgerufen (dasselbe Reaktions-Muster wie
+`OnCurrentSectionChanged`/`OnTracklistFormatTemplateChanged` an anderer Stelle in
+`MainViewModel`), zusätzlich weiterhin aus `StartRecordingAsync`/`StopRecordingAsync`. Nach dem Fix
+per Live-GUI-Test verifiziert: Checkbox+Pfad während laufender Aufnahme gesetzt → sofort beim
+nächsten Poll-Tick ein automatischer Marker; Checkbox danach wieder deaktiviert → weitere
+Dateiänderungen erzeugen korrekt KEINEN Marker mehr.
+
+### 21.5 Zeitstempel-Format frei wählbar
+
+`TracklistFormatTemplate` (Standard: `{time} {artist} - {title}`) wird pro Marker durch
+`RegenerateTracklistPreview()` mit `{time}`/`{artist}`/`{title}` ersetzt - `{time}` über
+`FormatSetTimestamp` immer zweistellig nullgepolstert (`MM:SS`, ab einer Stunde `H:MM:SS`) -
+bewusst konsistenter als die Nutzer-Beispielmischung aus `00:00` und `6:00`. Vorschau live in
+einem Textfeld, dazu "In Zwischenablage kopieren" (`IClipboard.SetTextAsync`, dieselbe
+Avalonia-12.1.1-API wie an anderer Stelle in der App) und "Als Datei speichern…" (`.txt`,
+Speichern-Dialog mit Vorschlagsname `Tracklist.txt`).
+
+### 21.6 Verifiziert
+
+Gegen echte angeschlossene Hardware (PreSonus Studio 24c) über die tatsächliche App-GUI
+(Tastatur-Navigation, keine Mausklicks - s. unten):
+
+1. Geräteliste lädt korrekt beim Öffnen des Reiters, echtes Interface erscheint mit Klarnamen.
+2. Aufnahme gestartet/gestoppt in FLAC, zwei vollständige Testaufnahmen (714s und 417s) erzeugt und
+   per `ffprobe` verifiziert: gültiger FLAC-Codec, 48kHz Stereo, Dauer stimmt mit der angezeigten
+   Zeit überein. WAV und MP3 320 wurden in einer früheren Testrunde ebenfalls gegen dieselbe
+   Hardware verifiziert.
+3. Manueller Marker (Artist/Titel ausgefüllt) korrekt an der richtigen Position einsortiert, Vorschau
+   korrekt formatiert.
+4. Automatische Erkennung: Checkbox+Now-Playing-Datei WÄHREND laufender Aufnahme aktiviert (der
+   Bug aus 21.4 wurde genau dabei gefunden) - danach zwei aufeinanderfolgende Dateiänderungen
+   korrekt je einen automatischen Marker erzeugt (inkl. Artist/Titel-Split), danach Checkbox
+   deaktiviert und eine dritte Dateiänderung korrekt ignoriert.
+5. "In Zwischenablage kopieren" per Tastatur ausgelöst, Inhalt über `wl-paste` verifiziert - exakt
+   der erwartete Text.
+6. "Als Datei speichern…" über den echten nativen Speichern-Dialog (KDE/Kirigami) durchgeführt,
+   Ergebnisdatei auf der Platte gelesen - Inhalt korrekt.
+
+**Nicht verifiziert**: Traktor-History-NML als Auto-Erkennungsquelle (keine laufende
+Traktor-Installation verfügbar, analog zu Abschnitt 20) - die Lesefunktion nutzt denselben
+`TraktorPathResolver`/`TraktorCollectionReader`-Code, der bereits gegen die echte Produktions-DB
+verifiziert ist, aber der Pfad "History-Playlist erkennen + letzten Eintrag auflösen" selbst wurde
+nur gegen synthetische Daten getestet. Windows/macOS-Geräteerkennung ebenfalls ungetestet (s. 21.1).
+
+**Nebenbei festgestellt, nicht behoben**: die Tab-Reihenfolge im Set-Recorder-Reiter verhält sich
+uneinheitlich, wenn die Tracklist-Liste leer ist bzw. während einer laufenden Aufnahme (manche
+Steuerelemente sind dann deaktiviert) - Tab-Navigation springt in diesem Zustand teils unerwartet
+zurück zur oberen Reiterleiste statt zum nächsten Feld im Bedienpanel. Rein eine
+Tastatur-Zugänglichkeits-Frage, keine Funktionseinschränkung (mit Maus oder gezielterer
+Tab/Shift+Tab-Navigation weiterhin voll bedienbar) - für eine spätere Session vorgemerkt.

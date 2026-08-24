@@ -2,10 +2,12 @@ using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Cratebase.App.Desktop.ViewModels;
+using Cratebase.Audio;
 using Cratebase.Core.Models;
 
 namespace Cratebase.App.Desktop.Views;
@@ -310,5 +312,96 @@ public partial class MainWindow : Window
 
         border.BorderBrush = this.FindResource("BorderBrush1") as IBrush;
         border.BorderThickness = new Thickness(1);
+    }
+
+    // --- Set Recorder ---
+
+    private async void OnStartRecordingClick(object? sender, RoutedEventArgs e)
+    {
+        var topLevel = GetTopLevel(this);
+        if (topLevel is null || DataContext is not MainViewModel viewModel)
+        {
+            return;
+        }
+
+        var extension = FfmpegAudioRecorder.GetFileExtension(viewModel.SelectedRecordingFormat);
+        var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+        {
+            Title = "Set-Aufnahme speichern unter",
+            SuggestedFileName = $"Set-{DateTime.Now:yyyy-MM-dd_HH-mm}.{extension}",
+            DefaultExtension = extension,
+            FileTypeChoices = [new FilePickerFileType(extension.ToUpperInvariant()) { Patterns = [$"*.{extension}"] }],
+        });
+
+        var path = file?.TryGetLocalPath();
+        if (path is not null)
+        {
+            await viewModel.StartRecordingCommand.ExecuteAsync(path);
+        }
+    }
+
+    private async void OnSelectAutoDetectFileClick(object? sender, RoutedEventArgs e)
+    {
+        var topLevel = GetTopLevel(this);
+        if (topLevel is null || DataContext is not MainViewModel viewModel)
+        {
+            return;
+        }
+
+        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = "Now-Playing-/History-Datei auswählen",
+            AllowMultiple = false,
+        });
+
+        var path = files.Count > 0 ? files[0].TryGetLocalPath() : null;
+        if (path is not null)
+        {
+            viewModel.AutoDetectFilePath = path;
+        }
+    }
+
+    private async void OnCopyTracklistClick(object? sender, RoutedEventArgs e)
+    {
+        var topLevel = GetTopLevel(this);
+        if (topLevel?.Clipboard is null || DataContext is not MainViewModel viewModel)
+        {
+            return;
+        }
+
+        await topLevel.Clipboard.SetTextAsync(viewModel.TracklistPreview);
+    }
+
+    private async void OnSaveTracklistClick(object? sender, RoutedEventArgs e)
+    {
+        var topLevel = GetTopLevel(this);
+        if (topLevel is null || DataContext is not MainViewModel viewModel)
+        {
+            return;
+        }
+
+        var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+        {
+            Title = "Tracklist speichern unter",
+            SuggestedFileName = "Tracklist.txt",
+            DefaultExtension = "txt",
+            FileTypeChoices = [new FilePickerFileType("Textdatei") { Patterns = ["*.txt"] }],
+        });
+
+        var path = file?.TryGetLocalPath();
+        if (path is not null)
+        {
+            await File.WriteAllTextAsync(path, viewModel.TracklistPreview);
+        }
+    }
+
+    /// <summary>Artist/Titel eines Tracklist-Markers verloren den Fokus - Vorschau neu erzeugen
+    /// (dieselbe LostFocus-Konvention wie OnEditFieldLostFocus/OnMarkerFieldLostFocus im Tag-Editor).</summary>
+    private void OnMarkerFieldLostFocus(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is MainViewModel viewModel && viewModel.RefreshTracklistPreviewCommand.CanExecute(null))
+        {
+            viewModel.RefreshTracklistPreviewCommand.Execute(null);
+        }
     }
 }

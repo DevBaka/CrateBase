@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using Avalonia.Threading;
 using Cratebase.Core.Abstractions;
@@ -30,6 +31,8 @@ public partial class MainViewModel : ViewModelBase
     private readonly IQuickAccessStore _quickAccessStore;
     private readonly IFavoriteProfileStore _favoriteProfileStore;
     private readonly INmlExporter _nmlExporter;
+    private readonly IAudioRecorder _audioRecorder;
+    private readonly INowPlayingReader _nowPlayingReader;
 
     private readonly Dictionary<long, LibraryRoot> _libraryRootsById = new();
     private readonly Dictionary<long, IReadOnlyDictionary<string, TrackFingerprint>> _fingerprintsByRoot = new();
@@ -50,7 +53,9 @@ public partial class MainViewModel : ViewModelBase
         IWaveformCache waveformCache,
         IQuickAccessStore quickAccessStore,
         IFavoriteProfileStore favoriteProfileStore,
-        INmlExporter nmlExporter)
+        INmlExporter nmlExporter,
+        IAudioRecorder audioRecorder,
+        INowPlayingReader nowPlayingReader)
     {
         _trackRepository = trackRepository;
         _libraryRootRepository = libraryRootRepository;
@@ -64,6 +69,8 @@ public partial class MainViewModel : ViewModelBase
         _quickAccessStore = quickAccessStore;
         _favoriteProfileStore = favoriteProfileStore;
         _nmlExporter = nmlExporter;
+        _audioRecorder = audioRecorder;
+        _nowPlayingReader = nowPlayingReader;
 
         // Feuern auf einem LibVLC-Thread (s. IAudioPlayer-Doku) – zurück auf den UI-Thread posten,
         // bevor gebundene Properties gesetzt werden.
@@ -97,6 +104,10 @@ public partial class MainViewModel : ViewModelBase
 
     public bool IsLibrarySection => CurrentSection == "Library";
 
+    public bool IsSetRecorderSection => CurrentSection == "SetRecorder";
+
+    public bool IsPlaceholderSection => !IsLibrarySection && !IsSetRecorderSection;
+
     public string PlaceholderSectionTitle => CurrentSection switch
     {
         "Planner" => "Set Planner",
@@ -110,6 +121,8 @@ public partial class MainViewModel : ViewModelBase
     partial void OnCurrentSectionChanged(string value)
     {
         OnPropertyChanged(nameof(IsLibrarySection));
+        OnPropertyChanged(nameof(IsSetRecorderSection));
+        OnPropertyChanged(nameof(IsPlaceholderSection));
         OnPropertyChanged(nameof(PlaceholderSectionTitle));
     }
 
@@ -781,6 +794,252 @@ public partial class MainViewModel : ViewModelBase
         SlotCount = FavoriteSlotCount,
     });
 
+    // --- Set Recorder ---
+    // Nimmt den Set-Mitschnitt über ein Aufnahmegerät auf (Nutzer-Wunsch: "bestenfalls
+    // verlustfrei mit hoher Qualität" - Standard FLAC), markiert Übergänge manuell per Button
+    // oder automatisch über eine Now-Playing-Quelle (Traktor-History-NML oder Textdatei), und
+    // erzeugt daraus eine Tracklist im selbst wählbaren Format ({time}/{artist}/{title}-
+    // Platzhalter). Reines Session-Feature, keine DB-Persistenz (s. SetTracklistMarker-Doku).
+
+    private Stopwatch? _recordingStopwatch;
+    private DispatcherTimer? _recordingElapsedTimer;
+    private DispatcherTimer? _autoDetectTimer;
+    private string? _lastAutoDetectedNowPlaying;
+
+    public IReadOnlyList<RecordingFormat> RecordingFormats { get; } = Enum.GetValues<RecordingFormat>();
+
+    public IReadOnlyList<NowPlayingSourceType> NowPlayingSourceTypes { get; } = Enum.GetValues<NowPlayingSourceType>();
+
+    public ObservableCollection<AudioCaptureDevice> RecordingDevices { get; } = [];
+
+    [ObservableProperty]
+    public partial AudioCaptureDevice? SelectedRecordingDevice { get; set; }
+
+    [ObservableProperty]
+    public partial RecordingFormat SelectedRecordingFormat { get; set; } = RecordingFormat.Flac;
+
+    [ObservableProperty]
+    public partial bool IsRecording { get; set; }
+
+    [ObservableProperty]
+    public partial string RecordingElapsedDisplay { get; set; } = "00:00";
+
+    [ObservableProperty]
+    public partial string? RecordingOutputPath { get; set; }
+
+    public ObservableCollection<SetTracklistMarker> TracklistMarkers { get; } = [];
+
+    [ObservableProperty]
+    public partial string TracklistFormatTemplate { get; set; } = "{time} {artist} - {title}";
+
+    [ObservableProperty]
+    public partial string TracklistPreview { get; set; } = "";
+
+    [ObservableProperty]
+    public partial bool IsAutoDetectEnabled { get; set; }
+
+    [ObservableProperty]
+    public partial NowPlayingSourceType AutoDetectSourceType { get; set; } = NowPlayingSourceType.PlainTextFile;
+
+    [ObservableProperty]
+    public partial string? AutoDetectFilePath { get; set; }
+
+    [ObservableProperty]
+    public partial string? NewMarkerArtist { get; set; }
+
+    [ObservableProperty]
+    public partial string? NewMarkerTitle { get; set; }
+
+    [RelayCommand]
+    private async Task LoadRecordingDevicesAsync()
+    {
+        var devices = await _audioRecorder.GetAvailableDevicesAsync();
+        RecordingDevices.Clear();
+        foreach (var device in devices)
+        {
+            RecordingDevices.Add(device);
+        }
+
+        SelectedRecordingDevice ??= RecordingDevices.FirstOrDefault();
+    }
+
+    /// <summary>Wird vom Code-behind nach dem Speichern-Dialog aufgerufen (s. MainWindow.axaml.cs).</summary>
+    [RelayCommand]
+    private async Task StartRecordingAsync(string outputPath)
+    {
+        if (IsRecording || string.IsNullOrWhiteSpace(outputPath))
+        {
+            return;
+        }
+
+        if (SelectedRecordingDevice is null)
+        {
+            StatusMessage = "Bitte zuerst ein Aufnahmegerät auswählen.";
+            return;
+        }
+
+        try
+        {
+            await _audioRecorder.StartAsync(SelectedRecordingDevice.Id, SelectedRecordingFormat, outputPath);
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Aufnahme konnte nicht gestartet werden: {ex.Message}";
+            return;
+        }
+
+        RecordingOutputPath = outputPath;
+        TracklistMarkers.Clear();
+        RegenerateTracklistPreview();
+
+        _recordingStopwatch = Stopwatch.StartNew();
+        RecordingElapsedDisplay = "00:00";
+        IsRecording = true;
+
+        _recordingElapsedTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
+        _recordingElapsedTimer.Tick += (_, _) => RecordingElapsedDisplay = FormatSetTimestamp(_recordingStopwatch?.Elapsed ?? TimeSpan.Zero);
+        _recordingElapsedTimer.Start();
+
+        UpdateAutoDetectTimerState();
+
+        StatusMessage = $"Aufnahme läuft ({SelectedRecordingFormat}, „{SelectedRecordingDevice.DisplayName}“).";
+    }
+
+    [RelayCommand]
+    private async Task StopRecordingAsync()
+    {
+        if (!IsRecording)
+        {
+            return;
+        }
+
+        _recordingElapsedTimer?.Stop();
+        _recordingElapsedTimer = null;
+
+        var elapsed = await _audioRecorder.StopAsync();
+        _recordingStopwatch = null;
+        IsRecording = false;
+        UpdateAutoDetectTimerState();
+        RecordingElapsedDisplay = FormatSetTimestamp(elapsed);
+        StatusMessage = $"Aufnahme beendet ({FormatSetTimestamp(elapsed)}) – „{Path.GetFileName(RecordingOutputPath)}“.";
+    }
+
+    /// <summary>Reagiert darauf, dass Auto-Erkennung (Checkbox/Dateipfad) auch WÄHREND einer laufenden
+    /// Aufnahme umgeschaltet wird - nicht nur beim Start. Vorher wurde der Timer nur einmalig in
+    /// StartRecordingAsync aufgesetzt, wodurch nachträgliches Aktivieren/Dateiauswahl wirkungslos blieb
+    /// (per manuellem GUI-Test gefunden: Checkbox+Pfad nach Aufnahmestart gesetzt → nie ein Marker).</summary>
+    partial void OnIsAutoDetectEnabledChanged(bool value) => UpdateAutoDetectTimerState();
+
+    partial void OnAutoDetectFilePathChanged(string? value)
+    {
+        _lastAutoDetectedNowPlaying = null;
+        UpdateAutoDetectTimerState();
+    }
+
+    private void UpdateAutoDetectTimerState()
+    {
+        var shouldRun = IsRecording && IsAutoDetectEnabled && !string.IsNullOrWhiteSpace(AutoDetectFilePath);
+        if (shouldRun && _autoDetectTimer is null)
+        {
+            _lastAutoDetectedNowPlaying = null;
+            _autoDetectTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1.5) };
+            _autoDetectTimer.Tick += async (_, _) => await PollAutoDetectAsync();
+            _autoDetectTimer.Start();
+        }
+        else if (!shouldRun && _autoDetectTimer is not null)
+        {
+            _autoDetectTimer.Stop();
+            _autoDetectTimer = null;
+        }
+    }
+
+    /// <summary>Manueller Übergang - nimmt NewMarkerArtist/NewMarkerTitle (leer lassbar, dann später
+    /// im Tracklist-Editor nachtragen) an der aktuellen Aufnahme-Position.</summary>
+    [RelayCommand]
+    private void MarkTransition()
+    {
+        if (!IsRecording || _recordingStopwatch is null)
+        {
+            return;
+        }
+
+        InsertMarkerSorted(new SetTracklistMarker
+        {
+            Position = _recordingStopwatch.Elapsed,
+            Artist = NullIfBlank(NewMarkerArtist) ?? "",
+            Title = NullIfBlank(NewMarkerTitle) ?? "",
+        });
+
+        NewMarkerArtist = null;
+        NewMarkerTitle = null;
+        RegenerateTracklistPreview();
+    }
+
+    [RelayCommand]
+    private void RemoveMarker(SetTracklistMarker marker)
+    {
+        TracklistMarkers.Remove(marker);
+        RegenerateTracklistPreview();
+    }
+
+    /// <summary>Wird vom Code-behind ausgelöst, wenn ein Tracklist-Editor-Feld (Artist/Titel eines
+    /// Markers) den Fokus verliert - dieselbe LostFocus-Save-Konvention wie der Tag-Editor
+    /// (s. OnEditFieldLostFocus), hier aber ohne DB-Schreiben, nur Vorschau neu erzeugen.</summary>
+    [RelayCommand]
+    private void RefreshTracklistPreview() => RegenerateTracklistPreview();
+
+    partial void OnTracklistFormatTemplateChanged(string value) => RegenerateTracklistPreview();
+
+    private void RegenerateTracklistPreview()
+    {
+        TracklistPreview = string.Join(Environment.NewLine, TracklistMarkers
+            .OrderBy(m => m.Position)
+            .Select(m => TracklistFormatTemplate
+                .Replace("{time}", FormatSetTimestamp(m.Position))
+                .Replace("{artist}", m.Artist)
+                .Replace("{title}", m.Title)));
+    }
+
+    private void InsertMarkerSorted(SetTracklistMarker marker)
+    {
+        var index = TracklistMarkers.TakeWhile(m => m.Position <= marker.Position).Count();
+        TracklistMarkers.Insert(index, marker);
+    }
+
+    /// <summary>MM:SS, oder H:MM:SS ab einer Stunde Setlänge - bewusst immer 2-stellig
+    /// nullgepolstert (konsistenter als Traktors/Nutzer-Beispiel-Mischung aus "00:00" und "6:00").</summary>
+    private static string FormatSetTimestamp(TimeSpan position) =>
+        position.TotalHours >= 1
+            ? position.ToString(@"h\:mm\:ss")
+            : $"{(int)position.TotalMinutes:00}:{position.Seconds:00}";
+
+    private async Task PollAutoDetectAsync()
+    {
+        if (string.IsNullOrWhiteSpace(AutoDetectFilePath) || _recordingStopwatch is null)
+        {
+            return;
+        }
+
+        var current = await _nowPlayingReader.TryReadCurrentAsync(AutoDetectFilePath, AutoDetectSourceType);
+        if (string.IsNullOrWhiteSpace(current) || current == _lastAutoDetectedNowPlaying)
+        {
+            return;
+        }
+
+        _lastAutoDetectedNowPlaying = current;
+        var (artist, title) = SplitArtistTitle(current);
+        InsertMarkerSorted(new SetTracklistMarker { Position = _recordingStopwatch.Elapsed, Artist = artist, Title = title });
+        RegenerateTracklistPreview();
+    }
+
+    /// <summary>"Artist - Titel" ist die übliche Now-Playing-Textkonvention (auch Traktors eigene) -
+    /// kein Trenner gefunden heißt: alles als Titel übernehmen, Artist bleibt leer statt zu raten.</summary>
+    private static (string Artist, string Title) SplitArtistTitle(string text)
+    {
+        var separatorIndex = text.IndexOf(" - ", StringComparison.Ordinal);
+        return separatorIndex < 0 ? ("", text.Trim()) : (text[..separatorIndex].Trim(), text[(separatorIndex + 3)..].Trim());
+    }
+
     [ObservableProperty]
     public partial string? SearchText { get; set; }
 
@@ -861,6 +1120,8 @@ public partial class MainViewModel : ViewModelBase
         await RebuildPlaylistNodesAsync();
         ReplaceFilesystemNodes(BuildFilesystemNodesList());
         _audioPlayer.Volume = (float)(Volume / 100.0);
+
+        await LoadRecordingDevicesAsync(); // Geräteliste kann sich seit dem letzten Start geändert haben (USB-Interface an/ab)
     }
 
     /// <summary>Wird vom Code-behind nach dem Ordner-Auswahldialog aufgerufen (s. MainWindow.axaml.cs).</summary>
