@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -25,8 +26,13 @@ public sealed class FfmpegAudioRecorder : IAudioRecorder
 {
     private Process? _process;
     private Stopwatch? _stopwatch;
+    private CancellationTokenSource? _levelMonitorCts;
+    private string? _levelFilePath;
+    private volatile AudioLevel? _currentLevel;
 
     public bool IsRecording => _process is { HasExited: false };
+
+    public AudioLevel? CurrentLevel => _currentLevel;
 
     public async Task<IReadOnlyList<AudioCaptureDevice>> GetAvailableDevicesAsync(CancellationToken ct = default)
     {
@@ -176,16 +182,82 @@ public sealed class FfmpegAudioRecorder : IAudioRecorder
             Directory.CreateDirectory(directory);
         }
 
-        var args = new List<string> { "-y", "-loglevel", "error" };
-        args.AddRange(BuildInputArgs(deviceId));
-        args.AddRange(BuildCodecArgs(format));
+        var baseArgs = new List<string> { "-y", "-loglevel", "error" };
+        baseArgs.AddRange(BuildInputArgs(deviceId));
+
+        // Live-Pegelanzeige: astats/ametadata sind reine Passthrough-Filter (verändern die
+        // Samples nicht) und laufen deshalb im selben -af wie die eigentliche Aufnahme mit, statt
+        // über einen separaten asplit-Zweig - kein Qualitätsverlust, kein zweiter ffmpeg-Prozess.
+        // asetnsamples erzwingt eine feste Blockgröße (~100ms bei 48kHz) für einen gleichmäßigen
+        // Anzeige-Takt unabhängig von ffmpegs internem Puffer-Chunking.
+        var levelFilePath = Path.Combine(Path.GetTempPath(), $"cratebase-levels-{Guid.NewGuid():N}.txt");
+        var meteringArgs = new List<string>
+        {
+            "-af",
+            $"asetnsamples=n=4800,astats=metadata=1:reset=1:measure_perchannel=Peak_level:measure_overall=none,ametadata=print:file={EscapeFilterGraphValue(levelFilePath)}",
+        };
+
+        var tailArgs = new List<string>();
+        tailArgs.AddRange(BuildCodecArgs(format));
         // Explizit statt aus der Dateiendung geraten: ffmpeg wählt den Container sonst über die
         // Endung von outputPath und bricht mit "Unable to choose an output format" ab, falls die
         // nicht zum gewählten Format passt (z.B. falsch/ohne Endung gespeichert) - live als echter
         // Fehlerfall aufgetreten, s. ARCHITECTURE.md.
-        args.AddRange(["-f", GetFfmpegMuxerName(format)]);
-        args.Add(outputPath);
+        tailArgs.AddRange(["-f", GetFfmpegMuxerName(format)]);
+        tailArgs.Add(outputPath);
 
+        var withMetering = new List<string>(baseArgs);
+        withMetering.AddRange(meteringArgs);
+        withMetering.AddRange(tailArgs);
+
+        var (process, stderr) = await TryLaunchAsync(withMetering, ct);
+        var meteringActive = process is not null;
+
+        if (process is null)
+        {
+            // Pegelmessung darf die eigentliche Aufnahme nie verhindern (z.B. ein exotischer Pfad,
+            // den die Filtergraph-Eskapierung nicht abdeckt) - degradiert still auf "kein Meter"
+            // statt die Aufnahme komplett scheitern zu lassen, s. IAudioRecorder.CurrentLevel-Doku.
+            var withoutMetering = new List<string>(baseArgs);
+            withoutMetering.AddRange(tailArgs);
+            (process, stderr) = await TryLaunchAsync(withoutMetering, ct);
+            meteringActive = false;
+        }
+
+        if (process is null)
+        {
+            throw new InvalidOperationException(string.IsNullOrEmpty(stderr)
+                ? "ffmpeg wurde sofort wieder beendet (Gerät nicht verfügbar?)."
+                : stderr);
+        }
+
+        _process = process;
+        _stopwatch = Stopwatch.StartNew();
+
+        if (meteringActive)
+        {
+            _levelFilePath = levelFilePath;
+            _levelMonitorCts = new CancellationTokenSource();
+            _ = MonitorLevelFileAsync(levelFilePath, _levelMonitorCts.Token);
+        }
+        else
+        {
+            _levelFilePath = null;
+        }
+    }
+
+    /// <summary>Startet ffmpeg mit den gegebenen Argumenten und prüft nach kurzer Anlaufzeit, ob es
+    /// sofort wieder beendet wurde (z.B. unbekanntes Gerät, fehlende Rechte, oder - bei einem
+    /// Filtergraph-Fehler in den Metering-Args - ein Eskapierungsproblem im Pegel-Dateipfad). Liefert
+    /// (null, stderr) im Fehlerfall statt zu werfen, damit StartAsync bei Bedarf einen Fallback
+    /// versuchen kann. Bewusst KEIN zusätzlicher Dateigrößen-Check hier: FLAC puffert vor dem ersten
+    /// Flush auf die Platte länger als diese Wartezeit (live verifiziert - ein Dateigrößen-Check hätte
+    /// selbst funktionierende Aufnahmen fälschlich als fehlgeschlagen gemeldet). Bekannte
+    /// Einschränkung: ein unbekannter Pulse/PipeWire-Quellenname lässt ffmpeg beobachtet nicht sofort
+    /// fehlschlagen, sondern unbegrenzt hängen, ohne je Daten zu liefern - das fängt dieser Check
+    /// (noch) nicht ab, s. ARCHITECTURE.md.</summary>
+    private static async Task<(Process? Process, string Stderr)> TryLaunchAsync(IReadOnlyList<string> args, CancellationToken ct)
+    {
         var startInfo = new ProcessStartInfo
         {
             FileName = "ffmpeg",
@@ -212,27 +284,101 @@ public sealed class FfmpegAudioRecorder : IAudioRecorder
         process.Start();
         process.BeginErrorReadLine();
 
-        // Kurz abwarten und prüfen, ob ffmpeg sofort wieder beendet ist (z.B. unbekanntes Gerät,
-        // fehlende Rechte) - sonst würde "Aufnahme gestartet" angezeigt, obwohl gar nichts
-        // aufgenommen wird. Bewusst KEIN zusätzlicher Dateigrößen-Check hier: FLAC puffert vor dem
-        // ersten Flush auf die Platte länger als diese Wartezeit (live verifiziert - ein
-        // Dateigrößen-Check hätte selbst funktionierende Aufnahmen fälschlich als fehlgeschlagen
-        // gemeldet). Bekannte Einschränkung: ein unbekannter Pulse/PipeWire-Quellenname lässt ffmpeg
-        // beobachtet nicht sofort fehlschlagen, sondern unbegrenzt hängen, ohne je Daten zu liefern -
-        // das fängt dieser Check (noch) nicht ab, s. ARCHITECTURE.md.
         await Task.Delay(500, ct);
         if (process.HasExited)
         {
             var message = stderrBuilder.ToString().Trim();
             process.Dispose();
-            throw new InvalidOperationException(string.IsNullOrEmpty(message)
-                ? "ffmpeg wurde sofort wieder beendet (Gerät nicht verfügbar?)."
-                : message);
+            return (null, message);
         }
 
-        _process = process;
-        _stopwatch = Stopwatch.StartNew();
+        return (process, "");
     }
+
+    /// <summary>Liest periodisch die letzten Bytes der Pegel-Metadatendatei (s. StartAsync) und
+    /// extrahiert den jeweils neuesten Peak_level je Kanal. Liest immer nur ein festes Fenster vom
+    /// Dateiende statt eine Leseposition fortzuschreiben - einfacher und robuster als
+    /// Offset-Tracking (kein Risiko von durch StreamReader-Pufferung verfälschten Positionen), auf
+    /// Kosten eines minimal höheren, aber konstanten Lese-Overheads pro Tick.</summary>
+    private async Task MonitorLevelFileAsync(string levelFilePath, CancellationToken ct)
+    {
+        while (!ct.IsCancellationRequested)
+        {
+            try
+            {
+                if (File.Exists(levelFilePath))
+                {
+                    using var stream = new FileStream(levelFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    var start = Math.Max(0, stream.Length - LevelFileTailReadBytes);
+                    stream.Seek(start, SeekOrigin.Begin);
+                    using var reader = new StreamReader(stream);
+                    var tail = await reader.ReadToEndAsync(ct);
+
+                    var peaksByChannel = new SortedDictionary<int, double>();
+                    foreach (Match match in ChannelPeakRegex.Matches(tail))
+                    {
+                        var channel = int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+                        peaksByChannel[channel] = ParsePeakDb(match.Groups[2].Value.Trim());
+                    }
+
+                    if (peaksByChannel.Count > 0)
+                    {
+                        _currentLevel = new AudioLevel(peaksByChannel.Values.ToList());
+                    }
+                }
+            }
+            catch (IOException)
+            {
+                // Datei wird evtl. gerade von ffmpeg geschrieben/gesperrt - beim nächsten Tick erneut versuchen.
+            }
+            catch (OperationCanceledException)
+            {
+                return;
+            }
+
+            try
+            {
+                await Task.Delay(120, ct);
+            }
+            catch (OperationCanceledException)
+            {
+                return;
+            }
+        }
+    }
+
+    private static double ParsePeakDb(string raw) => raw switch
+    {
+        "-inf" => -100.0,
+        "inf" => 0.0,
+        _ => double.TryParse(raw, NumberStyles.Float, CultureInfo.InvariantCulture, out var value) ? value : -100.0,
+    };
+
+    /// <summary>Ffmpegs Filtergraph-Syntax kennt zwei ineinander geschachtelte Escape-Ebenen (die
+    /// gesamte Filterketten-Beschreibung, und darin einzelne Options-Werte) - live gegen echtes
+    /// ffmpeg verifiziert: reservierte Zeichen (u.a. ':' als Options-Trenner, ',' als Filter-Trenner,
+    /// Leerzeichen) brauchen dafür tatsächlich EINEN DOPPELTEN Backslash, ein einfacher reicht nicht
+    /// und ein einfaches Anführungszeichen-Quoting funktioniert für Pfade mit ':' ebenfalls nicht
+    /// zuverlässig. Deckt das trotzdem nicht jeden denkbaren Pfad ab (s. StartAsync-Fallback).</summary>
+    private static string EscapeFilterGraphValue(string value)
+    {
+        var builder = new StringBuilder(value.Length);
+        foreach (var c in value)
+        {
+            if (c is '\\' or '\'' or ':' or ',' or '[' or ']' or ';' or '=' or ' ')
+            {
+                builder.Append("\\\\");
+            }
+
+            builder.Append(c);
+        }
+
+        return builder.ToString();
+    }
+
+    private const int LevelFileTailReadBytes = 4096;
+
+    private static readonly Regex ChannelPeakRegex = new(@"lavfi\.astats\.(\d+)\.Peak_level=(-?[\d.]+|-inf|inf)", RegexOptions.Compiled);
 
     public async Task<TimeSpan> StopAsync(CancellationToken ct = default)
     {
@@ -266,6 +412,26 @@ public sealed class FfmpegAudioRecorder : IAudioRecorder
             process.Dispose();
             _process = null;
             _stopwatch = null;
+
+            _levelMonitorCts?.Cancel();
+            _levelMonitorCts?.Dispose();
+            _levelMonitorCts = null;
+            _currentLevel = null;
+
+            if (_levelFilePath is not null)
+            {
+                try
+                {
+                    File.Delete(_levelFilePath);
+                }
+                catch (IOException)
+                {
+                    // Aufräumen ist bloße Kosmetik (Temp-Verzeichnis) - ein Fehlschlag hier darf das
+                    // Beenden der eigentlichen Aufnahme nicht stören.
+                }
+
+                _levelFilePath = null;
+            }
         }
 
         return elapsed;

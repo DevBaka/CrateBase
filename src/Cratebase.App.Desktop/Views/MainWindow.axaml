@@ -21,6 +21,7 @@
         <conv:RecordingFormatToLabelConverter x:Key="RecordingFormatLabel" />
         <conv:NowPlayingSourceTypeToLabelConverter x:Key="NowPlayingSourceLabel" />
         <conv:TimeSpanToTimestampConverter x:Key="TimeSpanTimestamp" />
+        <conv:DbLevelToBrushConverter x:Key="DbLevelBrush" />
     </Window.Resources>
 
     <DockPanel>
@@ -538,6 +539,30 @@
 
                                 <TextBlock Text="{Binding RecordingElapsedDisplay}" FontFamily="{StaticResource MonoFont}" FontSize="30" FontWeight="Bold"
                                            HorizontalAlignment="Center" Margin="0,6" />
+
+                                <!-- Aussteuerungsanzeige: nur während einer laufenden Aufnahme sichtbar - RightLevelDb
+                                     bleibt null bei Mono-Geräten, die R-Zeile blendet sich dann automatisch aus. -->
+                                <StackPanel Spacing="6" IsVisible="{Binding IsRecording}" Margin="0,0,0,4">
+                                    <Grid ColumnDefinitions="16,*,52" ColumnSpacing="8">
+                                        <TextBlock Grid.Column="0" Text="L" FontSize="10" Foreground="{StaticResource TextFaintBrush}" VerticalAlignment="Center" />
+                                        <ProgressBar Grid.Column="1" Minimum="-60" Maximum="0" Value="{Binding LeftLevelDb}" Height="10" CornerRadius="4"
+                                                     Background="{StaticResource BgChipBrush}" Foreground="{Binding LeftLevelDb, Converter={StaticResource DbLevelBrush}}"
+                                                     VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="2" Text="{Binding LeftLevelDb, StringFormat={}{0:0.0} dB}" FontFamily="{StaticResource MonoFont}"
+                                                    FontSize="10" HorizontalAlignment="Right" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center" />
+                                    </Grid>
+                                    <Grid ColumnDefinitions="16,*,52" ColumnSpacing="8" IsVisible="{Binding RightLevelDb, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                        <TextBlock Grid.Column="0" Text="R" FontSize="10" Foreground="{StaticResource TextFaintBrush}" VerticalAlignment="Center" />
+                                        <ProgressBar Grid.Column="1" Minimum="-60" Maximum="0" Value="{Binding RightLevelDb, TargetNullValue=-60}" Height="10" CornerRadius="4"
+                                                     Background="{StaticResource BgChipBrush}" Foreground="{Binding RightLevelDb, Converter={StaticResource DbLevelBrush}}"
+                                                     VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="2" Text="{Binding RightLevelDb, StringFormat={}{0:0.0} dB}" FontFamily="{StaticResource MonoFont}"
+                                                    FontSize="10" HorizontalAlignment="Right" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center" />
+                                    </Grid>
+                                    <Border Background="{StaticResource AccentRedBrush}" CornerRadius="6" Padding="0,4" IsVisible="{Binding IsClippingIndicatorActive}">
+                                        <TextBlock Text="⚠ ÜBERSTEUERUNG" FontSize="10.5" FontWeight="Bold" Foreground="{StaticResource BgWindowBrush}" HorizontalAlignment="Center" />
+                                    </Border>
+                                </StackPanel>
 
                                 <Button Content="● Aufnahme starten" Click="OnStartRecordingClick" IsVisible="{Binding !IsRecording}"
                                         Background="{StaticResource AccentGreenBrush}" Foreground="{StaticResource BgWindowBrush}"

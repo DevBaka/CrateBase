@@ -13,6 +13,13 @@ public interface IAudioRecorder
 {
     bool IsRecording { get; }
 
+    /// <summary>Aktueller Spitzenpegel der laufenden Aufnahme (ein Wert je Kanal, dBFS) - null, wenn
+    /// gerade nicht aufgenommen wird, noch keine erste Messung vorliegt, oder die Live-Pegelmessung aus
+    /// irgendeinem Grund nicht verfügbar ist (degradiert dann stumm, s. FfmpegAudioRecorder-Doku -
+    /// blockiert nie die eigentliche Aufnahme). Für eine Live-Pegelanzeige gedacht, wird vom Aufrufer
+    /// periodisch abgefragt (Poll statt Event - dasselbe Muster wie an anderer Stelle in der App).</summary>
+    AudioLevel? CurrentLevel { get; }
+
     /// <summary>Listet die auf dieser Plattform verfügbaren Aufnahmegeräte. Kann eine leere Liste
     /// liefern (z.B. ffmpeg fehlt, oder keine Geräte gefunden) - nie werfen, das ist ein normaler,
     /// darstellbarer Zustand ("kein Gerät gefunden"), kein Programmfehler.</summary>

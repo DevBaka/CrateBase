@@ -804,7 +804,17 @@ public partial class MainViewModel : ViewModelBase
     private Stopwatch? _recordingStopwatch;
     private DispatcherTimer? _recordingElapsedTimer;
     private DispatcherTimer? _autoDetectTimer;
+    private DispatcherTimer? _levelMeterTimer;
     private string? _lastAutoDetectedNowPlaying;
+    private DateTime _lastClippingAtUtc = DateTime.MinValue;
+
+    // Pegelanzeige: -60dB als Meter-Untergrenze (üblicher "praktisch Stille"-Boden für ein
+    // Aussteuerungsmeter, kein technisches Limit), -1dB als Warn-/Clip-Schwelle. Der Clip-Hinweis
+    // "hält" kurz nach (statt sofort wieder zu verschwinden) - ein einzelner kurzer Peak zwischen
+    // zwei Polls wäre sonst am Bildschirm kaum wahrnehmbar, genau wie bei echten Aussteuerungsmetern.
+    private const double LevelMeterFloorDb = -60;
+    private const double ClipWarningThresholdDb = -1;
+    private static readonly TimeSpan ClipIndicatorHoldDuration = TimeSpan.FromSeconds(1.5);
 
     public IReadOnlyList<RecordingFormat> RecordingFormats { get; } = Enum.GetValues<RecordingFormat>();
 
@@ -826,6 +836,19 @@ public partial class MainViewModel : ViewModelBase
 
     [ObservableProperty]
     public partial string? RecordingOutputPath { get; set; }
+
+    /// <summary>Aussteuerungs-Pegelanzeige (dBFS, ~10x/Sekunde aktualisiert). Bewusst feste
+    /// Links/Rechts-Properties statt einer dynamischen Kanalliste - deckt praktisch jedes reale
+    /// Aufnahmegerät ab (mono oder stereo) und lässt sich in XAML direkt binden statt über
+    /// Index-Bindings auf eine Collection. RightLevelDb bleibt null bei Mono-Geräten.</summary>
+    [ObservableProperty]
+    public partial double LeftLevelDb { get; set; } = LevelMeterFloorDb;
+
+    [ObservableProperty]
+    public partial double? RightLevelDb { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsClippingIndicatorActive { get; set; }
 
     public ObservableCollection<SetTracklistMarker> TracklistMarkers { get; } = [];
 
@@ -900,6 +923,14 @@ public partial class MainViewModel : ViewModelBase
         _recordingElapsedTimer.Tick += (_, _) => RecordingElapsedDisplay = FormatSetTimestamp(_recordingStopwatch?.Elapsed ?? TimeSpan.Zero);
         _recordingElapsedTimer.Start();
 
+        LeftLevelDb = LevelMeterFloorDb;
+        RightLevelDb = null;
+        IsClippingIndicatorActive = false;
+        _lastClippingAtUtc = DateTime.MinValue;
+        _levelMeterTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(120) };
+        _levelMeterTimer.Tick += (_, _) => UpdateLevelMeter();
+        _levelMeterTimer.Start();
+
         UpdateAutoDetectTimerState();
 
         StatusMessage = $"Aufnahme läuft ({SelectedRecordingFormat}, „{SelectedRecordingDevice.DisplayName}“).";
@@ -915,6 +946,11 @@ public partial class MainViewModel : ViewModelBase
 
         _recordingElapsedTimer?.Stop();
         _recordingElapsedTimer = null;
+        _levelMeterTimer?.Stop();
+        _levelMeterTimer = null;
+        LeftLevelDb = LevelMeterFloorDb;
+        RightLevelDb = null;
+        IsClippingIndicatorActive = false;
 
         var elapsed = await _audioRecorder.StopAsync();
         _recordingStopwatch = null;
@@ -922,6 +958,31 @@ public partial class MainViewModel : ViewModelBase
         UpdateAutoDetectTimerState();
         RecordingElapsedDisplay = FormatSetTimestamp(elapsed);
         StatusMessage = $"Aufnahme beendet ({FormatSetTimestamp(elapsed)}) – „{Path.GetFileName(RecordingOutputPath)}“.";
+    }
+
+    /// <summary>Fragt den aktuellen Pegel vom Recorder ab (Poll statt Event, s. IAudioRecorder.CurrentLevel-
+    /// Doku) und pflegt den "gehaltenen" Clip-Hinweis (s. ClipIndicatorHoldDuration-Doku oben).
+    /// CurrentLevel bleibt dauerhaft null, wenn die Pegelmessung degradiert ist (s. FfmpegAudioRecorder) -
+    /// dann bleiben die Balken einfach auf dem Boden stehen, kein Fehlerzustand.</summary>
+    private void UpdateLevelMeter()
+    {
+        var level = _audioRecorder.CurrentLevel;
+        if (level is null || level.ChannelPeaksDb.Count == 0)
+        {
+            return;
+        }
+
+        LeftLevelDb = Math.Clamp(level.ChannelPeaksDb[0], LevelMeterFloorDb, 0);
+        RightLevelDb = level.ChannelPeaksDb.Count > 1
+            ? Math.Clamp(level.ChannelPeaksDb[1], LevelMeterFloorDb, 0)
+            : null;
+
+        if (level.ChannelPeaksDb.Max() >= ClipWarningThresholdDb)
+        {
+            _lastClippingAtUtc = DateTime.UtcNow;
+        }
+
+        IsClippingIndicatorActive = DateTime.UtcNow - _lastClippingAtUtc < ClipIndicatorHoldDuration;
     }
 
     /// <summary>Reagiert darauf, dass Auto-Erkennung (Checkbox/Dateipfad) auch WÄHREND einer laufenden
