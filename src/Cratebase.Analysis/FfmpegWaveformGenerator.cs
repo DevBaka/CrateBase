@@ -1,173 +1,89 @@
+using System.Buffers.Binary;
+using System.ComponentModel;
 using System.Diagnostics;
 using Cratebase.Core.Abstractions;
 using Cratebase.Core.Models;
 
 namespace Cratebase.Analysis;
 
-/// <summary>
-/// Dekodiert per externem ffmpeg-Prozess zu rohem Mono-PCM und berechnet daraus eine
-/// 3-Band-Waveform (Bass/Mitten/Höhen als einfache IIR-Tief-/Hoch-/Bandpassfilter, keine FFT -
-/// bewusst leichtgewichtig statt eines echten Spektrogramms, s. WaveformData-Doku).
-///
-/// Bekannte Voraussetzung: ffmpeg muss im PATH installiert sein. Fehlt es, oder scheitert die
-/// Dekodierung (kaputte/exotische Datei), liefert GenerateAsync null statt zu werfen - ein
-/// fehlendes ffmpeg darf nicht die ganze App blockieren, nur die Waveform-Anzeige bleibt leer.
-/// </summary>
-public sealed class FfmpegWaveformGenerator : IWaveformGenerator
+/// <summary>Streams signed 16-bit PCM from FFmpeg; keeps only three-band peaks, never writes beside the audio.</summary>
+public sealed class FfmpegWaveformGenerator(string executable="ffmpeg") : IWaveformGenerator
 {
-    private const int SampleRateHz = 11025;
-    private const int ColumnCount = 600;
-    private const double LowCutoffHz = 200;
-    private const double HighCutoffHz = 4000;
+    private const int SampleRate=11025;
+    private const int ColumnCount=1200;
 
-    public async Task<WaveformData?> GenerateAsync(string absoluteFilePath, CancellationToken ct = default)
+    public Task<WaveformData?> GenerateAsync(string absoluteFilePath,CancellationToken ct=default)
+        => Task.Run(()=>GenerateCoreAsync(absoluteFilePath,ct),ct);
+
+    private async Task<WaveformData?> GenerateCoreAsync(string path,CancellationToken ct)
     {
-        byte[] pcmBytes;
+        ct.ThrowIfCancellationRequested();
+        var bundled=Path.Combine(AppContext.BaseDirectory,OperatingSystem.IsWindows()?"ffmpeg.exe":"ffmpeg");
+        var program=executable=="ffmpeg"&&File.Exists(bundled)?bundled:executable;
+        var start=new ProcessStartInfo { FileName=program,RedirectStandardOutput=true,RedirectStandardError=true,UseShellExecute=false,CreateNoWindow=true };
+        foreach(var arg in new[] { "-nostdin","-v","error","-i",path,"-map","0:a:0","-vn","-sn","-dn","-ac","1","-ar",SampleRate.ToString(System.Globalization.CultureInfo.InvariantCulture),"-c:a","pcm_s16le","-f","s16le","pipe:1" }) start.ArgumentList.Add(arg);
+        using var process=new Process { StartInfo=start };
+        try { if(!process.Start()) throw new IOException("FFmpeg konnte nicht gestartet werden."); }
+        catch(Win32Exception ex) { throw new IOException("RGB-Waveform: FFmpeg nicht gefunden. ffmpeg im PATH oder neben Cratebase bereitstellen.",ex); }
+        using var cancellation=ct.Register(()=>
+        {
+            try { if(!process.HasExited) process.Kill(entireProcessTree:true); }
+            catch(InvalidOperationException) { } catch(Win32Exception) { }
+        });
+        var stderr=process.StandardError.ReadToEndAsync();
+        var waveform=ReadPeaksAsync(process.StandardOutput.BaseStream,ct);
         try
         {
-            pcmBytes = await DecodeToPcmAsync(absoluteFilePath, ct);
+            await Task.WhenAll(waveform,stderr,process.WaitForExitAsync(ct));
+            ct.ThrowIfCancellationRequested();
+            if(process.ExitCode!=0) throw new IOException("RGB-Waveform konnte nicht dekodiert werden: "+(await stderr).Trim()[..Math.Min(400,(await stderr).Trim().Length)]);
+            return await waveform;
         }
-        catch (Exception)
+        finally
         {
-            // Deckt sowohl "ffmpeg nicht gefunden" (Win32Exception) als auch Dekodierfehler ab -
-            // beides führt zum selben, harmlosen Ergebnis: keine Waveform statt Absturz.
-            return null;
+            // Also clean up if reading/decoding throws for reasons other than cancellation.
+            if(!process.HasExited) { process.Kill(entireProcessTree:true); await process.WaitForExitAsync(CancellationToken.None); }
         }
-
-        if (pcmBytes.Length < 8)
-        {
-            return null;
-        }
-
-        var samples = BytesToFloats(pcmBytes);
-        var low = LowPass(samples, LowCutoffHz);
-        var mid = HighPass(LowPass(samples, HighCutoffHz), LowCutoffHz);
-        var high = HighPass(samples, HighCutoffHz);
-
-        return new WaveformData { Columns = BuildColumns(low, mid, high) };
     }
 
-    private static async Task<byte[]> DecodeToPcmAsync(string absoluteFilePath, CancellationToken ct)
+    private static async Task<WaveformData?> ReadPeaksAsync(Stream pcm,CancellationToken ct)
     {
-        var startInfo = new ProcessStartInfo
+        var peaks=new List<WaveformColumn>();
+        var buffer=new byte[32768];
+        var carry=-1;
+        var group=0;
+        float low=0,highLowPass=0,lowPeak=0,midPeak=0,highPeak=0;
+        var lowAlpha=(float)(1-Math.Exp(-2*Math.PI*200/SampleRate));
+        var highAlpha=(float)(1-Math.Exp(-2*Math.PI*4000/SampleRate));
+        void Sample(short value)
         {
-            FileName = "ffmpeg",
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false,
-            CreateNoWindow = true,
-        };
-        startInfo.ArgumentList.Add("-v");
-        startInfo.ArgumentList.Add("error");
-        startInfo.ArgumentList.Add("-i");
-        startInfo.ArgumentList.Add(absoluteFilePath);
-        startInfo.ArgumentList.Add("-f");
-        startInfo.ArgumentList.Add("f32le");
-        startInfo.ArgumentList.Add("-ac");
-        startInfo.ArgumentList.Add("1");
-        startInfo.ArgumentList.Add("-ar");
-        startInfo.ArgumentList.Add(SampleRateHz.ToString());
-        startInfo.ArgumentList.Add("-");
-
-        using var process = Process.Start(startInfo) ?? throw new InvalidOperationException("ffmpeg konnte nicht gestartet werden.");
-
-        var stdoutTask = ReadAllBytesAsync(process.StandardOutput.BaseStream, ct);
-        var stderrTask = process.StandardError.ReadToEndAsync(ct); // muss mitgelesen werden, sonst blockiert ffmpeg bei viel stderr-Output
-
-        await Task.WhenAll(stdoutTask, process.WaitForExitAsync(ct), stderrTask);
-
-        if (process.ExitCode != 0)
-        {
-            return [];
+            var sample=value/32768f;
+            low+=lowAlpha*(sample-low); highLowPass+=highAlpha*(sample-highLowPass);
+            lowPeak=Math.Max(lowPeak,Math.Abs(low)); midPeak=Math.Max(midPeak,Math.Abs(highLowPass-low)); highPeak=Math.Max(highPeak,Math.Abs(sample-highLowPass));
+            if(++group<256) return;
+            peaks.Add(new(lowPeak,midPeak,highPeak)); group=0; lowPeak=midPeak=highPeak=0;
         }
-
-        return await stdoutTask;
-    }
-
-    private static async Task<byte[]> ReadAllBytesAsync(Stream stream, CancellationToken ct)
-    {
-        using var ms = new MemoryStream();
-        await stream.CopyToAsync(ms, ct);
-        return ms.ToArray();
-    }
-
-    private static float[] BytesToFloats(byte[] bytes)
-    {
-        var count = bytes.Length / 4;
-        var samples = new float[count];
-        Buffer.BlockCopy(bytes, 0, samples, 0, count * 4);
-        return samples;
-    }
-
-    /// <summary>Einfacher Einpol-Tiefpass (RC-Glied), sample-für-sample.</summary>
-    private static float[] LowPass(float[] x, double cutoffHz)
-    {
-        var y = new float[x.Length];
-        var dt = 1.0 / SampleRateHz;
-        var rc = 1.0 / (2 * Math.PI * cutoffHz);
-        var alpha = (float)(dt / (rc + dt));
-        float prev = 0;
-        for (var i = 0; i < x.Length; i++)
+        int read;
+        while((read=await pcm.ReadAsync(buffer,ct))>0)
         {
-            prev += alpha * (x[i] - prev);
-            y[i] = prev;
+            ct.ThrowIfCancellationRequested();
+            var start=0;
+            if(carry>=0) { Sample(unchecked((short)(carry|(buffer[0]<<8)))); start=1; carry=-1; }
+            for(var i=start;i+1<read;i+=2) Sample(BinaryPrimitives.ReadInt16LittleEndian(buffer.AsSpan(i,2)));
+            if((read-start)%2!=0) carry=buffer[read-1];
         }
-
-        return y;
-    }
-
-    /// <summary>Einfacher Einpol-Hochpass (RC-Glied), sample-für-sample.</summary>
-    private static float[] HighPass(float[] x, double cutoffHz)
-    {
-        var y = new float[x.Length];
-        var dt = 1.0 / SampleRateHz;
-        var rc = 1.0 / (2 * Math.PI * cutoffHz);
-        var alpha = (float)(rc / (rc + dt));
-        float prevY = 0;
-        var prevX = x.Length > 0 ? x[0] : 0f;
-        for (var i = 0; i < x.Length; i++)
+        if(group>0) peaks.Add(new(lowPeak,midPeak,highPeak));
+        if(peaks.Count==0) return null;
+        var count=Math.Min(ColumnCount,peaks.Count);
+        var columns=new WaveformColumn[count]; var maximum=0.000001f;
+        for(var i=0;i<count;i++)
         {
-            var cur = alpha * (prevY + x[i] - prevX);
-            prevY = cur;
-            prevX = x[i];
-            y[i] = cur;
+            var from=(int)((long)i*peaks.Count/count); var to=(int)((long)(i+1)*peaks.Count/count);
+            float l=0,m=0,h=0;
+            for(var j=from;j<to;j++) { l=Math.Max(l,peaks[j].Low); m=Math.Max(m,peaks[j].Mid); h=Math.Max(h,peaks[j].High); }
+            columns[i]=new(l,m,h); maximum=Math.Max(maximum,Math.Max(l,Math.Max(m,h)));
         }
-
-        return y;
-    }
-
-    private static WaveformColumn[] BuildColumns(float[] low, float[] mid, float[] high)
-    {
-        var lows = new float[ColumnCount];
-        var mids = new float[ColumnCount];
-        var highs = new float[ColumnCount];
-        var windowSize = Math.Max(1, low.Length / ColumnCount);
-        var globalMax = 1e-6f;
-
-        for (var column = 0; column < ColumnCount; column++)
-        {
-            var start = column * windowSize;
-            var end = Math.Min(low.Length, start + windowSize);
-            float lowPeak = 0, midPeak = 0, highPeak = 0;
-            for (var i = start; i < end; i++)
-            {
-                lowPeak = Math.Max(lowPeak, Math.Abs(low[i]));
-                midPeak = Math.Max(midPeak, Math.Abs(mid[i]));
-                highPeak = Math.Max(highPeak, Math.Abs(high[i]));
-            }
-
-            lows[column] = lowPeak;
-            mids[column] = midPeak;
-            highs[column] = highPeak;
-            globalMax = Math.Max(globalMax, Math.Max(lowPeak, Math.Max(midPeak, highPeak)));
-        }
-
-        var columns = new WaveformColumn[ColumnCount];
-        for (var column = 0; column < ColumnCount; column++)
-        {
-            columns[column] = new WaveformColumn(lows[column] / globalMax, mids[column] / globalMax, highs[column] / globalMax);
-        }
-
-        return columns;
+        for(var i=0;i<count;i++) columns[i]=new(columns[i].Low/maximum,columns[i].Mid/maximum,columns[i].High/maximum);
+        return new() { Columns=columns,Origin=WaveformOrigin.GeneratedRgb };
     }
 }

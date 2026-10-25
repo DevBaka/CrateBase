@@ -14,3 +14,9 @@ obj/
 *.db
 *.db-shm
 *.db-wal
+
+# Android: local SDK, credentials and build output
+android/.gradle/
+android/**/build/
+android/local.properties
+*.keystore

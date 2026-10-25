@@ -93,6 +93,7 @@ public sealed class TraktorNmlReader
 
         return new TraktorTrackEntry
         {
+            AudioId = (string?)entry.Attribute("AUDIO_ID"),
             Path = TraktorPath.FromLocation(volume, dir, file),
             Title = (string?)entry.Attribute("TITLE"),
             Artist = (string?)entry.Attribute("ARTIST"),

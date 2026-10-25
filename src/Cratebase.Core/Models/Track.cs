@@ -7,8 +7,19 @@ namespace Cratebase.Core.Models;
 /// sind schon vorgesehen, da Tag-Editor und Smart Playlists sie später
 /// direkt nutzen).
 /// </summary>
-public sealed class Track
+public sealed class Track : System.ComponentModel.INotifyPropertyChanged
 {
+    private bool _clubReady;
+    public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+    public bool ClubReady { get => _clubReady; set { if (_clubReady == value) return; _clubReady=value; PropertyChanged?.Invoke(this,new(nameof(ClubReady))); } }
+    private bool _extended,_intro;
+    public bool Extended { get=>_extended;set { if(_extended==value)return;_extended=value;PropertyChanged?.Invoke(this,new(nameof(Extended))); } }
+    public bool Intro { get=>_intro;set { if(_intro==value)return;_intro=value;PropertyChanged?.Invoke(this,new(nameof(Intro))); } }
+    private bool _trash;
+    public bool Trash { get=>_trash;set { if(_trash==value)return;_trash=value;PropertyChanged?.Invoke(this,new(nameof(Trash))); } }
+    public string DisplayFormat=>Format.ToUpperInvariant();
+    public string DisplayBitrate=>BitrateKbps is { } rate?$"{rate} kbps":"—";
+    public double FileSizeMb=>FileSizeBytes/1_000_000.0;
     public long Id { get; set; }
     public long LibraryRootId { get; set; }
 
@@ -48,7 +59,13 @@ public sealed class Track
     public DateTime DateModifiedUtc { get; set; }
 
     /// <summary>Gesetzt, sobald ein Rescan die Datei nicht mehr findet. Null = vorhanden.</summary>
-    public DateTime? MissingSinceUtc { get; set; }
+    private DateTime? _missingSinceUtc;
+    public DateTime? MissingSinceUtc
+    {
+        get=>_missingSinceUtc;
+        set {if(_missingSinceUtc==value)return;_missingSinceUtc=value;PropertyChanged?.Invoke(this,new(nameof(MissingSinceUtc)));PropertyChanged?.Invoke(this,new(nameof(FileAvailability)));}
+    }
+    public string FileAvailability=>MissingSinceUtc.HasValue?"Datei nicht erreichbar":"";
 
     public TimeSpan Duration => TimeSpan.FromMilliseconds(DurationMs);
 

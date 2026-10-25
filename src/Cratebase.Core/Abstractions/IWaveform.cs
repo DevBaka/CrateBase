@@ -4,13 +4,23 @@ namespace Cratebase.Core.Abstractions;
 
 /// <summary>
 /// Dekodiert eine Audiodatei zu einer <see cref="WaveformData"/> (3-Band-Peaks). Implementiert
-/// in Cratebase.Analysis via externem ffmpeg-Prozess (kein Playback, nur Analyse) - liefert
-/// bewusst null statt zu werfen, wenn ffmpeg fehlt oder die Datei nicht dekodierbar ist: eine
-/// fehlende Waveform darf die App nicht stören, sie zeigt dann einfach nichts an.
+/// in Cratebase.Analysis via externem ffmpeg-Prozess. Liefert null bei leerem Audiostream;
+/// Dekodierfehler werden gemeldet und Abbrüche als OperationCanceledException weitergegeben.
+/// Die Wiedergabe läuft unabhängig von der Hintergrundanalyse weiter.
 /// </summary>
 public interface IWaveformGenerator
 {
     Task<WaveformData?> GenerateAsync(string absoluteFilePath, CancellationToken ct = default);
+}
+
+public sealed record TraktorAnalysisReference(string CollectionDirectory,string AudioId);
+public interface ITraktorAnalysisLookup
+{
+    Task<TraktorAnalysisReference?> FindAsync(Track track,CancellationToken ct=default);
+}
+public interface ITrackWaveformSource
+{
+    Task<WaveformData?> TryLoadAsync(Track track,CancellationToken ct=default);
 }
 
 /// <summary>

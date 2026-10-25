@@ -1,0 +1,25 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'de.cratebase.mobile'
+    compileSdk 35
+    buildToolsVersion '36.0.0'
+    defaultConfig { applicationId 'de.cratebase.mobile'; minSdk 26; targetSdk 35; versionCode 7; versionName '0.1.6'; testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner' }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+    buildTypes { release { minifyEnabled false } }
+    lint { abortOnError true }
+    testOptions { unitTests.includeAndroidResources = true }
+}
+dependencies {
+    implementation 'androidx.media3:media3-exoplayer:1.6.1'
+    implementation 'androidx.media3:media3-session:1.6.1'
+    implementation 'androidx.media3:media3-datasource-okhttp:1.6.1'
+    implementation 'androidx.core:core:1.16.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.14.1'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation 'androidx.test:core:1.6.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+}

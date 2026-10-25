@@ -54,6 +54,26 @@ public sealed class LibraryRootRepository(SqliteConnectionFactory connectionFact
             cancellationToken: ct));
     }
 
+    public async Task RelocateAsync(long id,string localPath,string relativePrefix="",CancellationToken ct=default)
+    {
+        using var connection=connectionFactory.CreateConnection();
+        localPath=Path.GetFullPath(localPath).TrimEnd(Path.DirectorySeparatorChar)+Path.DirectorySeparatorChar;
+        relativePrefix=relativePrefix.Replace('\\','/').Trim('/');
+        if(relativePrefix.Split('/').Any(s=>s is ".." or ".")) throw new ArgumentException("Bitte einen relativen Unterordner ohne .. angeben.");
+        if(string.IsNullOrEmpty(relativePrefix))
+        {
+            await connection.ExecuteAsync(new CommandDefinition("UPDATE library_root SET path=@localPath WHERE id=@id",new { id,localPath },cancellationToken:ct)); return;
+        }
+        using var transaction=connection.BeginTransaction();
+        var source=await connection.QuerySingleAsync<LibraryRoot>(new CommandDefinition($"SELECT {SelectColumns} FROM library_root WHERE id=@id",new { id },transaction,cancellationToken:ct));
+        var mappingPrefix=string.Join("/:",new[]{source.TraktorDirPrefix??""}.Concat(relativePrefix.Split('/')).Where(s=>s.Length>0));
+        var newId=await connection.ExecuteScalarAsync<long>(new CommandDefinition("INSERT INTO library_root(path,label,traktor_volume,traktor_dir_prefix) VALUES(@localPath,@label,@volume,@prefix) RETURNING id",new { localPath,label=Path.GetFileName(localPath.TrimEnd(Path.DirectorySeparatorChar)),volume=source.TraktorVolume,prefix=mappingPrefix },transaction,cancellationToken:ct));
+        var prefix=relativePrefix+"/";
+        var escaped=prefix.Replace("~","~~").Replace("%","~%").Replace("_","~_");
+        await connection.ExecuteAsync(new CommandDefinition("UPDATE track SET library_root_id=@newId, relative_path=substr(relative_path,@start), missing_since=NULL WHERE library_root_id=@id AND relative_path LIKE @escaped || '%' ESCAPE '~'",new { id,newId,start=prefix.Length+1,escaped },transaction,cancellationToken:ct));
+        transaction.Commit();
+    }
+
     public async Task SetTraktorMappingAsync(long id, string volume, string dirPrefix, CancellationToken ct = default)
     {
         using var connection = connectionFactory.CreateConnection();

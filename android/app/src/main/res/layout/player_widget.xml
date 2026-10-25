@@ -1,0 +1,16 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="@drawable/widget_background">
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="CRATEBASE" android:textColor="#33E78C" android:textSize="14sp" android:textStyle="bold" />
+    <TextView android:id="@+id/widget_title" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="2" android:gravity="center_vertical" android:text="In Cratebase Musik auswählen" android:textColor="#FFFFFF" android:textSize="24sp" android:maxLines="3" />
+    <TextView android:id="@+id/widget_artist" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#ABB5C5" android:textSize="16sp" />
+    <TextView android:id="@+id/widget_status" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#ABB5C5" android:textSize="12sp" android:maxLines="2" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:gravity="center" android:orientation="horizontal">
+        <Button android:id="@+id/widget_previous" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:text="|◀" android:contentDescription="Vorheriger Song" />
+        <Button android:id="@+id/widget_play" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:text="▶ / Ⅱ" android:contentDescription="Wiedergabe / Pause" />
+        <Button android:id="@+id/widget_next" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:text="▶|" android:contentDescription="Nächster Song" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal">
+        <Button android:id="@+id/widget_club" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:text="Club" android:textSize="12sp" />
+        <Button android:id="@+id/widget_extended" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:text="Extended" android:textSize="12sp" />
+        <Button android:id="@+id/widget_intro" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:text="Intro" android:textSize="12sp" />
+    </LinearLayout>
+</LinearLayout>

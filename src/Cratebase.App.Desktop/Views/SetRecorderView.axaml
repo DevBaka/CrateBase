@@ -1,0 +1,166 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="using:Cratebase.App.Desktop.ViewModels" xmlns:conv="using:Cratebase.App.Desktop.Converters" x:Class="Cratebase.App.Desktop.Views.SetRecorderView" x:DataType="vm:MainViewModel">    <UserControl.Resources>
+        <conv:SecondsToTimeStringConverter x:Key="SecondsToTime" />
+        <conv:SectionToBackgroundConverter x:Key="SectionBg" />
+        <conv:SectionToForegroundConverter x:Key="SectionFg" />
+        <conv:GenreToForegroundConverter x:Key="GenreFg" />
+        <conv:GenreToBackgroundConverter x:Key="GenreBg" />
+        <conv:RecordingFormatToLabelConverter x:Key="RecordingFormatLabel" />
+        <conv:NowPlayingSourceTypeToLabelConverter x:Key="NowPlayingSourceLabel" />
+        <conv:TimeSpanToTimestampConverter x:Key="TimeSpanTimestamp" />
+        <conv:DbLevelToBrushConverter x:Key="DbLevelBrush" />
+    </UserControl.Resources>            <Grid ColumnDefinitions="340,*" Margin="16,0,16,16">
+                <!-- Linke Spalte: Geräte-/Qualitätsauswahl, Start/Stop, manuelle+automatische Übergangserkennung -->
+                <ScrollViewer Grid.Column="0" Margin="0,0,14,0" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Spacing="14">
+                        <Border Background="{StaticResource BgSurfaceBrush}" BorderBrush="{StaticResource BorderBrush1}" BorderThickness="1" CornerRadius="10" Padding="16">
+                            <StackPanel Spacing="10">
+                                <TextBlock Text="Aufnahme" FontSize="13" FontWeight="Bold" /><Button Content="FFmpeg auswählen …" Click="OnSelectFfmpegClick" IsEnabled="{Binding !IsRecording}" />
+                                <StackPanel Spacing="3">
+                                    <TextBlock Text="Gerät" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
+                                        <ComboBox Grid.Column="0" ItemsSource="{Binding RecordingDevices}" SelectedItem="{Binding SelectedRecordingDevice, Mode=TwoWay}"
+                                                  HorizontalAlignment="Stretch" PlaceholderText="Kein Gerät gefunden" IsEnabled="{Binding !IsRecording}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding DisplayName}" TextTrimming="CharacterEllipsis" />
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <Button Grid.Column="1" Content="🔄" Command="{Binding LoadRecordingDevicesCommand}" IsEnabled="{Binding !IsRecording}"
+                                                ToolTip.Tip="Geräteliste aktualisieren" />
+                                    </Grid>
+                                </StackPanel>
+                                <StackPanel Spacing="3">
+                                    <TextBlock Text="Qualität" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
+                                    <ComboBox ItemsSource="{Binding RecordingFormats}" SelectedItem="{Binding SelectedRecordingFormat, Mode=TwoWay}"
+                                              HorizontalAlignment="Stretch" IsEnabled="{Binding !IsRecording}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Converter={StaticResource RecordingFormatLabel}}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <TextBlock Text="{Binding RecordingElapsedDisplay}" FontFamily="{StaticResource MonoFont}" FontSize="30" FontWeight="Bold"
+                                           HorizontalAlignment="Center" Margin="0,6" />
+
+                                <!-- Aussteuerungsanzeige: nur während einer laufenden Aufnahme sichtbar - RightLevelDb
+                                     bleibt null bei Mono-Geräten, die R-Zeile blendet sich dann automatisch aus. -->
+                                <StackPanel Spacing="6" IsVisible="{Binding IsRecording}" Margin="0,0,0,4">
+                                    <Grid ColumnDefinitions="16,*,52" ColumnSpacing="8">
+                                        <TextBlock Grid.Column="0" Text="L" FontSize="10" Foreground="{StaticResource TextFaintBrush}" VerticalAlignment="Center" />
+                                        <ProgressBar Grid.Column="1" Minimum="-60" Maximum="0" Value="{Binding LeftLevelDb}" Height="10" CornerRadius="4"
+                                                     Background="{StaticResource BgChipBrush}" Foreground="{Binding LeftLevelDb, Converter={StaticResource DbLevelBrush}}"
+                                                     VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="2" Text="{Binding LeftLevelDb, StringFormat={}{0:0.0} dB}" FontFamily="{StaticResource MonoFont}"
+                                                    FontSize="10" HorizontalAlignment="Right" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center" />
+                                    </Grid>
+                                    <Grid ColumnDefinitions="16,*,52" ColumnSpacing="8" IsVisible="{Binding RightLevelDb, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                        <TextBlock Grid.Column="0" Text="R" FontSize="10" Foreground="{StaticResource TextFaintBrush}" VerticalAlignment="Center" />
+                                        <ProgressBar Grid.Column="1" Minimum="-60" Maximum="0" Value="{Binding RightLevelDb, TargetNullValue=-60}" Height="10" CornerRadius="4"
+                                                     Background="{StaticResource BgChipBrush}" Foreground="{Binding RightLevelDb, Converter={StaticResource DbLevelBrush}}"
+                                                     VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="2" Text="{Binding RightLevelDb, StringFormat={}{0:0.0} dB}" FontFamily="{StaticResource MonoFont}"
+                                                    FontSize="10" HorizontalAlignment="Right" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center" />
+                                    </Grid>
+                                    <Border Background="{StaticResource AccentRedBrush}" CornerRadius="6" Padding="0,4" IsVisible="{Binding IsClippingIndicatorActive}">
+                                        <TextBlock Text="⚠ ÜBERSTEUERUNG" FontSize="10.5" FontWeight="Bold" Foreground="{StaticResource BgWindowBrush}" HorizontalAlignment="Center" />
+                                    </Border>
+                                </StackPanel>
+
+                                <Button Content="● Aufnahme starten" Click="OnStartRecordingClick" IsVisible="{Binding !IsRecording}"
+                                        Background="{StaticResource AccentGreenBrush}" Foreground="{StaticResource BgWindowBrush}"
+                                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="0,10" FontWeight="Bold" />
+                                <Button Content="■ Aufnahme stoppen" Command="{Binding StopRecordingCommand}" IsVisible="{Binding IsRecording}"
+                                        Background="{StaticResource AccentRedBrush}" Foreground="{StaticResource BgWindowBrush}"
+                                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="0,10" FontWeight="Bold" />
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{StaticResource BgSurfaceBrush}" BorderBrush="{StaticResource BorderBrush1}" BorderThickness="1" CornerRadius="10" Padding="16">
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Übergang markieren" FontSize="13" FontWeight="Bold" />
+                                <TextBlock FontSize="10.5" Foreground="{StaticResource TextFaintBrush}" TextWrapping="Wrap"
+                                           Text="Artist/Titel optional - leer lassen und später rechts in der Tracklist nachtragen." />
+                                <TextBox PlaceholderText="Artist" Text="{Binding NewMarkerArtist, Mode=TwoWay}" IsEnabled="{Binding IsRecording}" />
+                                <TextBox PlaceholderText="Titel" Text="{Binding NewMarkerTitle, Mode=TwoWay}" IsEnabled="{Binding IsRecording}" />
+                                <Button Content="+ Übergang markieren" Command="{Binding MarkTransitionCommand}" IsEnabled="{Binding IsRecording}"
+                                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{StaticResource BgSurfaceBrush}" BorderBrush="{StaticResource BorderBrush1}" BorderThickness="1" CornerRadius="10" Padding="16">
+                            <StackPanel Spacing="8">
+                                <CheckBox Content="Automatische Übergangserkennung" IsChecked="{Binding IsAutoDetectEnabled, Mode=TwoWay}" FontSize="13" FontWeight="Bold" />
+                                <StackPanel Spacing="3">
+                                    <TextBlock Text="Quelle" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
+                                    <ComboBox ItemsSource="{Binding NowPlayingSourceTypes}" SelectedItem="{Binding AutoDetectSourceType, Mode=TwoWay}" HorizontalAlignment="Stretch">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Converter={StaticResource NowPlayingSourceLabel}}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Spacing="3">
+                                    <TextBlock Text="Datei" FontSize="10" Foreground="{StaticResource TextFaintBrush}" />
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
+                                        <TextBox Grid.Column="0" Text="{Binding AutoDetectFilePath}" PlaceholderText="Pfad auswählen…" IsReadOnly="True" FontSize="11" />
+                                        <Button Grid.Column="1" Content="Durchsuchen…" Click="OnSelectAutoDetectFileClick" />
+                                    </Grid>
+                                </StackPanel>
+                                <TextBlock FontSize="10" Foreground="{StaticResource TextFaintBrush}" TextWrapping="Wrap"
+                                           Text="Läuft während der Aufnahme im Hintergrund mit und legt bei jedem erkannten Trackwechsel automatisch einen Übergang an. Now-Playing-Textdatei = live zuverlässig, Traktor-History (NML) = bestenmöglich, ungetestet gegen eine echte Traktor-Installation." />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Rechte Spalte: Tracklist mit Zeitstempeln, Format-Vorlage, Export -->
+                <Grid Grid.Column="1" RowDefinitions="Auto,*,Auto">
+                    <Border Grid.Row="0" Background="{StaticResource BgSurfaceBrush}" BorderBrush="{StaticResource BorderBrush1}" BorderThickness="1" CornerRadius="10" Padding="14" Margin="0,0,0,10">
+                        <Grid ColumnDefinitions="Auto,*">
+                            <TextBlock Grid.Column="0" Text="Format:" VerticalAlignment="Center" FontSize="11.5" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,8,0" />
+                            <TextBox Grid.Column="1" Text="{Binding TracklistFormatTemplate, Mode=TwoWay}" FontFamily="{StaticResource MonoFont}" FontSize="12"
+                                     ToolTip.Tip="Platzhalter: {time} {artist} {title}" />
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Row="1" Background="{StaticResource BgSurfaceBrush}" BorderBrush="{StaticResource BorderBrush1}" BorderThickness="1" CornerRadius="10" Padding="4" Margin="0,0,0,10">
+                        <ScrollViewer>
+                            <ItemsControl ItemsSource="{Binding TracklistMarkers}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid ColumnDefinitions="60,1.2*,1.6*,Auto" Margin="8,4">
+                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontFamily="{StaticResource MonoFont}" FontSize="12"
+                                                       Foreground="{StaticResource TextMutedBrush}" Text="{Binding Position, Converter={StaticResource TimeSpanTimestamp}}" />
+                                            <TextBox Grid.Column="1" Margin="6,0" Text="{Binding Artist, Mode=TwoWay}" PlaceholderText="Artist" FontSize="12"
+                                                     LostFocus="OnMarkerFieldLostFocus" />
+                                            <TextBox Grid.Column="2" Margin="0,0,6,0" Text="{Binding Title, Mode=TwoWay}" PlaceholderText="Titel" FontSize="12"
+                                                     LostFocus="OnMarkerFieldLostFocus" />
+                                            <Button Grid.Column="3" Content="✕" FontSize="11" Padding="7,3"
+                                                    Command="{Binding $parent[ItemsControl].((vm:MainViewModel)DataContext).RemoveMarkerCommand}"
+                                                    CommandParameter="{Binding}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
+
+                    <Border Grid.Row="2" Background="{StaticResource BgSurfaceBrush}" BorderBrush="{StaticResource BorderBrush1}" BorderThickness="1" CornerRadius="10" Padding="14">
+                        <StackPanel Spacing="8">
+                            <Grid ColumnDefinitions="*,Auto,Auto">
+                                <TextBlock Grid.Column="0" Text="Vorschau" VerticalAlignment="Center" FontSize="11" Foreground="{StaticResource TextFaintBrush}" />
+                                <Button Grid.Column="1" Content="In Zwischenablage kopieren" Margin="0,0,6,0" Click="OnCopyTracklistClick" />
+                                <Button Grid.Column="2" Content="Als Datei speichern…" Click="OnSaveTracklistClick" />
+                            </Grid>
+                            <TextBox Text="{Binding TracklistPreview}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="NoWrap"
+                                     FontFamily="{StaticResource MonoFont}" FontSize="12" MaxHeight="180" ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+
+</UserControl>

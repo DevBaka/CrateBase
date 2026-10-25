@@ -12,6 +12,7 @@ public sealed class FavoriteProfile
     public string Name { get; set; } = string.Empty;
 
     public Dictionary<int, long> Slots { get; set; } = new();
+    public Dictionary<int, LibraryTarget> Targets { get; set; } = new();
 }
 
 /// <summary>Persistenz-Hülle für alle Favoriten-Profile - liegt wie <see cref="QuickAccessFolder"/>

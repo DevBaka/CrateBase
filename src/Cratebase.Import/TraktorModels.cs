@@ -16,6 +16,7 @@ public sealed class TraktorCue
 
 public sealed class TraktorTrackEntry
 {
+    public string? AudioId { get; init; }
     public required TraktorPath Path { get; init; }
     public string? Title { get; init; }
     public string? Artist { get; init; }

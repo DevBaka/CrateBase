@@ -1,13 +1,35 @@
 using Cratebase.Core.Abstractions;
 using Cratebase.Core.Models;
 using Dapper;
+using Microsoft.Data.Sqlite;
 
 namespace Cratebase.Data.Repositories;
 
 public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) : ITrackRepository
 {
-    private const string SelectColumns = """
-        t.id AS Id, t.library_root_id AS LibraryRootId, t.relative_path AS RelativePath,
+    public async Task UpdateMetadataAsync(Track track, IReadOnlyCollection<string> fields, CancellationToken ct = default)
+    {
+        var allowed = new Dictionary<string,(string Column,object? Value)>
+        {
+            ["title"]=("title",track.Title),["artist"]=("artist",track.Artist),["album"]=("album",track.Album),["albumartist"]=("album_artist",track.AlbumArtist),
+            ["genre"]=("genre_raw",track.GenreRaw),["subgenre"]=("sub_genre",track.SubGenre),["comment"]=("comment",track.Comment),["comment2"]=("comment2",track.Comment2),
+            ["color"]=("color_tag",track.ColorTag),["key"]=("musical_key",track.MusicalKey),["bpm"]=("bpm",track.Bpm),["year"]=("year",track.Year),["rating"]=("rating",track.Rating),["tracknumber"]=("track_number",track.TrackNumber)
+        };
+        if(fields.Count==0)return;
+        var args=new DynamicParameters();args.Add("id",track.Id);args.Add("modified",SqliteDateTime.ToText(DateTime.UtcNow));
+        var updates=new List<string>();
+        foreach(var field in fields.Distinct())
+        {
+            if(!allowed.TryGetValue(field,out var item))throw new ArgumentException("Dieses Metadatenfeld ist nicht beschreibbar.");
+            var parameter="v"+updates.Count;args.Add(parameter,item.Value);updates.Add(item.Column+"=@"+parameter);
+        }
+        updates.Add("date_modified=@modified");
+        using var connection=connectionFactory.CreateConnection();
+        await connection.ExecuteAsync(new CommandDefinition("UPDATE track SET "+string.Join(",",updates)+" WHERE id=@id",args,cancellationToken:ct));
+    }
+
+    internal const string SelectColumns = """
+        t.id AS Id, t.club_ready AS ClubReady, t.extended AS Extended, t.intro AS Intro, t.trash AS Trash, t.library_root_id AS LibraryRootId, t.relative_path AS RelativePath,
         t.file_size AS FileSizeBytes, t.file_mtime AS FileModifiedAtUtc, t.format AS Format,
         t.duration_ms AS DurationMs, t.bitrate_kbps AS BitrateKbps, t.sample_rate_hz AS SampleRateHz, t.channels AS Channels,
         t.title AS Title, t.artist AS Artist, t.album AS Album, t.album_artist AS AlbumArtist,
@@ -76,6 +98,20 @@ public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) :
     public async Task<long> UpsertAsync(Track track, CancellationToken ct = default)
     {
         using var connection = connectionFactory.CreateConnection();
+        return await UpsertOnConnectionAsync(connection,null,track,ct);
+    }
+
+    public async Task<IReadOnlyList<long>> UpsertBatchAsync(IReadOnlyList<Track> tracks,CancellationToken ct=default)
+    {
+        using var connection=connectionFactory.CreateConnection();
+        using var transaction=connection.BeginTransaction();
+        var ids=new List<long>(tracks.Count);
+        foreach(var track in tracks) ids.Add(await UpsertOnConnectionAsync(connection,transaction,track,ct));
+        transaction.Commit(); return ids;
+    }
+
+    private static async Task<long> UpsertOnConnectionAsync(SqliteConnection connection,SqliteTransaction? transaction,Track track,CancellationToken ct)
+    {
 
         var parameters = new
         {
@@ -125,19 +161,20 @@ public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) :
                 bitrate_kbps = excluded.bitrate_kbps,
                 sample_rate_hz = excluded.sample_rate_hz,
                 channels = excluded.channels,
-                title = excluded.title,
-                artist = excluded.artist,
-                album = excluded.album,
+                title = COALESCE(track.title, excluded.title),
+                artist = COALESCE(track.artist, excluded.artist),
+                album = COALESCE(track.album, excluded.album),
                 album_artist = excluded.album_artist,
                 track_number = excluded.track_number,
                 year = excluded.year,
-                bpm = excluded.bpm,
-                musical_key = excluded.musical_key,
+                bpm = COALESCE(track.bpm, excluded.bpm),
+                musical_key = COALESCE(track.musical_key, excluded.musical_key),
                 date_modified = excluded.date_modified,
                 missing_since = NULL
             RETURNING id;
             """,
             parameters,
+            transaction: transaction,
             cancellationToken: ct));
     }
 
@@ -153,6 +190,19 @@ public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) :
     public async Task UpdateAsync(Track track, CancellationToken ct = default)
     {
         using var connection = connectionFactory.CreateConnection();
+        await UpdateOnConnectionAsync(connection,null,track,ct);
+    }
+
+    public async Task UpdateBatchAsync(IReadOnlyList<Track> tracks,CancellationToken ct=default)
+    {
+        using var connection=connectionFactory.CreateConnection();
+        using var transaction=connection.BeginTransaction();
+        foreach(var track in tracks) await UpdateOnConnectionAsync(connection,transaction,track,ct);
+        transaction.Commit();
+    }
+
+    private static async Task UpdateOnConnectionAsync(SqliteConnection connection,SqliteTransaction? transaction,Track track,CancellationToken ct)
+    {
 
         var parameters = new
         {
@@ -172,6 +222,8 @@ public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) :
             track.MusicalKey,
             track.Rating,
             track.PlayCount,
+            track.DurationMs, track.BitrateKbps, track.SampleRateHz, track.Channels, track.Format,
+            MissingSinceUtc = SqliteDateTime.ToText(track.MissingSinceUtc),
             LastPlayedAtUtc = SqliteDateTime.ToText(track.LastPlayedAtUtc),
             DateModifiedUtc = SqliteDateTime.ToText(track.DateModifiedUtc),
         };
@@ -183,11 +235,21 @@ public sealed class TrackRepository(SqliteConnectionFactory connectionFactory) :
                 track_number = @TrackNumber, year = @Year, genre_raw = @GenreRaw, sub_genre = @SubGenre,
                 comment = @Comment, comment2 = @Comment2, color_tag = @ColorTag,
                 bpm = @Bpm, musical_key = @MusicalKey, rating = @Rating, play_count = @PlayCount,
-                last_played_at = @LastPlayedAtUtc, date_modified = @DateModifiedUtc
+                last_played_at = @LastPlayedAtUtc, date_modified = @DateModifiedUtc, missing_since = @MissingSinceUtc,
+                duration_ms = CASE WHEN @DurationMs > 0 THEN @DurationMs ELSE duration_ms END,
+                bitrate_kbps = COALESCE(@BitrateKbps, bitrate_kbps), sample_rate_hz = COALESCE(@SampleRateHz, sample_rate_hz),
+                channels = COALESCE(@Channels, channels), format = COALESCE(NULLIF(@Format,''), format)
             WHERE id = @Id;
             """,
             parameters,
+            transaction: transaction,
             cancellationToken: ct));
+    }
+
+    public async Task SetFileAvailabilityAsync(long id,bool reachable,CancellationToken ct=default)
+    {
+        using var connection=connectionFactory.CreateConnection();
+        await connection.ExecuteAsync(new CommandDefinition("UPDATE track SET missing_since=CASE WHEN @reachable THEN NULL ELSE COALESCE(missing_since,@now) END WHERE id=@id",new {id,reachable,now=SqliteDateTime.ToText(DateTime.UtcNow)},cancellationToken:ct));
     }
 
     public async Task<IReadOnlyDictionary<string, TrackFingerprint>> GetFingerprintsByPathAsync(long libraryRootId, CancellationToken ct = default)

@@ -40,11 +40,17 @@ public interface ITrackRepository
     /// Rating/PlayCount/LastPlayedAtUtc/DateAddedUtc werden bei einem Konflikt NICHT überschrieben (s. Implementierung) -
     /// für Updates, die genau diese Felder setzen sollen (z.B. DJ-Software-Import), <see cref="UpdateAsync"/> verwenden.</summary>
     Task<long> UpsertAsync(Track track, CancellationToken ct = default);
+    Task<IReadOnlyList<long>> UpsertBatchAsync(IReadOnlyList<Track> tracks, CancellationToken ct = default);
 
     /// <summary>Voller Update-by-Id, überschreibt alle unten stehenden Felder inkl. Rating/PlayCount/LastPlayedAtUtc.
     /// Für Datei-Metadaten-Rescans <see cref="UpsertAsync"/> verwenden (schützt Nutzerdaten) - dies hier ist für
     /// Fälle gedacht, die genau diese Felder bewusst setzen wollen (Tag-Editor, DJ-Software-Import).</summary>
     Task UpdateAsync(Track track, CancellationToken ct = default);
+    Task UpdateBatchAsync(IReadOnlyList<Track> tracks, CancellationToken ct = default);
+    /// <summary>Patch only explicitly edited metadata, preserving concurrent flags and unrelated fields.</summary>
+    Task UpdateMetadataAsync(Track track, IReadOnlyCollection<string> fields, CancellationToken ct = default) => throw new NotSupportedException();
+    /// <summary>Updates only file availability, preserving tags, flags and memberships.</summary>
+    Task SetFileAvailabilityAsync(long id, bool reachable, CancellationToken ct = default);
 
     /// <summary>Fingerabdrücke aller bekannten (nicht als "missing" markierten) Tracks eines Roots, für den inkrementellen Scan-Abgleich.</summary>
     Task<IReadOnlyDictionary<string, TrackFingerprint>> GetFingerprintsByPathAsync(long libraryRootId, CancellationToken ct = default);

@@ -24,6 +24,7 @@ namespace Cratebase.Audio;
 /// </summary>
 public sealed class FfmpegAudioRecorder : IAudioRecorder
 {
+    public string ExecutablePath { get; set; } = "ffmpeg";
     private Process? _process;
     private Stopwatch? _stopwatch;
     private CancellationTokenSource? _levelMonitorCts;
@@ -102,9 +103,9 @@ public sealed class FfmpegAudioRecorder : IAudioRecorder
     /// <summary>DirectShow (Windows) - `ffmpeg -f dshow -list_devices true -i dummy` gibt die
     /// Geräteliste auf stderr aus und beendet sich mit Fehlercode (das ist bei dieser ffmpeg-Abfrage
     /// normal, kein echter Fehler).</summary>
-    private static async Task<IReadOnlyList<AudioCaptureDevice>> ListDshowDevicesAsync(CancellationToken ct)
+    private async Task<IReadOnlyList<AudioCaptureDevice>> ListDshowDevicesAsync(CancellationToken ct)
     {
-        var stderr = await RunAndCaptureStdErrAsync("ffmpeg", ["-hide_banner", "-list_devices", "true", "-f", "dshow", "-i", "dummy"], ct);
+        var stderr = await RunAndCaptureStdErrAsync(ExecutablePath, ["-hide_banner", "-list_devices", "true", "-f", "dshow", "-i", "dummy"], ct);
         var devices = new List<AudioCaptureDevice>();
         var inAudioSection = false;
         foreach (var line in stderr.Split('\n'))
@@ -139,9 +140,9 @@ public sealed class FfmpegAudioRecorder : IAudioRecorder
 
     /// <summary>AVFoundation (macOS) - dieselbe "list_devices true" Konvention wie dshow, Geräte
     /// werden hier aber über einen numerischen Index statt eines Namens angesprochen.</summary>
-    private static async Task<IReadOnlyList<AudioCaptureDevice>> ListAvfoundationDevicesAsync(CancellationToken ct)
+    private async Task<IReadOnlyList<AudioCaptureDevice>> ListAvfoundationDevicesAsync(CancellationToken ct)
     {
-        var stderr = await RunAndCaptureStdErrAsync("ffmpeg", ["-hide_banner", "-f", "avfoundation", "-list_devices", "true", "-i", ""], ct);
+        var stderr = await RunAndCaptureStdErrAsync(ExecutablePath, ["-hide_banner", "-f", "avfoundation", "-list_devices", "true", "-i", ""], ct);
         var devices = new List<AudioCaptureDevice>();
         var inAudioSection = false;
         foreach (var line in stderr.Split('\n'))
@@ -256,11 +257,11 @@ public sealed class FfmpegAudioRecorder : IAudioRecorder
     /// Einschränkung: ein unbekannter Pulse/PipeWire-Quellenname lässt ffmpeg beobachtet nicht sofort
     /// fehlschlagen, sondern unbegrenzt hängen, ohne je Daten zu liefern - das fängt dieser Check
     /// (noch) nicht ab, s. ARCHITECTURE.md.</summary>
-    private static async Task<(Process? Process, string Stderr)> TryLaunchAsync(IReadOnlyList<string> args, CancellationToken ct)
+    private async Task<(Process? Process, string Stderr)> TryLaunchAsync(IReadOnlyList<string> args, CancellationToken ct)
     {
         var startInfo = new ProcessStartInfo
         {
-            FileName = "ffmpeg",
+            FileName = ExecutablePath,
             RedirectStandardInput = true,
             RedirectStandardError = true,
             UseShellExecute = false,

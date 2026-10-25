@@ -27,6 +27,7 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            Services.WindowsMediaSession.RegisterApplication();
             // Composition Root: hier und nur hier werden konkrete Implementierungen aus
             // Data/Tagging/Scanning/Audio verdrahtet. Alles, was von hier aus weitergereicht
             // wird (MainViewModel-Konstruktor), sieht nur noch die Core-Interfaces – kein
@@ -52,13 +53,19 @@ public partial class App : Application
 
             _audioPlayer = new LibVlcAudioPlayer();
 
-            var viewModel = new MainViewModel(
-                trackRepository, libraryRootRepository, playlistRepository, libraryScanner, _audioPlayer,
-                traktorImporter, tagReader, waveformGenerator, waveformCache, quickAccessStore, favoriteProfileStore,
-                nmlExporter, audioRecorder, nowPlayingReader);
-
-            var mainWindow = new MainWindow { DataContext = viewModel };
-            mainWindow.Opened += async (_, _) => await viewModel.InitializeAsync();
+            var libraryQuery = new LibraryQuery(connectionFactory);
+            var workspaceState = new WorkspaceStateStore(connectionFactory);
+            var targetActions = new TargetActions(trackRepository, libraryRootRepository, playlistRepository, tagReader, libraryQuery);
+            var sync = new CollectionSync(trackRepository, libraryRootRepository, playlistRepository, workspaceState, new WorkspaceCheckpoint(connectionFactory));
+            var stripes = new TraktorStripeWaveformSource(new TraktorAnalysisLookup(workspaceState, libraryRootRepository));
+            var player = new WorkspacePlayer(_audioPlayer, libraryRootRepository, waveformGenerator, waveformCache, stripes, trackRepository);
+            var server = new Cratebase.Server.LibraryServer(trackRepository, libraryRootRepository, playlistRepository, libraryQuery,
+                targetActions, favoriteProfileStore, Path.Combine(GetAppDirectory(), "stream-cache"), new LibraryRevision(connectionFactory),new Services.DesktopPlaybackBridge(player));
+            var recorder = new MainViewModel(trackRepository, libraryRootRepository, playlistRepository, libraryScanner,
+                _audioPlayer, traktorImporter, tagReader, waveformGenerator, waveformCache, quickAccessStore,
+                favoriteProfileStore, nmlExporter, audioRecorder, nowPlayingReader, subscribePlaybackEvents: false);
+            var mainWindow = new WorkspaceWindow(trackRepository, libraryRootRepository, playlistRepository, libraryQuery,
+                targetActions, sync, workspaceState, favoriteProfileStore, quickAccessStore, libraryScanner, tagReader, player, recorder, (FfmpegAudioRecorder)audioRecorder,new ClubMediaExporter(libraryRootRepository,libraryQuery,sync),server);
             desktop.MainWindow = mainWindow;
             desktop.ShutdownRequested += (_, _) => _audioPlayer.Dispose();
         }
@@ -72,27 +79,26 @@ public partial class App : Application
     /// </summary>
     private static string GetDatabasePath()
     {
-        var baseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        var appDir = Path.Combine(baseDir, "Cratebase");
+        var appDir = GetAppDirectory();
         Directory.CreateDirectory(appDir);
         return Path.Combine(appDir, "cratebase.db");
     }
 
     private static string GetWaveformCacheDir()
     {
-        var baseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        return Path.Combine(baseDir, "Cratebase", "waveforms");
+        return Path.Combine(GetAppDirectory(), "waveforms");
     }
 
     private static string GetQuickAccessFilePath()
     {
-        var baseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        return Path.Combine(baseDir, "Cratebase", "quickaccess.json");
+        return Path.Combine(GetAppDirectory(), "quickaccess.json");
     }
 
     private static string GetFavoriteProfilesFilePath()
     {
-        var baseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        return Path.Combine(baseDir, "Cratebase", "favorite_profiles.json");
+        return Path.Combine(GetAppDirectory(), "favorite_profiles.json");
     }
+
+    private static string GetAppDirectory() => Environment.GetEnvironmentVariable("CRATEBASE_DATA_DIR")
+        ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Cratebase");
 }

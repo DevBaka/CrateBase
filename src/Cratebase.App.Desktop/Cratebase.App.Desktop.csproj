@@ -2,6 +2,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework Condition="$([MSBuild]::IsOSPlatform('Windows'))">net8.0-windows10.0.19041.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
@@ -30,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Cratebase.Core\Cratebase.Core.csproj" />
+    <ProjectReference Include="..\Cratebase.Server\Cratebase.Server.csproj" />
     <ProjectReference Include="..\Cratebase.Data\Cratebase.Data.csproj" />
     <ProjectReference Include="..\Cratebase.Scanning\Cratebase.Scanning.csproj" />
     <ProjectReference Include="..\Cratebase.Tagging\Cratebase.Tagging.csproj" />

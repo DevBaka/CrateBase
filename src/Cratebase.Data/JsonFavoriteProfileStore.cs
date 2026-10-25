@@ -7,6 +7,7 @@ namespace Cratebase.Data;
 /// <summary>Einfache JSON-Datei statt SQLite-Tabelle (s. IFavoriteProfileStore-Doku).</summary>
 public sealed class JsonFavoriteProfileStore(string filePath) : IFavoriteProfileStore
 {
+    private readonly SemaphoreSlim _writeLock = new(1);
     public async Task<FavoriteProfileSettings> LoadAsync(CancellationToken ct = default)
     {
         if (!File.Exists(filePath))
@@ -35,7 +36,14 @@ public sealed class JsonFavoriteProfileStore(string filePath) : IFavoriteProfile
             Directory.CreateDirectory(directory);
         }
 
-        await using var stream = File.Create(filePath);
-        await JsonSerializer.SerializeAsync(stream, settings, new JsonSerializerOptions { WriteIndented = true }, ct);
+        await _writeLock.WaitAsync(ct);
+        var temporary=filePath+"."+Guid.NewGuid().ToString("N")+".tmp";
+        try
+        {
+            await using(var stream=File.Create(temporary))
+                await JsonSerializer.SerializeAsync(stream, settings, new JsonSerializerOptions { WriteIndented = true }, ct);
+            File.Move(temporary,filePath,true);
+        }
+        finally { if(File.Exists(temporary)) File.Delete(temporary); _writeLock.Release(); }
     }
 }

@@ -9,7 +9,13 @@ namespace Cratebase.Core.Models;
 /// </summary>
 public readonly record struct WaveformColumn(float Low, float Mid, float High);
 
+public enum WaveformOrigin { GeneratedRgb, TraktorStripe }
+public sealed record WaveformRaster(int Width,int Height,byte[] Rgba);
+
 public sealed class WaveformData
 {
     public IReadOnlyList<WaveformColumn> Columns { get; init; } = [];
+    public WaveformRaster? Raster { get; init; }
+    public WaveformOrigin Origin { get; init; }
+    public bool HasData => Columns.Count>0 || Raster!=null;
 }

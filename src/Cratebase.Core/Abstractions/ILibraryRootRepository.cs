@@ -10,6 +10,7 @@ public interface ILibraryRootRepository
     Task<LibraryRoot> AddOrGetAsync(string path, string label, CancellationToken ct = default);
 
     Task UpdateLastScannedAsync(long id, DateTime whenUtc, CancellationToken ct = default);
+    Task RelocateAsync(long id, string localPath, string relativePrefix = "", CancellationToken ct = default);
 
     /// <summary>Speichert, wie Traktor diesen Root selbst benennt (s. LibraryRoot.TraktorVolume-Doku) -
     /// vom Traktor-Import automatisch gelernt (s. TraktorPathResolver), für den NML-Export genutzt.</summary>

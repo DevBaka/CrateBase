@@ -8,6 +8,7 @@ public static class DatabaseInitializer
     /// Migrationen an. Idempotent, sicher bei jedem App-Start aufzurufen.</summary>
     public static void EnsureCreated(SqliteConnectionFactory connectionFactory)
     {
+        WorkspaceCheckpoint.Recover(connectionFactory);
         using var connection = connectionFactory.CreateConnection();
         using var transaction = connection.BeginTransaction();
 

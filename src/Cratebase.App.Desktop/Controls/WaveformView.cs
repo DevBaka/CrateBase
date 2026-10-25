@@ -3,6 +3,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+using System.Runtime.InteropServices;
 using Cratebase.Core.Models;
 
 namespace Cratebase.App.Desktop.Controls;
@@ -16,6 +19,8 @@ namespace Cratebase.App.Desktop.Controls;
 /// </summary>
 public sealed class WaveformView : Control
 {
+    private WriteableBitmap? _stripeBitmap;
+    private WaveformRaster? _bitmapSource;
     public static readonly StyledProperty<WaveformData?> WaveformProperty =
         AvaloniaProperty.Register<WaveformView, WaveformData?>(nameof(Waveform));
 
@@ -76,19 +81,38 @@ public sealed class WaveformView : Control
         var width = Bounds.Width;
         var mid = height / 2;
 
-        if (data is null || data.Columns.Count == 0 || width <= 0)
+        if(data?.Raster is { } raster && width>0)
+        {
+            if(!ReferenceEquals(_bitmapSource,raster))
+            {
+                _stripeBitmap?.Dispose();
+                _stripeBitmap=new WriteableBitmap(new PixelSize(raster.Width,raster.Height),new Vector(96,96),PixelFormat.Rgba8888,AlphaFormat.Premul);
+                using(var buffer=_stripeBitmap.Lock())
+                    for(var row=0;row<raster.Height;row++) Marshal.Copy(raster.Rgba,row*raster.Width*4,buffer.Address+row*buffer.RowBytes,raster.Width*4);
+                _bitmapSource=raster;
+            }
+            context.DrawImage(_stripeBitmap!,new Rect(0,0,raster.Width,raster.Height),bounds);
+        }
+        else if (data is null || data.Columns.Count == 0 || width <= 0)
         {
             // Ruhige, flache Linie statt leerer Fläche - signalisiert "keine Waveform", ohne wie ein Rendering-Fehler auszusehen.
             context.DrawLine(new Pen(EmptyBrush, 1), new Point(0, mid), new Point(width, mid));
         }
         else
         {
-            var count = data.Columns.Count;
-            var barWidth = Math.Max(1.0, width / count);
+            var count = Math.Min(data.Columns.Count,Math.Max(1,(int)Math.Ceiling(width)));
+            var barWidth = width / count;
 
             for (var i = 0; i < count; i++)
             {
-                var column = data.Columns[i];
+                var from=(int)((long)i*data.Columns.Count/count);
+                var to=(int)((long)(i+1)*data.Columns.Count/count);
+                float low=0,midPeak=0,high=0;
+                for(var j=from;j<to;j++)
+                {
+                    low=Math.Max(low,data.Columns[j].Low);midPeak=Math.Max(midPeak,data.Columns[j].Mid);high=Math.Max(high,data.Columns[j].High);
+                }
+                var column = new WaveformColumn(low,midPeak,high);
                 var x = i * barWidth;
                 DrawBand(context, LowBrush, x, mid, barWidth, column.Low, height);
                 DrawBand(context, MidBrush, x, mid, barWidth, column.Mid, height * 0.72);
@@ -98,6 +122,12 @@ public sealed class WaveformView : Control
 
         var progressX = width * Math.Clamp(Progress, 0, 1);
         context.DrawLine(new Pen(ProgressBrush, 2), new Point(progressX, 0), new Point(progressX, height));
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        _stripeBitmap?.Dispose(); _stripeBitmap=null; _bitmapSource=null;
+        base.OnDetachedFromVisualTree(e);
     }
 
     private static void DrawBand(DrawingContext context, IBrush brush, double x, double mid, double barWidth, float amplitude, double maxHeight)

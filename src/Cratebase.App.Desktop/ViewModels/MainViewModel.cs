@@ -55,7 +55,8 @@ public partial class MainViewModel : ViewModelBase
         IFavoriteProfileStore favoriteProfileStore,
         INmlExporter nmlExporter,
         IAudioRecorder audioRecorder,
-        INowPlayingReader nowPlayingReader)
+        INowPlayingReader nowPlayingReader,
+        bool subscribePlaybackEvents = true)
     {
         _trackRepository = trackRepository;
         _libraryRootRepository = libraryRootRepository;
@@ -74,8 +75,11 @@ public partial class MainViewModel : ViewModelBase
 
         // Feuern auf einem LibVLC-Thread (s. IAudioPlayer-Doku) – zurück auf den UI-Thread posten,
         // bevor gebundene Properties gesetzt werden.
-        _audioPlayer.PositionChanged += (_, _) => Dispatcher.UIThread.Post(UpdatePlaybackPosition);
-        _audioPlayer.PlaybackEnded += (_, _) => Dispatcher.UIThread.Post(() => PlayNextCommand.Execute(null));
+        if (subscribePlaybackEvents)
+        {
+            _audioPlayer.PositionChanged += (_, _) => Dispatcher.UIThread.Post(UpdatePlaybackPosition);
+            _audioPlayer.PlaybackEnded += (_, _) => Dispatcher.UIThread.Post(() => PlayNextCommand.Execute(null));
+        }
     }
 
     /// <summary>
@@ -883,7 +887,8 @@ public partial class MainViewModel : ViewModelBase
             RecordingDevices.Add(device);
         }
 
-        SelectedRecordingDevice ??= RecordingDevices.FirstOrDefault();
+        SelectedRecordingDevice = RecordingDevices.FirstOrDefault(d => d.Id == SelectedRecordingDevice?.Id) ?? RecordingDevices.FirstOrDefault();
+        if (RecordingDevices.Count == 0) StatusMessage = "Keine Aufnahmegeräte gefunden. Unter Windows benötigt FFmpeg DirectShow-Unterstützung. Über ‚FFmpeg auswählen‘ kann eine vollständige Version gewählt werden.";
     }
 
     /// <summary>Wird vom Code-behind nach dem Speichern-Dialog aufgerufen (s. MainWindow.axaml.cs).</summary>
@@ -944,6 +949,9 @@ public partial class MainViewModel : ViewModelBase
             return;
         }
 
+        TimeSpan elapsed;
+        try { elapsed = await _audioRecorder.StopAsync(); }
+        catch(Exception ex) { StatusMessage="Aufnahme konnte nicht beendet werden: "+ex.Message; return; }
         _recordingElapsedTimer?.Stop();
         _recordingElapsedTimer = null;
         _levelMeterTimer?.Stop();
@@ -952,7 +960,6 @@ public partial class MainViewModel : ViewModelBase
         RightLevelDb = null;
         IsClippingIndicatorActive = false;
 
-        var elapsed = await _audioRecorder.StopAsync();
         _recordingStopwatch = null;
         IsRecording = false;
         UpdateAutoDetectTimerState();

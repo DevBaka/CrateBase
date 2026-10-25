@@ -14,8 +14,14 @@ public sealed class LibraryScanner(ITrackRepository trackRepository, ILibraryRoo
     private const int ProgressReportInterval = 20;
 
     public async Task ScanAsync(LibraryRoot root, IProgress<ScanProgress>? progress, CancellationToken ct = default)
+        => await ScanFolderAsync(root,root.Path,progress,ct);
+
+    public async Task ScanFolderAsync(LibraryRoot root,string absoluteFolder,IProgress<ScanProgress>? progress,CancellationToken ct=default)
     {
-        if (!Directory.Exists(root.Path))
+        var rootPath=Path.GetFullPath(root.Path).TrimEnd(Path.DirectorySeparatorChar)+Path.DirectorySeparatorChar;
+        absoluteFolder=Path.GetFullPath(absoluteFolder);
+        if(!string.Equals(absoluteFolder.TrimEnd(Path.DirectorySeparatorChar),rootPath.TrimEnd(Path.DirectorySeparatorChar),StringComparison.OrdinalIgnoreCase) && !absoluteFolder.StartsWith(rootPath,StringComparison.OrdinalIgnoreCase)) throw new ArgumentException("Scan-Ordner liegt außerhalb der Library-Wurzel.");
+        if (!Directory.Exists(absoluteFolder))
         {
             throw new DirectoryNotFoundException($"Library-Root nicht gefunden: {root.Path}");
         }
@@ -24,6 +30,12 @@ public sealed class LibraryScanner(ITrackRepository trackRepository, ILibraryRoo
         // einzelnes indiziertes SELECT statt 100k Round-Trips.
         var knownFingerprints = await trackRepository.GetFingerprintsByPathAsync(root.Id, ct);
         var presentPaths = new List<string>();
+        var relativeFolder=Path.GetRelativePath(root.Path,absoluteFolder).Replace('\\','/');
+        if(relativeFolder!=".")
+        {
+            var prefix=relativeFolder.TrimEnd('/')+"/";
+            presentPaths.AddRange(knownFingerprints.Keys.Where(p=>!p.StartsWith(prefix,StringComparison.OrdinalIgnoreCase)));
+        }
         var scanStartUtc = DateTime.UtcNow;
 
         var filesSeen = 0;
@@ -32,7 +44,7 @@ public sealed class LibraryScanner(ITrackRepository trackRepository, ILibraryRoo
         var filesUnchanged = 0;
         var filesFailed = 0;
 
-        foreach (var absolutePath in EnumerateCandidateFiles(root.Path))
+        foreach (var absolutePath in EnumerateCandidateFiles(absoluteFolder))
         {
             ct.ThrowIfCancellationRequested();
 

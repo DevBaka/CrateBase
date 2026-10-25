@@ -11,7 +11,7 @@ namespace Cratebase.Data;
 /// </summary>
 internal static class Schema
 {
-    public const int CurrentVersion = 4;
+    public const int CurrentVersion = 7;
 
     /// <summary>
     /// Spalten, die nachträglich zu einer bestehenden `track`-Tabelle dazukamen (Tag-Editor,
@@ -23,6 +23,10 @@ internal static class Schema
     /// </summary>
     public static readonly (string Column, string Ddl)[] TrackColumnMigrations =
     [
+        ("club_ready", "ALTER TABLE track ADD COLUMN club_ready INTEGER NOT NULL DEFAULT 0;"),
+        ("extended", "ALTER TABLE track ADD COLUMN extended INTEGER NOT NULL DEFAULT 0;"),
+        ("intro", "ALTER TABLE track ADD COLUMN intro INTEGER NOT NULL DEFAULT 0;"),
+        ("trash", "ALTER TABLE track ADD COLUMN trash INTEGER NOT NULL DEFAULT 0;"),
         ("comment2", "ALTER TABLE track ADD COLUMN comment2 TEXT NULL;"),
         ("sub_genre", "ALTER TABLE track ADD COLUMN sub_genre TEXT NULL;"),
         ("color_tag", "ALTER TABLE track ADD COLUMN color_tag TEXT NULL;"),
@@ -41,6 +45,7 @@ internal static class Schema
 
     public const string Sql = """
         PRAGMA foreign_keys = ON;
+        CREATE TABLE IF NOT EXISTS workspace_state (key TEXT PRIMARY KEY, json TEXT NOT NULL);
 
         CREATE TABLE IF NOT EXISTS schema_version (
             version INTEGER NOT NULL

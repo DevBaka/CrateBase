@@ -16,4 +16,5 @@ public sealed record ScanProgress(int FilesSeen, int FilesAdded, int FilesUpdate
 public interface ILibraryScanner
 {
     Task ScanAsync(LibraryRoot root, IProgress<ScanProgress>? progress, CancellationToken ct = default);
+    Task ScanFolderAsync(LibraryRoot root, string absoluteFolder, IProgress<ScanProgress>? progress, CancellationToken ct = default);
 }
