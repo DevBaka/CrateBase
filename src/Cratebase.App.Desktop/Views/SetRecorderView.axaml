@@ -13,6 +13,14 @@
                 <ScrollViewer Grid.Column="0" Margin="0,0,14,0" VerticalScrollBarVisibility="Auto">
                     <StackPanel Spacing="14">
                         <Border Background="{StaticResource BgSurfaceBrush}" BorderBrush="{StaticResource BorderBrush1}" BorderThickness="1" CornerRadius="10" Padding="16">
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Tracklist nach dem Set" FontSize="13" FontWeight="Bold" />
+                                <TextBlock Text="Traktor-History mit einer vorhandenen Audio- oder Videoaufnahme abgleichen. Funktioniert auch mit extern aufgenommenen Sets. Lokale Audio-Erkennung, prüfbare Zeitstempel und mögliche Mashups." FontSize="11" TextWrapping="Wrap" />
+                                <Button Name="ImportHistoryButton" Content="History + Aufnahme analysieren …" Click="OnImportHistoryClick" IsEnabled="{Binding !IsRecording}" />
+                                <Button Name="SetArtworkButton" Content="Thumbnail &amp; Titel erstellen …" Click="OnArtworkClick" />
+                            </StackPanel>
+                        </Border>
+                        <Border Background="{StaticResource BgSurfaceBrush}" BorderBrush="{StaticResource BorderBrush1}" BorderThickness="1" CornerRadius="10" Padding="16">
                             <StackPanel Spacing="10">
                                 <TextBlock Text="Aufnahme" FontSize="13" FontWeight="Bold" /><Button Content="FFmpeg auswählen …" Click="OnSelectFfmpegClick" IsEnabled="{Binding !IsRecording}" />
                                 <StackPanel Spacing="3">
@@ -132,9 +140,9 @@
                             <ItemsControl ItemsSource="{Binding TracklistMarkers}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid ColumnDefinitions="60,1.2*,1.6*,Auto" Margin="8,4">
-                                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontFamily="{StaticResource MonoFont}" FontSize="12"
-                                                       Foreground="{StaticResource TextMutedBrush}" Text="{Binding Position, Converter={StaticResource TimeSpanTimestamp}}" />
+                                        <Grid ColumnDefinitions="90,1.2*,1.6*,Auto" Margin="8,4">
+                                            <TextBox Grid.Column="0" VerticalAlignment="Center" FontFamily="{StaticResource MonoFont}" FontSize="12"
+                                                       Text="{Binding PositionText, Mode=TwoWay}" LostFocus="OnMarkerFieldLostFocus" ToolTip.Tip="Zeitstempel bearbeiten: MM:SS oder H:MM:SS" />
                                             <TextBox Grid.Column="1" Margin="6,0" Text="{Binding Artist, Mode=TwoWay}" PlaceholderText="Artist" FontSize="12"
                                                      LostFocus="OnMarkerFieldLostFocus" />
                                             <TextBox Grid.Column="2" Margin="0,0,6,0" Text="{Binding Title, Mode=TwoWay}" PlaceholderText="Titel" FontSize="12"

@@ -10,6 +10,8 @@ using Cratebase.Core.Models;
 
 namespace Cratebase.App.Desktop.Controls;
 
+public sealed record WaveformMarker(double Progress,string Label,uint Color,bool Draggable=false,string? Id=null);
+
 /// <summary>
 /// Ersetzt den reinen Fortschritts-Slider in der Transportleiste: zeichnet die 3-Band-Waveform
 /// (<see cref="WaveformData"/>) als übereinandergelegte, halbtransparente Balken (rot=Bass,
@@ -19,6 +21,10 @@ namespace Cratebase.App.Desktop.Controls;
 /// </summary>
 public sealed class WaveformView : Control
 {
+    private string? _dragMarker;
+    private double _dragValue;
+    public event Action<string,double>? MarkerDragged;
+    public event Action<string,double>? MarkerDragCompleted;
     private WriteableBitmap? _stripeBitmap;
     private WaveformRaster? _bitmapSource;
     public static readonly StyledProperty<WaveformData?> WaveformProperty =
@@ -32,6 +38,9 @@ public sealed class WaveformView : Control
 
     public static readonly StyledProperty<ICommand?> SeekCommandProperty =
         AvaloniaProperty.Register<WaveformView, ICommand?>(nameof(SeekCommand));
+    public static readonly StyledProperty<IReadOnlyList<WaveformMarker>?> MarkersProperty =
+        AvaloniaProperty.Register<WaveformView,IReadOnlyList<WaveformMarker>?>(nameof(Markers));
+    public IReadOnlyList<WaveformMarker>? Markers {get=>GetValue(MarkersProperty);set=>SetValue(MarkersProperty,value);}
 
     private static readonly IBrush BackgroundBrush = new SolidColorBrush(Color.Parse("#08090B"));
     private static readonly IBrush LowBrush = new SolidColorBrush(Color.Parse("#CCFF5C5C"));
@@ -42,7 +51,7 @@ public sealed class WaveformView : Control
 
     static WaveformView()
     {
-        AffectsRender<WaveformView>(WaveformProperty, ProgressProperty, IsLoadingProperty);
+        AffectsRender<WaveformView>(WaveformProperty, ProgressProperty, IsLoadingProperty,MarkersProperty);
     }
 
     public WaveformData? Waveform
@@ -122,6 +131,19 @@ public sealed class WaveformView : Control
 
         var progressX = width * Math.Clamp(Progress, 0, 1);
         context.DrawLine(new Pen(ProgressBrush, 2), new Point(progressX, 0), new Point(progressX, height));
+        var markerIndex=0;
+        foreach(var marker in Markers??[])
+        {
+            if(!double.IsFinite(marker.Progress))continue;
+            var x=width*Math.Clamp(marker.Progress,0,1);var brush=new SolidColorBrush(Color.FromUInt32(marker.Color));
+            context.DrawLine(new Pen(brush,1),new Point(x,0),new Point(x,height));
+            if(marker.Draggable)context.FillRectangle(brush,new Rect(Math.Clamp(x-4,0,Math.Max(0,width-8)),Math.Max(0,height-9),8,9));
+            if(marker.Label.Length>0)
+            {
+                var text=new FormattedText(marker.Label,System.Globalization.CultureInfo.CurrentCulture,FlowDirection.LeftToRight,Typeface.Default,10,brush);
+                context.DrawText(text,new Point(Math.Clamp(x+3,0,Math.Max(0,width-text.Width)),(markerIndex++%3)*12));
+            }
+        }
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
@@ -146,9 +168,28 @@ public sealed class WaveformView : Control
         }
 
         var fraction = Math.Clamp(e.GetPosition(this).X / Bounds.Width, 0, 1);
+        if(e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        {
+            var point=e.GetPosition(this);var markers=Markers??[];
+            var labeled=markers.Where(m=>m.Label.Length>0).Select((m,i)=>(Marker:m,Row:i%3)).FirstOrDefault(m=>m.Marker.Draggable&&m.Marker.Id!=null&&point.Y>=m.Row*12&&point.Y<m.Row*12+12&&point.X>=Math.Clamp(m.Marker.Progress*Bounds.Width+3,0,Math.Max(0,Bounds.Width-m.Marker.Label.Length*7))&&point.X<=Math.Clamp(m.Marker.Progress*Bounds.Width+3,0,Math.Max(0,Bounds.Width-m.Marker.Label.Length*7))+m.Marker.Label.Length*7);
+            var marker=labeled.Marker??markers.Where(m=>m.Draggable&&m.Id!=null&&Math.Abs(m.Progress*Bounds.Width-point.X)<=8).OrderBy(m=>Math.Abs(m.Progress*Bounds.Width-point.X)).FirstOrDefault();
+            if(marker!=null){_dragMarker=marker.Id;_dragValue=marker.Progress;e.Pointer.Capture(this);e.Handled=true;return;}
+        }
         if (SeekCommand?.CanExecute(fraction) == true)
         {
             SeekCommand.Execute(fraction);
         }
     }
+    protected override void OnPointerMoved(PointerEventArgs e)
+    {
+        base.OnPointerMoved(e);if(_dragMarker==null||Bounds.Width<=0)return;
+        _dragValue=Math.Clamp(e.GetPosition(this).X/Bounds.Width,0,1);MarkerDragged?.Invoke(_dragMarker,_dragValue);e.Handled=true;
+    }
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        base.OnPointerReleased(e);if(_dragMarker is not {} id)return;
+        _dragMarker=null;e.Pointer.Capture(null);MarkerDragCompleted?.Invoke(id,_dragValue);e.Handled=true;
+    }
+    protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
+    {base.OnPointerCaptureLost(e);if(_dragMarker is {} id){_dragMarker=null;MarkerDragCompleted?.Invoke(id,_dragValue);}}
 }

@@ -19,7 +19,8 @@ public sealed class FfmpegWaveformGenerator(string executable="ffmpeg") : IWavef
     {
         ct.ThrowIfCancellationRequested();
         var bundled=Path.Combine(AppContext.BaseDirectory,OperatingSystem.IsWindows()?"ffmpeg.exe":"ffmpeg");
-        var program=executable=="ffmpeg"&&File.Exists(bundled)?bundled:executable;
+        var managed=Path.Combine(Environment.GetEnvironmentVariable("CRATEBASE_DATA_DIR")??Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"Cratebase"),"tools",OperatingSystem.IsWindows()?"ffmpeg.exe":"ffmpeg");
+        var program=executable=="ffmpeg"?(File.Exists(bundled)?bundled:File.Exists(managed)?managed:executable):executable;
         var start=new ProcessStartInfo { FileName=program,RedirectStandardOutput=true,RedirectStandardError=true,UseShellExecute=false,CreateNoWindow=true };
         foreach(var arg in new[] { "-nostdin","-v","error","-i",path,"-map","0:a:0","-vn","-sn","-dn","-ac","1","-ar",SampleRate.ToString(System.Globalization.CultureInfo.InvariantCulture),"-c:a","pcm_s16le","-f","s16le","pipe:1" }) start.ArgumentList.Add(arg);
         using var process=new Process { StartInfo=start };

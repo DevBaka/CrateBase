@@ -29,7 +29,7 @@ internal static class RecorderChecks
         var player=new WorkspacePlayer(new Audio(),roots,null!,null!,new Stripes(),tracks);
         var actions=new TargetActions(tracks,roots,playlists,new TagLibTagReader(),new LibraryQuery(factory));
         var sync=new CollectionSync(tracks,roots,playlists,state,new WorkspaceCheckpoint(factory));
-        var window=new WorkspaceWindow(tracks,roots,playlists,new LibraryQuery(factory),actions,sync,state,new JsonFavoriteProfileStore(Path.Combine(directory,"favorites.json")),new JsonQuickAccessStore(Path.Combine(directory,"quick.json")),null!,null!,player,vm,new FfmpegAudioRecorder(),new ClubMediaExporter(roots,new LibraryQuery(factory),sync));
+        var window=new WorkspaceWindow(tracks,roots,playlists,new LibraryQuery(factory),actions,sync,state,new JsonFavoriteProfileStore(Path.Combine(directory,"favorites.json")),new JsonQuickAccessStore(Path.Combine(directory,"quick.json")),new LibraryScanner(tracks,roots,new TagLibTagReader()),new TagLibTagReader(),player,vm,new FfmpegAudioRecorder(),new ClubMediaExporter(roots,new LibraryQuery(factory),sync));
         var chooser=window.GetLogicalDescendants().OfType<ComboBox>().Single(c=>c.ItemsSource is string[] modes && modes.Contains("Set Recorder"));
         var view=window.GetLogicalDescendants().OfType<SetRecorderView>().Single();
         Check(!view.IsVisible,"Library is the default workspace");
@@ -51,6 +51,26 @@ internal static class RecorderChecks
         Check(vm.TracklistPreview=="","Removing a marker updates preview");
         window.Measure(new Size(1400,820)); window.Arrange(new Rect(0,0,1400,820));
         Check(view.Bounds.Width>0,"Recorder XAML, resources and layout load successfully");
+        chooser.SelectedIndex=2;
+        var planner=window.GetLogicalDescendants().OfType<SetPlanningView>().Single();
+        for(var i=0;i<100&&planner.Busy;i++){Avalonia.Threading.Dispatcher.UIThread.RunJobs();Thread.Sleep(10);}
+        window.Measure(new Size(1400,820));window.Arrange(new Rect(0,0,1400,820));
+        Check(planner.IsVisible&&!view.IsVisible,"Third workspace opens set planning without losing recorder state");
+        planner.Measure(new Size(1372,550));planner.Arrange(new Rect(0,0,1372,550));
+        var planTable=planner.GetLogicalDescendants().OfType<DataGrid>().Single(g=>g.Name=="SetPlanTracks");
+        Check(planTable.Bounds.Height>50,"Set planning keeps its track table usable at desktop size");
+        Check(planner.GetLogicalDescendants().OfType<Cratebase.App.Desktop.Controls.WaveformView>().Count()==2,"Planning has independent A/B waveforms");
+        var music=Path.Combine(directory,"indexed-music");var genreFolder=Path.Combine(music,"Techno");Directory.CreateDirectory(genreFolder);
+        var fixture=Path.Combine(genreFolder,"fixture.wav");
+        using(var writer=new BinaryWriter(File.Create(fixture)))
+        {writer.Write("RIFF"u8);writer.Write(16036);writer.Write("WAVEfmt "u8);writer.Write(16);writer.Write((short)1);writer.Write((short)1);writer.Write(8000);writer.Write(16000);writer.Write((short)2);writer.Write((short)16);writer.Write("data"u8);writer.Write(16000);writer.Write(new byte[16000]);}
+        var index=typeof(WorkspaceWindow).GetMethod("IndexPlanningFolderAsync",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance)!;
+        void IndexFolder()
+        {var task=(Task)index.Invoke(window,[music,CancellationToken.None])!;var end=DateTime.UtcNow.AddSeconds(10);while(!task.IsCompleted){if(DateTime.UtcNow>end)throw new TimeoutException();Avalonia.Threading.Dispatcher.UIThread.RunJobs();Thread.Sleep(5);}task.GetAwaiter().GetResult();}
+        IndexFolder();var indexed=new LibraryQuery(factory).QueryAsync(new(new(LibraryTargetKind.Directory,"Fixture",Path:music))).GetAwaiter().GetResult();
+        Check(indexed.Count==1&&indexed[0].DurationMs>0&&indexed[0].RelativePath.Contains("Techno/"),"Planner indexing recursively persists real audio metadata and folder structure in SQLite");
+        var originalBytes=File.ReadAllBytes(fixture);IndexFolder();
+        Check(new LibraryQuery(factory).QueryAsync(new(new(LibraryTargetKind.Directory,"Fixture",Path:music))).GetAwaiter().GetResult().Single().Id==indexed[0].Id&&File.ReadAllBytes(fixture).SequenceEqual(originalBytes),"Repeating planner indexing reuses track identities and leaves original audio unchanged");
         chooser.SelectedIndex=0;
         var clubRoot=playlists.EnsureClubRootAsync().GetAwaiter().GetResult();
         playlists.CreateAsync("Club set",PlaylistNodeType.Playlist,clubRoot).GetAwaiter().GetResult();

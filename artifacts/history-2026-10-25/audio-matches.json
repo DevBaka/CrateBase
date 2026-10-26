@@ -1,0 +1,6103 @@
+{
+  "version": "landmarks-v2",
+  "recording": "C:\\Users\\DJBaka\\Videos\\Streams\\2026-10-25_FrontMain.mp4",
+  "duration": 12913.28,
+  "matches": [
+    {
+      "artist": "Oliver Huntemann",
+      "id": 10,
+      "path": "M:\\Musik\\Techno\\Deep Techno\\2024\\Crank (Original Mix).flac",
+      "title": "Crank (Original Mix)",
+      "start": 3.0,
+      "end": 120.0,
+      "supportSeconds": 106,
+      "density": 0.906,
+      "tempo": 1.00098,
+      "confidence": "high",
+      "overlaps": [
+        24,
+        54
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 55.0,
+      "end": 151.0,
+      "supportSeconds": 32,
+      "density": 0.333,
+      "tempo": 1.05336,
+      "confidence": "review",
+      "overlaps": [
+        10,
+        54,
+        13
+      ]
+    },
+    {
+      "artist": "Teddy Killerz",
+      "id": 54,
+      "path": "M:\\Musik\\DnB\\JumpUp\\Beatport\\2022\\Don't Kill The Vibe (Original Mix).flac",
+      "title": "Don't Kill The Vibe (Original Mix)",
+      "start": 59.0,
+      "end": 107.0,
+      "supportSeconds": 16,
+      "density": 0.333,
+      "tempo": 0.92183,
+      "confidence": "review",
+      "overlaps": [
+        10,
+        24
+      ]
+    },
+    {
+      "artist": "Tiga Audion Layton Giordani",
+      "id": 13,
+      "path": "M:\\Musik\\Techno\\Deep Techno\\2024\\Let's Go Dancing (Original Mix).flac",
+      "title": "Let's Go Dancing (Original Mix)",
+      "start": 106.0,
+      "end": 276.0,
+      "supportSeconds": 142,
+      "density": 0.835,
+      "tempo": 1.02867,
+      "confidence": "high",
+      "overlaps": [
+        24,
+        10,
+        24,
+        10,
+        24,
+        11
+      ]
+    },
+    {
+      "artist": "Oliver Huntemann",
+      "id": 10,
+      "path": "M:\\Musik\\Techno\\Deep Techno\\2024\\Crank (Original Mix).flac",
+      "title": "Crank (Original Mix)",
+      "start": 137.0,
+      "end": 178.0,
+      "supportSeconds": 12,
+      "density": 0.293,
+      "tempo": 0.99929,
+      "confidence": "review",
+      "overlaps": [
+        13,
+        24
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 139.0,
+      "end": 191.0,
+      "supportSeconds": 14,
+      "density": 0.269,
+      "tempo": 0.84506,
+      "confidence": "review",
+      "overlaps": [
+        13,
+        10
+      ]
+    },
+    {
+      "artist": "Oliver Huntemann",
+      "id": 10,
+      "path": "M:\\Musik\\Techno\\Deep Techno\\2024\\Crank (Original Mix).flac",
+      "title": "Crank (Original Mix)",
+      "start": 175.0,
+      "end": 233.0,
+      "supportSeconds": 16,
+      "density": 0.276,
+      "tempo": 1.16777,
+      "confidence": "review",
+      "overlaps": [
+        13,
+        24
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 204.0,
+      "end": 265.0,
+      "supportSeconds": 19,
+      "density": 0.311,
+      "tempo": 1.20324,
+      "confidence": "review",
+      "overlaps": [
+        13,
+        10
+      ]
+    },
+    {
+      "artist": "Adam Beyer",
+      "id": 11,
+      "path": "M:\\Musik\\Techno\\Deep Techno\\2024\\Don't Go (Original Mix).flac",
+      "title": "Don't Go (Original Mix)",
+      "start": 249.0,
+      "end": 475.0,
+      "supportSeconds": 206,
+      "density": 0.912,
+      "tempo": 0.99965,
+      "confidence": "high",
+      "overlaps": [
+        13,
+        98,
+        27,
+        71,
+        24,
+        98,
+        55,
+        24,
+        71,
+        14,
+        14
+      ]
+    },
+    {
+      "artist": "Deichkind",
+      "id": 98,
+      "path": "M:\\Musik\\HardTekk\\2015\\Deichkind - So'ne Musik (The Various Artists - So'ne Bassdrum Remix).mp3",
+      "title": "So'ne Musik (Various Artists - So'ne Bassdrum Remix)",
+      "start": 273.0,
+      "end": 382.0,
+      "supportSeconds": 28,
+      "density": 0.257,
+      "tempo": 1.02744,
+      "confidence": "review",
+      "overlaps": [
+        11,
+        27,
+        71,
+        24
+      ]
+    },
+    {
+      "artist": "Age Of Love/Charlotte de Witte/Enrico Sangiuliano",
+      "id": 27,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Techno Extended Mieps Kat\\Age Of Love, Charlotte de Witte, Enrico Sangiuliano - The Age Of Love - Charlotte de Witte & Enrico Sangiuliano Remix.mp3",
+      "title": "The Age Of Love - Charlotte de Witte & Enrico Sangiuliano Remix",
+      "start": 285.0,
+      "end": 369.0,
+      "supportSeconds": 26,
+      "density": 0.31,
+      "tempo": 0.8542,
+      "confidence": "review",
+      "overlaps": [
+        11,
+        98,
+        71,
+        24,
+        98
+      ]
+    },
+    {
+      "artist": "",
+      "id": 71,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\Sacramento - Shut The Club Down [MV3].wav",
+      "title": "Sacramento - Shut The Club Down [MV3]",
+      "start": 285.0,
+      "end": 375.0,
+      "supportSeconds": 27,
+      "density": 0.3,
+      "tempo": 1.07006,
+      "confidence": "review",
+      "overlaps": [
+        11,
+        98,
+        27,
+        24,
+        98
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 313.0,
+      "end": 351.0,
+      "supportSeconds": 12,
+      "density": 0.316,
+      "tempo": 1.20302,
+      "confidence": "review",
+      "overlaps": [
+        11,
+        98,
+        27,
+        71
+      ]
+    },
+    {
+      "artist": "Deichkind",
+      "id": 98,
+      "path": "M:\\Musik\\HardTekk\\2015\\Deichkind - So'ne Musik (The Various Artists - So'ne Bassdrum Remix).mp3",
+      "title": "So'ne Musik (Various Artists - So'ne Bassdrum Remix)",
+      "start": 346.0,
+      "end": 456.0,
+      "supportSeconds": 30,
+      "density": 0.273,
+      "tempo": 1.03579,
+      "confidence": "review",
+      "overlaps": [
+        11,
+        27,
+        71,
+        55,
+        24,
+        71,
+        14
+      ]
+    },
+    {
+      "artist": "Anime & Rob Gee",
+      "id": 55,
+      "path": "M:\\Musik\\Hardcore\\Hardcore Extended\\10_anime_and_rob_gee_-_you_get_me_high.mp3",
+      "title": "You Get Me High",
+      "start": 384.0,
+      "end": 455.0,
+      "supportSeconds": 19,
+      "density": 0.268,
+      "tempo": 1.03374,
+      "confidence": "review",
+      "overlaps": [
+        11,
+        98,
+        24,
+        71,
+        14
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 408.0,
+      "end": 455.0,
+      "supportSeconds": 12,
+      "density": 0.255,
+      "tempo": 0.81541,
+      "confidence": "review",
+      "overlaps": [
+        11,
+        98,
+        55,
+        71,
+        14
+      ]
+    },
+    {
+      "artist": "",
+      "id": 71,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\Sacramento - Shut The Club Down [MV3].wav",
+      "title": "Sacramento - Shut The Club Down [MV3]",
+      "start": 408.0,
+      "end": 471.0,
+      "supportSeconds": 16,
+      "density": 0.254,
+      "tempo": 1.04777,
+      "confidence": "review",
+      "overlaps": [
+        11,
+        98,
+        55,
+        24,
+        14,
+        11
+      ]
+    },
+    {
+      "artist": "Chocolate Puma HI-LO",
+      "id": 14,
+      "path": "M:\\Musik\\Techno\\Deep Techno\\2024\\WTFU (Extended Mix).flac",
+      "title": "WTFU (Extended Mix)",
+      "start": 420.0,
+      "end": 458.0,
+      "supportSeconds": 16,
+      "density": 0.421,
+      "tempo": 1.06511,
+      "confidence": "review",
+      "overlaps": [
+        11,
+        98,
+        55,
+        24,
+        71
+      ]
+    },
+    {
+      "artist": "Adam Beyer",
+      "id": 11,
+      "path": "M:\\Musik\\Techno\\Deep Techno\\2024\\Don't Go (Original Mix).flac",
+      "title": "Don't Go (Original Mix)",
+      "start": 451.0,
+      "end": 509.0,
+      "supportSeconds": 15,
+      "density": 0.259,
+      "tempo": 1.01172,
+      "confidence": "review",
+      "overlaps": [
+        71,
+        14
+      ]
+    },
+    {
+      "artist": "Chocolate Puma HI-LO",
+      "id": 14,
+      "path": "M:\\Musik\\Techno\\Deep Techno\\2024\\WTFU (Extended Mix).flac",
+      "title": "WTFU (Extended Mix)",
+      "start": 453.0,
+      "end": 690.0,
+      "supportSeconds": 197,
+      "density": 0.831,
+      "tempo": 0.99868,
+      "confidence": "high",
+      "overlaps": [
+        11,
+        11,
+        83,
+        37,
+        83,
+        12
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 501.0,
+      "end": 558.0,
+      "supportSeconds": 19,
+      "density": 0.333,
+      "tempo": 1.08502,
+      "confidence": "review",
+      "overlaps": [
+        14,
+        37
+      ]
+    },
+    {
+      "artist": "",
+      "id": 37,
+      "path": "M:\\Musik\\Techno\\Peak Time Techno\\2024\\Leo - Bikini Bottom.mp3",
+      "title": "Leo - Bikini Bottom",
+      "start": 505.0,
+      "end": 605.0,
+      "supportSeconds": 33,
+      "density": 0.33,
+      "tempo": 1.24232,
+      "confidence": "review",
+      "overlaps": [
+        14,
+        83,
+        83
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 576.0,
+      "end": 648.0,
+      "supportSeconds": 19,
+      "density": 0.264,
+      "tempo": 0.97592,
+      "confidence": "review",
+      "overlaps": [
+        14,
+        37,
+        12
+      ]
+    },
+    {
+      "artist": "Chris Veron AXXX7en",
+      "id": 12,
+      "path": "M:\\Musik\\Techno\\Deep Techno\\2024\\Error Pulse (Extended Mix).flac",
+      "title": "Error Pulse (Extended Mix)",
+      "start": 627.0,
+      "end": 928.0,
+      "supportSeconds": 230,
+      "density": 0.764,
+      "tempo": 0.99594,
+      "confidence": "high",
+      "overlaps": [
+        14,
+        83,
+        93,
+        7,
+        93,
+        7,
+        93,
+        7
+      ]
+    },
+    {
+      "artist": "AKKI (DE)",
+      "id": 93,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Gettin' High (Extended Mix).m4a",
+      "title": "Gettin' High (Extended Mix)",
+      "start": 709.0,
+      "end": 764.0,
+      "supportSeconds": 19,
+      "density": 0.345,
+      "tempo": 0.9815,
+      "confidence": "review",
+      "overlaps": [
+        12,
+        7
+      ]
+    },
+    {
+      "artist": "",
+      "id": 7,
+      "path": "M:\\Musik\\Techno\\Hard Bounce\\2025\\Jesse Taylor - Goes Like That.mp3",
+      "title": "Jesse Taylor - Goes Like That",
+      "start": 741.0,
+      "end": 786.0,
+      "supportSeconds": 13,
+      "density": 0.289,
+      "tempo": 0.80751,
+      "confidence": "review",
+      "overlaps": [
+        12,
+        93,
+        93
+      ]
+    },
+    {
+      "artist": "AKKI (DE)",
+      "id": 93,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Gettin' High (Extended Mix).m4a",
+      "title": "Gettin' High (Extended Mix)",
+      "start": 741.0,
+      "end": 850.0,
+      "supportSeconds": 28,
+      "density": 0.257,
+      "tempo": 1.13667,
+      "confidence": "review",
+      "overlaps": [
+        12,
+        7,
+        7
+      ]
+    },
+    {
+      "artist": "",
+      "id": 7,
+      "path": "M:\\Musik\\Techno\\Hard Bounce\\2025\\Jesse Taylor - Goes Like That.mp3",
+      "title": "Jesse Taylor - Goes Like That",
+      "start": 764.0,
+      "end": 831.0,
+      "supportSeconds": 21,
+      "density": 0.313,
+      "tempo": 0.84923,
+      "confidence": "review",
+      "overlaps": [
+        12,
+        93
+      ]
+    },
+    {
+      "artist": "AKKI (DE)",
+      "id": 93,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Gettin' High (Extended Mix).m4a",
+      "title": "Gettin' High (Extended Mix)",
+      "start": 822.0,
+      "end": 883.0,
+      "supportSeconds": 19,
+      "density": 0.311,
+      "tempo": 0.84538,
+      "confidence": "review",
+      "overlaps": [
+        12,
+        7
+      ]
+    },
+    {
+      "artist": "",
+      "id": 7,
+      "path": "M:\\Musik\\Techno\\Hard Bounce\\2025\\Jesse Taylor - Goes Like That.mp3",
+      "title": "Jesse Taylor - Goes Like That",
+      "start": 845.0,
+      "end": 889.0,
+      "supportSeconds": 12,
+      "density": 0.273,
+      "tempo": 0.84923,
+      "confidence": "review",
+      "overlaps": [
+        12,
+        93
+      ]
+    },
+    {
+      "artist": "Chris Veron AXXX7en",
+      "id": 12,
+      "path": "M:\\Musik\\Techno\\Deep Techno\\2024\\Error Pulse (Extended Mix).flac",
+      "title": "Error Pulse (Extended Mix)",
+      "start": 906.0,
+      "end": 952.0,
+      "supportSeconds": 17,
+      "density": 0.37,
+      "tempo": 0.92025,
+      "confidence": "review",
+      "overlaps": [
+        16
+      ]
+    },
+    {
+      "artist": "",
+      "id": 16,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2016\\Niels Van Gogh - Pulverturm (NoCure Rework).wav",
+      "title": "Niels Van Gogh - Pulverturm (NoCure Rework)",
+      "start": 918.0,
+      "end": 1192.0,
+      "supportSeconds": 237,
+      "density": 0.865,
+      "tempo": 0.9997,
+      "confidence": "high",
+      "overlaps": [
+        12,
+        37,
+        37,
+        60,
+        55,
+        37,
+        17
+      ]
+    },
+    {
+      "artist": "",
+      "id": 37,
+      "path": "M:\\Musik\\Techno\\Peak Time Techno\\2024\\Leo - Bikini Bottom.mp3",
+      "title": "Leo - Bikini Bottom",
+      "start": 1012.0,
+      "end": 1041.0,
+      "supportSeconds": 14,
+      "density": 0.483,
+      "tempo": 1.24775,
+      "confidence": "review",
+      "overlaps": [
+        16
+      ]
+    },
+    {
+      "artist": "",
+      "id": 37,
+      "path": "M:\\Musik\\Techno\\Peak Time Techno\\2024\\Leo - Bikini Bottom.mp3",
+      "title": "Leo - Bikini Bottom",
+      "start": 1030.0,
+      "end": 1148.0,
+      "supportSeconds": 46,
+      "density": 0.39,
+      "tempo": 1.24852,
+      "confidence": "review",
+      "overlaps": [
+        16,
+        60,
+        55
+      ]
+    },
+    {
+      "artist": "",
+      "id": 60,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\KIRK - CD Is Dead (mp3).mp3",
+      "title": "KIRK - CD Is Dead (mp3)",
+      "start": 1053.0,
+      "end": 1096.0,
+      "supportSeconds": 12,
+      "density": 0.279,
+      "tempo": 0.79575,
+      "confidence": "review",
+      "overlaps": [
+        16,
+        37
+      ]
+    },
+    {
+      "artist": "Anime & Rob Gee",
+      "id": 55,
+      "path": "M:\\Musik\\Hardcore\\Hardcore Extended\\10_anime_and_rob_gee_-_you_get_me_high.mp3",
+      "title": "You Get Me High",
+      "start": 1093.0,
+      "end": 1139.0,
+      "supportSeconds": 21,
+      "density": 0.457,
+      "tempo": 1.05125,
+      "confidence": "review",
+      "overlaps": [
+        16,
+        37
+      ]
+    },
+    {
+      "artist": "",
+      "id": 37,
+      "path": "M:\\Musik\\Techno\\Peak Time Techno\\2024\\Leo - Bikini Bottom.mp3",
+      "title": "Leo - Bikini Bottom",
+      "start": 1130.0,
+      "end": 1171.0,
+      "supportSeconds": 12,
+      "density": 0.293,
+      "tempo": 1.116,
+      "confidence": "review",
+      "overlaps": [
+        16,
+        17
+      ]
+    },
+    {
+      "artist": "",
+      "id": 17,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2018\\Hefty - Cause of Death (Googana remix)(unmastered).wav",
+      "title": "Hefty - Cause of Death (Googana remix)(unmastered)",
+      "start": 1149.0,
+      "end": 1294.0,
+      "supportSeconds": 107,
+      "density": 0.738,
+      "tempo": 1.00232,
+      "confidence": "high",
+      "overlaps": [
+        16,
+        37,
+        16,
+        29,
+        29,
+        29,
+        18
+      ]
+    },
+    {
+      "artist": "",
+      "id": 16,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2016\\Niels Van Gogh - Pulverturm (NoCure Rework).wav",
+      "title": "Niels Van Gogh - Pulverturm (NoCure Rework)",
+      "start": 1157.0,
+      "end": 1240.0,
+      "supportSeconds": 37,
+      "density": 0.446,
+      "tempo": 0.98941,
+      "confidence": "review",
+      "overlaps": [
+        17,
+        29,
+        29
+      ]
+    },
+    {
+      "artist": "Aahan/The Dag",
+      "id": 29,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Underground Techno\\Aahan, The Dag - Venting.mp3",
+      "title": "Venting",
+      "start": 1190.0,
+      "end": 1235.0,
+      "supportSeconds": 14,
+      "density": 0.311,
+      "tempo": 1.01469,
+      "confidence": "review",
+      "overlaps": [
+        17,
+        16
+      ]
+    },
+    {
+      "artist": "Aahan/The Dag",
+      "id": 29,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Underground Techno\\Aahan, The Dag - Venting.mp3",
+      "title": "Venting",
+      "start": 1220.0,
+      "end": 1251.0,
+      "supportSeconds": 14,
+      "density": 0.452,
+      "tempo": 1.01239,
+      "confidence": "review",
+      "overlaps": [
+        17,
+        16
+      ]
+    },
+    {
+      "artist": "Aahan/The Dag",
+      "id": 29,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Underground Techno\\Aahan, The Dag - Venting.mp3",
+      "title": "Venting",
+      "start": 1259.0,
+      "end": 1296.0,
+      "supportSeconds": 13,
+      "density": 0.351,
+      "tempo": 0.97095,
+      "confidence": "review",
+      "overlaps": [
+        17,
+        18
+      ]
+    },
+    {
+      "artist": "",
+      "id": 18,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2018\\Manu Chao - Bongo Bong ( Alain Delay Bootleg Mastert by Landr).wav",
+      "title": "Manu Chao - Bongo Bong ( Alain Delay Bootleg Mastert by Landr)",
+      "start": 1268.0,
+      "end": 1683.0,
+      "supportSeconds": 407,
+      "density": 0.981,
+      "tempo": 0.99981,
+      "confidence": "high",
+      "overlaps": [
+        17,
+        29,
+        17,
+        19,
+        19
+      ]
+    },
+    {
+      "artist": "",
+      "id": 17,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2018\\Hefty - Cause of Death (Googana remix)(unmastered).wav",
+      "title": "Hefty - Cause of Death (Googana remix)(unmastered)",
+      "start": 1431.0,
+      "end": 1463.0,
+      "supportSeconds": 12,
+      "density": 0.375,
+      "tempo": 0.83529,
+      "confidence": "review",
+      "overlaps": [
+        18
+      ]
+    },
+    {
+      "artist": "Matt Milano",
+      "id": 19,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2018\\Matt Milano - Requiem for a Dream (Bootleg).wav",
+      "title": "Matt Milano - Requiem for a Dream (Bootleg)",
+      "start": 1571.0,
+      "end": 1602.0,
+      "supportSeconds": 15,
+      "density": 0.484,
+      "tempo": 0.78995,
+      "confidence": "review",
+      "overlaps": [
+        18
+      ]
+    },
+    {
+      "artist": "Matt Milano",
+      "id": 19,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2018\\Matt Milano - Requiem for a Dream (Bootleg).wav",
+      "title": "Matt Milano - Requiem for a Dream (Bootleg)",
+      "start": 1657.0,
+      "end": 1975.0,
+      "supportSeconds": 289,
+      "density": 0.909,
+      "tempo": 1.01532,
+      "confidence": "high",
+      "overlaps": [
+        18
+      ]
+    },
+    {
+      "artist": "Steve Shaden",
+      "id": 20,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2018\\Steve Shaden - Feel My Soul (Original Mix).mp3",
+      "title": "Steve Shaden - Feel My Soul (Original Mix)",
+      "start": 1967.0,
+      "end": 2153.0,
+      "supportSeconds": 161,
+      "density": 0.866,
+      "tempo": 1.01394,
+      "confidence": "high",
+      "overlaps": [
+        21,
+        21
+      ]
+    },
+    {
+      "artist": "",
+      "id": 21,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2018\\schastn - Sweet Home Alabama (Techno Bootleg) Master.wav",
+      "title": "schastn - Sweet Home Alabama (Techno Bootleg) Master",
+      "start": 2077.0,
+      "end": 2111.0,
+      "supportSeconds": 12,
+      "density": 0.353,
+      "tempo": 1.01184,
+      "confidence": "review",
+      "overlaps": [
+        20
+      ]
+    },
+    {
+      "artist": "",
+      "id": 21,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2018\\schastn - Sweet Home Alabama (Techno Bootleg) Master.wav",
+      "title": "schastn - Sweet Home Alabama (Techno Bootleg) Master",
+      "start": 2094.0,
+      "end": 2325.0,
+      "supportSeconds": 190,
+      "density": 0.823,
+      "tempo": 0.99229,
+      "confidence": "high",
+      "overlaps": [
+        20,
+        20,
+        22
+      ]
+    },
+    {
+      "artist": "Steve Shaden",
+      "id": 20,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2018\\Steve Shaden - Feel My Soul (Original Mix).mp3",
+      "title": "Steve Shaden - Feel My Soul (Original Mix)",
+      "start": 2136.0,
+      "end": 2176.0,
+      "supportSeconds": 13,
+      "density": 0.325,
+      "tempo": 1.02117,
+      "confidence": "review",
+      "overlaps": [
+        21
+      ]
+    },
+    {
+      "artist": "",
+      "id": 22,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2019\\Benny Benassi - Satisfaction _ARTCØRE [TECHNO] bootleg.mp3",
+      "title": "Benny Benassi - Satisfaction _ARTCØRE [TECHNO] bootleg",
+      "start": 2293.0,
+      "end": 2434.0,
+      "supportSeconds": 110,
+      "density": 0.78,
+      "tempo": 0.97423,
+      "confidence": "high",
+      "overlaps": [
+        21,
+        23
+      ]
+    },
+    {
+      "artist": "",
+      "id": 23,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2019\\Dope Amine - Heroes Of The West.wav",
+      "title": "Dope Amine - Heroes Of The West",
+      "start": 2410.0,
+      "end": 2555.0,
+      "supportSeconds": 117,
+      "density": 0.807,
+      "tempo": 1.0219,
+      "confidence": "high",
+      "overlaps": [
+        22,
+        30,
+        79
+      ]
+    },
+    {
+      "artist": "Sperminator",
+      "id": 30,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Underground Techno\\Sperminator - No Woman Allowed.mp3",
+      "title": "No Woman Allowed",
+      "start": 2498.0,
+      "end": 2530.0,
+      "supportSeconds": 13,
+      "density": 0.406,
+      "tempo": 1.18731,
+      "confidence": "review",
+      "overlaps": [
+        23
+      ]
+    },
+    {
+      "artist": "K-Traxx",
+      "id": 79,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2004\\K-Traxx - Noise Tool - Technoboy 2004 Remix.flac",
+      "title": "Noise Tool - Technoboy 2004 Remix",
+      "start": 2529.0,
+      "end": 2798.0,
+      "supportSeconds": 129,
+      "density": 0.48,
+      "tempo": 1.00162,
+      "confidence": "high",
+      "overlaps": [
+        23,
+        60,
+        83,
+        83,
+        77,
+        77
+      ]
+    },
+    {
+      "artist": "",
+      "id": 60,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\KIRK - CD Is Dead (mp3).mp3",
+      "title": "KIRK - CD Is Dead (mp3)",
+      "start": 2593.0,
+      "end": 2653.0,
+      "supportSeconds": 16,
+      "density": 0.267,
+      "tempo": 0.84975,
+      "confidence": "review",
+      "overlaps": [
+        79,
+        83
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 2604.0,
+      "end": 2648.0,
+      "supportSeconds": 15,
+      "density": 0.341,
+      "tempo": 1.24024,
+      "confidence": "review",
+      "overlaps": [
+        79,
+        60
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 2651.0,
+      "end": 2737.0,
+      "supportSeconds": 24,
+      "density": 0.279,
+      "tempo": 0.9781,
+      "confidence": "review",
+      "overlaps": [
+        79,
+        77,
+        77
+      ]
+    },
+    {
+      "artist": "Zax aka Zenith DJ",
+      "id": 77,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2003\\Zax aka Zenith DJ - In Da Club - Vocal Mix.flac",
+      "title": "In Da Club - Vocal Mix",
+      "start": 2664.0,
+      "end": 2700.0,
+      "supportSeconds": 20,
+      "density": 0.556,
+      "tempo": 1.03032,
+      "confidence": "review",
+      "overlaps": [
+        79,
+        83
+      ]
+    },
+    {
+      "artist": "Zax aka Zenith DJ",
+      "id": 77,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2003\\Zax aka Zenith DJ - In Da Club - Vocal Mix.flac",
+      "title": "In Da Club - Vocal Mix",
+      "start": 2705.0,
+      "end": 2894.0,
+      "supportSeconds": 163,
+      "density": 0.862,
+      "tempo": 0.99827,
+      "confidence": "high",
+      "overlaps": [
+        79,
+        83,
+        30,
+        79,
+        55,
+        79,
+        73,
+        78,
+        83,
+        79,
+        73
+      ]
+    },
+    {
+      "artist": "Sperminator",
+      "id": 30,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Underground Techno\\Sperminator - No Woman Allowed.mp3",
+      "title": "No Woman Allowed",
+      "start": 2781.0,
+      "end": 2823.0,
+      "supportSeconds": 13,
+      "density": 0.31,
+      "tempo": 1.15958,
+      "confidence": "review",
+      "overlaps": [
+        77,
+        79
+      ]
+    },
+    {
+      "artist": "K-Traxx",
+      "id": 79,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2004\\K-Traxx - Noise Tool - Technoboy 2004 Remix.flac",
+      "title": "Noise Tool - Technoboy 2004 Remix",
+      "start": 2785.0,
+      "end": 2839.0,
+      "supportSeconds": 15,
+      "density": 0.278,
+      "tempo": 1.05012,
+      "confidence": "review",
+      "overlaps": [
+        77,
+        30,
+        55
+      ]
+    },
+    {
+      "artist": "Anime & Rob Gee",
+      "id": 55,
+      "path": "M:\\Musik\\Hardcore\\Hardcore Extended\\10_anime_and_rob_gee_-_you_get_me_high.mp3",
+      "title": "You Get Me High",
+      "start": 2814.0,
+      "end": 2871.0,
+      "supportSeconds": 17,
+      "density": 0.298,
+      "tempo": 0.96765,
+      "confidence": "review",
+      "overlaps": [
+        77,
+        79,
+        79,
+        73,
+        78,
+        83,
+        79
+      ]
+    },
+    {
+      "artist": "K-Traxx",
+      "id": 79,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2004\\K-Traxx - Noise Tool - Technoboy 2004 Remix.flac",
+      "title": "Noise Tool - Technoboy 2004 Remix",
+      "start": 2819.0,
+      "end": 2864.0,
+      "supportSeconds": 21,
+      "density": 0.467,
+      "tempo": 1.02018,
+      "confidence": "review",
+      "overlaps": [
+        77,
+        55,
+        73,
+        78,
+        83
+      ]
+    },
+    {
+      "artist": "Alberto Adami",
+      "id": 73,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\2025\\Acid Machine Gun (Extended Mix).flac",
+      "title": "Acid Machine Gun (Extended Mix)",
+      "start": 2821.0,
+      "end": 2891.0,
+      "supportSeconds": 23,
+      "density": 0.329,
+      "tempo": 0.90453,
+      "confidence": "review",
+      "overlaps": [
+        77,
+        55,
+        79,
+        78,
+        83,
+        79,
+        77
+      ]
+    },
+    {
+      "artist": "DJ Isaac",
+      "id": 78,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2004\\DJ Isaac - Focus (Derb Remix).flac",
+      "title": "Focus (Derb Remix)",
+      "start": 2828.0,
+      "end": 2932.0,
+      "supportSeconds": 43,
+      "density": 0.413,
+      "tempo": 1.00414,
+      "confidence": "review",
+      "overlaps": [
+        77,
+        55,
+        79,
+        73,
+        83,
+        79,
+        77,
+        73,
+        55
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 2844.0,
+      "end": 2931.0,
+      "supportSeconds": 22,
+      "density": 0.253,
+      "tempo": 1.24826,
+      "confidence": "review",
+      "overlaps": [
+        77,
+        55,
+        79,
+        73,
+        78,
+        79,
+        77,
+        73,
+        55,
+        78
+      ]
+    },
+    {
+      "artist": "K-Traxx",
+      "id": 79,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2004\\K-Traxx - Noise Tool - Technoboy 2004 Remix.flac",
+      "title": "Noise Tool - Technoboy 2004 Remix",
+      "start": 2849.0,
+      "end": 2909.0,
+      "supportSeconds": 15,
+      "density": 0.25,
+      "tempo": 1.03943,
+      "confidence": "review",
+      "overlaps": [
+        77,
+        55,
+        73,
+        78,
+        83,
+        77,
+        73,
+        55,
+        78
+      ]
+    },
+    {
+      "artist": "Zax aka Zenith DJ",
+      "id": 77,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2003\\Zax aka Zenith DJ - In Da Club - Vocal Mix.flac",
+      "title": "In Da Club - Vocal Mix",
+      "start": 2867.0,
+      "end": 2948.0,
+      "supportSeconds": 25,
+      "density": 0.309,
+      "tempo": 1.18468,
+      "confidence": "review",
+      "overlaps": [
+        73,
+        78,
+        83,
+        79,
+        73,
+        55,
+        78,
+        83
+      ]
+    },
+    {
+      "artist": "Alberto Adami",
+      "id": 73,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\2025\\Acid Machine Gun (Extended Mix).flac",
+      "title": "Acid Machine Gun (Extended Mix)",
+      "start": 2870.0,
+      "end": 2935.0,
+      "supportSeconds": 21,
+      "density": 0.323,
+      "tempo": 1.00965,
+      "confidence": "review",
+      "overlaps": [
+        77,
+        78,
+        83,
+        79,
+        77,
+        55,
+        78,
+        83
+      ]
+    },
+    {
+      "artist": "Anime & Rob Gee",
+      "id": 55,
+      "path": "M:\\Musik\\Hardcore\\Hardcore Extended\\10_anime_and_rob_gee_-_you_get_me_high.mp3",
+      "title": "You Get Me High",
+      "start": 2882.0,
+      "end": 2914.0,
+      "supportSeconds": 12,
+      "density": 0.375,
+      "tempo": 1.24412,
+      "confidence": "review",
+      "overlaps": [
+        78,
+        83,
+        79,
+        77,
+        73,
+        78
+      ]
+    },
+    {
+      "artist": "DJ Isaac",
+      "id": 78,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2004\\DJ Isaac - Focus (Derb Remix).flac",
+      "title": "Focus (Derb Remix)",
+      "start": 2889.0,
+      "end": 3192.0,
+      "supportSeconds": 271,
+      "density": 0.894,
+      "tempo": 0.9931,
+      "confidence": "high",
+      "overlaps": [
+        83,
+        79,
+        77,
+        73,
+        55,
+        83,
+        77,
+        79,
+        77,
+        73,
+        77,
+        55,
+        77,
+        83,
+        55,
+        94
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 2914.0,
+      "end": 2977.0,
+      "supportSeconds": 22,
+      "density": 0.349,
+      "tempo": 1.01915,
+      "confidence": "review",
+      "overlaps": [
+        77,
+        73,
+        78,
+        77,
+        79
+      ]
+    },
+    {
+      "artist": "Zax aka Zenith DJ",
+      "id": 77,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2003\\Zax aka Zenith DJ - In Da Club - Vocal Mix.flac",
+      "title": "In Da Club - Vocal Mix",
+      "start": 2921.0,
+      "end": 2978.0,
+      "supportSeconds": 15,
+      "density": 0.263,
+      "tempo": 1.20498,
+      "confidence": "review",
+      "overlaps": [
+        78,
+        83,
+        79
+      ]
+    },
+    {
+      "artist": "K-Traxx",
+      "id": 79,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2004\\K-Traxx - Noise Tool - Technoboy 2004 Remix.flac",
+      "title": "Noise Tool - Technoboy 2004 Remix",
+      "start": 2942.0,
+      "end": 2972.0,
+      "supportSeconds": 13,
+      "density": 0.433,
+      "tempo": 0.91153,
+      "confidence": "review",
+      "overlaps": [
+        78,
+        83,
+        77
+      ]
+    },
+    {
+      "artist": "Zax aka Zenith DJ",
+      "id": 77,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2003\\Zax aka Zenith DJ - In Da Club - Vocal Mix.flac",
+      "title": "In Da Club - Vocal Mix",
+      "start": 2963.0,
+      "end": 3001.0,
+      "supportSeconds": 12,
+      "density": 0.316,
+      "tempo": 0.96539,
+      "confidence": "review",
+      "overlaps": [
+        78
+      ]
+    },
+    {
+      "artist": "Alberto Adami",
+      "id": 73,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\2025\\Acid Machine Gun (Extended Mix).flac",
+      "title": "Acid Machine Gun (Extended Mix)",
+      "start": 3054.0,
+      "end": 3102.0,
+      "supportSeconds": 12,
+      "density": 0.25,
+      "tempo": 0.99781,
+      "confidence": "review",
+      "overlaps": [
+        78,
+        77,
+        55
+      ]
+    },
+    {
+      "artist": "Zax aka Zenith DJ",
+      "id": 77,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2003\\Zax aka Zenith DJ - In Da Club - Vocal Mix.flac",
+      "title": "In Da Club - Vocal Mix",
+      "start": 3062.0,
+      "end": 3115.0,
+      "supportSeconds": 19,
+      "density": 0.358,
+      "tempo": 1.04013,
+      "confidence": "review",
+      "overlaps": [
+        78,
+        73,
+        55
+      ]
+    },
+    {
+      "artist": "Anime & Rob Gee",
+      "id": 55,
+      "path": "M:\\Musik\\Hardcore\\Hardcore Extended\\10_anime_and_rob_gee_-_you_get_me_high.mp3",
+      "title": "You Get Me High",
+      "start": 3063.0,
+      "end": 3113.0,
+      "supportSeconds": 15,
+      "density": 0.3,
+      "tempo": 0.99076,
+      "confidence": "review",
+      "overlaps": [
+        78,
+        73,
+        77
+      ]
+    },
+    {
+      "artist": "Zax aka Zenith DJ",
+      "id": 77,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2003\\Zax aka Zenith DJ - In Da Club - Vocal Mix.flac",
+      "title": "In Da Club - Vocal Mix",
+      "start": 3105.0,
+      "end": 3166.0,
+      "supportSeconds": 20,
+      "density": 0.328,
+      "tempo": 0.97976,
+      "confidence": "review",
+      "overlaps": [
+        78,
+        83,
+        55,
+        94
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 3105.0,
+      "end": 3154.0,
+      "supportSeconds": 15,
+      "density": 0.306,
+      "tempo": 1.24842,
+      "confidence": "review",
+      "overlaps": [
+        78,
+        77,
+        55
+      ]
+    },
+    {
+      "artist": "Anime & Rob Gee",
+      "id": 55,
+      "path": "M:\\Musik\\Hardcore\\Hardcore Extended\\10_anime_and_rob_gee_-_you_get_me_high.mp3",
+      "title": "You Get Me High",
+      "start": 3106.0,
+      "end": 3151.0,
+      "supportSeconds": 12,
+      "density": 0.267,
+      "tempo": 1.03565,
+      "confidence": "review",
+      "overlaps": [
+        78,
+        77,
+        83
+      ]
+    },
+    {
+      "artist": "Kopf & Hörer",
+      "id": 94,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Hollow (Original Mix).m4a",
+      "title": "Hollow (Original Mix)",
+      "start": 3141.0,
+      "end": 3342.0,
+      "supportSeconds": 173,
+      "density": 0.861,
+      "tempo": 0.99982,
+      "confidence": "high",
+      "overlaps": [
+        78,
+        77,
+        32,
+        93
+      ]
+    },
+    {
+      "artist": "Somniac One",
+      "id": 32,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - Shirtless.mp3",
+      "title": "Shirtless",
+      "start": 3203.0,
+      "end": 3258.0,
+      "supportSeconds": 18,
+      "density": 0.327,
+      "tempo": 1.07417,
+      "confidence": "review",
+      "overlaps": [
+        94,
+        93
+      ]
+    },
+    {
+      "artist": "AKKI (DE)",
+      "id": 93,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Gettin' High (Extended Mix).m4a",
+      "title": "Gettin' High (Extended Mix)",
+      "start": 3227.0,
+      "end": 3279.0,
+      "supportSeconds": 15,
+      "density": 0.288,
+      "tempo": 0.98266,
+      "confidence": "review",
+      "overlaps": [
+        94,
+        32
+      ]
+    },
+    {
+      "artist": "Kopf & Hörer",
+      "id": 94,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Hollow (Original Mix).m4a",
+      "title": "Hollow (Original Mix)",
+      "start": 3318.0,
+      "end": 3390.0,
+      "supportSeconds": 18,
+      "density": 0.25,
+      "tempo": 0.9003,
+      "confidence": "review",
+      "overlaps": [
+        93,
+        83
+      ]
+    },
+    {
+      "artist": "AKKI (DE)",
+      "id": 93,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Gettin' High (Extended Mix).m4a",
+      "title": "Gettin' High (Extended Mix)",
+      "start": 3326.0,
+      "end": 3404.0,
+      "supportSeconds": 61,
+      "density": 0.782,
+      "tempo": 1.02545,
+      "confidence": "high",
+      "overlaps": [
+        94,
+        83,
+        24,
+        81
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 3345.0,
+      "end": 3402.0,
+      "supportSeconds": 22,
+      "density": 0.386,
+      "tempo": 1.04003,
+      "confidence": "review",
+      "overlaps": [
+        94,
+        93,
+        24
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 3375.0,
+      "end": 3437.0,
+      "supportSeconds": 17,
+      "density": 0.274,
+      "tempo": 1.07508,
+      "confidence": "review",
+      "overlaps": [
+        93,
+        83,
+        81,
+        83
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 81,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Fuck That Shit (Original Mix).m4a",
+      "title": "Fuck That Shit (Original Mix)",
+      "start": 3383.0,
+      "end": 3537.0,
+      "supportSeconds": 138,
+      "density": 0.896,
+      "tempo": 1.00212,
+      "confidence": "high",
+      "overlaps": [
+        93,
+        24,
+        83,
+        92,
+        86,
+        71,
+        83,
+        24,
+        88,
+        83,
+        88,
+        83
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 3392.0,
+      "end": 3470.0,
+      "supportSeconds": 25,
+      "density": 0.321,
+      "tempo": 1.1445,
+      "confidence": "review",
+      "overlaps": [
+        24,
+        81,
+        92,
+        86,
+        71
+      ]
+    },
+    {
+      "artist": "Greb Levah",
+      "id": 92,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Down in it (Original Mix).m4a",
+      "title": "Down in it (Original Mix)",
+      "start": 3423.0,
+      "end": 3464.0,
+      "supportSeconds": 12,
+      "density": 0.293,
+      "tempo": 0.75569,
+      "confidence": "review",
+      "overlaps": [
+        81,
+        83,
+        86,
+        71
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 86,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix).m4a",
+      "title": "Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix)",
+      "start": 3427.0,
+      "end": 3466.0,
+      "supportSeconds": 14,
+      "density": 0.359,
+      "tempo": 0.76451,
+      "confidence": "review",
+      "overlaps": [
+        81,
+        83,
+        92,
+        71
+      ]
+    },
+    {
+      "artist": "",
+      "id": 71,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\Sacramento - Shut The Club Down [MV3].wav",
+      "title": "Sacramento - Shut The Club Down [MV3]",
+      "start": 3437.0,
+      "end": 3484.0,
+      "supportSeconds": 16,
+      "density": 0.34,
+      "tempo": 1.10877,
+      "confidence": "review",
+      "overlaps": [
+        81,
+        83,
+        92,
+        86,
+        83,
+        24,
+        88
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 3451.0,
+      "end": 3497.0,
+      "supportSeconds": 19,
+      "density": 0.413,
+      "tempo": 1.15436,
+      "confidence": "review",
+      "overlaps": [
+        81,
+        71,
+        24,
+        88
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 3456.0,
+      "end": 3522.0,
+      "supportSeconds": 24,
+      "density": 0.364,
+      "tempo": 1.18433,
+      "confidence": "review",
+      "overlaps": [
+        81,
+        71,
+        83,
+        88,
+        83
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 88,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Love Love Love (Force Remix).m4a",
+      "title": "Love Love Love (Force Remix)",
+      "start": 3461.0,
+      "end": 3537.0,
+      "supportSeconds": 19,
+      "density": 0.25,
+      "tempo": 1.1192,
+      "confidence": "review",
+      "overlaps": [
+        81,
+        71,
+        83,
+        24,
+        83,
+        83
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 3482.0,
+      "end": 3527.0,
+      "supportSeconds": 13,
+      "density": 0.289,
+      "tempo": 1.13959,
+      "confidence": "review",
+      "overlaps": [
+        81,
+        24,
+        88
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 88,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Love Love Love (Force Remix).m4a",
+      "title": "Love Love Love (Force Remix)",
+      "start": 3510.0,
+      "end": 3564.0,
+      "supportSeconds": 17,
+      "density": 0.315,
+      "tempo": 1.25563,
+      "confidence": "review",
+      "overlaps": [
+        81,
+        83,
+        81,
+        85,
+        96,
+        71,
+        55
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 3512.0,
+      "end": 3553.0,
+      "supportSeconds": 13,
+      "density": 0.317,
+      "tempo": 1.17119,
+      "confidence": "review",
+      "overlaps": [
+        81,
+        88,
+        88,
+        81
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 81,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Fuck That Shit (Original Mix).m4a",
+      "title": "Fuck That Shit (Original Mix)",
+      "start": 3522.0,
+      "end": 3569.0,
+      "supportSeconds": 14,
+      "density": 0.298,
+      "tempo": 0.97474,
+      "confidence": "review",
+      "overlaps": [
+        88,
+        83,
+        85,
+        96,
+        71,
+        55
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 85,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Rave All Night (Original Mix).m4a",
+      "title": "Rave All Night (Original Mix)",
+      "start": 3535.0,
+      "end": 3666.0,
+      "supportSeconds": 130,
+      "density": 0.992,
+      "tempo": 1.00015,
+      "confidence": "high",
+      "overlaps": [
+        88,
+        81,
+        96,
+        71,
+        55,
+        24,
+        88,
+        71,
+        88,
+        24
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 96,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Rave All Night (Original Mix).m4a",
+      "title": "Rave All Night (Original Mix)",
+      "start": 3535.0,
+      "end": 3666.0,
+      "supportSeconds": 130,
+      "density": 0.992,
+      "tempo": 1.00015,
+      "confidence": "high",
+      "overlaps": [
+        88,
+        81,
+        85,
+        71,
+        55,
+        24,
+        88,
+        71,
+        88,
+        24
+      ]
+    },
+    {
+      "artist": "",
+      "id": 71,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\Sacramento - Shut The Club Down [MV3].wav",
+      "title": "Sacramento - Shut The Club Down [MV3]",
+      "start": 3536.0,
+      "end": 3582.0,
+      "supportSeconds": 17,
+      "density": 0.37,
+      "tempo": 1.07673,
+      "confidence": "review",
+      "overlaps": [
+        88,
+        81,
+        85,
+        96,
+        55
+      ]
+    },
+    {
+      "artist": "Anime & Rob Gee",
+      "id": 55,
+      "path": "M:\\Musik\\Hardcore\\Hardcore Extended\\10_anime_and_rob_gee_-_you_get_me_high.mp3",
+      "title": "You Get Me High",
+      "start": 3539.0,
+      "end": 3587.0,
+      "supportSeconds": 12,
+      "density": 0.25,
+      "tempo": 1.00351,
+      "confidence": "review",
+      "overlaps": [
+        88,
+        81,
+        85,
+        96,
+        71
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 3569.0,
+      "end": 3613.0,
+      "supportSeconds": 13,
+      "density": 0.295,
+      "tempo": 1.08057,
+      "confidence": "review",
+      "overlaps": [
+        85,
+        96,
+        88,
+        71
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 88,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Love Love Love (Force Remix).m4a",
+      "title": "Love Love Love (Force Remix)",
+      "start": 3575.0,
+      "end": 3619.0,
+      "supportSeconds": 15,
+      "density": 0.341,
+      "tempo": 1.25563,
+      "confidence": "review",
+      "overlaps": [
+        85,
+        96,
+        24,
+        71
+      ]
+    },
+    {
+      "artist": "",
+      "id": 71,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\Sacramento - Shut The Club Down [MV3].wav",
+      "title": "Sacramento - Shut The Club Down [MV3]",
+      "start": 3585.0,
+      "end": 3628.0,
+      "supportSeconds": 15,
+      "density": 0.349,
+      "tempo": 1.1375,
+      "confidence": "review",
+      "overlaps": [
+        85,
+        96,
+        24,
+        88
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 88,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Love Love Love (Force Remix).m4a",
+      "title": "Love Love Love (Force Remix)",
+      "start": 3615.0,
+      "end": 3651.0,
+      "supportSeconds": 13,
+      "density": 0.361,
+      "tempo": 0.76474,
+      "confidence": "review",
+      "overlaps": [
+        85,
+        96,
+        24
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 3626.0,
+      "end": 3672.0,
+      "supportSeconds": 13,
+      "density": 0.283,
+      "tempo": 1.04825,
+      "confidence": "review",
+      "overlaps": [
+        85,
+        96,
+        88
+      ]
+    },
+    {
+      "artist": "Sperminator",
+      "id": 30,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Underground Techno\\Sperminator - No Woman Allowed.mp3",
+      "title": "No Woman Allowed",
+      "start": 3656.0,
+      "end": 3714.0,
+      "supportSeconds": 20,
+      "density": 0.345,
+      "tempo": 1.22185,
+      "confidence": "review",
+      "overlaps": [
+        24,
+        73,
+        80,
+        83,
+        92,
+        55,
+        86
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 3658.0,
+      "end": 3706.0,
+      "supportSeconds": 12,
+      "density": 0.25,
+      "tempo": 1.07496,
+      "confidence": "review",
+      "overlaps": [
+        30,
+        73,
+        80,
+        83
+      ]
+    },
+    {
+      "artist": "Alberto Adami",
+      "id": 73,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\2025\\Acid Machine Gun (Extended Mix).flac",
+      "title": "Acid Machine Gun (Extended Mix)",
+      "start": 3662.0,
+      "end": 3728.0,
+      "supportSeconds": 20,
+      "density": 0.303,
+      "tempo": 0.77477,
+      "confidence": "review",
+      "overlaps": [
+        30,
+        24,
+        80,
+        83,
+        92,
+        55,
+        86,
+        83
+      ]
+    },
+    {
+      "artist": "Greb Levah",
+      "id": 80,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Back (Original Mix).m4a",
+      "title": "Back (Original Mix)",
+      "start": 3662.0,
+      "end": 3781.0,
+      "supportSeconds": 110,
+      "density": 0.924,
+      "tempo": 1.00068,
+      "confidence": "high",
+      "overlaps": [
+        30,
+        24,
+        73,
+        83,
+        92,
+        55,
+        86,
+        83,
+        30,
+        24,
+        73,
+        86,
+        92,
+        86
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 3673.0,
+      "end": 3715.0,
+      "supportSeconds": 16,
+      "density": 0.381,
+      "tempo": 0.94074,
+      "confidence": "review",
+      "overlaps": [
+        30,
+        24,
+        73,
+        80,
+        92,
+        55,
+        86
+      ]
+    },
+    {
+      "artist": "Greb Levah",
+      "id": 92,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Down in it (Original Mix).m4a",
+      "title": "Down in it (Original Mix)",
+      "start": 3688.0,
+      "end": 3748.0,
+      "supportSeconds": 19,
+      "density": 0.317,
+      "tempo": 1.00014,
+      "confidence": "review",
+      "overlaps": [
+        30,
+        73,
+        80,
+        83,
+        55,
+        86,
+        83,
+        30,
+        24
+      ]
+    },
+    {
+      "artist": "Anime & Rob Gee",
+      "id": 55,
+      "path": "M:\\Musik\\Hardcore\\Hardcore Extended\\10_anime_and_rob_gee_-_you_get_me_high.mp3",
+      "title": "You Get Me High",
+      "start": 3690.0,
+      "end": 3737.0,
+      "supportSeconds": 20,
+      "density": 0.426,
+      "tempo": 1.18028,
+      "confidence": "review",
+      "overlaps": [
+        30,
+        73,
+        80,
+        83,
+        92,
+        86,
+        83,
+        30
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 86,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix).m4a",
+      "title": "Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix)",
+      "start": 3693.0,
+      "end": 3750.0,
+      "supportSeconds": 15,
+      "density": 0.263,
+      "tempo": 1.05247,
+      "confidence": "review",
+      "overlaps": [
+        30,
+        73,
+        80,
+        83,
+        92,
+        55,
+        83,
+        30,
+        24,
+        73
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 3701.0,
+      "end": 3813.0,
+      "supportSeconds": 29,
+      "density": 0.259,
+      "tempo": 1.04072,
+      "confidence": "review",
+      "overlaps": [
+        73,
+        80,
+        92,
+        55,
+        86,
+        30,
+        24,
+        73,
+        86,
+        92,
+        86,
+        92
+      ]
+    },
+    {
+      "artist": "Sperminator",
+      "id": 30,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Underground Techno\\Sperminator - No Woman Allowed.mp3",
+      "title": "No Woman Allowed",
+      "start": 3712.0,
+      "end": 3766.0,
+      "supportSeconds": 25,
+      "density": 0.463,
+      "tempo": 0.99598,
+      "confidence": "review",
+      "overlaps": [
+        80,
+        92,
+        55,
+        86,
+        83,
+        24,
+        73,
+        86,
+        92
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 3721.0,
+      "end": 3768.0,
+      "supportSeconds": 14,
+      "density": 0.298,
+      "tempo": 1.01342,
+      "confidence": "review",
+      "overlaps": [
+        80,
+        92,
+        86,
+        83,
+        30,
+        73,
+        86,
+        92
+      ]
+    },
+    {
+      "artist": "Alberto Adami",
+      "id": 73,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\2025\\Acid Machine Gun (Extended Mix).flac",
+      "title": "Acid Machine Gun (Extended Mix)",
+      "start": 3729.0,
+      "end": 3790.0,
+      "supportSeconds": 20,
+      "density": 0.328,
+      "tempo": 1.00695,
+      "confidence": "review",
+      "overlaps": [
+        80,
+        86,
+        83,
+        30,
+        24,
+        86,
+        92,
+        86,
+        92
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 86,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix).m4a",
+      "title": "Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix)",
+      "start": 3735.0,
+      "end": 3784.0,
+      "supportSeconds": 14,
+      "density": 0.286,
+      "tempo": 1.15998,
+      "confidence": "review",
+      "overlaps": [
+        80,
+        83,
+        30,
+        24,
+        73,
+        92
+      ]
+    },
+    {
+      "artist": "Greb Levah",
+      "id": 92,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Down in it (Original Mix).m4a",
+      "title": "Down in it (Original Mix)",
+      "start": 3736.0,
+      "end": 3782.0,
+      "supportSeconds": 16,
+      "density": 0.348,
+      "tempo": 0.92612,
+      "confidence": "review",
+      "overlaps": [
+        80,
+        83,
+        30,
+        24,
+        73,
+        86,
+        86
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 86,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix).m4a",
+      "title": "Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix)",
+      "start": 3761.0,
+      "end": 3860.0,
+      "supportSeconds": 60,
+      "density": 0.606,
+      "tempo": 1.0199,
+      "confidence": "high",
+      "overlaps": [
+        80,
+        83,
+        73,
+        92,
+        92,
+        83,
+        92,
+        34
+      ]
+    },
+    {
+      "artist": "Greb Levah",
+      "id": 92,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Down in it (Original Mix).m4a",
+      "title": "Down in it (Original Mix)",
+      "start": 3768.0,
+      "end": 3828.0,
+      "supportSeconds": 25,
+      "density": 0.417,
+      "tempo": 0.99729,
+      "confidence": "review",
+      "overlaps": [
+        83,
+        73,
+        86,
+        83
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 3781.0,
+      "end": 3850.0,
+      "supportSeconds": 21,
+      "density": 0.304,
+      "tempo": 1.21726,
+      "confidence": "review",
+      "overlaps": [
+        86,
+        92,
+        92,
+        34
+      ]
+    },
+    {
+      "artist": "Greb Levah",
+      "id": 92,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Down in it (Original Mix).m4a",
+      "title": "Down in it (Original Mix)",
+      "start": 3798.0,
+      "end": 3860.0,
+      "supportSeconds": 17,
+      "density": 0.274,
+      "tempo": 1.06162,
+      "confidence": "review",
+      "overlaps": [
+        86,
+        83,
+        34
+      ]
+    },
+    {
+      "artist": "",
+      "id": 34,
+      "path": "M:\\Musik\\Techno\\Hard Bounce\\2025\\XTC - Tadhgmc [v1 master].wav",
+      "title": "XTC - Tadhgmc [v1 master]",
+      "start": 3812.0,
+      "end": 4069.0,
+      "supportSeconds": 220,
+      "density": 0.856,
+      "tempo": 0.99962,
+      "confidence": "high",
+      "overlaps": [
+        86,
+        83,
+        92,
+        73,
+        51,
+        7
+      ]
+    },
+    {
+      "artist": "Alberto Adami",
+      "id": 73,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\2025\\Acid Machine Gun (Extended Mix).flac",
+      "title": "Acid Machine Gun (Extended Mix)",
+      "start": 3932.0,
+      "end": 3970.0,
+      "supportSeconds": 16,
+      "density": 0.421,
+      "tempo": 1.02725,
+      "confidence": "review",
+      "overlaps": [
+        34,
+        51
+      ]
+    },
+    {
+      "artist": "",
+      "id": 51,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Schranz\\2026\\David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP).wav",
+      "title": "David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP)",
+      "start": 3945.0,
+      "end": 3974.0,
+      "supportSeconds": 12,
+      "density": 0.414,
+      "tempo": 1.21382,
+      "confidence": "review",
+      "overlaps": [
+        34,
+        73
+      ]
+    },
+    {
+      "artist": "",
+      "id": 7,
+      "path": "M:\\Musik\\Techno\\Hard Bounce\\2025\\Jesse Taylor - Goes Like That.mp3",
+      "title": "Jesse Taylor - Goes Like That",
+      "start": 3974.0,
+      "end": 4199.0,
+      "supportSeconds": 170,
+      "density": 0.756,
+      "tempo": 1.00039,
+      "confidence": "high",
+      "overlaps": [
+        34,
+        24,
+        51,
+        8,
+        28,
+        30,
+        51,
+        24,
+        28,
+        69,
+        98,
+        24
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 4073.0,
+      "end": 4123.0,
+      "supportSeconds": 16,
+      "density": 0.32,
+      "tempo": 0.96939,
+      "confidence": "review",
+      "overlaps": [
+        7
+      ]
+    },
+    {
+      "artist": "",
+      "id": 51,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Schranz\\2026\\David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP).wav",
+      "title": "David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP)",
+      "start": 4106.0,
+      "end": 4154.0,
+      "supportSeconds": 15,
+      "density": 0.312,
+      "tempo": 1.22725,
+      "confidence": "review",
+      "overlaps": [
+        7,
+        8,
+        28
+      ]
+    },
+    {
+      "artist": "",
+      "id": 8,
+      "path": "M:\\Musik\\Techno\\Hard Bounce\\2025\\JØR - Disparate Youth [modded.studio].wav",
+      "title": "JØR - Disparate Youth [modded.studio]",
+      "start": 4126.0,
+      "end": 4326.0,
+      "supportSeconds": 154,
+      "density": 0.77,
+      "tempo": 0.99916,
+      "confidence": "high",
+      "overlaps": [
+        7,
+        51,
+        28,
+        30,
+        51,
+        24,
+        28,
+        69,
+        98,
+        24,
+        51,
+        24,
+        30,
+        55,
+        24,
+        98,
+        24,
+        36,
+        88
+      ]
+    },
+    {
+      "artist": "Alex Bilancini",
+      "id": 28,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Techno Extended Mieps Kat\\Alex Bilancini - Hyperspace.mp3",
+      "title": "Hyperspace",
+      "start": 4126.0,
+      "end": 4155.0,
+      "supportSeconds": 12,
+      "density": 0.414,
+      "tempo": 0.86538,
+      "confidence": "review",
+      "overlaps": [
+        7,
+        51,
+        8
+      ]
+    },
+    {
+      "artist": "Sperminator",
+      "id": 30,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Underground Techno\\Sperminator - No Woman Allowed.mp3",
+      "title": "No Woman Allowed",
+      "start": 4146.0,
+      "end": 4242.0,
+      "supportSeconds": 33,
+      "density": 0.344,
+      "tempo": 1.00794,
+      "confidence": "review",
+      "overlaps": [
+        7,
+        8,
+        51,
+        24,
+        28,
+        69,
+        98,
+        24,
+        51,
+        24
+      ]
+    },
+    {
+      "artist": "",
+      "id": 51,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Schranz\\2026\\David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP).wav",
+      "title": "David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP)",
+      "start": 4147.0,
+      "end": 4214.0,
+      "supportSeconds": 24,
+      "density": 0.358,
+      "tempo": 1.1745,
+      "confidence": "review",
+      "overlaps": [
+        7,
+        8,
+        30,
+        24,
+        28,
+        69,
+        98,
+        24
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 4148.0,
+      "end": 4192.0,
+      "supportSeconds": 12,
+      "density": 0.273,
+      "tempo": 1.00492,
+      "confidence": "review",
+      "overlaps": [
+        7,
+        8,
+        30,
+        51,
+        28,
+        69,
+        98
+      ]
+    },
+    {
+      "artist": "Alex Bilancini",
+      "id": 28,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Techno Extended Mieps Kat\\Alex Bilancini - Hyperspace.mp3",
+      "title": "Hyperspace",
+      "start": 4153.0,
+      "end": 4283.0,
+      "supportSeconds": 36,
+      "density": 0.277,
+      "tempo": 1.18114,
+      "confidence": "review",
+      "overlaps": [
+        7,
+        8,
+        30,
+        51,
+        24,
+        69,
+        98,
+        24,
+        51,
+        24,
+        30,
+        55,
+        24
+      ]
+    },
+    {
+      "artist": "",
+      "id": 69,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\Discotronic - Tricky Disco (Fyloh Bootleg) (Extended Mix).wav",
+      "title": "Discotronic - Tricky Disco (Fyloh Bootleg) (Extended Mix)",
+      "start": 4163.0,
+      "end": 4250.0,
+      "supportSeconds": 25,
+      "density": 0.287,
+      "tempo": 1.16932,
+      "confidence": "review",
+      "overlaps": [
+        7,
+        8,
+        30,
+        51,
+        24,
+        28,
+        98,
+        24,
+        51,
+        24,
+        30,
+        55
+      ]
+    },
+    {
+      "artist": "Deichkind",
+      "id": 98,
+      "path": "M:\\Musik\\HardTekk\\2015\\Deichkind - So'ne Musik (The Various Artists - So'ne Bassdrum Remix).mp3",
+      "title": "So'ne Musik (Various Artists - So'ne Bassdrum Remix)",
+      "start": 4169.0,
+      "end": 4260.0,
+      "supportSeconds": 28,
+      "density": 0.308,
+      "tempo": 1.24494,
+      "confidence": "review",
+      "overlaps": [
+        7,
+        8,
+        30,
+        51,
+        24,
+        28,
+        69,
+        24,
+        51,
+        24,
+        30,
+        55
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 4177.0,
+      "end": 4235.0,
+      "supportSeconds": 20,
+      "density": 0.345,
+      "tempo": 1.21073,
+      "confidence": "review",
+      "overlaps": [
+        7,
+        8,
+        30,
+        51,
+        28,
+        69,
+        98,
+        51
+      ]
+    },
+    {
+      "artist": "",
+      "id": 51,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Schranz\\2026\\David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP).wav",
+      "title": "David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP)",
+      "start": 4196.0,
+      "end": 4276.0,
+      "supportSeconds": 22,
+      "density": 0.275,
+      "tempo": 0.93993,
+      "confidence": "review",
+      "overlaps": [
+        8,
+        30,
+        28,
+        69,
+        98,
+        24,
+        24,
+        30,
+        55,
+        24
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 4210.0,
+      "end": 4269.0,
+      "supportSeconds": 17,
+      "density": 0.288,
+      "tempo": 0.99536,
+      "confidence": "review",
+      "overlaps": [
+        8,
+        30,
+        28,
+        69,
+        98,
+        51,
+        30,
+        55
+      ]
+    },
+    {
+      "artist": "Sperminator",
+      "id": 30,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Underground Techno\\Sperminator - No Woman Allowed.mp3",
+      "title": "No Woman Allowed",
+      "start": 4222.0,
+      "end": 4299.0,
+      "supportSeconds": 35,
+      "density": 0.455,
+      "tempo": 1.04355,
+      "confidence": "high",
+      "overlaps": [
+        8,
+        28,
+        69,
+        98,
+        51,
+        24,
+        55,
+        24,
+        98,
+        24,
+        36
+      ]
+    },
+    {
+      "artist": "Anime & Rob Gee",
+      "id": 55,
+      "path": "M:\\Musik\\Hardcore\\Hardcore Extended\\10_anime_and_rob_gee_-_you_get_me_high.mp3",
+      "title": "You Get Me High",
+      "start": 4227.0,
+      "end": 4279.0,
+      "supportSeconds": 13,
+      "density": 0.25,
+      "tempo": 1.02045,
+      "confidence": "review",
+      "overlaps": [
+        8,
+        28,
+        69,
+        98,
+        51,
+        24,
+        30,
+        24
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 4249.0,
+      "end": 4296.0,
+      "supportSeconds": 12,
+      "density": 0.255,
+      "tempo": 1.01108,
+      "confidence": "review",
+      "overlaps": [
+        8,
+        28,
+        51,
+        30,
+        55,
+        98
+      ]
+    },
+    {
+      "artist": "Deichkind",
+      "id": 98,
+      "path": "M:\\Musik\\HardTekk\\2015\\Deichkind - So'ne Musik (The Various Artists - So'ne Bassdrum Remix).mp3",
+      "title": "So'ne Musik (Various Artists - So'ne Bassdrum Remix)",
+      "start": 4271.0,
+      "end": 4313.0,
+      "supportSeconds": 12,
+      "density": 0.286,
+      "tempo": 1.20788,
+      "confidence": "review",
+      "overlaps": [
+        8,
+        30,
+        24,
+        24,
+        36
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 4273.0,
+      "end": 4389.0,
+      "supportSeconds": 31,
+      "density": 0.267,
+      "tempo": 1.04901,
+      "confidence": "review",
+      "overlaps": [
+        8,
+        30,
+        98,
+        36,
+        88
+      ]
+    },
+    {
+      "artist": "STANEPIMP",
+      "id": 36,
+      "path": "M:\\Musik\\Techno\\Hard Bounce\\2025\\STANEPIMP - COMEBACK.wav",
+      "title": "COMEBACK",
+      "start": 4277.0,
+      "end": 4486.0,
+      "supportSeconds": 187,
+      "density": 0.895,
+      "tempo": 1.00022,
+      "confidence": "high",
+      "overlaps": [
+        8,
+        30,
+        98,
+        24,
+        88,
+        28,
+        88,
+        9,
+        9
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 88,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Love Love Love (Force Remix).m4a",
+      "title": "Love Love Love (Force Remix)",
+      "start": 4304.0,
+      "end": 4376.0,
+      "supportSeconds": 25,
+      "density": 0.347,
+      "tempo": 1.05841,
+      "confidence": "review",
+      "overlaps": [
+        8,
+        24,
+        36
+      ]
+    },
+    {
+      "artist": "Alex Bilancini",
+      "id": 28,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Techno Extended Mieps Kat\\Alex Bilancini - Hyperspace.mp3",
+      "title": "Hyperspace",
+      "start": 4385.0,
+      "end": 4420.0,
+      "supportSeconds": 15,
+      "density": 0.429,
+      "tempo": 1.18114,
+      "confidence": "review",
+      "overlaps": [
+        36
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 88,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Love Love Love (Force Remix).m4a",
+      "title": "Love Love Love (Force Remix)",
+      "start": 4424.0,
+      "end": 4472.0,
+      "supportSeconds": 13,
+      "density": 0.271,
+      "tempo": 1.06372,
+      "confidence": "review",
+      "overlaps": [
+        36,
+        9
+      ]
+    },
+    {
+      "artist": "RITTIE",
+      "id": 9,
+      "path": "M:\\Musik\\Techno\\Hard Bounce\\2025\\To The Rhythm RITTIE.wav",
+      "title": "TO THE RHYTHM",
+      "start": 4432.0,
+      "end": 4498.0,
+      "supportSeconds": 20,
+      "density": 0.303,
+      "tempo": 1.00812,
+      "confidence": "review",
+      "overlaps": [
+        36,
+        88
+      ]
+    },
+    {
+      "artist": "RITTIE",
+      "id": 9,
+      "path": "M:\\Musik\\Techno\\Hard Bounce\\2025\\To The Rhythm RITTIE.wav",
+      "title": "TO THE RHYTHM",
+      "start": 4466.0,
+      "end": 4679.0,
+      "supportSeconds": 149,
+      "density": 0.7,
+      "tempo": 1.02972,
+      "confidence": "high",
+      "overlaps": [
+        36,
+        60
+      ]
+    },
+    {
+      "artist": "",
+      "id": 60,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\KIRK - CD Is Dead (mp3).mp3",
+      "title": "KIRK - CD Is Dead (mp3)",
+      "start": 4642.0,
+      "end": 4782.0,
+      "supportSeconds": 91,
+      "density": 0.65,
+      "tempo": 1.00234,
+      "confidence": "high",
+      "overlaps": [
+        9,
+        35,
+        63
+      ]
+    },
+    {
+      "artist": "",
+      "id": 35,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\SAILØ - BRING IT BACK.wav",
+      "title": "SAILØ - BRING IT BACK",
+      "start": 4702.0,
+      "end": 4826.0,
+      "supportSeconds": 92,
+      "density": 0.742,
+      "tempo": 1.00114,
+      "confidence": "high",
+      "overlaps": [
+        60,
+        63
+      ]
+    },
+    {
+      "artist": "",
+      "id": 63,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\THISO - Down like .wav",
+      "title": "THISO - Down like ",
+      "start": 4761.0,
+      "end": 4849.0,
+      "supportSeconds": 33,
+      "density": 0.375,
+      "tempo": 0.99716,
+      "confidence": "review",
+      "overlaps": [
+        60,
+        35
+      ]
+    },
+    {
+      "artist": "",
+      "id": 63,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\THISO - Down like .wav",
+      "title": "THISO - Down like ",
+      "start": 4807.0,
+      "end": 4920.0,
+      "supportSeconds": 90,
+      "density": 0.796,
+      "tempo": 1.00115,
+      "confidence": "high",
+      "overlaps": [
+        59,
+        61
+      ]
+    },
+    {
+      "artist": "",
+      "id": 59,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Bonfire (Sirolo Hard Techno Edit)  [wav 16].wav",
+      "title": "Bonfire (Sirolo Hard Techno Edit)  [wav 16]",
+      "start": 4882.0,
+      "end": 4939.0,
+      "supportSeconds": 19,
+      "density": 0.333,
+      "tempo": 1.21945,
+      "confidence": "review",
+      "overlaps": [
+        63,
+        61,
+        61,
+        3
+      ]
+    },
+    {
+      "artist": "",
+      "id": 61,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\LWØ x FNRZ x TRYPDØ - Cinema - master.wav",
+      "title": "LWØ x FNRZ x TRYPDØ - Cinema - master",
+      "start": 4884.0,
+      "end": 4927.0,
+      "supportSeconds": 17,
+      "density": 0.395,
+      "tempo": 1.03262,
+      "confidence": "review",
+      "overlaps": [
+        63,
+        59
+      ]
+    },
+    {
+      "artist": "",
+      "id": 61,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\LWØ x FNRZ x TRYPDØ - Cinema - master.wav",
+      "title": "LWØ x FNRZ x TRYPDØ - Cinema - master",
+      "start": 4909.0,
+      "end": 5092.0,
+      "supportSeconds": 160,
+      "density": 0.874,
+      "tempo": 0.99986,
+      "confidence": "high",
+      "overlaps": [
+        59,
+        3,
+        59,
+        3,
+        59,
+        59
+      ]
+    },
+    {
+      "artist": "Salvyan & Gabrielle Rites [INNERGATED]",
+      "id": 3,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\The XX - Intro (Salvyan & Gabrielle Rites Hard Techno Edit).wav",
+      "title": "The XX - Intro (Salvyan & Gabrielle Rites Hard Techno Edit)",
+      "start": 4916.0,
+      "end": 4996.0,
+      "supportSeconds": 26,
+      "density": 0.325,
+      "tempo": 0.99069,
+      "confidence": "review",
+      "overlaps": [
+        59,
+        61,
+        59
+      ]
+    },
+    {
+      "artist": "",
+      "id": 59,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Bonfire (Sirolo Hard Techno Edit)  [wav 16].wav",
+      "title": "Bonfire (Sirolo Hard Techno Edit)  [wav 16]",
+      "start": 4950.0,
+      "end": 4996.0,
+      "supportSeconds": 24,
+      "density": 0.522,
+      "tempo": 0.90655,
+      "confidence": "review",
+      "overlaps": [
+        61,
+        3,
+        3
+      ]
+    },
+    {
+      "artist": "Salvyan & Gabrielle Rites [INNERGATED]",
+      "id": 3,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\The XX - Intro (Salvyan & Gabrielle Rites Hard Techno Edit).wav",
+      "title": "The XX - Intro (Salvyan & Gabrielle Rites Hard Techno Edit)",
+      "start": 4962.0,
+      "end": 5164.0,
+      "supportSeconds": 72,
+      "density": 0.356,
+      "tempo": 1.02262,
+      "confidence": "review",
+      "overlaps": [
+        61,
+        59,
+        59,
+        59,
+        61,
+        4
+      ]
+    },
+    {
+      "artist": "",
+      "id": 59,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Bonfire (Sirolo Hard Techno Edit)  [wav 16].wav",
+      "title": "Bonfire (Sirolo Hard Techno Edit)  [wav 16]",
+      "start": 5000.0,
+      "end": 5045.0,
+      "supportSeconds": 15,
+      "density": 0.333,
+      "tempo": 1.24506,
+      "confidence": "review",
+      "overlaps": [
+        61,
+        3
+      ]
+    },
+    {
+      "artist": "",
+      "id": 59,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Bonfire (Sirolo Hard Techno Edit)  [wav 16].wav",
+      "title": "Bonfire (Sirolo Hard Techno Edit)  [wav 16]",
+      "start": 5028.0,
+      "end": 5064.0,
+      "supportSeconds": 12,
+      "density": 0.333,
+      "tempo": 1.04227,
+      "confidence": "review",
+      "overlaps": [
+        61,
+        3
+      ]
+    },
+    {
+      "artist": "",
+      "id": 61,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\LWØ x FNRZ x TRYPDØ - Cinema - master.wav",
+      "title": "LWØ x FNRZ x TRYPDØ - Cinema - master",
+      "start": 5079.0,
+      "end": 5107.0,
+      "supportSeconds": 12,
+      "density": 0.429,
+      "tempo": 1.23251,
+      "confidence": "review",
+      "overlaps": [
+        3,
+        4
+      ]
+    },
+    {
+      "artist": "",
+      "id": 4,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Tom Whitfield - Push Me (DERVISH_STUDIO_MASTER_V2).wav",
+      "title": "Tom Whitfield - Push Me (DERVISH_STUDIO_MASTER_V2)",
+      "start": 5082.0,
+      "end": 5221.0,
+      "supportSeconds": 85,
+      "density": 0.612,
+      "tempo": 0.99749,
+      "confidence": "high",
+      "overlaps": [
+        3,
+        61,
+        3,
+        2
+      ]
+    },
+    {
+      "artist": "Salvyan & Gabrielle Rites [INNERGATED]",
+      "id": 3,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\The XX - Intro (Salvyan & Gabrielle Rites Hard Techno Edit).wav",
+      "title": "The XX - Intro (Salvyan & Gabrielle Rites Hard Techno Edit)",
+      "start": 5156.0,
+      "end": 5204.0,
+      "supportSeconds": 12,
+      "density": 0.25,
+      "tempo": 0.98498,
+      "confidence": "review",
+      "overlaps": [
+        4,
+        2
+      ]
+    },
+    {
+      "artist": "",
+      "id": 2,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Stromae - Alors On Danse (The Jackals Hard Techno Remix) mp3.mp3",
+      "title": "Stromae - Alors On Danse (The Jackals Hard Techno Remix) mp3",
+      "start": 5183.0,
+      "end": 5327.0,
+      "supportSeconds": 138,
+      "density": 0.958,
+      "tempo": 1.00607,
+      "confidence": "high",
+      "overlaps": [
+        4,
+        3,
+        54,
+        54,
+        3
+      ]
+    },
+    {
+      "artist": "Teddy Killerz",
+      "id": 54,
+      "path": "M:\\Musik\\DnB\\JumpUp\\Beatport\\2022\\Don't Kill The Vibe (Original Mix).flac",
+      "title": "Don't Kill The Vibe (Original Mix)",
+      "start": 5217.0,
+      "end": 5277.0,
+      "supportSeconds": 18,
+      "density": 0.3,
+      "tempo": 1.21254,
+      "confidence": "review",
+      "overlaps": [
+        2
+      ]
+    },
+    {
+      "artist": "Teddy Killerz",
+      "id": 54,
+      "path": "M:\\Musik\\DnB\\JumpUp\\Beatport\\2022\\Don't Kill The Vibe (Original Mix).flac",
+      "title": "Don't Kill The Vibe (Original Mix)",
+      "start": 5276.0,
+      "end": 5324.0,
+      "supportSeconds": 17,
+      "density": 0.354,
+      "tempo": 1.24699,
+      "confidence": "review",
+      "overlaps": [
+        2,
+        3
+      ]
+    },
+    {
+      "artist": "Salvyan & Gabrielle Rites [INNERGATED]",
+      "id": 3,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\The XX - Intro (Salvyan & Gabrielle Rites Hard Techno Edit).wav",
+      "title": "The XX - Intro (Salvyan & Gabrielle Rites Hard Techno Edit)",
+      "start": 5291.0,
+      "end": 5338.0,
+      "supportSeconds": 13,
+      "density": 0.277,
+      "tempo": 0.82132,
+      "confidence": "review",
+      "overlaps": [
+        2,
+        54,
+        38
+      ]
+    },
+    {
+      "artist": "Syzz, The Rocketman",
+      "id": 38,
+      "path": "M:\\Musik\\Techno\\Peak Time Techno\\2024\\Syzz, The Rocketman - Gimme Gimme Gimme (A Man After Midnight) (The Rocketman Extended Remix) 150.mp3",
+      "title": "Gimme Gimme Gimme (A Man After Midnight) (The Rocketman Extended Remix) 150",
+      "start": 5314.0,
+      "end": 5471.0,
+      "supportSeconds": 144,
+      "density": 0.917,
+      "tempo": 1.03268,
+      "confidence": "high",
+      "overlaps": [
+        3
+      ]
+    },
+    {
+      "artist": "",
+      "id": 37,
+      "path": "M:\\Musik\\Techno\\Peak Time Techno\\2024\\Leo - Bikini Bottom.mp3",
+      "title": "Leo - Bikini Bottom",
+      "start": 5461.0,
+      "end": 5535.0,
+      "supportSeconds": 49,
+      "density": 0.662,
+      "tempo": 1.03354,
+      "confidence": "high",
+      "overlaps": [
+        58
+      ]
+    },
+    {
+      "artist": "",
+      "id": 58,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2024\\ATZEWINRAD - supernasen.wav",
+      "title": "ATZEWINRAD - supernasen",
+      "start": 5477.0,
+      "end": 5680.0,
+      "supportSeconds": 164,
+      "density": 0.808,
+      "tempo": 0.96934,
+      "confidence": "high",
+      "overlaps": [
+        37,
+        37
+      ]
+    },
+    {
+      "artist": "",
+      "id": 37,
+      "path": "M:\\Musik\\Techno\\Peak Time Techno\\2024\\Leo - Bikini Bottom.mp3",
+      "title": "Leo - Bikini Bottom",
+      "start": 5506.0,
+      "end": 5566.0,
+      "supportSeconds": 18,
+      "density": 0.3,
+      "tempo": 0.9812,
+      "confidence": "review",
+      "overlaps": [
+        58
+      ]
+    },
+    {
+      "artist": "Deichkind",
+      "id": 98,
+      "path": "M:\\Musik\\HardTekk\\2015\\Deichkind - So'ne Musik (The Various Artists - So'ne Bassdrum Remix).mp3",
+      "title": "So'ne Musik (Various Artists - So'ne Bassdrum Remix)",
+      "start": 5673.0,
+      "end": 5781.0,
+      "supportSeconds": 78,
+      "density": 0.722,
+      "tempo": 0.95723,
+      "confidence": "high",
+      "overlaps": [
+        62
+      ]
+    },
+    {
+      "artist": "",
+      "id": 62,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Limp Bizkit - Break Stuff (Hardsok Remix).wav",
+      "title": "Limp Bizkit - Break Stuff (Hardsok Remix)",
+      "start": 5734.0,
+      "end": 5966.0,
+      "supportSeconds": 208,
+      "density": 0.897,
+      "tempo": 0.99981,
+      "confidence": "high",
+      "overlaps": [
+        98,
+        33,
+        56,
+        56
+      ]
+    },
+    {
+      "artist": "Somniac One",
+      "id": 33,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - The Grand Awokening - Original mix.mp3",
+      "title": "The Grand Awokening - Original mix",
+      "start": 5807.0,
+      "end": 5840.0,
+      "supportSeconds": 13,
+      "density": 0.394,
+      "tempo": 1.18044,
+      "confidence": "review",
+      "overlaps": [
+        62
+      ]
+    },
+    {
+      "artist": "t e s t p r e s s mischluft",
+      "id": 56,
+      "path": "M:\\Musik\\Beatport\\Hard Bounce\\2026\\BOUNCE N BREAK (Extended Mix).flac",
+      "title": "BOUNCE N BREAK (Extended Mix)",
+      "start": 5916.0,
+      "end": 5960.0,
+      "supportSeconds": 18,
+      "density": 0.409,
+      "tempo": 0.98922,
+      "confidence": "review",
+      "overlaps": [
+        62
+      ]
+    },
+    {
+      "artist": "t e s t p r e s s mischluft",
+      "id": 56,
+      "path": "M:\\Musik\\Beatport\\Hard Bounce\\2026\\BOUNCE N BREAK (Extended Mix).flac",
+      "title": "BOUNCE N BREAK (Extended Mix)",
+      "start": 5939.0,
+      "end": 6116.0,
+      "supportSeconds": 171,
+      "density": 0.966,
+      "tempo": 1.03268,
+      "confidence": "high",
+      "overlaps": [
+        62,
+        33,
+        45,
+        33,
+        33,
+        45,
+        33,
+        65,
+        45
+      ]
+    },
+    {
+      "artist": "Somniac One",
+      "id": 33,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - The Grand Awokening - Original mix.mp3",
+      "title": "The Grand Awokening - Original mix",
+      "start": 5950.0,
+      "end": 5997.0,
+      "supportSeconds": 17,
+      "density": 0.362,
+      "tempo": 1.2484,
+      "confidence": "review",
+      "overlaps": [
+        56,
+        45
+      ]
+    },
+    {
+      "artist": "Hardstyle Masterz/Max Enforcer",
+      "id": 45,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Hardstyle Masterz, Max Enforcer - Rambo is a Pussy.mp3",
+      "title": "Rambo is a Pussy",
+      "start": 5976.0,
+      "end": 6039.0,
+      "supportSeconds": 16,
+      "density": 0.254,
+      "tempo": 0.93055,
+      "confidence": "review",
+      "overlaps": [
+        56,
+        33,
+        33,
+        33
+      ]
+    },
+    {
+      "artist": "Somniac One",
+      "id": 33,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - The Grand Awokening - Original mix.mp3",
+      "title": "The Grand Awokening - Original mix",
+      "start": 5978.0,
+      "end": 6035.0,
+      "supportSeconds": 18,
+      "density": 0.316,
+      "tempo": 0.84548,
+      "confidence": "review",
+      "overlaps": [
+        56,
+        45
+      ]
+    },
+    {
+      "artist": "Somniac One",
+      "id": 33,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - The Grand Awokening - Original mix.mp3",
+      "title": "The Grand Awokening - Original mix",
+      "start": 6009.0,
+      "end": 6082.0,
+      "supportSeconds": 21,
+      "density": 0.288,
+      "tempo": 1.23063,
+      "confidence": "review",
+      "overlaps": [
+        56,
+        45,
+        45
+      ]
+    },
+    {
+      "artist": "Hardstyle Masterz/Max Enforcer",
+      "id": 45,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Hardstyle Masterz, Max Enforcer - Rambo is a Pussy.mp3",
+      "title": "Rambo is a Pussy",
+      "start": 6023.0,
+      "end": 6068.0,
+      "supportSeconds": 12,
+      "density": 0.267,
+      "tempo": 0.9146,
+      "confidence": "review",
+      "overlaps": [
+        56,
+        33
+      ]
+    },
+    {
+      "artist": "Somniac One",
+      "id": 33,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - The Grand Awokening - Original mix.mp3",
+      "title": "The Grand Awokening - Original mix",
+      "start": 6071.0,
+      "end": 6151.0,
+      "supportSeconds": 22,
+      "density": 0.275,
+      "tempo": 1.04976,
+      "confidence": "review",
+      "overlaps": [
+        56,
+        65,
+        45,
+        65
+      ]
+    },
+    {
+      "artist": "",
+      "id": 65,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Wanton - Vielleicht Vielleicht (remix).wav",
+      "title": "Wanton - Vielleicht Vielleicht (remix)",
+      "start": 6080.0,
+      "end": 6123.0,
+      "supportSeconds": 14,
+      "density": 0.326,
+      "tempo": 1.01512,
+      "confidence": "review",
+      "overlaps": [
+        56,
+        33,
+        45
+      ]
+    },
+    {
+      "artist": "Hardstyle Masterz/Max Enforcer",
+      "id": 45,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Hardstyle Masterz, Max Enforcer - Rambo is a Pussy.mp3",
+      "title": "Rambo is a Pussy",
+      "start": 6084.0,
+      "end": 6130.0,
+      "supportSeconds": 13,
+      "density": 0.283,
+      "tempo": 0.84414,
+      "confidence": "review",
+      "overlaps": [
+        56,
+        33,
+        65,
+        65
+      ]
+    },
+    {
+      "artist": "",
+      "id": 65,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Wanton - Vielleicht Vielleicht (remix).wav",
+      "title": "Wanton - Vielleicht Vielleicht (remix)",
+      "start": 6106.0,
+      "end": 6299.0,
+      "supportSeconds": 148,
+      "density": 0.767,
+      "tempo": 0.99627,
+      "confidence": "high",
+      "overlaps": [
+        33,
+        45,
+        71
+      ]
+    },
+    {
+      "artist": "",
+      "id": 71,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\Sacramento - Shut The Club Down [MV3].wav",
+      "title": "Sacramento - Shut The Club Down [MV3]",
+      "start": 6243.0,
+      "end": 6385.0,
+      "supportSeconds": 90,
+      "density": 0.634,
+      "tempo": 1.00082,
+      "confidence": "high",
+      "overlaps": [
+        65,
+        5
+      ]
+    },
+    {
+      "artist": "",
+      "id": 5,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\XXXTENTACION - Sippin Tea In Your Hood (ROYAL Hard Techno Remix).wav",
+      "title": "XXXTENTACION - Sippin Tea In Your Hood (ROYAL Hard Techno Remix)",
+      "start": 6331.0,
+      "end": 6514.0,
+      "supportSeconds": 128,
+      "density": 0.699,
+      "tempo": 0.99936,
+      "confidence": "high",
+      "overlaps": [
+        71,
+        64,
+        64
+      ]
+    },
+    {
+      "artist": "",
+      "id": 64,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\THNDERZ & Rave Heaven - Face Down Ass Up (Remix) [EXTENDED].wav",
+      "title": "THNDERZ & Rave Heaven - Face Down Ass Up (Remix) [EXTENDED]",
+      "start": 6394.0,
+      "end": 6420.0,
+      "supportSeconds": 13,
+      "density": 0.5,
+      "tempo": 0.97086,
+      "confidence": "review",
+      "overlaps": [
+        5
+      ]
+    },
+    {
+      "artist": "",
+      "id": 64,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\THNDERZ & Rave Heaven - Face Down Ass Up (Remix) [EXTENDED].wav",
+      "title": "THNDERZ & Rave Heaven - Face Down Ass Up (Remix) [EXTENDED]",
+      "start": 6475.0,
+      "end": 6633.0,
+      "supportSeconds": 71,
+      "density": 0.449,
+      "tempo": 1.07454,
+      "confidence": "review",
+      "overlaps": [
+        5,
+        5,
+        54
+      ]
+    },
+    {
+      "artist": "",
+      "id": 5,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\XXXTENTACION - Sippin Tea In Your Hood (ROYAL Hard Techno Remix).wav",
+      "title": "XXXTENTACION - Sippin Tea In Your Hood (ROYAL Hard Techno Remix)",
+      "start": 6494.0,
+      "end": 6539.0,
+      "supportSeconds": 13,
+      "density": 0.289,
+      "tempo": 0.97887,
+      "confidence": "review",
+      "overlaps": [
+        64,
+        54
+      ]
+    },
+    {
+      "artist": "Teddy Killerz",
+      "id": 54,
+      "path": "M:\\Musik\\DnB\\JumpUp\\Beatport\\2022\\Don't Kill The Vibe (Original Mix).flac",
+      "title": "Don't Kill The Vibe (Original Mix)",
+      "start": 6519.0,
+      "end": 6720.0,
+      "supportSeconds": 142,
+      "density": 0.706,
+      "tempo": 0.98207,
+      "confidence": "high",
+      "overlaps": [
+        64,
+        5,
+        53
+      ]
+    },
+    {
+      "artist": "Beskar",
+      "id": 53,
+      "path": "M:\\Musik\\DnB\\JumpUp\\Beatport\\2023\\Wilhelm Scream (Original Mix).flac",
+      "title": "Wilhelm Scream (Original Mix)",
+      "start": 6665.0,
+      "end": 6800.0,
+      "supportSeconds": 77,
+      "density": 0.57,
+      "tempo": 0.98409,
+      "confidence": "high",
+      "overlaps": [
+        54,
+        49,
+        48
+      ]
+    },
+    {
+      "artist": "",
+      "id": 49,
+      "path": "M:\\Musik\\Hardcore\\UK\\2021\\09.サクラカゼ (hu-zin Bootleg).mp3",
+      "title": "09.サクラカゼ (hu-zin Bootleg)",
+      "start": 6717.0,
+      "end": 6785.0,
+      "supportSeconds": 20,
+      "density": 0.294,
+      "tempo": 1.02375,
+      "confidence": "review",
+      "overlaps": [
+        53,
+        48
+      ]
+    },
+    {
+      "artist": "",
+      "id": 48,
+      "path": "M:\\Musik\\Hardcore\\UK\\2022\\Dj Snake - Propaganda (Two Players UK Hardcore Remix).wav",
+      "title": "Dj Snake - Propaganda (Two Players UK Hardcore Remix)",
+      "start": 6761.0,
+      "end": 6868.0,
+      "supportSeconds": 83,
+      "density": 0.776,
+      "tempo": 1.01149,
+      "confidence": "high",
+      "overlaps": [
+        53,
+        49,
+        53,
+        53,
+        49
+      ]
+    },
+    {
+      "artist": "Beskar",
+      "id": 53,
+      "path": "M:\\Musik\\DnB\\JumpUp\\Beatport\\2023\\Wilhelm Scream (Original Mix).flac",
+      "title": "Wilhelm Scream (Original Mix)",
+      "start": 6784.0,
+      "end": 6838.0,
+      "supportSeconds": 23,
+      "density": 0.426,
+      "tempo": 1.00703,
+      "confidence": "review",
+      "overlaps": [
+        48
+      ]
+    },
+    {
+      "artist": "Beskar",
+      "id": 53,
+      "path": "M:\\Musik\\DnB\\JumpUp\\Beatport\\2023\\Wilhelm Scream (Original Mix).flac",
+      "title": "Wilhelm Scream (Original Mix)",
+      "start": 6812.0,
+      "end": 6906.0,
+      "supportSeconds": 38,
+      "density": 0.404,
+      "tempo": 1.003,
+      "confidence": "review",
+      "overlaps": [
+        48,
+        49,
+        49
+      ]
+    },
+    {
+      "artist": "",
+      "id": 49,
+      "path": "M:\\Musik\\Hardcore\\UK\\2021\\09.サクラカゼ (hu-zin Bootleg).mp3",
+      "title": "09.サクラカゼ (hu-zin Bootleg)",
+      "start": 6820.0,
+      "end": 6900.0,
+      "supportSeconds": 21,
+      "density": 0.263,
+      "tempo": 1.08293,
+      "confidence": "review",
+      "overlaps": [
+        48,
+        53
+      ]
+    },
+    {
+      "artist": "",
+      "id": 49,
+      "path": "M:\\Musik\\Hardcore\\UK\\2021\\09.サクラカゼ (hu-zin Bootleg).mp3",
+      "title": "09.サクラカゼ (hu-zin Bootleg)",
+      "start": 6865.0,
+      "end": 7003.0,
+      "supportSeconds": 125,
+      "density": 0.906,
+      "tempo": 1.00241,
+      "confidence": "high",
+      "overlaps": [
+        53,
+        53,
+        57
+      ]
+    },
+    {
+      "artist": "Beskar",
+      "id": 53,
+      "path": "M:\\Musik\\DnB\\JumpUp\\Beatport\\2023\\Wilhelm Scream (Original Mix).flac",
+      "title": "Wilhelm Scream (Original Mix)",
+      "start": 6895.0,
+      "end": 6921.0,
+      "supportSeconds": 12,
+      "density": 0.462,
+      "tempo": 0.86759,
+      "confidence": "review",
+      "overlaps": [
+        49
+      ]
+    },
+    {
+      "artist": "Neon Beatz",
+      "id": 57,
+      "path": "M:\\Musik\\Beatport\\UK Hardcore\\2025\\Hardcore You And Me  (Extended Mix).flac",
+      "title": "Hardcore You And Me  (Extended Mix)",
+      "start": 6968.0,
+      "end": 7121.0,
+      "supportSeconds": 125,
+      "density": 0.817,
+      "tempo": 0.99362,
+      "confidence": "high",
+      "overlaps": [
+        49,
+        45,
+        99
+      ]
+    },
+    {
+      "artist": "Hardstyle Masterz/Max Enforcer",
+      "id": 45,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Hardstyle Masterz, Max Enforcer - Rambo is a Pussy.mp3",
+      "title": "Rambo is a Pussy",
+      "start": 7079.0,
+      "end": 7120.0,
+      "supportSeconds": 14,
+      "density": 0.341,
+      "tempo": 1.24933,
+      "confidence": "review",
+      "overlaps": [
+        57,
+        99
+      ]
+    },
+    {
+      "artist": "Nobody IYF",
+      "id": 99,
+      "path": "M:\\Musik\\Hardcore\\UK\\Beatport\\2019\\Blue (Original Mix).flac",
+      "title": "Blue (Original Mix)",
+      "start": 7089.0,
+      "end": 7306.0,
+      "supportSeconds": 178,
+      "density": 0.82,
+      "tempo": 0.97255,
+      "confidence": "high",
+      "overlaps": [
+        57,
+        45,
+        45,
+        45,
+        32,
+        52,
+        45,
+        52,
+        33
+      ]
+    },
+    {
+      "artist": "Hardstyle Masterz/Max Enforcer",
+      "id": 45,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Hardstyle Masterz, Max Enforcer - Rambo is a Pussy.mp3",
+      "title": "Rambo is a Pussy",
+      "start": 7107.0,
+      "end": 7177.0,
+      "supportSeconds": 22,
+      "density": 0.314,
+      "tempo": 1.19988,
+      "confidence": "review",
+      "overlaps": [
+        99
+      ]
+    },
+    {
+      "artist": "Hardstyle Masterz/Max Enforcer",
+      "id": 45,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Hardstyle Masterz, Max Enforcer - Rambo is a Pussy.mp3",
+      "title": "Rambo is a Pussy",
+      "start": 7176.0,
+      "end": 7238.0,
+      "supportSeconds": 19,
+      "density": 0.306,
+      "tempo": 1.24103,
+      "confidence": "review",
+      "overlaps": [
+        99,
+        32,
+        52
+      ]
+    },
+    {
+      "artist": "Somniac One",
+      "id": 32,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - Shirtless.mp3",
+      "title": "Shirtless",
+      "start": 7191.0,
+      "end": 7261.0,
+      "supportSeconds": 31,
+      "density": 0.443,
+      "tempo": 1.16843,
+      "confidence": "review",
+      "overlaps": [
+        99,
+        45,
+        52,
+        45
+      ]
+    },
+    {
+      "artist": "",
+      "id": 52,
+      "path": "M:\\Musik\\Hardcore\\UK\\2020\\R3HAB & KSHMR - Strong (DRIFT 2020 UK Hardcore Remix).mp3",
+      "title": "R3HAB & KSHMR - Strong (DRIFT 2020 UK Hardcore Remix)",
+      "start": 7193.0,
+      "end": 7238.0,
+      "supportSeconds": 13,
+      "density": 0.289,
+      "tempo": 0.99847,
+      "confidence": "review",
+      "overlaps": [
+        99,
+        45,
+        32
+      ]
+    },
+    {
+      "artist": "Hardstyle Masterz/Max Enforcer",
+      "id": 45,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Hardstyle Masterz, Max Enforcer - Rambo is a Pussy.mp3",
+      "title": "Rambo is a Pussy",
+      "start": 7223.0,
+      "end": 7304.0,
+      "supportSeconds": 22,
+      "density": 0.272,
+      "tempo": 1.1868,
+      "confidence": "review",
+      "overlaps": [
+        99,
+        32,
+        52,
+        33
+      ]
+    },
+    {
+      "artist": "",
+      "id": 52,
+      "path": "M:\\Musik\\Hardcore\\UK\\2020\\R3HAB & KSHMR - Strong (DRIFT 2020 UK Hardcore Remix).mp3",
+      "title": "R3HAB & KSHMR - Strong (DRIFT 2020 UK Hardcore Remix)",
+      "start": 7259.0,
+      "end": 7452.0,
+      "supportSeconds": 173,
+      "density": 0.896,
+      "tempo": 0.99967,
+      "confidence": "high",
+      "overlaps": [
+        99,
+        45,
+        33,
+        98,
+        75,
+        39
+      ]
+    },
+    {
+      "artist": "Somniac One",
+      "id": 33,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - The Grand Awokening - Original mix.mp3",
+      "title": "The Grand Awokening - Original mix",
+      "start": 7280.0,
+      "end": 7331.0,
+      "supportSeconds": 13,
+      "density": 0.255,
+      "tempo": 1.13983,
+      "confidence": "review",
+      "overlaps": [
+        99,
+        45,
+        52
+      ]
+    },
+    {
+      "artist": "Deichkind",
+      "id": 98,
+      "path": "M:\\Musik\\HardTekk\\2015\\Deichkind - So'ne Musik (The Various Artists - So'ne Bassdrum Remix).mp3",
+      "title": "So'ne Musik (Various Artists - So'ne Bassdrum Remix)",
+      "start": 7330.0,
+      "end": 7391.0,
+      "supportSeconds": 16,
+      "density": 0.262,
+      "tempo": 1.15614,
+      "confidence": "review",
+      "overlaps": [
+        52,
+        75
+      ]
+    },
+    {
+      "artist": "JO3Y3T",
+      "id": 75,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\2026\\Like That (Original Mix).flac",
+      "title": "Like That (Original Mix)",
+      "start": 7347.0,
+      "end": 7440.0,
+      "supportSeconds": 27,
+      "density": 0.29,
+      "tempo": 1.15365,
+      "confidence": "review",
+      "overlaps": [
+        52,
+        98,
+        39
+      ]
+    },
+    {
+      "artist": "",
+      "id": 39,
+      "path": "M:\\Musik\\Hardcore\\UK\\2020\\Alaguan feat. Lexi - Sailor Moon (DJ Edit).wav",
+      "title": "Alaguan feat. Lexi - Sailor Moon (DJ Edit)",
+      "start": 7418.0,
+      "end": 7456.0,
+      "supportSeconds": 17,
+      "density": 0.447,
+      "tempo": 1.02079,
+      "confidence": "review",
+      "overlaps": [
+        52,
+        75
+      ]
+    },
+    {
+      "artist": "Somniac One",
+      "id": 33,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - The Grand Awokening - Original mix.mp3",
+      "title": "The Grand Awokening - Original mix",
+      "start": 7441.0,
+      "end": 7485.0,
+      "supportSeconds": 15,
+      "density": 0.341,
+      "tempo": 1.08598,
+      "confidence": "review",
+      "overlaps": [
+        39,
+        98
+      ]
+    },
+    {
+      "artist": "",
+      "id": 39,
+      "path": "M:\\Musik\\Hardcore\\UK\\2020\\Alaguan feat. Lexi - Sailor Moon (DJ Edit).wav",
+      "title": "Alaguan feat. Lexi - Sailor Moon (DJ Edit)",
+      "start": 7444.0,
+      "end": 7692.0,
+      "supportSeconds": 210,
+      "density": 0.847,
+      "tempo": 0.99809,
+      "confidence": "high",
+      "overlaps": [
+        33,
+        98,
+        88,
+        49,
+        88,
+        47
+      ]
+    },
+    {
+      "artist": "Deichkind",
+      "id": 98,
+      "path": "M:\\Musik\\HardTekk\\2015\\Deichkind - So'ne Musik (The Various Artists - So'ne Bassdrum Remix).mp3",
+      "title": "So'ne Musik (Various Artists - So'ne Bassdrum Remix)",
+      "start": 7460.0,
+      "end": 7509.0,
+      "supportSeconds": 16,
+      "density": 0.327,
+      "tempo": 1.14861,
+      "confidence": "review",
+      "overlaps": [
+        33,
+        39,
+        88
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 88,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Love Love Love (Force Remix).m4a",
+      "title": "Love Love Love (Force Remix)",
+      "start": 7482.0,
+      "end": 7611.0,
+      "supportSeconds": 39,
+      "density": 0.302,
+      "tempo": 1.24702,
+      "confidence": "review",
+      "overlaps": [
+        39,
+        98,
+        49
+      ]
+    },
+    {
+      "artist": "",
+      "id": 49,
+      "path": "M:\\Musik\\Hardcore\\UK\\2021\\09.サクラカゼ (hu-zin Bootleg).mp3",
+      "title": "09.サクラカゼ (hu-zin Bootleg)",
+      "start": 7499.0,
+      "end": 7538.0,
+      "supportSeconds": 12,
+      "density": 0.308,
+      "tempo": 0.74797,
+      "confidence": "review",
+      "overlaps": [
+        39,
+        88
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 88,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Love Love Love (Force Remix).m4a",
+      "title": "Love Love Love (Force Remix)",
+      "start": 7560.0,
+      "end": 7667.0,
+      "supportSeconds": 28,
+      "density": 0.262,
+      "tempo": 1.10252,
+      "confidence": "review",
+      "overlaps": [
+        39
+      ]
+    },
+    {
+      "artist": "",
+      "id": 47,
+      "path": "M:\\Musik\\HardTekk\\2018\\KomaCasper-Aufstehen!ABGEHEN!.mp3",
+      "title": "KomaCasper-Aufstehen!ABGEHEN!",
+      "start": 7668.0,
+      "end": 7828.0,
+      "supportSeconds": 159,
+      "density": 0.994,
+      "tempo": 0.99998,
+      "confidence": "high",
+      "overlaps": [
+        39,
+        45
+      ]
+    },
+    {
+      "artist": "Hardstyle Masterz/Max Enforcer",
+      "id": 45,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Hardstyle Masterz, Max Enforcer - Rambo is a Pussy.mp3",
+      "title": "Rambo is a Pussy",
+      "start": 7798.0,
+      "end": 7825.0,
+      "supportSeconds": 13,
+      "density": 0.481,
+      "tempo": 0.76445,
+      "confidence": "review",
+      "overlaps": [
+        47
+      ]
+    },
+    {
+      "artist": "",
+      "id": 46,
+      "path": "M:\\Musik\\HardTekk\\2018\\KomaCasper- Jetzt ist hier Achterbahn.mp3",
+      "title": "KomaCasper- Jetzt ist hier Achterbahn",
+      "start": 7822.0,
+      "end": 7925.0,
+      "supportSeconds": 87,
+      "density": 0.845,
+      "tempo": 0.94306,
+      "confidence": "high",
+      "overlaps": []
+    },
+    {
+      "artist": "",
+      "id": 67,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\intro\\chravma - my little pony - my first hard techno track and i hate it so much extended.wav",
+      "title": "chravma - my little pony - my first hard techno track and i hate it so much extended",
+      "start": 7907.0,
+      "end": 8023.0,
+      "supportSeconds": 102,
+      "density": 0.879,
+      "tempo": 0.99897,
+      "confidence": "high",
+      "overlaps": []
+    },
+    {
+      "artist": "",
+      "id": 67,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\intro\\chravma - my little pony - my first hard techno track and i hate it so much extended.wav",
+      "title": "chravma - my little pony - my first hard techno track and i hate it so much extended",
+      "start": 7975.0,
+      "end": 8141.0,
+      "supportSeconds": 128,
+      "density": 0.771,
+      "tempo": 1.00656,
+      "confidence": "high",
+      "overlaps": [
+        59
+      ]
+    },
+    {
+      "artist": "",
+      "id": 59,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Bonfire (Sirolo Hard Techno Edit)  [wav 16].wav",
+      "title": "Bonfire (Sirolo Hard Techno Edit)  [wav 16]",
+      "start": 8097.0,
+      "end": 8194.0,
+      "supportSeconds": 61,
+      "density": 0.629,
+      "tempo": 1.02323,
+      "confidence": "high",
+      "overlaps": [
+        67,
+        72
+      ]
+    },
+    {
+      "artist": "",
+      "id": 72,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\Torsten - Come Take My Hand EDIT [Extended Master].wav",
+      "title": "Torsten - Come Take My Hand EDIT [Extended Master]",
+      "start": 8147.0,
+      "end": 8318.0,
+      "supportSeconds": 97,
+      "density": 0.567,
+      "tempo": 1.00734,
+      "confidence": "high",
+      "overlaps": [
+        59,
+        59,
+        66
+      ]
+    },
+    {
+      "artist": "",
+      "id": 59,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Bonfire (Sirolo Hard Techno Edit)  [wav 16].wav",
+      "title": "Bonfire (Sirolo Hard Techno Edit)  [wav 16]",
+      "start": 8227.0,
+      "end": 8313.0,
+      "supportSeconds": 55,
+      "density": 0.64,
+      "tempo": 0.99962,
+      "confidence": "high",
+      "overlaps": [
+        72,
+        66
+      ]
+    },
+    {
+      "artist": "",
+      "id": 66,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\[TFT Records] AlexisGrace & Rave Heaven - GANGSTA SHT (EXTENDED) [TFT116GT].wav",
+      "title": "[TFT Records] AlexisGrace & Rave Heaven - GANGSTA SHT (EXTENDED) [TFT116GT]",
+      "start": 8267.0,
+      "end": 8381.0,
+      "supportSeconds": 72,
+      "density": 0.632,
+      "tempo": 0.99904,
+      "confidence": "high",
+      "overlaps": [
+        72,
+        59,
+        69
+      ]
+    },
+    {
+      "artist": "",
+      "id": 69,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\Discotronic - Tricky Disco (Fyloh Bootleg) (Extended Mix).wav",
+      "title": "Discotronic - Tricky Disco (Fyloh Bootleg) (Extended Mix)",
+      "start": 8347.0,
+      "end": 8446.0,
+      "supportSeconds": 78,
+      "density": 0.788,
+      "tempo": 0.99873,
+      "confidence": "high",
+      "overlaps": [
+        66,
+        70,
+        70
+      ]
+    },
+    {
+      "artist": "FACEXCONTROL",
+      "id": 70,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\FACEXCONTROL - LOLLIPOP (Benefice Master).aiff",
+      "title": "LOLLIPOP [Benefice Master]",
+      "start": 8393.0,
+      "end": 8432.0,
+      "supportSeconds": 18,
+      "density": 0.462,
+      "tempo": 0.98888,
+      "confidence": "review",
+      "overlaps": [
+        69
+      ]
+    },
+    {
+      "artist": "FACEXCONTROL",
+      "id": 70,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\FACEXCONTROL - LOLLIPOP (Benefice Master).aiff",
+      "title": "LOLLIPOP [Benefice Master]",
+      "start": 8414.0,
+      "end": 8569.0,
+      "supportSeconds": 115,
+      "density": 0.742,
+      "tempo": 0.98602,
+      "confidence": "high",
+      "overlaps": [
+        69
+      ]
+    },
+    {
+      "artist": "JO3Y3T",
+      "id": 75,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\2026\\Like That (Original Mix).flac",
+      "title": "Like That (Original Mix)",
+      "start": 8565.0,
+      "end": 8656.0,
+      "supportSeconds": 84,
+      "density": 0.923,
+      "tempo": 1.0027,
+      "confidence": "high",
+      "overlaps": [
+        51,
+        69,
+        1
+      ]
+    },
+    {
+      "artist": "",
+      "id": 51,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Schranz\\2026\\David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP).wav",
+      "title": "David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP)",
+      "start": 8571.0,
+      "end": 8613.0,
+      "supportSeconds": 16,
+      "density": 0.381,
+      "tempo": 1.02817,
+      "confidence": "review",
+      "overlaps": [
+        75,
+        69,
+        1
+      ]
+    },
+    {
+      "artist": "",
+      "id": 69,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\Discotronic - Tricky Disco (Fyloh Bootleg) (Extended Mix).wav",
+      "title": "Discotronic - Tricky Disco (Fyloh Bootleg) (Extended Mix)",
+      "start": 8578.0,
+      "end": 8617.0,
+      "supportSeconds": 12,
+      "density": 0.308,
+      "tempo": 0.9427,
+      "confidence": "review",
+      "overlaps": [
+        75,
+        51,
+        1
+      ]
+    },
+    {
+      "artist": "",
+      "id": 1,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Linkin Park - In The End (Alberto Adami Edit) (Extended Mix).wav",
+      "title": "Linkin Park - In The End (Alberto Adami Edit) (Extended Mix)",
+      "start": 8580.0,
+      "end": 8642.0,
+      "supportSeconds": 21,
+      "density": 0.339,
+      "tempo": 1.00526,
+      "confidence": "review",
+      "overlaps": [
+        75,
+        51,
+        69
+      ]
+    },
+    {
+      "artist": "JO3Y3T",
+      "id": 75,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\2026\\Like That (Original Mix).flac",
+      "title": "Like That (Original Mix)",
+      "start": 8623.0,
+      "end": 8704.0,
+      "supportSeconds": 23,
+      "density": 0.284,
+      "tempo": 1.00436,
+      "confidence": "review",
+      "overlaps": [
+        1
+      ]
+    },
+    {
+      "artist": "",
+      "id": 1,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Linkin Park - In The End (Alberto Adami Edit) (Extended Mix).wav",
+      "title": "Linkin Park - In The End (Alberto Adami Edit) (Extended Mix)",
+      "start": 8640.0,
+      "end": 8804.0,
+      "supportSeconds": 132,
+      "density": 0.805,
+      "tempo": 0.99937,
+      "confidence": "high",
+      "overlaps": [
+        75
+      ]
+    },
+    {
+      "artist": "",
+      "id": 68,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\Alberto Adami - Let You Suffer (Extended) [MSTR KNTRLVRLST].wav",
+      "title": "Alberto Adami - Let You Suffer (Extended) [MSTR KNTRLVRLST]",
+      "start": 8795.0,
+      "end": 9032.0,
+      "supportSeconds": 211,
+      "density": 0.89,
+      "tempo": 1.0013,
+      "confidence": "high",
+      "overlaps": [
+        1,
+        55,
+        60,
+        57,
+        55,
+        76
+      ]
+    },
+    {
+      "artist": "",
+      "id": 1,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Linkin Park - In The End (Alberto Adami Edit) (Extended Mix).wav",
+      "title": "Linkin Park - In The End (Alberto Adami Edit) (Extended Mix)",
+      "start": 8842.0,
+      "end": 8894.0,
+      "supportSeconds": 13,
+      "density": 0.25,
+      "tempo": 1.02262,
+      "confidence": "review",
+      "overlaps": [
+        68
+      ]
+    },
+    {
+      "artist": "Anime & Rob Gee",
+      "id": 55,
+      "path": "M:\\Musik\\Hardcore\\Hardcore Extended\\10_anime_and_rob_gee_-_you_get_me_high.mp3",
+      "title": "You Get Me High",
+      "start": 8912.0,
+      "end": 8965.0,
+      "supportSeconds": 17,
+      "density": 0.321,
+      "tempo": 0.93566,
+      "confidence": "review",
+      "overlaps": [
+        68,
+        60
+      ]
+    },
+    {
+      "artist": "",
+      "id": 60,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\KIRK - CD Is Dead (mp3).mp3",
+      "title": "KIRK - CD Is Dead (mp3)",
+      "start": 8935.0,
+      "end": 8981.0,
+      "supportSeconds": 17,
+      "density": 0.37,
+      "tempo": 0.82176,
+      "confidence": "review",
+      "overlaps": [
+        68,
+        55,
+        57,
+        55
+      ]
+    },
+    {
+      "artist": "Neon Beatz",
+      "id": 57,
+      "path": "M:\\Musik\\Beatport\\UK Hardcore\\2025\\Hardcore You And Me  (Extended Mix).flac",
+      "title": "Hardcore You And Me  (Extended Mix)",
+      "start": 8950.0,
+      "end": 8981.0,
+      "supportSeconds": 13,
+      "density": 0.419,
+      "tempo": 0.77596,
+      "confidence": "review",
+      "overlaps": [
+        68,
+        60,
+        55
+      ]
+    },
+    {
+      "artist": "Anime & Rob Gee",
+      "id": 55,
+      "path": "M:\\Musik\\Hardcore\\Hardcore Extended\\10_anime_and_rob_gee_-_you_get_me_high.mp3",
+      "title": "You Get Me High",
+      "start": 8961.0,
+      "end": 8992.0,
+      "supportSeconds": 17,
+      "density": 0.548,
+      "tempo": 0.97298,
+      "confidence": "review",
+      "overlaps": [
+        68,
+        60,
+        57
+      ]
+    },
+    {
+      "artist": "",
+      "id": 76,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Schranz\\2025\\XXXTENTACION - Revenge (ROYAL Schranz Remix).wav",
+      "title": "XXXTENTACION - Revenge (ROYAL Schranz Remix)",
+      "start": 9008.0,
+      "end": 9236.0,
+      "supportSeconds": 215,
+      "density": 0.943,
+      "tempo": 0.99925,
+      "confidence": "high",
+      "overlaps": [
+        68,
+        87,
+        57,
+        64,
+        87,
+        57,
+        88,
+        57,
+        50,
+        57,
+        87
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 87,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Der Techno Erlkönig (Original Mix).m4a",
+      "title": "Der Techno Erlkönig (Original Mix)",
+      "start": 9030.0,
+      "end": 9110.0,
+      "supportSeconds": 29,
+      "density": 0.362,
+      "tempo": 1.21864,
+      "confidence": "review",
+      "overlaps": [
+        76,
+        57,
+        64
+      ]
+    },
+    {
+      "artist": "Neon Beatz",
+      "id": 57,
+      "path": "M:\\Musik\\Beatport\\UK Hardcore\\2025\\Hardcore You And Me  (Extended Mix).flac",
+      "title": "Hardcore You And Me  (Extended Mix)",
+      "start": 9036.0,
+      "end": 9082.0,
+      "supportSeconds": 16,
+      "density": 0.348,
+      "tempo": 0.9306,
+      "confidence": "review",
+      "overlaps": [
+        76,
+        87
+      ]
+    },
+    {
+      "artist": "",
+      "id": 64,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\THNDERZ & Rave Heaven - Face Down Ass Up (Remix) [EXTENDED].wav",
+      "title": "THNDERZ & Rave Heaven - Face Down Ass Up (Remix) [EXTENDED]",
+      "start": 9069.0,
+      "end": 9151.0,
+      "supportSeconds": 22,
+      "density": 0.268,
+      "tempo": 1.02654,
+      "confidence": "review",
+      "overlaps": [
+        76,
+        87,
+        87,
+        57
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 87,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Der Techno Erlkönig (Original Mix).m4a",
+      "title": "Der Techno Erlkönig (Original Mix)",
+      "start": 9072.0,
+      "end": 9223.0,
+      "supportSeconds": 44,
+      "density": 0.291,
+      "tempo": 0.98392,
+      "confidence": "review",
+      "overlaps": [
+        76,
+        64,
+        57,
+        88,
+        57,
+        50,
+        57
+      ]
+    },
+    {
+      "artist": "Neon Beatz",
+      "id": 57,
+      "path": "M:\\Musik\\Beatport\\UK Hardcore\\2025\\Hardcore You And Me  (Extended Mix).flac",
+      "title": "Hardcore You And Me  (Extended Mix)",
+      "start": 9128.0,
+      "end": 9170.0,
+      "supportSeconds": 17,
+      "density": 0.405,
+      "tempo": 0.8438,
+      "confidence": "review",
+      "overlaps": [
+        76,
+        64,
+        87,
+        88
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 88,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Love Love Love (Force Remix).m4a",
+      "title": "Love Love Love (Force Remix)",
+      "start": 9146.0,
+      "end": 9202.0,
+      "supportSeconds": 17,
+      "density": 0.304,
+      "tempo": 1.02795,
+      "confidence": "review",
+      "overlaps": [
+        76,
+        87,
+        57,
+        57
+      ]
+    },
+    {
+      "artist": "Neon Beatz",
+      "id": 57,
+      "path": "M:\\Musik\\Beatport\\UK Hardcore\\2025\\Hardcore You And Me  (Extended Mix).flac",
+      "title": "Hardcore You And Me  (Extended Mix)",
+      "start": 9151.0,
+      "end": 9210.0,
+      "supportSeconds": 16,
+      "density": 0.271,
+      "tempo": 0.81165,
+      "confidence": "review",
+      "overlaps": [
+        76,
+        87,
+        88,
+        50
+      ]
+    },
+    {
+      "artist": "Lorenzo Raganzini Paolo Ferrara Arytmia",
+      "id": 50,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\Schranz\\2025\\Alone In The Dark (Remix).flac",
+      "title": "Alone In The Dark (Remix)",
+      "start": 9185.0,
+      "end": 9268.0,
+      "supportSeconds": 26,
+      "density": 0.313,
+      "tempo": 1.01668,
+      "confidence": "review",
+      "overlaps": [
+        76,
+        87,
+        57,
+        57,
+        87,
+        76,
+        88,
+        54
+      ]
+    },
+    {
+      "artist": "Neon Beatz",
+      "id": 57,
+      "path": "M:\\Musik\\Beatport\\UK Hardcore\\2025\\Hardcore You And Me  (Extended Mix).flac",
+      "title": "Hardcore You And Me  (Extended Mix)",
+      "start": 9194.0,
+      "end": 9234.0,
+      "supportSeconds": 13,
+      "density": 0.325,
+      "tempo": 0.79425,
+      "confidence": "review",
+      "overlaps": [
+        76,
+        87,
+        50,
+        87,
+        76
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 87,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Der Techno Erlkönig (Original Mix).m4a",
+      "title": "Der Techno Erlkönig (Original Mix)",
+      "start": 9202.0,
+      "end": 9247.0,
+      "supportSeconds": 13,
+      "density": 0.289,
+      "tempo": 0.99768,
+      "confidence": "review",
+      "overlaps": [
+        76,
+        50,
+        57,
+        76,
+        88
+      ]
+    },
+    {
+      "artist": "",
+      "id": 76,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Schranz\\2025\\XXXTENTACION - Revenge (ROYAL Schranz Remix).wav",
+      "title": "XXXTENTACION - Revenge (ROYAL Schranz Remix)",
+      "start": 9205.0,
+      "end": 9267.0,
+      "supportSeconds": 19,
+      "density": 0.306,
+      "tempo": 0.95498,
+      "confidence": "review",
+      "overlaps": [
+        50,
+        57,
+        87,
+        88,
+        50,
+        54
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 88,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Love Love Love (Force Remix).m4a",
+      "title": "Love Love Love (Force Remix)",
+      "start": 9220.0,
+      "end": 9269.0,
+      "supportSeconds": 14,
+      "density": 0.286,
+      "tempo": 1.02795,
+      "confidence": "review",
+      "overlaps": [
+        50,
+        87,
+        76,
+        50,
+        54
+      ]
+    },
+    {
+      "artist": "Lorenzo Raganzini Paolo Ferrara Arytmia",
+      "id": 50,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\Schranz\\2025\\Alone In The Dark (Remix).flac",
+      "title": "Alone In The Dark (Remix)",
+      "start": 9233.0,
+      "end": 9318.0,
+      "supportSeconds": 73,
+      "density": 0.859,
+      "tempo": 0.99927,
+      "confidence": "high",
+      "overlaps": [
+        76,
+        88,
+        54,
+        40
+      ]
+    },
+    {
+      "artist": "Teddy Killerz",
+      "id": 54,
+      "path": "M:\\Musik\\DnB\\JumpUp\\Beatport\\2022\\Don't Kill The Vibe (Original Mix).flac",
+      "title": "Don't Kill The Vibe (Original Mix)",
+      "start": 9246.0,
+      "end": 9274.0,
+      "supportSeconds": 12,
+      "density": 0.429,
+      "tempo": 0.95486,
+      "confidence": "review",
+      "overlaps": [
+        50,
+        76,
+        88,
+        50
+      ]
+    },
+    {
+      "artist": "Bollmann NICAROT",
+      "id": 40,
+      "path": "M:\\Musik\\Beatport\\Hard Techno\\Schranz\\Melodic\\2025\\Eiskalter Blick feat. NICAROT (Original Mix).flac",
+      "title": "Eiskalter Blick feat. NICAROT (Original Mix)",
+      "start": 9290.0,
+      "end": 9558.0,
+      "supportSeconds": 239,
+      "density": 0.892,
+      "tempo": 1.0003,
+      "confidence": "high",
+      "overlaps": [
+        50,
+        50,
+        50,
+        54,
+        41
+      ]
+    },
+    {
+      "artist": "Lorenzo Raganzini Paolo Ferrara Arytmia",
+      "id": 50,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\Schranz\\2025\\Alone In The Dark (Remix).flac",
+      "title": "Alone In The Dark (Remix)",
+      "start": 9314.0,
+      "end": 9425.0,
+      "supportSeconds": 44,
+      "density": 0.396,
+      "tempo": 0.99078,
+      "confidence": "review",
+      "overlaps": [
+        40
+      ]
+    },
+    {
+      "artist": "Lorenzo Raganzini Paolo Ferrara Arytmia",
+      "id": 50,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\Schranz\\2025\\Alone In The Dark (Remix).flac",
+      "title": "Alone In The Dark (Remix)",
+      "start": 9409.0,
+      "end": 9522.0,
+      "supportSeconds": 45,
+      "density": 0.398,
+      "tempo": 0.99902,
+      "confidence": "review",
+      "overlaps": [
+        40,
+        54
+      ]
+    },
+    {
+      "artist": "Teddy Killerz",
+      "id": 54,
+      "path": "M:\\Musik\\DnB\\JumpUp\\Beatport\\2022\\Don't Kill The Vibe (Original Mix).flac",
+      "title": "Don't Kill The Vibe (Original Mix)",
+      "start": 9422.0,
+      "end": 9451.0,
+      "supportSeconds": 15,
+      "density": 0.517,
+      "tempo": 1.00139,
+      "confidence": "review",
+      "overlaps": [
+        40,
+        50
+      ]
+    },
+    {
+      "artist": "In Verruf",
+      "id": 41,
+      "path": "M:\\Musik\\Beatport\\Hard Techno\\Schranz\\Melodic\\2025\\Fassade (Original Mix).flac",
+      "title": "Fassade (Original Mix)",
+      "start": 9509.0,
+      "end": 9684.0,
+      "supportSeconds": 149,
+      "density": 0.851,
+      "tempo": 0.99948,
+      "confidence": "high",
+      "overlaps": [
+        40
+      ]
+    },
+    {
+      "artist": "",
+      "id": 51,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Schranz\\2026\\David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP).wav",
+      "title": "David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP)",
+      "start": 9670.0,
+      "end": 9772.0,
+      "supportSeconds": 79,
+      "density": 0.775,
+      "tempo": 0.9712,
+      "confidence": "high",
+      "overlaps": [
+        74
+      ]
+    },
+    {
+      "artist": "DJ Ghost Dimitri Vegas Cherry Moon Trax Per Pleks",
+      "id": 74,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\2025\\Needle Destruction (Dimitri Vegas & Per Pleks Extended Remix).flac",
+      "title": "Needle Destruction (Dimitri Vegas & Per Pleks Extended Remix)",
+      "start": 9741.0,
+      "end": 9924.0,
+      "supportSeconds": 119,
+      "density": 0.65,
+      "tempo": 1.02881,
+      "confidence": "high",
+      "overlaps": [
+        51,
+        6
+      ]
+    },
+    {
+      "artist": "Matt M. Maddox",
+      "id": 6,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\Schranz\\2008\\White Tool (Original Mix).flac",
+      "title": "White Tool (Original Mix)",
+      "start": 9886.0,
+      "end": 9929.0,
+      "supportSeconds": 15,
+      "density": 0.349,
+      "tempo": 0.91623,
+      "confidence": "review",
+      "overlaps": [
+        74
+      ]
+    },
+    {
+      "artist": "Matt M. Maddox",
+      "id": 6,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\Schranz\\2008\\White Tool (Original Mix).flac",
+      "title": "White Tool (Original Mix)",
+      "start": 9909.0,
+      "end": 10042.0,
+      "supportSeconds": 98,
+      "density": 0.737,
+      "tempo": 1.03291,
+      "confidence": "high",
+      "overlaps": [
+        45
+      ]
+    },
+    {
+      "artist": "Hardstyle Masterz/Max Enforcer",
+      "id": 45,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Hardstyle Masterz, Max Enforcer - Rambo is a Pussy.mp3",
+      "title": "Rambo is a Pussy",
+      "start": 10008.0,
+      "end": 10140.0,
+      "supportSeconds": 87,
+      "density": 0.659,
+      "tempo": 1.02936,
+      "confidence": "high",
+      "overlaps": [
+        6,
+        43
+      ]
+    },
+    {
+      "artist": "Noisecontrollers",
+      "id": 43,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Noisecontrollers - So High - Original Mix.mp3",
+      "title": "So High - Original Mix",
+      "start": 10102.0,
+      "end": 10353.0,
+      "supportSeconds": 219,
+      "density": 0.873,
+      "tempo": 1.009,
+      "confidence": "high",
+      "overlaps": [
+        45,
+        45,
+        33,
+        45,
+        45,
+        24,
+        24
+      ]
+    },
+    {
+      "artist": "Hardstyle Masterz/Max Enforcer",
+      "id": 45,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Hardstyle Masterz, Max Enforcer - Rambo is a Pussy.mp3",
+      "title": "Rambo is a Pussy",
+      "start": 10103.0,
+      "end": 10180.0,
+      "supportSeconds": 23,
+      "density": 0.299,
+      "tempo": 1.09279,
+      "confidence": "review",
+      "overlaps": [
+        43,
+        33
+      ]
+    },
+    {
+      "artist": "Somniac One",
+      "id": 33,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - The Grand Awokening - Original mix.mp3",
+      "title": "The Grand Awokening - Original mix",
+      "start": 10130.0,
+      "end": 10180.0,
+      "supportSeconds": 19,
+      "density": 0.38,
+      "tempo": 1.06531,
+      "confidence": "review",
+      "overlaps": [
+        43,
+        45
+      ]
+    },
+    {
+      "artist": "Hardstyle Masterz/Max Enforcer",
+      "id": 45,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Hardstyle Masterz, Max Enforcer - Rambo is a Pussy.mp3",
+      "title": "Rambo is a Pussy",
+      "start": 10165.0,
+      "end": 10203.0,
+      "supportSeconds": 13,
+      "density": 0.342,
+      "tempo": 1.0035,
+      "confidence": "review",
+      "overlaps": [
+        43
+      ]
+    },
+    {
+      "artist": "Hardstyle Masterz/Max Enforcer",
+      "id": 45,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Hardstyle Masterz, Max Enforcer - Rambo is a Pussy.mp3",
+      "title": "Rambo is a Pussy",
+      "start": 10188.0,
+      "end": 10232.0,
+      "supportSeconds": 12,
+      "density": 0.273,
+      "tempo": 1.02287,
+      "confidence": "review",
+      "overlaps": [
+        43
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 10266.0,
+      "end": 10312.0,
+      "supportSeconds": 12,
+      "density": 0.261,
+      "tempo": 1.24547,
+      "confidence": "review",
+      "overlaps": [
+        43
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 10298.0,
+      "end": 10347.0,
+      "supportSeconds": 15,
+      "density": 0.306,
+      "tempo": 1.16718,
+      "confidence": "review",
+      "overlaps": [
+        43
+      ]
+    },
+    {
+      "artist": "Headhunterz",
+      "id": 44,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool classics\\Headhunterz - Rock Civilization - Technoboy's Undersound Mix.mp3",
+      "title": "Rock Civilization - Technoboy's Undersound Mix",
+      "start": 10354.0,
+      "end": 10551.0,
+      "supportSeconds": 182,
+      "density": 0.924,
+      "tempo": 1.00142,
+      "confidence": "high",
+      "overlaps": [
+        24,
+        88,
+        24,
+        88
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 10384.0,
+      "end": 10515.0,
+      "supportSeconds": 39,
+      "density": 0.298,
+      "tempo": 1.16718,
+      "confidence": "review",
+      "overlaps": [
+        44,
+        88
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 88,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Love Love Love (Force Remix).m4a",
+      "title": "Love Love Love (Force Remix)",
+      "start": 10447.0,
+      "end": 10533.0,
+      "supportSeconds": 27,
+      "density": 0.314,
+      "tempo": 1.00626,
+      "confidence": "review",
+      "overlaps": [
+        44,
+        24,
+        24
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 10482.0,
+      "end": 10558.0,
+      "supportSeconds": 19,
+      "density": 0.25,
+      "tempo": 1.22748,
+      "confidence": "review",
+      "overlaps": [
+        44,
+        88,
+        88
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 88,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Love Love Love (Force Remix).m4a",
+      "title": "Love Love Love (Force Remix)",
+      "start": 10513.0,
+      "end": 10554.0,
+      "supportSeconds": 13,
+      "density": 0.317,
+      "tempo": 1.00839,
+      "confidence": "review",
+      "overlaps": [
+        44,
+        24
+      ]
+    },
+    {
+      "artist": "Francesco Zeta",
+      "id": 42,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Francesco Zeta - Fairyland - Reamp 2012.mp3",
+      "title": "Fairyland - Reamp 2012",
+      "start": 10542.0,
+      "end": 10727.0,
+      "supportSeconds": 167,
+      "density": 0.903,
+      "tempo": 1.00052,
+      "confidence": "high",
+      "overlaps": []
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 84,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Life Inside Your Eyes (Original Mix).m4a",
+      "title": "Life Inside Your Eyes (Original Mix)",
+      "start": 10717.0,
+      "end": 10802.0,
+      "supportSeconds": 69,
+      "density": 0.812,
+      "tempo": 1.00891,
+      "confidence": "high",
+      "overlaps": [
+        95,
+        42,
+        82
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 95,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Life Inside Your Eyes (Original Mix).m4a",
+      "title": "Life Inside Your Eyes (Original Mix)",
+      "start": 10717.0,
+      "end": 10802.0,
+      "supportSeconds": 69,
+      "density": 0.812,
+      "tempo": 1.00891,
+      "confidence": "high",
+      "overlaps": [
+        84,
+        42,
+        82
+      ]
+    },
+    {
+      "artist": "Francesco Zeta",
+      "id": 42,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Francesco Zeta - Fairyland - Reamp 2012.mp3",
+      "title": "Fairyland - Reamp 2012",
+      "start": 10731.0,
+      "end": 10778.0,
+      "supportSeconds": 14,
+      "density": 0.298,
+      "tempo": 0.9904,
+      "confidence": "review",
+      "overlaps": [
+        84,
+        95
+      ]
+    },
+    {
+      "artist": "Greb Levah",
+      "id": 82,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Habe es geschafft (Original Mix).m4a",
+      "title": "Habe es geschafft (Original Mix)",
+      "start": 10779.0,
+      "end": 10924.0,
+      "supportSeconds": 132,
+      "density": 0.91,
+      "tempo": 1.0132,
+      "confidence": "high",
+      "overlaps": [
+        84,
+        95,
+        88,
+        83,
+        88,
+        83,
+        90,
+        88
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 88,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Love Love Love (Force Remix).m4a",
+      "title": "Love Love Love (Force Remix)",
+      "start": 10788.0,
+      "end": 10837.0,
+      "supportSeconds": 15,
+      "density": 0.306,
+      "tempo": 0.90762,
+      "confidence": "review",
+      "overlaps": [
+        82,
+        83
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 10790.0,
+      "end": 10842.0,
+      "supportSeconds": 13,
+      "density": 0.25,
+      "tempo": 1.22999,
+      "confidence": "review",
+      "overlaps": [
+        82,
+        88,
+        88
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 88,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Love Love Love (Force Remix).m4a",
+      "title": "Love Love Love (Force Remix)",
+      "start": 10817.0,
+      "end": 10921.0,
+      "supportSeconds": 35,
+      "density": 0.337,
+      "tempo": 1.19131,
+      "confidence": "review",
+      "overlaps": [
+        82,
+        83,
+        83,
+        90
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 10867.0,
+      "end": 10923.0,
+      "supportSeconds": 17,
+      "density": 0.304,
+      "tempo": 1.24851,
+      "confidence": "review",
+      "overlaps": [
+        82,
+        88,
+        90,
+        82
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 90,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Der Techno Zauberlehrling (Original Mix).m4a",
+      "title": "Der Techno Zauberlehrling (Original Mix)",
+      "start": 10901.0,
+      "end": 11134.0,
+      "supportSeconds": 220,
+      "density": 0.944,
+      "tempo": 1.00646,
+      "confidence": "high",
+      "overlaps": [
+        82,
+        88,
+        83,
+        82,
+        88,
+        87,
+        87
+      ]
+    },
+    {
+      "artist": "Greb Levah",
+      "id": 82,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Habe es geschafft (Original Mix).m4a",
+      "title": "Habe es geschafft (Original Mix)",
+      "start": 10903.0,
+      "end": 10945.0,
+      "supportSeconds": 13,
+      "density": 0.31,
+      "tempo": 0.79056,
+      "confidence": "review",
+      "overlaps": [
+        83,
+        90,
+        88
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 88,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Love Love Love (Force Remix).m4a",
+      "title": "Love Love Love (Force Remix)",
+      "start": 10904.0,
+      "end": 10950.0,
+      "supportSeconds": 12,
+      "density": 0.261,
+      "tempo": 1.23427,
+      "confidence": "review",
+      "overlaps": [
+        82,
+        90,
+        82
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 87,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Der Techno Erlkönig (Original Mix).m4a",
+      "title": "Der Techno Erlkönig (Original Mix)",
+      "start": 10978.0,
+      "end": 11083.0,
+      "supportSeconds": 28,
+      "density": 0.267,
+      "tempo": 1.1797,
+      "confidence": "review",
+      "overlaps": [
+        90
+      ]
+    },
+    {
+      "artist": "Blondee",
+      "id": 87,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Der Techno Erlkönig (Original Mix).m4a",
+      "title": "Der Techno Erlkönig (Original Mix)",
+      "start": 11074.0,
+      "end": 11129.0,
+      "supportSeconds": 17,
+      "density": 0.309,
+      "tempo": 1.09046,
+      "confidence": "review",
+      "overlaps": [
+        90
+      ]
+    },
+    {
+      "artist": "Andrea Botez",
+      "id": 89,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Paradise (Extended Mix).m4a",
+      "title": "Paradise (Extended Mix)",
+      "start": 11135.0,
+      "end": 11255.0,
+      "supportSeconds": 109,
+      "density": 0.908,
+      "tempo": 1.00127,
+      "confidence": "high",
+      "overlaps": [
+        3,
+        92
+      ]
+    },
+    {
+      "artist": "Salvyan & Gabrielle Rites [INNERGATED]",
+      "id": 3,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\The XX - Intro (Salvyan & Gabrielle Rites Hard Techno Edit).wav",
+      "title": "The XX - Intro (Salvyan & Gabrielle Rites Hard Techno Edit)",
+      "start": 11170.0,
+      "end": 11202.0,
+      "supportSeconds": 24,
+      "density": 0.75,
+      "tempo": 0.77111,
+      "confidence": "review",
+      "overlaps": [
+        89
+      ]
+    },
+    {
+      "artist": "Greb Levah",
+      "id": 92,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Down in it (Original Mix).m4a",
+      "title": "Down in it (Original Mix)",
+      "start": 11231.0,
+      "end": 11324.0,
+      "supportSeconds": 67,
+      "density": 0.72,
+      "tempo": 1.00717,
+      "confidence": "high",
+      "overlaps": [
+        89,
+        84,
+        95,
+        83,
+        84,
+        95,
+        86
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 84,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Life Inside Your Eyes (Original Mix).m4a",
+      "title": "Life Inside Your Eyes (Original Mix)",
+      "start": 11248.0,
+      "end": 11298.0,
+      "supportSeconds": 13,
+      "density": 0.26,
+      "tempo": 0.99941,
+      "confidence": "review",
+      "overlaps": [
+        92,
+        95,
+        83,
+        95,
+        86
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 95,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Life Inside Your Eyes (Original Mix).m4a",
+      "title": "Life Inside Your Eyes (Original Mix)",
+      "start": 11248.0,
+      "end": 11298.0,
+      "supportSeconds": 13,
+      "density": 0.26,
+      "tempo": 0.99941,
+      "confidence": "review",
+      "overlaps": [
+        92,
+        84,
+        83,
+        84,
+        86
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)",
+      "start": 11252.0,
+      "end": 11310.0,
+      "supportSeconds": 22,
+      "density": 0.379,
+      "tempo": 1.16739,
+      "confidence": "review",
+      "overlaps": [
+        92,
+        84,
+        95,
+        84,
+        95,
+        86,
+        92
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 84,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Life Inside Your Eyes (Original Mix).m4a",
+      "title": "Life Inside Your Eyes (Original Mix)",
+      "start": 11273.0,
+      "end": 11456.0,
+      "supportSeconds": 172,
+      "density": 0.94,
+      "tempo": 0.99969,
+      "confidence": "high",
+      "overlaps": [
+        92,
+        95,
+        83,
+        95,
+        86,
+        92,
+        86,
+        92,
+        86,
+        92
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 95,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Life Inside Your Eyes (Original Mix).m4a",
+      "title": "Life Inside Your Eyes (Original Mix)",
+      "start": 11273.0,
+      "end": 11456.0,
+      "supportSeconds": 172,
+      "density": 0.94,
+      "tempo": 0.99969,
+      "confidence": "high",
+      "overlaps": [
+        92,
+        84,
+        83,
+        84,
+        86,
+        92,
+        86,
+        92,
+        86,
+        92
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 86,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix).m4a",
+      "title": "Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix)",
+      "start": 11276.0,
+      "end": 11318.0,
+      "supportSeconds": 14,
+      "density": 0.333,
+      "tempo": 0.79876,
+      "confidence": "review",
+      "overlaps": [
+        92,
+        84,
+        95,
+        83,
+        84,
+        95,
+        92
+      ]
+    },
+    {
+      "artist": "Greb Levah",
+      "id": 92,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Down in it (Original Mix).m4a",
+      "title": "Down in it (Original Mix)",
+      "start": 11290.0,
+      "end": 11358.0,
+      "supportSeconds": 19,
+      "density": 0.279,
+      "tempo": 1.20535,
+      "confidence": "review",
+      "overlaps": [
+        83,
+        84,
+        95,
+        86,
+        86
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 86,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix).m4a",
+      "title": "Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix)",
+      "start": 11314.0,
+      "end": 11369.0,
+      "supportSeconds": 18,
+      "density": 0.327,
+      "tempo": 1.24666,
+      "confidence": "review",
+      "overlaps": [
+        84,
+        95,
+        92,
+        92
+      ]
+    },
+    {
+      "artist": "Greb Levah",
+      "id": 92,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Down in it (Original Mix).m4a",
+      "title": "Down in it (Original Mix)",
+      "start": 11333.0,
+      "end": 11399.0,
+      "supportSeconds": 19,
+      "density": 0.288,
+      "tempo": 0.91225,
+      "confidence": "review",
+      "overlaps": [
+        84,
+        95,
+        86,
+        86
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 86,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix).m4a",
+      "title": "Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix)",
+      "start": 11363.0,
+      "end": 11408.0,
+      "supportSeconds": 12,
+      "density": 0.267,
+      "tempo": 1.24878,
+      "confidence": "review",
+      "overlaps": [
+        84,
+        95,
+        92,
+        92
+      ]
+    },
+    {
+      "artist": "Greb Levah",
+      "id": 92,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Down in it (Original Mix).m4a",
+      "title": "Down in it (Original Mix)",
+      "start": 11383.0,
+      "end": 11424.0,
+      "supportSeconds": 13,
+      "density": 0.317,
+      "tempo": 0.78945,
+      "confidence": "review",
+      "overlaps": [
+        84,
+        95,
+        86
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 97,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Techno Traum (Original Mix).m4a",
+      "title": "Techno Traum (Original Mix)",
+      "start": 11437.0,
+      "end": 11593.0,
+      "supportSeconds": 134,
+      "density": 0.859,
+      "tempo": 0.99853,
+      "confidence": "high",
+      "overlaps": [
+        54
+      ]
+    },
+    {
+      "artist": "Teddy Killerz",
+      "id": 54,
+      "path": "M:\\Musik\\DnB\\JumpUp\\Beatport\\2022\\Don't Kill The Vibe (Original Mix).flac",
+      "title": "Don't Kill The Vibe (Original Mix)",
+      "start": 11464.0,
+      "end": 11505.0,
+      "supportSeconds": 14,
+      "density": 0.341,
+      "tempo": 0.76491,
+      "confidence": "review",
+      "overlaps": [
+        97
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 85,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Rave All Night (Original Mix).m4a",
+      "title": "Rave All Night (Original Mix)",
+      "start": 11579.0,
+      "end": 11701.0,
+      "supportSeconds": 116,
+      "density": 0.951,
+      "tempo": 0.99149,
+      "confidence": "high",
+      "overlaps": [
+        96,
+        24,
+        22
+      ]
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 96,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Rave All Night (Original Mix).m4a",
+      "title": "Rave All Night (Original Mix)",
+      "start": 11579.0,
+      "end": 11701.0,
+      "supportSeconds": 116,
+      "density": 0.951,
+      "tempo": 0.99149,
+      "confidence": "high",
+      "overlaps": [
+        85,
+        24,
+        22
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly",
+      "start": 11595.0,
+      "end": 11638.0,
+      "supportSeconds": 13,
+      "density": 0.302,
+      "tempo": 1.17413,
+      "confidence": "review",
+      "overlaps": [
+        85,
+        96
+      ]
+    },
+    {
+      "artist": "",
+      "id": 22,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2019\\Benny Benassi - Satisfaction _ARTCØRE [TECHNO] bootleg.mp3",
+      "title": "Benny Benassi - Satisfaction _ARTCØRE [TECHNO] bootleg",
+      "start": 11623.0,
+      "end": 11660.0,
+      "supportSeconds": 12,
+      "density": 0.324,
+      "tempo": 1.0544,
+      "confidence": "review",
+      "overlaps": [
+        85,
+        96
+      ]
+    },
+    {
+      "artist": "Tiefundton",
+      "id": 91,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Infraschall (Original Mix).m4a",
+      "title": "Infraschall (Original Mix)",
+      "start": 11700.0,
+      "end": 11858.0,
+      "supportSeconds": 148,
+      "density": 0.937,
+      "tempo": 1.00094,
+      "confidence": "high",
+      "overlaps": []
+    },
+    {
+      "artist": "",
+      "id": 15,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Bunker\\2020\\A2 X7Ø-7 - SHE KILLED MY WHEN I DREAMED [.wavaudiolab MASTERV1 - -0.3db - 24 bits - 44.1khz].wav",
+      "title": "A2 X7Ø-7 - SHE KILLED MY WHEN I DREAMED",
+      "start": 11840.0,
+      "end": 12086.0,
+      "supportSeconds": 196,
+      "density": 0.797,
+      "tempo": 0.99796,
+      "confidence": "high",
+      "overlaps": [
+        33,
+        31,
+        54
+      ]
+    },
+    {
+      "artist": "Somniac One",
+      "id": 33,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - The Grand Awokening - Original mix.mp3",
+      "title": "The Grand Awokening - Original mix",
+      "start": 11958.0,
+      "end": 11995.0,
+      "supportSeconds": 15,
+      "density": 0.405,
+      "tempo": 1.08935,
+      "confidence": "review",
+      "overlaps": [
+        15
+      ]
+    },
+    {
+      "artist": "Project Omeaga",
+      "id": 31,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Project Omeaga - Protusan Attack.mp3",
+      "title": "Protusan Attack",
+      "start": 11997.0,
+      "end": 12161.0,
+      "supportSeconds": 139,
+      "density": 0.848,
+      "tempo": 0.93523,
+      "confidence": "high",
+      "overlaps": [
+        15,
+        54,
+        32
+      ]
+    },
+    {
+      "artist": "Teddy Killerz",
+      "id": 54,
+      "path": "M:\\Musik\\DnB\\JumpUp\\Beatport\\2022\\Don't Kill The Vibe (Original Mix).flac",
+      "title": "Don't Kill The Vibe (Original Mix)",
+      "start": 12046.0,
+      "end": 12084.0,
+      "supportSeconds": 13,
+      "density": 0.342,
+      "tempo": 0.76833,
+      "confidence": "review",
+      "overlaps": [
+        15,
+        31
+      ]
+    },
+    {
+      "artist": "Somniac One",
+      "id": 32,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - Shirtless.mp3",
+      "title": "Shirtless",
+      "start": 12136.0,
+      "end": 12267.0,
+      "supportSeconds": 79,
+      "density": 0.603,
+      "tempo": 0.93566,
+      "confidence": "high",
+      "overlaps": [
+        31,
+        33
+      ]
+    },
+    {
+      "artist": "Somniac One",
+      "id": 33,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - The Grand Awokening - Original mix.mp3",
+      "title": "The Grand Awokening - Original mix",
+      "start": 12185.0,
+      "end": 12327.0,
+      "supportSeconds": 70,
+      "density": 0.493,
+      "tempo": 0.93339,
+      "confidence": "high",
+      "overlaps": [
+        32
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 25,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Power Lust Greed Fame.mp3",
+      "title": "Power Lust Greed Fame",
+      "start": 12331.0,
+      "end": 12585.0,
+      "supportSeconds": 198,
+      "density": 0.78,
+      "tempo": 1.01887,
+      "confidence": "high",
+      "overlaps": [
+        22,
+        32,
+        32,
+        26
+      ]
+    },
+    {
+      "artist": "",
+      "id": 22,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2019\\Benny Benassi - Satisfaction _ARTCØRE [TECHNO] bootleg.mp3",
+      "title": "Benny Benassi - Satisfaction _ARTCØRE [TECHNO] bootleg",
+      "start": 12359.0,
+      "end": 12426.0,
+      "supportSeconds": 17,
+      "density": 0.254,
+      "tempo": 1.11078,
+      "confidence": "review",
+      "overlaps": [
+        25,
+        32
+      ]
+    },
+    {
+      "artist": "Somniac One",
+      "id": 32,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - Shirtless.mp3",
+      "title": "Shirtless",
+      "start": 12390.0,
+      "end": 12456.0,
+      "supportSeconds": 17,
+      "density": 0.258,
+      "tempo": 1.08053,
+      "confidence": "review",
+      "overlaps": [
+        25,
+        22
+      ]
+    },
+    {
+      "artist": "Somniac One",
+      "id": 32,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - Shirtless.mp3",
+      "title": "Shirtless",
+      "start": 12447.0,
+      "end": 12499.0,
+      "supportSeconds": 13,
+      "density": 0.25,
+      "tempo": 0.96056,
+      "confidence": "review",
+      "overlaps": [
+        25
+      ]
+    },
+    {
+      "artist": "Various Artists/New Order",
+      "id": 26,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\Various Artists, New Order - Confusion - Pump Panel Reconstruction Mix.mp3",
+      "title": "Confusion - Pump Panel Reconstruction Mix",
+      "start": 12492.0,
+      "end": 12772.0,
+      "supportSeconds": 227,
+      "density": 0.811,
+      "tempo": 1.04085,
+      "confidence": "high",
+      "overlaps": [
+        25,
+        25,
+        29,
+        27,
+        27,
+        28,
+        51
+      ]
+    },
+    {
+      "artist": "SWART",
+      "id": 25,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Power Lust Greed Fame.mp3",
+      "title": "Power Lust Greed Fame",
+      "start": 12566.0,
+      "end": 12610.0,
+      "supportSeconds": 13,
+      "density": 0.295,
+      "tempo": 1.01032,
+      "confidence": "review",
+      "overlaps": [
+        26,
+        29
+      ]
+    },
+    {
+      "artist": "Aahan/The Dag",
+      "id": 29,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Underground Techno\\Aahan, The Dag - Venting.mp3",
+      "title": "Venting",
+      "start": 12584.0,
+      "end": 12665.0,
+      "supportSeconds": 24,
+      "density": 0.296,
+      "tempo": 0.99361,
+      "confidence": "review",
+      "overlaps": [
+        26,
+        25
+      ]
+    },
+    {
+      "artist": "Age Of Love/Charlotte de Witte/Enrico Sangiuliano",
+      "id": 27,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Techno Extended Mieps Kat\\Age Of Love, Charlotte de Witte, Enrico Sangiuliano - The Age Of Love - Charlotte de Witte & Enrico Sangiuliano Remix.mp3",
+      "title": "The Age Of Love - Charlotte de Witte & Enrico Sangiuliano Remix",
+      "start": 12694.0,
+      "end": 12749.0,
+      "supportSeconds": 17,
+      "density": 0.309,
+      "tempo": 1.04533,
+      "confidence": "review",
+      "overlaps": [
+        26,
+        28
+      ]
+    },
+    {
+      "artist": "Age Of Love/Charlotte de Witte/Enrico Sangiuliano",
+      "id": 27,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Techno Extended Mieps Kat\\Age Of Love, Charlotte de Witte, Enrico Sangiuliano - The Age Of Love - Charlotte de Witte & Enrico Sangiuliano Remix.mp3",
+      "title": "The Age Of Love - Charlotte de Witte & Enrico Sangiuliano Remix",
+      "start": 12724.0,
+      "end": 12792.0,
+      "supportSeconds": 23,
+      "density": 0.338,
+      "tempo": 1.0063,
+      "confidence": "review",
+      "overlaps": [
+        26,
+        28,
+        51
+      ]
+    },
+    {
+      "artist": "Alex Bilancini",
+      "id": 28,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Techno Extended Mieps Kat\\Alex Bilancini - Hyperspace.mp3",
+      "title": "Hyperspace",
+      "start": 12725.0,
+      "end": 12893.0,
+      "supportSeconds": 80,
+      "density": 0.476,
+      "tempo": 0.98114,
+      "confidence": "high",
+      "overlaps": [
+        26,
+        27,
+        27,
+        51,
+        27
+      ]
+    },
+    {
+      "artist": "",
+      "id": 51,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Schranz\\2026\\David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP).wav",
+      "title": "David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP)",
+      "start": 12742.0,
+      "end": 12813.0,
+      "supportSeconds": 23,
+      "density": 0.324,
+      "tempo": 1.0492,
+      "confidence": "review",
+      "overlaps": [
+        26,
+        27,
+        28,
+        27
+      ]
+    },
+    {
+      "artist": "Age Of Love/Charlotte de Witte/Enrico Sangiuliano",
+      "id": 27,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Techno Extended Mieps Kat\\Age Of Love, Charlotte de Witte, Enrico Sangiuliano - The Age Of Love - Charlotte de Witte & Enrico Sangiuliano Remix.mp3",
+      "title": "The Age Of Love - Charlotte de Witte & Enrico Sangiuliano Remix",
+      "start": 12779.0,
+      "end": 12904.0,
+      "supportSeconds": 98,
+      "density": 0.784,
+      "tempo": 1.09502,
+      "confidence": "high",
+      "overlaps": [
+        28,
+        51,
+        73
+      ]
+    },
+    {
+      "artist": "Alberto Adami",
+      "id": 73,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\2025\\Acid Machine Gun (Extended Mix).flac",
+      "title": "Acid Machine Gun (Extended Mix)",
+      "start": 12879.0,
+      "end": 12911.0,
+      "supportSeconds": 19,
+      "density": 0.594,
+      "tempo": 0.97612,
+      "confidence": "review",
+      "overlaps": [
+        27
+      ]
+    }
+  ],
+  "missing": [],
+  "errors": [],
+  "unmatched": [],
+  "limitations": "Zeitstempel sind früheste belastbare Audio-Treffer, keine garantierten Fader-Einsätze. Tempoänderungen bei Keylock bis ±25%; Pitchänderungen, kurze Einsätze, Effekte und Maskierung können Treffer verhindern. Überlagerungen sind Mashup-Kandidaten, keine Bestätigung. Keine Audiodaten hochgeladen."
+}

@@ -9,6 +9,32 @@ using Cratebase.Import;
 using Cratebase.Scanning;
 using Cratebase.Tagging;
 
+if(args.Contains("--install-local-ai"))
+{
+    using var ai=new Cratebase.Analysis.LocalPlaylistAi(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"Cratebase","ai"));
+    await ai.InstallAsync(new Progress<string>(Console.WriteLine),CancellationToken.None);return;
+}
+if(args.Contains("--install-artwork-ai"))
+{
+    var ai=new Cratebase.Analysis.LocalArtworkImageAi(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"Cratebase","artwork-ai"));
+    await ai.InstallAsync(new Progress<string>(Console.WriteLine),CancellationToken.None);return;
+}
+if(args.Length is 2 or 3&&args[0]=="--artwork-image-checks")
+{
+    var ai=new Cratebase.Analysis.LocalArtworkImageAi(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"Cratebase","artwork-ai"));
+    if(args.Contains("--cancel"))
+    {
+        using var artworkCancel=new CancellationTokenSource(TimeSpan.FromMilliseconds(300));
+        try{await ai.GenerateAsync(args[1],"cinematic nightclub photograph",.25,42,null,artworkCancel.Token);throw new Exception("Expected image-AI cancellation.");}
+        catch(OperationCanceledException){Console.WriteLine("PASS: Active local image-AI job cancels and releases its owned process.");return;}
+    }
+    byte[] before,after;await using(var artworkSource=File.OpenRead(args[1]))before=await System.Security.Cryptography.SHA256.HashDataAsync(artworkSource);
+    var imageOutput=await ai.GenerateAsync(args[1],"cinematic nightclub photography, violet and cyan neon lighting, atmospheric professional DJ promotional photo, realistic",.25,42,new Progress<string>(Console.WriteLine),CancellationToken.None);
+    await using(var artworkSource=File.OpenRead(args[1]))after=await System.Security.Cryptography.SHA256.HashDataAsync(artworkSource);
+    if(!before.SequenceEqual(after)||!File.Exists(imageOutput)||new FileInfo(imageOutput).Length<10000)throw new Exception("Image AI test failed.");
+    Console.WriteLine("PASS: Actual local Vulkan image-to-image generation preserves the original. Output: "+imageOutput);return;
+}
+
 if(args.Length==3&&args[0]=="--real-stream-check")
 {
     var path=Cratebase.Server.LibraryServer.ContainedPath(args[1],args[2]);
@@ -21,11 +47,33 @@ if(args.Length==2&&args[0]=="--audit-library") {LibraryAudit.Run(args[1]);return
 if(args.Length==3&&args[0] is "--preview-club-media" or "--export-club-media") {await ClubExportCli.RunAsync(args[1],args[2],args[0]=="--export-club-media");return;}
 
 if(args.Contains("--recorder-checks")) { RecorderChecks.Run(); return; }
+if(args.Contains("--history-checks")){await HistoryAnalysisChecks.RunAsync();return;}
+if(args.Contains("--history-ui-checks")){HistoryUiChecks.Run(args.Length==3&&args[1]=="--report"?args[2]:null);return;}
+if(args.Contains("--history-player-checks")){HistoryPlayerChecks.Run();return;}
+if(args.Contains("--history-video-checks")){HistoryPlayerChecks.Run(true);return;}
+if(args.Contains("--artwork-checks")){var videoIndex=Array.IndexOf(args,"--video");ArtworkChecks.Run(args.Contains("--real-ai"),videoIndex>=0?args[videoIndex+1]:null,args.Contains("--real-image-ai"));return;}
+if(args.Length==3&&args[0]=="--history-report"){await HistoryAnalysisChecks.ExportReportAsync(args[1],args[2]);return;}
+if(args.Length==4&&args[0]=="--history-analyze")
+{
+    var data=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"Cratebase");
+    var analyzer=new Cratebase.Analysis.HistoryAudioAnalyzer(Path.Combine(data,"history-analysis"),Path.Combine(data,"tools","ffmpeg.exe"));
+    var report=await analyzer.AnalyzeAsync(args[2],TraktorHistoryReader.Read(args[1]),new Progress<string>(Console.WriteLine),CancellationToken.None);
+    await File.WriteAllTextAsync(args[3],JsonSerializer.Serialize(report,new JsonSerializerOptions(JsonSerializerDefaults.Web){WriteIndented=true}));return;
+}
 if(args.Contains("--keyboard-checks")) { KeyboardChecks.Run(); return; }
 if(args.Contains("--playback-checks")) { MissingPlaybackChecks.Run(); return; }
 if(args.Contains("--club-export-checks")) {await ClubMediaExportChecks.RunAsync();return;}
 if(args.Contains("--server-checks")) {await ServerChecks.RunAsync();return;}
 if(args.Contains("--remote-playback-checks")) {RemotePlaybackChecks.Run();return;}
+if(args.Contains("--planning-checks")) {await PlanningChecks.RunAsync(args.Contains("--real-ai"),args.Contains("--ai-cpu"));return;}
+if(args.Contains("--planning-ui-checks")) {PlanningUiChecks.Run();return;}
+if(args.Contains("--planning-native-playback-checks")) {PlanningUiChecks.RunNativePlayback();return;}
+if(args.Contains("--stem-checks")) {await StemChecks.RunAsync(args.Contains("--real-stems"));return;}
+if(args.Length==2&&args[0]=="--inspiration-check")
+{
+    var inspirationSource=new Cratebase.Analysis.SetInspiration(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"Cratebase","planning","research"));
+    foreach(var reference in await inspirationSource.FindAsync(args[1],CancellationToken.None))Console.WriteLine(reference.Url+" · "+reference.Tracklist.Split('\n')[0]+" · "+reference.Tracklist.Length+" chars");return;
+}
 if(args.Contains("--mobile-device-fixture")) {await ServerChecks.ServeDeviceFixtureAsync();return;}
 #if WINDOWS
 if(args.Contains("--media-checks")) { MediaChecks.Run(); return; }

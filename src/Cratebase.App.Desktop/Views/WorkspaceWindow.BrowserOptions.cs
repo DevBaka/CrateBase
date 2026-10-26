@@ -20,7 +20,7 @@ public sealed partial class WorkspaceWindow
                 switch(field) { case "club":track.ClubReady=value;break;case "extended":track.Extended=value;break;case "intro":track.Intro=value;break;case "trash":track.Trash=value;break; }
         }
         finally { _updatingClub=false; }
-        foreach(var pane in _panes.Where(p=>p.Sort==field||p.Options.Filters.Any(f=>f.Field==field)||p.SearchField==field))await pane.ReloadAsync();
+        foreach(var pane in _panes.Where(p=>p.Source.Kind==LibraryTargetKind.SmartPlaylist||p.Sort==field||p.Options.Filters.Any(f=>f.Field==field)||p.SearchField==field))await pane.ReloadAsync();
         if(field=="club")await RefreshClub();
     }
 

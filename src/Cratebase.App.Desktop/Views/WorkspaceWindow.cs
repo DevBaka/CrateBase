@@ -34,6 +34,7 @@ public sealed class WorkspaceSettings
     public string? RecorderFfmpegPath { get; set; }
     public string ClubExportDirectory {get;set;}=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),"Music","ClubCollection");
     public Dictionary<string,string> ClubExportFolders {get;set;}=new();
+    public string StemExportDirectory {get;set;}=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"Cratebase","stems");
 }
 
 public sealed class BrowserEntry(LibraryTarget target)
@@ -63,6 +64,8 @@ public sealed partial class WorkspaceWindow : Window
     private readonly MainViewModel _recorder;
     private readonly Cratebase.Audio.FfmpegAudioRecorder _audioRecorder;
     private readonly ClubMediaExporter? _clubExporter;
+    private readonly ICuePointRepository? _planningCues;
+    private SetPlanningView? _planningView;
     private readonly WindowsMidiInput _midi = new();
     private WindowsMediaSession? _mediaSession;
     private WorkspaceSettings _settings = new();
@@ -97,18 +100,20 @@ public sealed partial class WorkspaceWindow : Window
     private static readonly DataFormat<DragPayload> DragFormat = DataFormat.CreateInProcessFormat<DragPayload>("application/x-cratebase-workspace");
     private sealed record DragPayload(LibraryTarget? Target, Track[] Tracks);
 
-    public WorkspaceWindow(ITrackRepository tracks,ILibraryRootRepository roots,IPlaylistRepository playlists,ILibraryQuery query,TargetActions actions,CollectionSync sync,IWorkspaceStateStore state,IFavoriteProfileStore favoriteStore,IQuickAccessStore quickStore,ILibraryScanner scanner,ITagReader tags,WorkspacePlayer player,MainViewModel recorder,Cratebase.Audio.FfmpegAudioRecorder audioRecorder,ClubMediaExporter? clubExporter=null,Cratebase.Server.LibraryServer? server=null)
+    public WorkspaceWindow(ITrackRepository tracks,ILibraryRootRepository roots,IPlaylistRepository playlists,ILibraryQuery query,TargetActions actions,CollectionSync sync,IWorkspaceStateStore state,IFavoriteProfileStore favoriteStore,IQuickAccessStore quickStore,ILibraryScanner scanner,ITagReader tags,WorkspacePlayer player,MainViewModel recorder,Cratebase.Audio.FfmpegAudioRecorder audioRecorder,ClubMediaExporter? clubExporter=null,Cratebase.Server.LibraryServer? server=null,ICuePointRepository? planningCues=null)
     {
         _tracks=tracks; _roots=roots; _playlists=playlists; _query=query; _actions=actions; _sync=sync; _state=state; _favoriteStore=favoriteStore; _quickStore=quickStore; _scanner=scanner; _tags=tags; _player=player;
         _panes=[new(query),new(query)];
         _recorder=recorder; _audioRecorder=audioRecorder;
         _clubExporter=clubExporter;
+        _planningCues=planningCues;
         _server=server;
         if(_server!=null)_server.Changed+=OnRemoteLibraryChanged;
         WireKeyboard();
         _recorder.PropertyChanged+=(_,e)=> { if(e.PropertyName==nameof(MainViewModel.StatusMessage)) Status(_recorder.StatusMessage); };
         foreach(var pane in _panes) pane.ReportError=Status;
         _player.ReportError=Status;
+        _player.PropertyChanged+=(_,e)=>{if(e.PropertyName==nameof(WorkspacePlayer.PlaybackStatus)&&_player.PlaybackStatus==PlaybackState.Playing){_planningView?.StopPreview();_historyAnalysisWindow?.StopPlayback();}};
         _player.AvailabilityChanged+=TrackAvailabilityChanged;
         Title="Cratebase · DJ Library Workspace"; Width=1400; Height=820; MinWidth=1050; MinHeight=680;
         Content=Build();
@@ -145,7 +150,7 @@ public sealed partial class WorkspaceWindow : Window
         var header=new Grid { ColumnDefinitions=new("Auto,*"), Margin=new Thickness(0,0,0,14) };
         var brand=new StackPanel { Orientation=Orientation.Horizontal, Spacing=12 };
         brand.Children.Add(new TextBlock { Text="CRATEBASE", FontSize=23,FontWeight=FontWeight.Bold,Foreground=Accent,VerticalAlignment=VerticalAlignment.Center });
-        var workspace=new ComboBox { ItemsSource=new[] { "Library Workspace", "Set Recorder" },SelectedIndex=0,MinWidth=190,VerticalAlignment=VerticalAlignment.Center };
+        var workspace=new ComboBox { ItemsSource=new[] { "Library Workspace", "Set Recorder", "Set & Transition Planning" },SelectedIndex=0,MinWidth=190,VerticalAlignment=VerticalAlignment.Center };
         brand.Children.Add(workspace);
         var recordingIndicator=new TextBlock {Text="● REC",Foreground=Brushes.OrangeRed,VerticalAlignment=VerticalAlignment.Center};
         recordingIndicator.Bind(IsVisibleProperty,new Binding(nameof(MainViewModel.IsRecording)){Source=_recorder}); brand.Children.Add(recordingIndicator);
@@ -160,6 +165,7 @@ public sealed partial class WorkspaceWindow : Window
         clubExport.ContextMenu=new ContextMenu {Items={Menu("Nur Club-NML exportieren …",ExportClubAsync)}};tools.Children.Add(clubExport);
         tools.Children.Add(Button("Übernahme bestätigen",ConfirmAsync));
         tools.Children.Add(Button("MIDI",MidiDialog));
+        tools.Children.Add(Button("Stems",StemDialogAsync));
         tools.Children.Add(Button("Handy-Server",ServerDialogAsync));
         tools.Children.Add(_keyboardButton);tools.Children.Add(_globalKeysToggle);
         tools.Children.Add(_mediaKeysMode);
@@ -175,6 +181,7 @@ public sealed partial class WorkspaceWindow : Window
         var playlistTools=Row(); Grid.SetRow(playlistTools,1);
         playlistTools.Children.Add(Button("+ Playlist",()=>CreateNode(PlaylistNodeType.Playlist)));
         playlistTools.Children.Add(Button("+ Gruppe",()=>CreateNode(PlaylistNodeType.Folder)));
+        playlistTools.Children.Add(Button("+ Smart",()=>EditSmartPlaylist()));
         playlistSection.Children.Add(playlistTools);
         var playlistTree=MakeTree(_playlistEntries); Grid.SetRow(playlistTree,2); playlistSection.Children.Add(playlistTree); _sidebar.Children.Add(playlistSection);
         var separator=new GridSplitter { ResizeDirection=GridResizeDirection.Rows,HorizontalAlignment=HorizontalAlignment.Stretch,Background=Brush.Parse("#29313E") };
@@ -207,14 +214,23 @@ public sealed partial class WorkspaceWindow : Window
         favoriteTools.Children.Add(new TextBlock { Text="Ziel auf Slot ziehen · Rechtsklick für MIDI",VerticalAlignment=VerticalAlignment.Center,Foreground=Muted,FontSize=11 });
         favorites.Children.Add(favoriteTools);
         var slotScroll=new ScrollViewer { Content=_slots,MaxHeight=130,VerticalScrollBarVisibility=Avalonia.Controls.Primitives.ScrollBarVisibility.Auto }; Grid.SetRow(slotScroll,1); favorites.Children.Add(slotScroll); shell.Children.Add(favorites);
-        var recorderView=new SetRecorderView { DataContext=_recorder,IsVisible=false,SelectFfmpeg=SelectRecorderFfmpeg };
+        var recorderView=new SetRecorderView { DataContext=_recorder,IsVisible=false,SelectFfmpeg=SelectRecorderFfmpeg,ImportHistory=OpenHistoryAnalysisAsync,OpenArtwork=OpenSetArtworkAsync };
         Grid.SetRow(recorderView,1); Grid.SetRowSpan(recorderView,2); shell.Children.Add(recorderView);
+        var dataDirectory=Environment.GetEnvironmentVariable("CRATEBASE_DATA_DIR")??Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"Cratebase");
+        _planningView=new SetPlanningView(_state,_tracks,_roots,_playlists,_planningCues,new Cratebase.Analysis.FfmpegWaveformGenerator(),
+            new Cratebase.Analysis.FileWaveformCache(Path.Combine(dataDirectory,"waveforms")),new Cratebase.Analysis.TraktorStripeWaveformSource(new Cratebase.Import.TraktorAnalysisLookup(_state,_roots)),
+            PlanningCandidatesAsync,()=>_tables[_active].SelectedItems.OfType<Track>().ToArray(),ReloadBrowsers,()=>_player.PauseCommand.Execute(null),Status,
+            ()=>_settings.RecorderFfmpegPath??(File.Exists(Path.Combine(dataDirectory,"tools","ffmpeg.exe"))?Path.Combine(dataDirectory,"tools","ffmpeg.exe"):"ffmpeg"),()=>_syncActive,_query,PreparePlanningSourceAsync,indexFolder:IndexPlanningFolderAsync) {IsVisible=false};
+        Grid.SetRow(_planningView,1);Grid.SetRowSpan(_planningView,2);shell.Children.Add(_planningView);
         workspace.SelectionChanged+=async (_,_)=>await Safe(async ()=>
         {
             var recording=workspace.SelectedIndex==1;
-            body.IsVisible=!recording; favorites.IsVisible=!recording;
+            var planning=workspace.SelectedIndex==2;
+            body.IsVisible=!recording&&!planning; favorites.IsVisible=!recording&&!planning;
             recorderView.IsVisible=recording;
-            Title=recording ? "Cratebase · Set Recorder" : "Cratebase · DJ Library Workspace";
+            _planningView.IsVisible=planning;
+            if(planning)await _planningView.InitializeAsync();else _planningView.StopPreview();
+            Title=recording ? "Cratebase · Set Recorder" : planning?"Cratebase · Set & Transition Planning":"Cratebase · DJ Library Workspace";
             if(recording && !_recorder.IsRecording)
             {
                 _audioRecorder.ExecutablePath=_settings.RecorderFfmpegPath ?? "ffmpeg";
@@ -327,6 +343,12 @@ public sealed partial class WorkspaceWindow : Window
             var visual=new Border { Padding=new Thickness(4,6),Child=new TextBlock { Text=entry.Label,TextTrimming=TextTrimming.CharacterEllipsis },Background=Brushes.Transparent };
             var context=new ContextMenu();
             context.Items.Add(Menu("Oben öffnen",()=>Open(entry.Target,0)));
+            if(entry.Target.Kind==LibraryTargetKind.SmartPlaylist)
+            {
+                context.Items.Add(Menu("Regeln bearbeiten …",()=>EditSmartPlaylist(entry.Target.Path)));
+                context.Items.Add(Menu("Als normale Playlist speichern …",()=>MaterializeSmartPlaylist(entry.Target)));
+                context.Items.Add(Menu("Smarte Playlist löschen …",()=>DeleteSmartPlaylist(entry.Target)));
+            }
             if(entry.Target.Kind==LibraryTargetKind.TraktorCollection)
             {
                 context.Items.Add(Menu("Jetzt abgleichen",ImportAsync));
@@ -441,6 +463,7 @@ public sealed partial class WorkspaceWindow : Window
         _playlistEntries.Clear();
         _playlistEntries.Add(new(new(LibraryTargetKind.Collection,"Gesamte Collection")));
         _playlistEntries.Add(new(new(LibraryTargetKind.UnreachableFiles,"Datei nicht erreichbar")));
+        foreach(var smart in (await ReadSmartPlaylists()).OrderBy(p=>p.Name))_playlistEntries.Add(new(smart.Target));
         var traktorTotals=await _query.TotalsAsync(new(new(LibraryTargetKind.TraktorCollection,"Traktor Collection")));
         _playlistEntries.Add(new(new(LibraryTargetKind.TraktorCollection,$"Traktor Collection ({traktorTotals.Count:N0})")));
         var clubId=await _playlists.EnsureClubRootAsync();
@@ -484,7 +507,7 @@ public sealed partial class WorkspaceWindow : Window
         {
             await Task.Delay(200,request.Token);
             if(_closing)return;
-            foreach(var pane in _panes.Where(p=>p.Source.Kind==LibraryTargetKind.UnreachableFiles||p.Sort is "missing" or "availability"||p.Options.Filters.Any(f=>f.Field is "missing" or "availability")||!string.IsNullOrWhiteSpace(p.Search)))
+            foreach(var pane in _panes.Where(p=>p.Source.Kind is LibraryTargetKind.UnreachableFiles or LibraryTargetKind.SmartPlaylist||p.Sort is "missing" or "availability"||p.Options.Filters.Any(f=>f.Field is "missing" or "availability")||!string.IsNullOrWhiteSpace(p.Search)))
             {request.Token.ThrowIfCancellationRequested();await pane.ReloadAsync();}
         }
         catch(OperationCanceledException) { }
@@ -675,7 +698,7 @@ public sealed partial class WorkspaceWindow : Window
     private Task ImportAsync() => ImportAsync(false);
     private async Task ImportAsync(bool changeSource)
     {
-        if(_job!=null || _syncActive) { Status("Ein Auftrag läuft bereits."); return; }
+        if(_job!=null || _syncActive || _planningView?.Busy==true) { Status("Ein Auftrag läuft bereits."); return; }
         var path=changeSource?null:await _sync.GetSourcePathAsync();
         if(path!=null&&!File.Exists(path))
         {
@@ -766,6 +789,7 @@ public sealed partial class WorkspaceWindow : Window
     }
     private async Task ConfirmAsync()
     {
+        if(_syncActive||_planningView?.Busy==true){Status("Bitte den laufenden Auftrag abwarten.");return;}
         if(await Choose("Traktor-Übernahme bestätigen","Hast du die zuletzt exportierte NML erfolgreich in Traktor importiert? Erst diese Bestätigung setzt den gemeinsamen Abgleichstand.",["Ja, übernommen","Abbrechen"])!=0) return;
         await _sync.ConfirmExportAsync(); Status("Gemeinsamer Abgleichstand bestätigt.");
     }
@@ -778,12 +802,15 @@ public sealed partial class WorkspaceWindow : Window
         if(_closing) return;
         if(_recorder.StartRecordingCommand.IsRunning || _recorder.StopRecordingCommand.IsRunning)
         { e.Cancel=true; Status("Bitte warten, bis der Recorder den Start oder das Speichern abgeschlossen hat."); return; }
-        if(_job!=null || _syncActive) { e.Cancel=true; _job?.Cancel(); Status("Bitte warten, bis der laufende Auftrag beendet ist, und danach schließen."); return; }
+        if(_job!=null || _syncActive || _planningView?.Busy==true) { e.Cancel=true; _job?.Cancel(); Status("Bitte warten, bis der laufende Auftrag beendet ist, und danach schließen."); return; }
         e.Cancel=true; _closing=true; _job?.Cancel();
         try { await _recorder.StopRecordingCommand.ExecuteAsync(null); }
         catch(Exception ex) { _closing=false; Status($"Aufnahme konnte nicht beendet werden: {ex.Message}"); return; }
         if(_recorder.IsRecording) { _closing=false; Status(_recorder.StatusMessage); return; }
         await Safe(async ()=> { await SaveSettings(); await SaveFavorites(); });
+        try {if(_planningView!=null)await _planningView.SaveAsync();}
+        catch(Exception ex){_closing=false;Status("Set-Plan konnte nicht gespeichert werden: "+ex.Message);return;}
+        _planningView?.Dispose();
         _mediaSession?.Dispose();
         await StopServerAsync();
         _player.AvailabilityChanged-=TrackAvailabilityChanged;_availabilityRefresh?.Cancel();

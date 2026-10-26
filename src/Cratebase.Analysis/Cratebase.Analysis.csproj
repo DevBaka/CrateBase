@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Cratebase.Core\Cratebase.Core.csproj" />
+    <EmbeddedResource Include="Scripts\history_match.py" />
   </ItemGroup>
 
   <PropertyGroup>

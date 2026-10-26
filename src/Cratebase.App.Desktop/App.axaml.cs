@@ -65,7 +65,7 @@ public partial class App : Application
                 _audioPlayer, traktorImporter, tagReader, waveformGenerator, waveformCache, quickAccessStore,
                 favoriteProfileStore, nmlExporter, audioRecorder, nowPlayingReader, subscribePlaybackEvents: false);
             var mainWindow = new WorkspaceWindow(trackRepository, libraryRootRepository, playlistRepository, libraryQuery,
-                targetActions, sync, workspaceState, favoriteProfileStore, quickAccessStore, libraryScanner, tagReader, player, recorder, (FfmpegAudioRecorder)audioRecorder,new ClubMediaExporter(libraryRootRepository,libraryQuery,sync),server);
+                targetActions, sync, workspaceState, favoriteProfileStore, quickAccessStore, libraryScanner, tagReader, player, recorder, (FfmpegAudioRecorder)audioRecorder,new ClubMediaExporter(libraryRootRepository,libraryQuery,sync),server,cuePointRepository);
             desktop.MainWindow = mainWindow;
             desktop.ShutdownRequested += (_, _) => _audioPlayer.Dispose();
         }

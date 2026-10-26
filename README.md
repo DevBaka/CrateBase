@@ -2,6 +2,12 @@
 
 Android-Prototyp und eingebauter Streaming-Server: [Einrichtung, APK-Build und Funktionen](docs/Android-und-Server.md).
 
+Neu: [Smarte Playlists, lokale KI, Set-/Transition-Workspace und Stem-Generator](docs/Smarte-Playlists-und-Set-Planung.md). Der Prototyp erhält Traktor-Cues und Originaldateien; eine Live-Stem-Mod für das laufende Traktor-Deck ist [noch nicht implementiert](docs/Traktor-Live-Stems-Machbarkeit.md).
+
+[History-NML mit vorhandener Aufnahme abgleichen und YouTube-Zeitstempel erzeugen](docs/History-Audio-Tracklist.md): im Set Recorder, mit lokaler Audio-Erkennung, Prüfbericht, Vorhören und editierbaren Zeiten.
+
+[Thumbnail- und Titelgenerator](docs/Thumbnail-und-Titel.md): Videoframes auswählen, Texte frei verschieben, Schriftarten/Effekte/Rahmen und Bildkorrekturen bearbeiten, lokale KI für Titel und Bildvarianten nutzen und Thumbnails als PNG exportieren.
+
 Lokaler Musik-Manager & DJ-Collection-Tool. Plattformunabhängige Desktop-App (Linux/Windows/Mac) für die eigene Musiksammlung — von "lokales Spotify" für Normalnutzer bis zum Collection-Manager auf Lexicon/Mixo-Niveau für DJs, mit Fokus auf sehr große Bibliotheken (Referenzgröße: ~100.000 Tracks).
 
 > **Status: Prototyp-MVP.** Scanner, Tag-Reader, SQLite-Schema und ein lauffähiger Media Player mit Playlist-Baum existieren (`src/`), gebaut vor der finalen Abstimmung einiger offener Fragen aus ARCHITECTURE.md Abschnitt 4 — s. dort Abschnitt 8 für den genauen Stand und bewusste Abweichungen.

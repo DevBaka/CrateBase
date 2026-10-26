@@ -1,0 +1,602 @@
+{
+  "cache": "C:\\Users\\DJBaka\\AppData\\Local\\Cratebase\\history-analysis\\fingerprints",
+  "recording": "C:\\Users\\DJBaka\\Videos\\Streams\\2026-10-25_FrontMain.mp4",
+  "ffmpeg": "C:\\Users\\DJBaka\\AppData\\Local\\Cratebase\\tools\\ffmpeg.exe",
+  "tracks": [
+    {
+      "artist": "",
+      "id": 1,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Linkin Park - In The End (Alberto Adami Edit) (Extended Mix).wav",
+      "title": "Linkin Park - In The End (Alberto Adami Edit) (Extended Mix)"
+    },
+    {
+      "artist": "",
+      "id": 2,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Stromae - Alors On Danse (The Jackals Hard Techno Remix) mp3.mp3",
+      "title": "Stromae - Alors On Danse (The Jackals Hard Techno Remix) mp3"
+    },
+    {
+      "artist": "Salvyan & Gabrielle Rites [INNERGATED]",
+      "id": 3,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\The XX - Intro (Salvyan & Gabrielle Rites Hard Techno Edit).wav",
+      "title": "The XX - Intro (Salvyan & Gabrielle Rites Hard Techno Edit)"
+    },
+    {
+      "artist": "",
+      "id": 4,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Tom Whitfield - Push Me (DERVISH_STUDIO_MASTER_V2).wav",
+      "title": "Tom Whitfield - Push Me (DERVISH_STUDIO_MASTER_V2)"
+    },
+    {
+      "artist": "",
+      "id": 5,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\XXXTENTACION - Sippin Tea In Your Hood (ROYAL Hard Techno Remix).wav",
+      "title": "XXXTENTACION - Sippin Tea In Your Hood (ROYAL Hard Techno Remix)"
+    },
+    {
+      "artist": "Matt M. Maddox",
+      "id": 6,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\Schranz\\2008\\White Tool (Original Mix).flac",
+      "title": "White Tool (Original Mix)"
+    },
+    {
+      "artist": "",
+      "id": 7,
+      "path": "M:\\Musik\\Techno\\Hard Bounce\\2025\\Jesse Taylor - Goes Like That.mp3",
+      "title": "Jesse Taylor - Goes Like That"
+    },
+    {
+      "artist": "",
+      "id": 8,
+      "path": "M:\\Musik\\Techno\\Hard Bounce\\2025\\JØR - Disparate Youth [modded.studio].wav",
+      "title": "JØR - Disparate Youth [modded.studio]"
+    },
+    {
+      "artist": "RITTIE",
+      "id": 9,
+      "path": "M:\\Musik\\Techno\\Hard Bounce\\2025\\To The Rhythm RITTIE.wav",
+      "title": "TO THE RHYTHM"
+    },
+    {
+      "artist": "Oliver Huntemann",
+      "id": 10,
+      "path": "M:\\Musik\\Techno\\Deep Techno\\2024\\Crank (Original Mix).flac",
+      "title": "Crank (Original Mix)"
+    },
+    {
+      "artist": "Adam Beyer",
+      "id": 11,
+      "path": "M:\\Musik\\Techno\\Deep Techno\\2024\\Don't Go (Original Mix).flac",
+      "title": "Don't Go (Original Mix)"
+    },
+    {
+      "artist": "Chris Veron AXXX7en",
+      "id": 12,
+      "path": "M:\\Musik\\Techno\\Deep Techno\\2024\\Error Pulse (Extended Mix).flac",
+      "title": "Error Pulse (Extended Mix)"
+    },
+    {
+      "artist": "Tiga Audion Layton Giordani",
+      "id": 13,
+      "path": "M:\\Musik\\Techno\\Deep Techno\\2024\\Let's Go Dancing (Original Mix).flac",
+      "title": "Let's Go Dancing (Original Mix)"
+    },
+    {
+      "artist": "Chocolate Puma HI-LO",
+      "id": 14,
+      "path": "M:\\Musik\\Techno\\Deep Techno\\2024\\WTFU (Extended Mix).flac",
+      "title": "WTFU (Extended Mix)"
+    },
+    {
+      "artist": "",
+      "id": 15,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Bunker\\2020\\A2 X7Ø-7 - SHE KILLED MY WHEN I DREAMED [.wavaudiolab MASTERV1 - -0.3db - 24 bits - 44.1khz].wav",
+      "title": "A2 X7Ø-7 - SHE KILLED MY WHEN I DREAMED"
+    },
+    {
+      "artist": "",
+      "id": 16,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2016\\Niels Van Gogh - Pulverturm (NoCure Rework).wav",
+      "title": "Niels Van Gogh - Pulverturm (NoCure Rework)"
+    },
+    {
+      "artist": "",
+      "id": 17,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2018\\Hefty - Cause of Death (Googana remix)(unmastered).wav",
+      "title": "Hefty - Cause of Death (Googana remix)(unmastered)"
+    },
+    {
+      "artist": "",
+      "id": 18,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2018\\Manu Chao - Bongo Bong ( Alain Delay Bootleg Mastert by Landr).wav",
+      "title": "Manu Chao - Bongo Bong ( Alain Delay Bootleg Mastert by Landr)"
+    },
+    {
+      "artist": "Matt Milano",
+      "id": 19,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2018\\Matt Milano - Requiem for a Dream (Bootleg).wav",
+      "title": "Matt Milano - Requiem for a Dream (Bootleg)"
+    },
+    {
+      "artist": "Steve Shaden",
+      "id": 20,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2018\\Steve Shaden - Feel My Soul (Original Mix).mp3",
+      "title": "Steve Shaden - Feel My Soul (Original Mix)"
+    },
+    {
+      "artist": "",
+      "id": 21,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2018\\schastn - Sweet Home Alabama (Techno Bootleg) Master.wav",
+      "title": "schastn - Sweet Home Alabama (Techno Bootleg) Master"
+    },
+    {
+      "artist": "",
+      "id": 22,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2019\\Benny Benassi - Satisfaction _ARTCØRE [TECHNO] bootleg.mp3",
+      "title": "Benny Benassi - Satisfaction _ARTCØRE [TECHNO] bootleg"
+    },
+    {
+      "artist": "",
+      "id": 23,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\Free\\2019\\Dope Amine - Heroes Of The West.wav",
+      "title": "Dope Amine - Heroes Of The West"
+    },
+    {
+      "artist": "SWART",
+      "id": 24,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Mary X Molly.mp3",
+      "title": "Mary X Molly"
+    },
+    {
+      "artist": "SWART",
+      "id": 25,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\SWART - Power Lust Greed Fame.mp3",
+      "title": "Power Lust Greed Fame"
+    },
+    {
+      "artist": "Various Artists/New Order",
+      "id": 26,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Clubbing\\Various Artists, New Order - Confusion - Pump Panel Reconstruction Mix.mp3",
+      "title": "Confusion - Pump Panel Reconstruction Mix"
+    },
+    {
+      "artist": "Age Of Love/Charlotte de Witte/Enrico Sangiuliano",
+      "id": 27,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Techno Extended Mieps Kat\\Age Of Love, Charlotte de Witte, Enrico Sangiuliano - The Age Of Love - Charlotte de Witte & Enrico Sangiuliano Remix.mp3",
+      "title": "The Age Of Love - Charlotte de Witte & Enrico Sangiuliano Remix"
+    },
+    {
+      "artist": "Alex Bilancini",
+      "id": 28,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Techno Extended Mieps Kat\\Alex Bilancini - Hyperspace.mp3",
+      "title": "Hyperspace"
+    },
+    {
+      "artist": "Aahan/The Dag",
+      "id": 29,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Underground Techno\\Aahan, The Dag - Venting.mp3",
+      "title": "Venting"
+    },
+    {
+      "artist": "Sperminator",
+      "id": 30,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Dark Underground Techno\\Sperminator - No Woman Allowed.mp3",
+      "title": "No Woman Allowed"
+    },
+    {
+      "artist": "Project Omeaga",
+      "id": 31,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Project Omeaga - Protusan Attack.mp3",
+      "title": "Protusan Attack"
+    },
+    {
+      "artist": "Somniac One",
+      "id": 32,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - Shirtless.mp3",
+      "title": "Shirtless"
+    },
+    {
+      "artist": "Somniac One",
+      "id": 33,
+      "path": "M:\\Musik\\Techno\\DarkTechno\\sptl\\Darkcore Industrial\\Somniac One - The Grand Awokening - Original mix.mp3",
+      "title": "The Grand Awokening - Original mix"
+    },
+    {
+      "artist": "",
+      "id": 34,
+      "path": "M:\\Musik\\Techno\\Hard Bounce\\2025\\XTC - Tadhgmc [v1 master].wav",
+      "title": "XTC - Tadhgmc [v1 master]"
+    },
+    {
+      "artist": "",
+      "id": 35,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\SAILØ - BRING IT BACK.wav",
+      "title": "SAILØ - BRING IT BACK"
+    },
+    {
+      "artist": "STANEPIMP",
+      "id": 36,
+      "path": "M:\\Musik\\Techno\\Hard Bounce\\2025\\STANEPIMP - COMEBACK.wav",
+      "title": "COMEBACK"
+    },
+    {
+      "artist": "",
+      "id": 37,
+      "path": "M:\\Musik\\Techno\\Peak Time Techno\\2024\\Leo - Bikini Bottom.mp3",
+      "title": "Leo - Bikini Bottom"
+    },
+    {
+      "artist": "Syzz, The Rocketman",
+      "id": 38,
+      "path": "M:\\Musik\\Techno\\Peak Time Techno\\2024\\Syzz, The Rocketman - Gimme Gimme Gimme (A Man After Midnight) (The Rocketman Extended Remix) 150.mp3",
+      "title": "Gimme Gimme Gimme (A Man After Midnight) (The Rocketman Extended Remix) 150"
+    },
+    {
+      "artist": "",
+      "id": 39,
+      "path": "M:\\Musik\\Hardcore\\UK\\2020\\Alaguan feat. Lexi - Sailor Moon (DJ Edit).wav",
+      "title": "Alaguan feat. Lexi - Sailor Moon (DJ Edit)"
+    },
+    {
+      "artist": "Bollmann NICAROT",
+      "id": 40,
+      "path": "M:\\Musik\\Beatport\\Hard Techno\\Schranz\\Melodic\\2025\\Eiskalter Blick feat. NICAROT (Original Mix).flac",
+      "title": "Eiskalter Blick feat. NICAROT (Original Mix)"
+    },
+    {
+      "artist": "In Verruf",
+      "id": 41,
+      "path": "M:\\Musik\\Beatport\\Hard Techno\\Schranz\\Melodic\\2025\\Fassade (Original Mix).flac",
+      "title": "Fassade (Original Mix)"
+    },
+    {
+      "artist": "Francesco Zeta",
+      "id": 42,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Francesco Zeta - Fairyland - Reamp 2012.mp3",
+      "title": "Fairyland - Reamp 2012"
+    },
+    {
+      "artist": "Noisecontrollers",
+      "id": 43,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Noisecontrollers - So High - Original Mix.mp3",
+      "title": "So High - Original Mix"
+    },
+    {
+      "artist": "Headhunterz",
+      "id": 44,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool classics\\Headhunterz - Rock Civilization - Technoboy's Undersound Mix.mp3",
+      "title": "Rock Civilization - Technoboy's Undersound Mix"
+    },
+    {
+      "artist": "Hardstyle Masterz/Max Enforcer",
+      "id": 45,
+      "path": "M:\\Musik\\Hardstyle\\sptl\\Hardstyle oldschool\\Hardstyle Masterz, Max Enforcer - Rambo is a Pussy.mp3",
+      "title": "Rambo is a Pussy"
+    },
+    {
+      "artist": "",
+      "id": 46,
+      "path": "M:\\Musik\\HardTekk\\2018\\KomaCasper- Jetzt ist hier Achterbahn.mp3",
+      "title": "KomaCasper- Jetzt ist hier Achterbahn"
+    },
+    {
+      "artist": "",
+      "id": 47,
+      "path": "M:\\Musik\\HardTekk\\2018\\KomaCasper-Aufstehen!ABGEHEN!.mp3",
+      "title": "KomaCasper-Aufstehen!ABGEHEN!"
+    },
+    {
+      "artist": "",
+      "id": 48,
+      "path": "M:\\Musik\\Hardcore\\UK\\2022\\Dj Snake - Propaganda (Two Players UK Hardcore Remix).wav",
+      "title": "Dj Snake - Propaganda (Two Players UK Hardcore Remix)"
+    },
+    {
+      "artist": "",
+      "id": 49,
+      "path": "M:\\Musik\\Hardcore\\UK\\2021\\09.サクラカゼ (hu-zin Bootleg).mp3",
+      "title": "09.サクラカゼ (hu-zin Bootleg)"
+    },
+    {
+      "artist": "Lorenzo Raganzini Paolo Ferrara Arytmia",
+      "id": 50,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\Schranz\\2025\\Alone In The Dark (Remix).flac",
+      "title": "Alone In The Dark (Remix)"
+    },
+    {
+      "artist": "",
+      "id": 51,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Schranz\\2026\\David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP).wav",
+      "title": "David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP)"
+    },
+    {
+      "artist": "",
+      "id": 52,
+      "path": "M:\\Musik\\Hardcore\\UK\\2020\\R3HAB & KSHMR - Strong (DRIFT 2020 UK Hardcore Remix).mp3",
+      "title": "R3HAB & KSHMR - Strong (DRIFT 2020 UK Hardcore Remix)"
+    },
+    {
+      "artist": "Beskar",
+      "id": 53,
+      "path": "M:\\Musik\\DnB\\JumpUp\\Beatport\\2023\\Wilhelm Scream (Original Mix).flac",
+      "title": "Wilhelm Scream (Original Mix)"
+    },
+    {
+      "artist": "Teddy Killerz",
+      "id": 54,
+      "path": "M:\\Musik\\DnB\\JumpUp\\Beatport\\2022\\Don't Kill The Vibe (Original Mix).flac",
+      "title": "Don't Kill The Vibe (Original Mix)"
+    },
+    {
+      "artist": "Anime & Rob Gee",
+      "id": 55,
+      "path": "M:\\Musik\\Hardcore\\Hardcore Extended\\10_anime_and_rob_gee_-_you_get_me_high.mp3",
+      "title": "You Get Me High"
+    },
+    {
+      "artist": "t e s t p r e s s mischluft",
+      "id": 56,
+      "path": "M:\\Musik\\Beatport\\Hard Bounce\\2026\\BOUNCE N BREAK (Extended Mix).flac",
+      "title": "BOUNCE N BREAK (Extended Mix)"
+    },
+    {
+      "artist": "Neon Beatz",
+      "id": 57,
+      "path": "M:\\Musik\\Beatport\\UK Hardcore\\2025\\Hardcore You And Me  (Extended Mix).flac",
+      "title": "Hardcore You And Me  (Extended Mix)"
+    },
+    {
+      "artist": "",
+      "id": 58,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2024\\ATZEWINRAD - supernasen.wav",
+      "title": "ATZEWINRAD - supernasen"
+    },
+    {
+      "artist": "",
+      "id": 59,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Bonfire (Sirolo Hard Techno Edit)  [wav 16].wav",
+      "title": "Bonfire (Sirolo Hard Techno Edit)  [wav 16]"
+    },
+    {
+      "artist": "",
+      "id": 60,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\KIRK - CD Is Dead (mp3).mp3",
+      "title": "KIRK - CD Is Dead (mp3)"
+    },
+    {
+      "artist": "",
+      "id": 61,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\LWØ x FNRZ x TRYPDØ - Cinema - master.wav",
+      "title": "LWØ x FNRZ x TRYPDØ - Cinema - master"
+    },
+    {
+      "artist": "",
+      "id": 62,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Limp Bizkit - Break Stuff (Hardsok Remix).wav",
+      "title": "Limp Bizkit - Break Stuff (Hardsok Remix)"
+    },
+    {
+      "artist": "",
+      "id": 63,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\THISO - Down like .wav",
+      "title": "THISO - Down like "
+    },
+    {
+      "artist": "",
+      "id": 64,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\THNDERZ & Rave Heaven - Face Down Ass Up (Remix) [EXTENDED].wav",
+      "title": "THNDERZ & Rave Heaven - Face Down Ass Up (Remix) [EXTENDED]"
+    },
+    {
+      "artist": "",
+      "id": 65,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\Wanton - Vielleicht Vielleicht (remix).wav",
+      "title": "Wanton - Vielleicht Vielleicht (remix)"
+    },
+    {
+      "artist": "",
+      "id": 66,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\[TFT Records] AlexisGrace & Rave Heaven - GANGSTA SHT (EXTENDED) [TFT116GT].wav",
+      "title": "[TFT Records] AlexisGrace & Rave Heaven - GANGSTA SHT (EXTENDED) [TFT116GT]"
+    },
+    {
+      "artist": "",
+      "id": 67,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2025\\intro\\chravma - my little pony - my first hard techno track and i hate it so much extended.wav",
+      "title": "chravma - my little pony - my first hard techno track and i hate it so much extended"
+    },
+    {
+      "artist": "",
+      "id": 68,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\Alberto Adami - Let You Suffer (Extended) [MSTR KNTRLVRLST].wav",
+      "title": "Alberto Adami - Let You Suffer (Extended) [MSTR KNTRLVRLST]"
+    },
+    {
+      "artist": "",
+      "id": 69,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\Discotronic - Tricky Disco (Fyloh Bootleg) (Extended Mix).wav",
+      "title": "Discotronic - Tricky Disco (Fyloh Bootleg) (Extended Mix)"
+    },
+    {
+      "artist": "FACEXCONTROL",
+      "id": 70,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\FACEXCONTROL - LOLLIPOP (Benefice Master).aiff",
+      "title": "LOLLIPOP [Benefice Master]"
+    },
+    {
+      "artist": "",
+      "id": 71,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\Sacramento - Shut The Club Down [MV3].wav",
+      "title": "Sacramento - Shut The Club Down [MV3]"
+    },
+    {
+      "artist": "",
+      "id": 72,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\2026\\Torsten - Come Take My Hand EDIT [Extended Master].wav",
+      "title": "Torsten - Come Take My Hand EDIT [Extended Master]"
+    },
+    {
+      "artist": "Alberto Adami",
+      "id": 73,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\2025\\Acid Machine Gun (Extended Mix).flac",
+      "title": "Acid Machine Gun (Extended Mix)"
+    },
+    {
+      "artist": "DJ Ghost Dimitri Vegas Cherry Moon Trax Per Pleks",
+      "id": 74,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\2025\\Needle Destruction (Dimitri Vegas & Per Pleks Extended Remix).flac",
+      "title": "Needle Destruction (Dimitri Vegas & Per Pleks Extended Remix)"
+    },
+    {
+      "artist": "JO3Y3T",
+      "id": 75,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Beatport\\2026\\Like That (Original Mix).flac",
+      "title": "Like That (Original Mix)"
+    },
+    {
+      "artist": "",
+      "id": 76,
+      "path": "M:\\Musik\\Techno\\Hard Techno\\Schranz\\2025\\XXXTENTACION - Revenge (ROYAL Schranz Remix).wav",
+      "title": "XXXTENTACION - Revenge (ROYAL Schranz Remix)"
+    },
+    {
+      "artist": "Zax aka Zenith DJ",
+      "id": 77,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2003\\Zax aka Zenith DJ - In Da Club - Vocal Mix.flac",
+      "title": "In Da Club - Vocal Mix"
+    },
+    {
+      "artist": "DJ Isaac",
+      "id": 78,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2004\\DJ Isaac - Focus (Derb Remix).flac",
+      "title": "Focus (Derb Remix)"
+    },
+    {
+      "artist": "K-Traxx",
+      "id": 79,
+      "path": "M:\\Musik\\Hardstyle\\beatport\\2004\\K-Traxx - Noise Tool - Technoboy 2004 Remix.flac",
+      "title": "Noise Tool - Technoboy 2004 Remix"
+    },
+    {
+      "artist": "Greb Levah",
+      "id": 80,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Back (Original Mix).m4a",
+      "title": "Back (Original Mix)"
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 81,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Fuck That Shit (Original Mix).m4a",
+      "title": "Fuck That Shit (Original Mix)"
+    },
+    {
+      "artist": "Greb Levah",
+      "id": 82,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Habe es geschafft (Original Mix).m4a",
+      "title": "Habe es geschafft (Original Mix)"
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 83,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Ladys On The Dancefloor (Original Mix).m4a",
+      "title": "Ladys On The Dancefloor (Original Mix)"
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 84,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Life Inside Your Eyes (Original Mix).m4a",
+      "title": "Life Inside Your Eyes (Original Mix)"
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 85,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Rave All Night (Original Mix).m4a",
+      "title": "Rave All Night (Original Mix)"
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 86,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix).m4a",
+      "title": "Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix)"
+    },
+    {
+      "artist": "Blondee",
+      "id": 87,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Der Techno Erlkönig (Original Mix).m4a",
+      "title": "Der Techno Erlkönig (Original Mix)"
+    },
+    {
+      "artist": "Blondee",
+      "id": 88,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Love Love Love (Force Remix).m4a",
+      "title": "Love Love Love (Force Remix)"
+    },
+    {
+      "artist": "Andrea Botez",
+      "id": 89,
+      "path": "M:\\Musik\\Beatport\\Techno - Bangers\\Paradise (Extended Mix).m4a",
+      "title": "Paradise (Extended Mix)"
+    },
+    {
+      "artist": "Blondee",
+      "id": 90,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Der Techno Zauberlehrling (Original Mix).m4a",
+      "title": "Der Techno Zauberlehrling (Original Mix)"
+    },
+    {
+      "artist": "Tiefundton",
+      "id": 91,
+      "path": "M:\\Musik\\Beatport\\HardTekk\\Infraschall (Original Mix).m4a",
+      "title": "Infraschall (Original Mix)"
+    },
+    {
+      "artist": "Greb Levah",
+      "id": 92,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Down in it (Original Mix).m4a",
+      "title": "Down in it (Original Mix)"
+    },
+    {
+      "artist": "AKKI (DE)",
+      "id": 93,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Gettin' High (Extended Mix).m4a",
+      "title": "Gettin' High (Extended Mix)"
+    },
+    {
+      "artist": "Kopf & Hörer",
+      "id": 94,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Hollow (Original Mix).m4a",
+      "title": "Hollow (Original Mix)"
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 95,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Life Inside Your Eyes (Original Mix).m4a",
+      "title": "Life Inside Your Eyes (Original Mix)"
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 96,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Rave All Night (Original Mix).m4a",
+      "title": "Rave All Night (Original Mix)"
+    },
+    {
+      "artist": "HIGHTKK",
+      "id": 97,
+      "path": "M:\\Musik\\Beatport\\Tekkno\\Techno Traum (Original Mix).m4a",
+      "title": "Techno Traum (Original Mix)"
+    },
+    {
+      "artist": "Deichkind",
+      "id": 98,
+      "path": "M:\\Musik\\HardTekk\\2015\\Deichkind - So'ne Musik (The Various Artists - So'ne Bassdrum Remix).mp3",
+      "title": "So'ne Musik (Various Artists - So'ne Bassdrum Remix)"
+    },
+    {
+      "artist": "Nobody IYF",
+      "id": 99,
+      "path": "M:\\Musik\\Hardcore\\UK\\Beatport\\2019\\Blue (Original Mix).flac",
+      "title": "Blue (Original Mix)"
+    }
+  ],
+  "output": "C:\\Users\\DJBaka\\Documents\\GitHub\\CrateBase\\artifacts\\history-2026-10-25\\audio-matches.json"
+}

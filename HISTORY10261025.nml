@@ -1,0 +1,1262 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<NML VERSION="20"><HEAD COMPANY="www.native-instruments.com" PROGRAM="Traktor Pro 4"></HEAD>
+<COLLECTION ENTRIES="99"><ENTRY MODIFIED_DATE="2026/2/7" MODIFIED_TIME="78087" AUDIO_ID="ARR///////////////////////////uatjIQAAABEREhESIRERIRElh4d3d4eZdoZ3eIiYeIh3mJqququ7qal3d3h3h3d3dnaIiEMRIzMzMzMzMzM0MzRlQzMzMzMzMzMzMzMzMzREREREREVjIiIiMzI1////////////////////////////////////////////////////////51mmVEMiE3dXZXd3WHV2Z2aJmpqYqZqaqJiauZZ///////////////+avKu73N///////////////////////////////////K7/////////////////////7//////+IAAA==" TITLE="Linkin Park - In The End (Alberto Adami Edit) (Extended Mix)"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2025/:" FILE="Linkin Park - In The End (Alberto Adami Edit) (Extended Mix).wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" PLAYCOUNT="12" PLAYTIME="277" PLAYTIME_FLOAT="276.046875" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="71358"></INFO>
+<TEMPO BPM="159.999802" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.110068" PERCEIVED_DB="-0.024628" ANALYZED_DB="-0.024628"></LOUDNESS>
+<MUSICAL_KEY VALUE="22"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="27.797081" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="159.999802"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="27.879154" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="22527.904903" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="27777.910911" LEN="0.000000" REPEATS="-1" HOTCUE="2"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="147028.047382" LEN="0.000000" REPEATS="-1" HOTCUE="3"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="169528.073132" LEN="0.000000" REPEATS="-1" HOTCUE="4"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="172903.076994" LEN="0.000000" REPEATS="-1" HOTCUE="5"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/27" MODIFIED_TIME="64263" AUDIO_ID="AJsDZVREREVlZEREmoZ1VVV7mJiImWqe7+/u7//v/+/f/9///9//7f/v7//byquq3du5iqjc3Lubus7v/ttWn/////////////////////////////////////////////////////////////////////////////////////////////////7+7v7L3v297f///u/v283uzd7v/////////+7/7////////////t7/pTMyERAXqYggi/////////////////////////7P/////////////////////////v/////////////////////////////+VVAAAAAAAA==" TITLE="Stromae - Alors On Danse (The Jackals Hard Techno Remix) mp3"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2025/:" FILE="Stromae - Alors On Danse (The Jackals Hard Techno Remix) mp3.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="320000" KEY="Em" PLAYCOUNT="3" PLAYTIME="155" PLAYTIME_FLOAT="154.749390" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="6061"></INFO>
+<TEMPO BPM="154.000275" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-1.435167" PERCEIVED_DB="-2.826317" ANALYZED_DB="-2.826317"></LOUDNESS>
+<MUSICAL_KEY VALUE="16"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="54.450146" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="154.000275"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="444.059841" LEN="0.000000" REPEATS="-1" HOTCUE="4"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/9" MODIFIED_TIME="79690" AUDIO_ID="AVX///////////////////////////////////+P///////////+7tzO7e/////////////////////////////d3///////////7////////////v///////////b2EN4mYeIiaqqqrrduq7LnP3L/v///t7u7v/+7//9dVaZq7y93v///9n//////////////////////////////////////////////////////////7eL///////////////////////u/////////////////////////////////////////////////////////////+//////////uqow==" TITLE="The XX - Intro (Salvyan &amp; Gabrielle Rites Hard Techno Edit)" ARTIST="Salvyan &amp; Gabrielle Rites [INNERGATED]"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2025/:" FILE="The XX - Intro (Salvyan &amp; Gabrielle Rites Hard Techno Edit).wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" GENRE="Hard Techno" PLAYCOUNT="3" PLAYTIME="342" PLAYTIME_FLOAT="341.427887" RANKING="153" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="88263"></INFO>
+<TEMPO BPM="154.999695" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.219382" PERCEIVED_DB="-4.562874" ANALYZED_DB="-4.562874"></LOUDNESS>
+<MUSICAL_KEY VALUE="21"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="2.001172" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="154.999695"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/9" MODIFIED_TIME="79848" AUDIO_ID="AQr/////////////+CX//////////9hUREr//////////////9///////////////0///////u7My8u7qburu8zM3KU1RGZFQu//////////////9P//////////////+v/////////////+b/////////7c3Mu4apmpqqmZiZmqu7q7vJdkIhERb8UzM0VWz9mIiIiIiIiIiIiIiIiImZmZmZqqzd////6od4iL2d2Kydqv//////////////+////////////////P/////////////////////////////3n//////////////Fb/////////////91b8UhEAAA==" TITLE="Tom Whitfield - Push Me (DERVISH_STUDIO_MASTER_V2)"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2025/:" FILE="Tom Whitfield - Push Me (DERVISH_STUDIO_MASTER_V2).wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" PLAYCOUNT="2" PLAYTIME="266" PLAYTIME_FLOAT="265.688629" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="68676"></INFO>
+<TEMPO BPM="154.999908" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.107009" PERCEIVED_DB="-2.175018" ANALYZED_DB="-2.175018"></LOUDNESS>
+<MUSICAL_KEY VALUE="19"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1548.572388" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="154.999908"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/9" MODIFIED_TIME="85877" AUDIO_ID="AOzP//////////////+q///////////////////////////////7zL3Ku7qrupmaqpiImXVI9URq/YeLz////////////////+/////////////9u6r///////////////////////////////3NztuZeIvdy7m83Kqry7usy7zM3uzM3M3dzN3u3N29/t3d3d3Mzu7d3v////uXZ53d67///////////////////////////////6upv///////////////////////////////zLvv///////////////73////////////////+/////////////9q6qBAAAAAA==" TITLE="XXXTENTACION - Sippin Tea In Your Hood (ROYAL Hard Techno Remix)"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2025/:" FILE="XXXTENTACION - Sippin Tea In Your Hood (ROYAL Hard Techno Remix).wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" PLAYCOUNT="3" PLAYTIME="236" PLAYTIME_FLOAT="235.500000" RANKING="153" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="60883"></INFO>
+<TEMPO BPM="159.999695" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.110066" PERCEIVED_DB="-1.324661" ANALYZED_DB="-1.324661"></LOUDNESS>
+<MUSICAL_KEY VALUE="6"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="2.518601" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="159.999695"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/3/27" MODIFIED_TIME="63153" AUDIO_ID="AZiP/////////v///////////////////////////////////////////+zf//////7/////////+v///////8vb/+/+/P//////////////////////////////////7u7//f/////////b/////v///////////////////////////////t3dzdzMvMzbu7vN3d7//9//////////z//////////7qrvM3u7/////////////7M3///////7u/////////////////////v///////////////////////////////M//////////////////////////////8A==" TITLE="White Tool (Original Mix)" ARTIST="Matt M. Maddox"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:Beatport/:Schranz/:2008/:" FILE="White Tool (Original Mix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="433" TITLE="Just Call It Hardtechno!"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1215000" GENRE="Hard Techno" LABEL="Womb Sounds" COMMENT="Purchased at Beatport.com" PRODUCER="© 2008 Womb Sounds" COVERARTID="117/V1MXK0C5IUC0ZBGNSKFLAL1ALVQA" KEY="8m" PLAYCOUNT="2" PLAYTIME="409" PLAYTIME_FLOAT="408.093323" RANKING="51" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2008/4/1" FLAGS="12" FILESIZE="60690" COLOR="4"></INFO>
+<TEMPO BPM="149.999924" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-2.203796" ANALYZED_DB="-2.203796"></LOUDNESS>
+<MUSICAL_KEY VALUE="22"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="18.089071" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="149.999924"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/11" MODIFIED_TIME="47789" AUDIO_ID="ARYkREREQ0VEREVERVZUREVEREVEREVEQ7/////////////+Vf////////////////hmeGVVZlVVeGVprah5qYd4u2ZnmHaa7v7/7e7/7e7+3c/uzLvMu6q8qqq8u73tmIh2ZmZ3d4iIh3e/////////////+3v//////////////r//////////////////7u3LzMu6vN3d7+7f///////////////9n//////////////r3/////////////////////////////////////////////////////////////////////////////////////////////MQAAAAAA==" TITLE="Jesse Taylor - Goes Like That"><LOCATION DIR="/:Musik/:Techno/:Hard Bounce/:2025/:" FILE="Jesse Taylor - Goes Like That.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="320000" COVERARTID="036/ENWRMEA5UFCC1BZJIFWGDAAUTCAD" KEY="12m" PLAYCOUNT="5" PLAYTIME="279" PLAYTIME_FLOAT="278.413055" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="12864"></INFO>
+<TEMPO BPM="149.999603" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.422432" PERCEIVED_DB="-0.962257" ANALYZED_DB="-0.962257"></LOUDNESS>
+<MUSICAL_KEY VALUE="14"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1251.952271" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="149.999603"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/11" MODIFIED_TIME="47969" AUDIO_ID="AS2P///////////5V//////////////////////7q6vKur/////////////rv/////////////////////6ZiId3iv////////////uv////////////+8uIhoiHaIeHaIh3iIiHiZd5iIiZmXZ6q6qququ7uqqrq7qqnKmpvKuZqYiIZVVlZWd3d3eImJ/////////////////////////9urv//////////////////////////Luu/////////////////////////9u7z////////////9z/////////////u///////////2HZq////////////2IUyIRAAAA==" TITLE="JØR - Disparate Youth [modded.studio]"><LOCATION DIR="/:Musik/:Techno/:Hard Bounce/:2025/:" FILE="JØR - Disparate Youth [modded.studio].wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" PLAYCOUNT="4" PLAYTIME="301" PLAYTIME_FLOAT="301.000000" RANKING="51" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="77779"></INFO>
+<TEMPO BPM="149.999985" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.193455" PERCEIVED_DB="-0.430084" ANALYZED_DB="-0.430084"></LOUDNESS>
+<MUSICAL_KEY VALUE="17"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="69.159813" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="149.999985"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/11" MODIFIED_TIME="48428" AUDIO_ID="ASav///////////8Rc/////////////67//////////////4ZmZmZmd3d4eJmc////////////+qz//////////8ZV3//////////////q/////////////JuWeGZnd2VWh2Z4v/iHeqh3nJm4rMh3//////+f/////Zv////////////+n/////////////+J/////////////6umRWVEVmRUZ1RViPyHiHeHd3h3h4iO+4d4eIeIZWZniJrP////////////jf////////////+6z//////////+mJq//////////////6/////////////Ij//////////////g==" TITLE="TO THE RHYTHM" ARTIST="RITTIE"><LOCATION DIR="/:Musik/:Techno/:Hard Bounce/:2025/:" FILE="To The Rhythm RITTIE.wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" PLAYCOUNT="2" PLAYTIME="295" PLAYTIME_FLOAT="294.399994" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="76073"></INFO>
+<TEMPO BPM="149.999756" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-2.237770" ANALYZED_DB="-2.237770"></LOUDNESS>
+<MUSICAL_KEY VALUE="14"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1.935566" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="149.999756"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2025/10/18" MODIFIED_TIME="61787" AUDIO_ID="AYUlRERERERERERN////////////////////////////////////////////////////zczMu6qXd3d3hlVWZVZlVniHQ////////////////////////////////////////////////////////////////////////////sqoZCERESu2QyIiW5UzIiOLhDMzNf////////7v7d3+y5dVRFVmZlRJiHr/////////////////////////////////////zJqXZnh4h3XP//////////////////////////////////////////////////pVVVVVVVVVVVVVEA==" TITLE="Crank (Original Mix)" ARTIST="Oliver Huntemann"><LOCATION DIR="/:Musik/:Techno/:Deep Techno/:2024/:" FILE="Crank (Original Mix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="25" TITLE="Crank"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="916670" GENRE="Techno (Peak Time / Driving)" LABEL="Senso Sounds" COMMENT="Purchased at Beatport.com" PRODUCER="© 2024 Senso Sounds" COVERARTID="018/SUDHITCVXWDU1DVGYG1QBAYB3JXA" KEY="2m" PLAYCOUNT="2" PLAYTIME="389" PLAYTIME_FLOAT="388.837189" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2024/11/15" FLAGS="12" FILESIZE="43784"></INFO>
+<TEMPO BPM="128.999969" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.099975" PERCEIVED_DB="0.296631" ANALYZED_DB="0.296631"></LOUDNESS>
+<MUSICAL_KEY VALUE="16"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="929.756042" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="128.999969"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2025/10/18" MODIFIED_TIME="64982" AUDIO_ID="AUA2ZmZmZmZmZmZmZoZmZmZmZmZmZ2ZmeO//////////////////////////////7czN2oiJ7dzeyJid/uz+uYmtzM3dzM7//////////////////////////////9///////////////////////////////czNyZiK7NveuYid7c3smZm+zb7riKrLqpmZmYiIiHh3dniaq8zM3O7e7d20bf///////////////////////////////////////////////////////////8//////////////////////////////////////////////+ququqqqmrqqqpqjAA==" TITLE="Don't Go (Original Mix)" ARTIST="Adam Beyer"><LOCATION DIR="/:Musik/:Techno/:Deep Techno/:2024/:" FILE="Don't Go (Original Mix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="3" TITLE="Don't Go"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="933987" GENRE="Techno (Peak Time / Driving)" LABEL="Drumcode" COMMENT="Purchased at Beatport.com" PRODUCER="© 2024 Drumcode" COVERARTID="027/1I1PVFBAZKI0OB2K2VMQA54MC0MB" KEY="9m" PLAYCOUNT="2" PLAYTIME="320" PLAYTIME_FLOAT="319.511261" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2024/10/11" FLAGS="12" FILESIZE="38550"></INFO>
+<TEMPO BPM="133.000229" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.010079" PERCEIVED_DB="-2.430801" ANALYZED_DB="-2.430801"></LOUDNESS>
+<MUSICAL_KEY VALUE="17"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="114.671143" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="133.000229"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2025/10/18" MODIFIED_TIME="62318" AUDIO_ID="AX8jREMzMzMzM0M0NERDNENENDQzf///////////////////////9F////////////////////////////////////////////+VVVITbf///////////////////////8z/////////////////////////+ImYiJmYiZiZmZmampqqqrqqq7/sm/+3vtqN/ojPyJ36ev63rbQ///////////////////////maz////////////////////////7v///////////////////////+q///////////////////////////////////////////////////xAAAAAA==" TITLE="Error Pulse (Extended Mix)" ARTIST="Chris Veron AXXX7en"><LOCATION DIR="/:Musik/:Techno/:Deep Techno/:2024/:" FILE="Error Pulse (Extended Mix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="4" TITLE="Error Pulse (Extended Mix)"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="932177" GENRE="Techno (Peak Time / Driving)" LABEL="KickFire" COMMENT="Purchased at Beatport.com" PRODUCER="© 2024 KickFire" COVERARTID="059/1BTM5OAHIIL5KDTVWNHABZ14GH3C" KEY="12m" PLAYCOUNT="2" PLAYTIME="383" PLAYTIME_FLOAT="382.556458" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2024/11/29" FLAGS="12" FILESIZE="44296"></INFO>
+<TEMPO BPM="133.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.299878" PERCEIVED_DB="0.352127" ANALYZED_DB="0.352127"></LOUDNESS>
+<MUSICAL_KEY VALUE="14"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1.593741" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="133.000000"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2025/10/18" MODIFIED_TIME="62035" AUDIO_ID="AU82ZWZmZmZmZmZmZp/////////////////////////////////////////////+u7u7y7y8vLzMzN/tzMzMzM3d7szczv7u3v///97u7/8z3////////////8aP////////////////////////////if///////////////Kqqqqqry6uru7vP7czN7e7szMze/u/+zc3v7v3N3N/u/v/////////////FT////////////////////////////////////////////////////u3d3Lqqr/////////////////////////////////////////////tVVUIQAA==" TITLE="Let's Go Dancing (Original Mix)" ARTIST="Tiga Audion Layton Giordani"><LOCATION DIR="/:Musik/:Techno/:Deep Techno/:2024/:" FILE="Let's Go Dancing (Original Mix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="1" TITLE="Let's Go Dancing"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="963278" GENRE="Techno (Peak Time / Driving)" LABEL="Drumcode" COMMENT="Purchased at Beatport.com" PRODUCER="© 2024 Drumcode" COVERARTID="073/JS2O53DHT3TB4BCFVFAJCME2FGID" KEY="5d" PLAYCOUNT="2" PLAYTIME="335" PLAYTIME_FLOAT="334.911316" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2024/10/4" FLAGS="12" FILESIZE="41110"></INFO>
+<TEMPO BPM="128.999985" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-2.136917" ANALYZED_DB="-2.136917"></LOUDNESS>
+<MUSICAL_KEY VALUE="4"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="28.095631" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="128.999985"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2025/10/18" MODIFIED_TIME="62461" AUDIO_ID="ATMkREREREREREREVVTf///////////////////////////////////////////////qqr3e7d7e7d7e3d7/7t7u7d3e3c3e1UX///////////////7///////////////////////////////////////////////3Kq83/7///7///7//+3e7+3e/tze7tzf/u3d3tzN3czN3MhF/////////////////////////////////////////////////////////u7v/v6a////////////////////////////////////////////////ZmZmZmZmZlZlZVVTAAAA==" TITLE="WTFU (Extended Mix)" ARTIST="Chocolate Puma HI-LO"><LOCATION DIR="/:Musik/:Techno/:Deep Techno/:2024/:" FILE="WTFU (Extended Mix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="15" TITLE="WTFU (Extended Mix)"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1008625" GENRE="Techno (Peak Time / Driving)" LABEL="HILOMATIK" COMMENT="Purchased at Beatport.com" PRODUCER="© 2024 HILOMATIK" COVERARTID="061/3NA24SBGBN2F4B3QSAUICOAWFD4B" KEY="12m" PLAYCOUNT="2" PLAYTIME="307" PLAYTIME_FLOAT="306.879730" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2024/11/22" FLAGS="12" FILESIZE="40080"></INFO>
+<TEMPO BPM="132.999771" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-1.202057" ANALYZED_DB="-1.202057"></LOUDNESS>
+<MUSICAL_KEY VALUE="14"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="113.607330" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="132.999771"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/10/25" MODIFIED_TIME="65306" AUDIO_ID="AVL///////////////////////+7u//////////////////////////////////////////////////////aqZmIh4d3d3d3h3d3d3d2d2dnfP/////////////////////////////////////////////////////////////////////////////////////////////////////////+mId2ZlVVVWZmj/////////////////////////v/////////////////////////////////////u7v///////////////////////////////////////+wAAAAAA==" TITLE="A2 X7Ø-7 - SHE KILLED MY WHEN I DREAMED"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:Bunker/:2020/:" FILE="A2 X7Ø-7 - SHE KILLED MY WHEN I DREAMED [.wavaudiolab MASTERV1 - -0.3db - 24 bits - 44.1khz].wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" PLAYCOUNT="2" PLAYTIME="338" PLAYTIME_FLOAT="337.821442" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="87318"></INFO>
+<TEMPO BPM="144.999496" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.302108" PERCEIVED_DB="1.668678" ANALYZED_DB="1.668678"></LOUDNESS>
+<MUSICAL_KEY VALUE="15"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="3.506588" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="144.999496"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="0" START="3.506588" LEN="0.000000" REPEATS="-1" HOTCUE="0" COLOR="#FFFFFF"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2025/1/17" MODIFIED_TIME="67676" LOCK="1" LOCK_MODIFICATION_TIME="2023-09-08T00:00:00" AUDIO_ID="Ae9HZnd2d3d3ff//////////////////hf//////////////////////////////d3d3d3d4iImImpmamap7///////////////////7///////////////2RFVl////////////////////8SNFREVEZlWIZodWh2iYWJd5hnqHiXaJd5h3iHeYdnd3dlZ2ZlPf///////////////////////////////////////7VVZVVVVWVfk09kz1SvU9////////////////////////////////////////////////////////////3///////////////////8wAAAA==" TITLE="Niels Van Gogh - Pulverturm (NoCure Rework)"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:Free/:2016/:" FILE="Niels Van Gogh - Pulverturm (NoCure Rework).wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" KEY="Em" PLAYCOUNT="1" PLAYTIME="495" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="28" FILESIZE="127886"></INFO>
+<TEMPO BPM="130.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="16"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="3.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="130.000000"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2025/6/28" MODIFIED_TIME="67125" LOCK="1" LOCK_MODIFICATION_TIME="2023-04-12T00:00:00" AUDIO_ID="AboAEq//////////////////////////////////////////+7z//////////////////////////////////////////////bu7u7u6u7y///////////////////////////////////y7zMz////////////////////////bu7qpqpiHmmRDIzVSIkRnUhKf///////////////////////Luruv////////////////////////////////////////////////27u7u//////////////////////+qP/////////////Lqo+zM0MiEREREREAAAAAAAAAAA==" TITLE="Hefty - Cause of Death (Googana remix)(unmastered)"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:Free/:2018/:" FILE="Hefty - Cause of Death (Googana remix)(unmastered).wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1411200" KEY="6M" PLAYCOUNT="7" PLAYTIME="443" PLAYTIME_FLOAT="442.153839" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="28" FILESIZE="76169"></INFO>
+<TEMPO BPM="130.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="20"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="0.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="130.000000"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="Cue 1" DISPL_ORDER="0" TYPE="0" START="0.000000" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+<CUE_V2 NAME="Cue 2" DISPL_ORDER="0" TYPE="0" START="3692.000000" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+<CUE_V2 NAME="Cue 3" DISPL_ORDER="0" TYPE="0" START="62769.000000" LEN="0.000000" REPEATS="-1" HOTCUE="2"></CUE_V2>
+<CUE_V2 NAME="Cue 4" DISPL_ORDER="0" TYPE="0" START="136616.000000" LEN="0.000000" REPEATS="-1" HOTCUE="3"></CUE_V2>
+<CUE_V2 NAME="Cue 5" DISPL_ORDER="0" TYPE="0" START="251077.000000" LEN="0.000000" REPEATS="-1" HOTCUE="4"></CUE_V2>
+<CUE_V2 NAME="Cue 6" DISPL_ORDER="0" TYPE="0" START="265847.000000" LEN="0.000000" REPEATS="-1" HOTCUE="5"></CUE_V2>
+<CUE_V2 NAME="Cue 7" DISPL_ORDER="0" TYPE="0" START="280616.000000" LEN="0.000000" REPEATS="-1" HOTCUE="6"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2025/6/28" MODIFIED_TIME="67463" LOCK="1" LOCK_MODIFICATION_TIME="2023-09-08T00:00:00" AUDIO_ID="AZ80Q0VDPv///////////1Q0U//P/////////////////////////////2QzUzOP///////////4VDZDN+VztTP//////////////////////////////5VDVDN/////////////////////////q6qpmamaqqmf/////////////////7qpupif///////////7uJmoif////////////qImG//uqq7qv//////ZVVWVs//////hmVlVVZVZlVs///////////7//////////////////ZDMzM5//////////////////tldmRY////////////////////////9g==" TITLE="Manu Chao - Bongo Bong ( Alain Delay Bootleg Mastert by Landr)"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:Free/:2018/:" FILE="Manu Chao - Bongo Bong ( Alain Delay Bootleg Mastert by Landr).wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1411200" KEY="Gm" PLAYCOUNT="1" PLAYTIME="416" PLAYTIME_FLOAT="415.451416" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="28" FILESIZE="71599"></INFO>
+<TEMPO BPM="130.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="19"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="31.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="130.000000"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2023/3/3" MODIFIED_TIME="74773" AUDIO_ID="Aa2ddDIhERJCEiIiIiQyPaZUU1aqqqqrq6uqurqqqqqrq6urtm//////////////////////////////////9/////////////2XZVRdyFRFRNt1VGVux2Zq//////////////////////hmj///////////////////////////////////7////////////YRDQjzHVDQ37HZEQzRVREM0Z2VURY6mVERJ6nVVVVRDM0Nv//////////y///////////////////////////////////v//////////////////////2z////////////////////////HQyEAAA==" TITLE="Matt Milano - Requiem for a Dream (Bootleg)" ARTIST="Matt Milano"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:Free/:2018/:" FILE="Matt Milano - Requiem for a Dream (Bootleg).wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1411200" PLAYCOUNT="1" PLAYTIME="430" PLAYTIME_FLOAT="429.375000" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="14" FILESIZE="74009" COLOR="6"></INFO>
+<TEMPO BPM="128.000092" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.047311" PERCEIVED_DB="-1.581818" ANALYZED_DB="-1.581818"></LOUDNESS>
+<MUSICAL_KEY VALUE="19"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="0.599665" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="128.000092"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="0" START="0.599665" LEN="0.000000" REPEATS="-1" HOTCUE="0" COLOR="#FFFFFF"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2025/12/1" MODIFIED_TIME="66149" LOCK="1" LOCK_MODIFICATION_TIME="2023-09-08T00:00:00" AUDIO_ID="AaUv////////////////////////////////////////////9CNN////////////////////////////////////////////////p3eHd4h3eHd4q5eHd5l3eHd6l4eXd6uJiYiKqZipqrpTIRBI////////////////////////3///////////+Xd3dkf/////////////////////RFn////////////////////////FVWVVZ0Q1Q0b////////////v//////////////////////////////////m////////////4MiIiIiIiIjZ0IQAAAAAAAAAAAAAAAA==" TITLE="Steve Shaden - Feel My Soul (Original Mix)" ARTIST="Steve Shaden"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:Free/:2018/:" FILE="Steve Shaden - Feel My Soul (Original Mix).mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TITLE="Feel My Soul"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="320000" GENRE="Techno" COMMENT="www.steveshadenmusic.com" COVERARTID="055/X3POMYCIY2XOIA34ZQUMBZ2L0ITB" KEY="9d" PLAYCOUNT="2" PLAYTIME="421" PLAYTIME_FLOAT="420.545319" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2017/1/1" FLAGS="28" FILESIZE="17606"></INFO>
+<TEMPO BPM="128.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="8"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="512.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="128.000000"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2023/3/3" MODIFIED_TIME="74784" AUDIO_ID="AW3v///////////8///////4NDQzQz////////////o4////////////M////////////3QzyBXLqqzKqr27q9t1////////////c9///////////+QzfjbO2rzsu73qu9xz7///////////02////////////RDND/5m7q8zKq73MusvL////////////tDM0Nf///////////1P///////////+jj///////////9ENPRc7qq927vOurzJSf///////////zP///////////90MzM5////////////NP///////////3Pf///////////kMzQ0////////////7g==" TITLE="schastn - Sweet Home Alabama (Techno Bootleg) Master"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:Free/:2018/:" FILE="schastn - Sweet Home Alabama (Techno Bootleg) Master.wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1411200" PLAYCOUNT="1" PLAYTIME="365" PLAYTIME_FLOAT="364.580170" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="14" FILESIZE="62838" COLOR="6"></INFO>
+<TEMPO BPM="131.000443" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="0.187302" ANALYZED_DB="0.187302"></LOUDNESS>
+<MUSICAL_KEY VALUE="7"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="5.155553" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="131.000443"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="0" START="5.155553" LEN="0.000000" REPEATS="-1" HOTCUE="0" COLOR="#FFFFFF"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2023/12/1" MODIFIED_TIME="72280" AUDIO_ID="AXUkRERFRENDRDQxRFRVRUVDQ0MTHf/////////////////5n///f//////////////////////////////////9//////3///////////////////////p2ZlVVVWVmZmZmb//////////////////5z/////////////////////////////////////+P////////////////////////////////////////////z///////////////////////////////////////RWeIiJiJmZmqr//////////////////////////////////////////////////1EA==" TITLE="Benny Benassi - Satisfaction _ARTCØRE [TECHNO] bootleg"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:Free/:2019/:" FILE="Benny Benassi - Satisfaction _ARTCØRE [TECHNO] bootleg.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="201739" KEY="5d" PLAYCOUNT="1" PLAYTIME="374" PLAYTIME_FLOAT="373.498779" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="9220"></INFO>
+<TEMPO BPM="133.999985" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.455940" PERCEIVED_DB="-0.425278" ANALYZED_DB="-0.425278"></LOUDNESS>
+<MUSICAL_KEY VALUE="4"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="55.344482" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="133.999985"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="0" START="55.344482" LEN="0.000000" REPEATS="-1" HOTCUE="0" COLOR="#FFFFFF"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/10/25" MODIFIED_TIME="55856" LOCK="1" LOCK_MODIFICATION_TIME="2023-09-08T00:00:00" AUDIO_ID="APUAEREREiERMxERETIRIREyHP//////////////////9K////////////////////n/////////////////////////////////////////hERDNVREU0VURVVlUzMhP/////////////////////////////////////////xDNEM0MjRDRUNERVQzNDPP////////////////////////////////////////91VlNGZVZkV3VnZnZlRDOP/////////////////////////////////////////////////////////////3ERIRExESESIiMjMzIzMzMzMgAA==" TITLE="Dope Amine - Heroes Of The West"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:Free/:2019/:" FILE="Dope Amine - Heroes Of The West.wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1411200" KEY="11M" PLAYCOUNT="2" PLAYTIME="245" PLAYTIME_FLOAT="244.926758" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="28" FILESIZE="42211"></INFO>
+<TEMPO BPM="128.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="19"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="946.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="128.000000"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="15946.000000" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2024/8/8" MODIFIED_TIME="84473" LOCK="1" LOCK_MODIFICATION_TIME="2024-01-02T00:00:00" AUDIO_ID="AU5//////////////////////////////////////////////////////pr/////////////////////////////////////////////////////+piIiIiIiImImYmImZmZmJiZmZllRW//////////////////////////uN////////////////////+5mpqqmZmZmamZmZmZqZmJmZmamZmZmpdlZ//////////////////////////7jf///////////////////////8qpf//////////////////////////pv/////////////////////////9SIRAAAA==" TITLE="Mary X Molly" ARTIST="SWART"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:sptl/:Dark Clubbing/:" FILE="SWART - Mary X Molly.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="1" TITLE="Mary X Molly"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="241924" GENRE="belgian techno" COVERARTID="122/0HXWEKASY2FVAAFFFENKALM10KGB" KEY="4d" PLAYCOUNT="1" PLAYTIME="335" PLAYTIME_FLOAT="334.463989" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2019/1/1" FLAGS="28" FILESIZE="10042"></INFO>
+<TEMPO BPM="140.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="9"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="191.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="140.000000"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="191.000000" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/4/7" MODIFIED_TIME="67722" LOCK="1" LOCK_MODIFICATION_TIME="2024-01-02T00:00:00" AUDIO_ID="AX4VQyQyJFIiQyJGZEVVRWVEVUN/////////////////////xUaf////////////////////6Hef/////////////////////////////////////////////cvaZDQxJId3iIiamZmZmZiYiIeP/////////////////////Lvv/////////////////////dzf///////////f/////////cqXQyQxJFREZnebqZuqmqmYhCFf//////////////////////v///////////////////////n//////////////////5iIiYZv///////////////////////0AA==" TITLE="Power Lust Greed Fame" ARTIST="SWART"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:sptl/:Dark Clubbing/:" FILE="SWART - Power Lust Greed Fame.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="2" TITLE="Death To The Quarantine"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="254973" GENRE="belgian techno" COVERARTID="124/2DHO0FAGIRAZCBV4YZEEB3CXCG3B" KEY="Eb" PLAYCOUNT="1" PLAYTIME="382" PLAYTIME_FLOAT="381.671997" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2020/1/1" FLAGS="28" FILESIZE="12134"></INFO>
+<TEMPO BPM="142.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="3"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="345.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="142.000000"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="Cue 1" DISPL_ORDER="0" TYPE="0" START="345.000000" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2024/8/8" MODIFIED_TIME="84471" LOCK="1" LOCK_MODIFICATION_TIME="2024-01-02T00:00:00" AUDIO_ID="AmQs3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3e3d3e3d3d7t3d3d3d3d3d3d3d3d3d3d3u7e3e3d3u7t3d3d7u3d3t3e7u7e3t3d3d3d3t3d3e3e7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7+7u7u7u7u7u7u7u/u/u7uy7u7u7u7u7u7u7u7u7u7u7u7u7u8u7u7u7u7u7u7u7u7vLuru6uruqu7u7u7u73////+///////////v/v////////////7v/+7///7/7/7/7v7/7///7u/+7+7+7JmXdlMhEAAA==" TITLE="Confusion - Pump Panel Reconstruction Mix" ARTIST="Various Artists/New Order"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:sptl/:Dark Clubbing/:" FILE="Various Artists, New Order - Confusion - Pump Panel Reconstruction Mix.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="12" TITLE="Blade The Soundtrack"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="230319" COVERARTID="058/0ZKJIYCLWKEIEBFZCQOXACOZT2VA" KEY="10m" PLAYCOUNT="1" PLAYTIME="613" PLAYTIME_FLOAT="612.143982" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2012/1/1" FLAGS="28" FILESIZE="17435"></INFO>
+<TEMPO BPM="136.210007" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="12"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="585.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="136.210007"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="585.000000" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2024/8/8" MODIFIED_TIME="82948" AUDIO_ID="AeoCMzMzQ0REREREREREREVH//////////////////+Tz//////////////////3b////////////////////pqpmqqqqpmIh2ZVVUNERd//////////////////+r///////////////////Yz///////////////////+FREREVURER5iId4iYiYiJmZmZmZqpmrqqqqq7u7vIEjMzMzM+//////////////////6L///////////////ZmpmI7///////////////////////////////////////////////////////////////////////////////9SAAAA==" TITLE="The Age Of Love - Charlotte de Witte &amp; Enrico Sangiuliano Remix" ARTIST="Age Of Love/Charlotte de Witte/Enrico Sangiuliano"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:sptl/:Dark Techno Extended Mieps Kat/:" FILE="Age Of Love, Charlotte de Witte, Enrico Sangiuliano - The Age Of Love - Charlotte de Witte &amp; Enrico Sangiuliano Remix.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="1" TITLE="The Age Of Love (Charlotte de Witte &amp; Enrico Sangiuliano Remix)"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="258752" GENRE="bubble trance" COVERARTID="002/CIAP3MBE23A14AEQTLPBAZWWPQVA" KEY="9m" PLAYCOUNT="1" PLAYTIME="490" PLAYTIME_FLOAT="489.600006" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2021/8/13" FLAGS="12" FILESIZE="15750"></INFO>
+<TEMPO BPM="129.999832" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-3.374803" PERCEIVED_DB="0.903877" ANALYZED_DB="0.903877"></LOUDNESS>
+<MUSICAL_KEY VALUE="17"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="592.817200" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="129.999832"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="0" START="592.817200" LEN="0.000000" REPEATS="-1" HOTCUE="0" COLOR="#FFFFFF"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2024/8/8" MODIFIED_TIME="84811" LOCK="1" LOCK_MODIFICATION_TIME="2023-09-08T00:00:00" AUDIO_ID="AUOv///////////////////////////v//////////////////////////////////////////////////////+mZ2Zmd3dmd3d3inZ2ZmZplmZmZmeod3d2d5l3d3d3f/////////////////////////+3n///////////////////////////93eIh4iIh4iIiIz///////////////////////////////////////+H3///////////////////////////53d3h4iIiHd4iIiIiIiIiIiIiIiE7/////////////////////////////////////////UAAA==" TITLE="Hyperspace" ARTIST="Alex Bilancini"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:sptl/:Dark Techno Extended Mieps Kat/:" FILE="Alex Bilancini - Hyperspace.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="1" TITLE="Hyperspace"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="265941" GENRE="hard techno" COVERARTID="086/W0O3HBBBRDGW2CI5MLMKAZQ24FGB" KEY="9m" PLAYCOUNT="1" PLAYTIME="324" PLAYTIME_FLOAT="323.399994" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2021/1/1" FLAGS="28" FILESIZE="10912"></INFO>
+<TEMPO BPM="144.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="17"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="67.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="144.000000"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2024/8/8" MODIFIED_TIME="84375" LOCK="1" LOCK_MODIFICATION_TIME="2024-01-02T00:00:00" AUDIO_ID="AaCf///////////////////////////////////////////+7u7u7u7u6XfP///////////////////////////////////////////t3c3NzczMzKu8zei///////////////////////////////////////////7//////////////////////airuaq83e/3X/////////////////////////////////////////////////////////////////+piIiZmJqrumZ5zv9m//////////////////////////////////////////////////////+UEAAAAA==" TITLE="Venting" ARTIST="Aahan/The Dag"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:sptl/:Dark Underground Techno/:" FILE="Aahan, The Dag - Venting.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="11" TITLE="The World Of Monnom Black II"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="283785" GENRE="techno rave" COVERARTID="050/SBMS35D10CSL1AFY5EPEBC1HNT0C" KEY="6m" PLAYCOUNT="1" PLAYTIME="417" PLAYTIME_FLOAT="416.496002" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2019/1/1" FLAGS="28" FILESIZE="14588"></INFO>
+<TEMPO BPM="143.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="20"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="79.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="143.000000"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="79.000000" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2024/8/8" MODIFIED_TIME="84363" LOCK="1" LOCK_MODIFICATION_TIME="2024-01-02T00:00:00" AUDIO_ID="ANsERERERURFRFVERURURFRFdUR3Z4iIeHh4h3eIiIiIiIhlVpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqmZqUM3M0YzVjWGMiIjdTIkebh2ZmmXd3mrqId3d3d3dmqqqqqqqqqqqqqqqqqqd2aJmYmZiZiJmZmYmZiZhmaHd4d3h3iHeLzMvMy8vLy7vLu7u7u6u7q7uru6u7q7u7u7u7u7q7pmaJmZiZmZmZmZmqmqqqqqqZu7vLu8u7y7vLu8u7u6qqupmamZqZmpmqmZmZmZmpmamZqZmpmamZqZmZmZmamZqZmpmamZqZd3d3d3d1VVd0NnVSAAAAAA==" TITLE="No Woman Allowed" ARTIST="Sperminator"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:sptl/:Dark Underground Techno/:" FILE="Sperminator - No Woman Allowed.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="1" TITLE="No Woman Allowed"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="217692" COVERARTID="065/BSTSERBT0LENGCMAHEVJAHRJSYOD" KEY="5m" PLAYCOUNT="1" PLAYTIME="220" PLAYTIME_FLOAT="219.287994" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2011/1/1" FLAGS="28" FILESIZE="5955"></INFO>
+<TEMPO BPM="143.990005" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="13"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="258.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="143.990005"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="258.000000" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2024/8/8" MODIFIED_TIME="84351" LOCK="1" LOCK_MODIFICATION_TIME="2024-01-02T00:00:00" AUDIO_ID="AS4BJVQzIReZiJiZmZiYmJmYmZmZmZmZmZmYVH////////////pc////////////de//////////////////////////ZTEUVVVVVCVVVVVVOf////9V/////4b/////5G/////3X/////////////+jMh7///////////92////////////9mdiJWVTV1VVVVVVZa///////////////////mn/////dv///////////////3X//////////////6qqqqqv/////2j////////////2j////////////Fr///////////+lv/////////////9mUhIiIAAAAAAAAA==" TITLE="Protusan Attack" ARTIST="Project Omeaga"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:sptl/:Darkcore Industrial/:" FILE="Project Omeaga - Protusan Attack.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="3" TITLE="Prednison Attack VIP"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="276178" GENRE="gabba" COVERARTID="094/44TWPUCUTWDYEB0O3VPABUD4ZHQD" KEY="11m" PLAYCOUNT="1" PLAYTIME="302" PLAYTIME_FLOAT="301.752014" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2004/1/1" FLAGS="28" FILESIZE="10289"></INFO>
+<TEMPO BPM="155.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="19"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="156.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="155.000000"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="156.000000" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2024/8/8" MODIFIED_TIME="84350" LOCK="1" LOCK_MODIFICATION_TIME="2024-01-02T00:00:00" AUDIO_ID="AXxIiIiIiZmZmZmqqqu7u7y7z//////////////////8yqv/////////////////////////////////////////7////////////////////////////////////////////////97t/////////////////////7qczO///////v/Wff///97//////////////////////////////////////////7v///////////////////////////////////////////7///////////////////////////////////////////3Mzt/+uIiamYdVMiEREAAAAAAAAA==" TITLE="Shirtless" ARTIST="Somniac One"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:sptl/:Darkcore Industrial/:" FILE="Somniac One - Shirtless.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="2" TITLE="Troubled Youth EP"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="256827" GENRE="doomcore" COVERARTID="085/VKIMDSAQJAWKRAOTV2YNB1WHSJQB" KEY="7m" PLAYCOUNT="1" PLAYTIME="380" PLAYTIME_FLOAT="379.776001" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2017/1/1" FLAGS="28" FILESIZE="12235"></INFO>
+<TEMPO BPM="155.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="15"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="61.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="155.000000"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="61.000000" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2024/8/8" MODIFIED_TIME="84350" LOCK="1" LOCK_MODIFICATION_TIME="2024-01-02T00:00:00" AUDIO_ID="AaJvo0Mz/WNDSftv+X/on8afuP+q/pz9z/uf+Z/Jv+///////////////////////////////////////2iP/////////////////////////////////////////9uqqqu7zf//////////////////////////7bqs3/Vv//////////////////////////////////////////////////////////////////////////////9v////////////////////////////////////////////////////////////////////////////////pUIxIRERAAAAAA==" TITLE="The Grand Awokening - Original mix" ARTIST="Somniac One"><LOCATION DIR="/:Musik/:Techno/:DarkTechno/:sptl/:Darkcore Industrial/:" FILE="Somniac One - The Grand Awokening - Original mix.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="1" TITLE="Rendered Fat EP"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="273826" GENRE="doomcore" COVERARTID="115/TLBYYTBC1E25XDAIAZMFBWX0NWNC" KEY="11m" PLAYCOUNT="1" PLAYTIME="419" PLAYTIME_FLOAT="418.272003" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2020/1/1" FLAGS="28" FILESIZE="14213"></INFO>
+<TEMPO BPM="155.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="19"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="319.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="155.000000"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="319.000000" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/11" MODIFIED_TIME="41033" AUDIO_ID="AQ55iHd3d3iXd3d3dEb/////////////////////////////////////////////////t5t5yHfP2b2+/9TP////////////////////////////////26qpmJn/vPzv//nv/////////////////////////////////dy7uausuaqqu83/7dzd3d3c3N3N3d3f/e7e7e7v/u/v/vuv66iHZWZvyf2v//yf////////////////////////////////////////////////////////////////////////////////////////////////+7u7urqrqrqrzMqrgg==" TITLE="XTC - Tadhgmc [v1 master]"><LOCATION DIR="/:Musik/:Techno/:Hard Bounce/:2025/:" FILE="XTC - Tadhgmc [v1 master].wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1411200" PLAYCOUNT="4" PLAYTIME="271" PLAYTIME_FLOAT="270.049988" RANKING="153" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="46521"></INFO>
+<TEMPO BPM="150.000061" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PERCEIVED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="17"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1.470709" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="150.000061"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/9" MODIFIED_TIME="76213" AUDIO_ID="ASZIh4eHiJuYh4d1////////////////////////////////////+7u6v/vf///////////////////////////7zc3v/u///d2ndXr////////////+7//t3////O//////////////+e///////////+7/////////////+//////////////791RWZoio/v//7//93//8//////////////////+6//l/////////////////////////+Zqb////////////+f///////////////ZdlQzSe//////////////////////////////////////////8gAAAAAA==" TITLE="SAILØ - BRING IT BACK"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2025/:" FILE="SAILØ - BRING IT BACK.wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1411200" PLAYCOUNT="4" PLAYTIME="295" PLAYTIME_FLOAT="294.193573" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="50680"></INFO>
+<TEMPO BPM="155.001022" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-3.557762" ANALYZED_DB="-3.557762"></LOUDNESS>
+<MUSICAL_KEY VALUE="10"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="773.998047" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="155.001022"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/11" MODIFIED_TIME="48193" AUDIO_ID="AQUkV3Z0RFV1WXiqzd/8aP//////////////x7///////////////t7////////////////7dmmXZVVVVVeIdVRUdmiZh2aJmGaZmGZmeYmaqImHiYiZqZiniZmqqpmprMqru7zNu97c3d7d7u7e7t3v+4////////////////////////////////////////////////////////////////////////////////////qIiIiZmqu7vM3e28///////////////Wn//////////////////////////////////////////////////////////////////6ERAA==" TITLE="COMEBACK" ARTIST="STANEPIMP"><LOCATION DIR="/:Musik/:Techno/:Hard Bounce/:2025/:" FILE="STANEPIMP - COMEBACK.wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" GENRE="Hard Trance" PLAYCOUNT="3" PLAYTIME="261" PLAYTIME_FLOAT="260.799988" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="68562"></INFO>
+<TEMPO BPM="149.999695" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-2.947960" ANALYZED_DB="-2.947960"></LOUDNESS>
+<MUSICAL_KEY VALUE="21"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="3.763528" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="149.999695"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="1603.766783" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/4/7" MODIFIED_TIME="60091" AUDIO_ID="ATq/////////////////////////////////////////////////////////////////////2pmpqZmqqaqqq///////////////////////////uv/////////////9qqurmqq6qqqqz///////////////////////////////////////////////////////+FRUVUVmZFVWRXh1RlZkZndXdXZp//////////////////////////////////////////////////////vf//////////////////////////////////////////////////////9gAAAAAA==" TITLE="Leo - Bikini Bottom"><LOCATION DIR="/:Musik/:Techno/:Peak Time Techno/:2024/:" FILE="Leo - Bikini Bottom.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="320000" KEY="7m" PLAYCOUNT="4" PLAYTIME="314" PLAYTIME_FLOAT="313.600006" RANKING="153" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="12279"></INFO>
+<TEMPO BPM="149.999954" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-1.421219" PERCEIVED_DB="-1.793404" ANALYZED_DB="-1.793404"></LOUDNESS>
+<MUSICAL_KEY VALUE="15"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="52.479893" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="149.999954"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="0" START="52.479893" LEN="0.000000" REPEATS="-1" HOTCUE="0" COLOR="#FFFFFF"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/4/7" MODIFIED_TIME="60134" AUDIO_ID="ATu//////////////////////////+r/////////////////////////+L+3RavP///929////7+7////+3f////////////7rmIiIimVodnh4m//////////////////////////6v/////////////////////////+Hrv/+7////////////////////////////+3M7///7///7//v/dqYiHeJZWdmZ3ec//////////////////////////rP/////////////////////////5n//////////////////////////63/////////////////////////xlEA==" TITLE="Gimme Gimme Gimme (A Man After Midnight) (The Rocketman Extended Remix) 150" ARTIST="Syzz, The Rocketman"><LOCATION DIR="/:Musik/:Techno/:Peak Time Techno/:2024/:" FILE="Syzz, The Rocketman - Gimme Gimme Gimme (A Man After Midnight) (The Rocketman Extended Remix) 150.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="320000" COMMENT="www.djpoolrecords.com" COVERARTID="013/NYJ2UQCW00ALWBLJXD14DMLXPGEC" KEY="Dm" PLAYCOUNT="3" PLAYTIME="316" PLAYTIME_FLOAT="315.271851" RANKING="153" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2024/1/1" FLAGS="12" FILESIZE="12346"></INFO>
+<TEMPO BPM="149.999954" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.818746" PERCEIVED_DB="0.374207" ANALYZED_DB="0.374207"></LOUDNESS>
+<MUSICAL_KEY VALUE="14"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="52.694290" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="149.999954"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2025/11/17" MODIFIED_TIME="65287" AUDIO_ID="ASZv//7u6t7u7u6J7u7u7u7u7u5o////////////z///////////c1ZTN4iXmJiHdVm3VpmJiZqYh1aal2ZnZ3Z3h3Znd3iaqaqqvLu7zdlu///////////8////////////////////////+/////////////////////////3////////////3VVZVVVVlVoZWh3aId4d3VpqneJmpmbmYhoq3eczLu7y8u5rdxRGP///////////7/////////////////////////v///////////v///////////4n///////////mv///u7v/u7uxW3////+/////llyEAAA==" TITLE="Alaguan feat. Lexi - Sailor Moon (DJ Edit)"><LOCATION DIR="/:Musik/:Hardcore/:UK/:2020/:" FILE="Alaguan feat. Lexi - Sailor Moon (DJ Edit).wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1411200" PLAYCOUNT="2" PLAYTIME="294" PLAYTIME_FLOAT="293.674103" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="50620"></INFO>
+<TEMPO BPM="175.000061" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.099975" PERCEIVED_DB="-1.317886" ANALYZED_DB="-1.317886"></LOUDNESS>
+<MUSICAL_KEY VALUE="0"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="131.299194" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="175.000061"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="0" START="131.299194" LEN="0.000000" REPEATS="-1" HOTCUE="0" COLOR="#FFFFFF"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/5/31" MODIFIED_TIME="79967" AUDIO_ID="ATMiP////////////r///////////+y8///////////////////////////////////////////////////9qIn9h5mXepiZu7mZ////////////////////////////////////////////////////////RXiYZodmaHZVeZqqmpmbmZqqhorM3Luqq7q8uZiI//////////////////////////3f//////////////////////////7///////////////////////////////////////////////////tYrv/////////////////////////ph4cxAAAAAA==" TITLE="Eiskalter Blick feat. NICAROT (Original Mix)" ARTIST="Bollmann NICAROT"><LOCATION DIR="/:Musik/:Beatport/:Hard Techno/:Schranz/:Melodic/:2025/:" FILE="Eiskalter Blick feat. NICAROT (Original Mix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="35" TITLE="Weisser Drache"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1061000" GENRE="Hard Techno" LABEL="HARDCODE" COMMENT="Purchased at Beatport.com" PRODUCER="© 2025 HARDCODE" COVERARTID="079/PKXJKIAVAZQZTARBOGOODAQBYWQC" KEY="F#m" PLAYCOUNT="5" PLAYTIME="307" PLAYTIME_FLOAT="306.580658" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2025/3/28" FLAGS="12" FILESIZE="41386"></INFO>
+<TEMPO BPM="155.000946" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.099975" PERCEIVED_DB="-3.224068" ANALYZED_DB="-3.224068"></LOUDNESS>
+<MUSICAL_KEY VALUE="18"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="3.992720" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="155.000946"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="1552.370366" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/27" MODIFIED_TIME="67695" AUDIO_ID="ARUv////////////////////////////v/////////////////////////////6n///////////////////////////////////////////8qP///////////+y7tkMl/////////////8i///////////////2oh2VDVmZWZmVXiIiZu6urupZFS/////////////+r/////////////+zf//////////////////////////7e7P//////////////v///////3czMy7zO////////////////////////////+5///////////////v////////////92UAAAAA==" TITLE="Fassade (Original Mix)" ARTIST="In Verruf"><LOCATION DIR="/:Musik/:Beatport/:Hard Techno/:Schranz/:Melodic/:2025/:" FILE="Fassade (Original Mix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="6" TITLE="44012"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1092000" GENRE="Hard Techno" LABEL="44 LABEL GROUP" COMMENT="Purchased at Beatport.com" PRODUCER="© 2025 44 LABEL GROUP" COVERARTID="081/RW0XQ5BDE21JGBVPVMXBCBG2TTMC" KEY="G" PLAYCOUNT="3" PLAYTIME="278" PLAYTIME_FLOAT="277.161285" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2025/4/4" FLAGS="12" FILESIZE="39578"></INFO>
+<TEMPO BPM="154.999969" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.099975" PERCEIVED_DB="-2.152969" ANALYZED_DB="-2.152969"></LOUDNESS>
+<MUSICAL_KEY VALUE="7"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="344.864197" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="154.999969"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/1/26" MODIFIED_TIME="63826" LOCK="1" LOCK_MODIFICATION_TIME="2023-04-12T00:00:00" AUDIO_ID="ARcnd3d3d3V3d3d3d3d3d3d3d3mZiZiqm7yYh5dlQyNDJFQ0d2aJ7M25qnZ3iaiImIiaqHiJiKiId3aIeIiIaHQ82GVERERERVRERVREqpiImZiZmZmYmZiN///////////////////////////////93/////////////vZmJdnd4eJh4d4iHmYeIeJh3eHiHd4h5mYiIiZmZmZmqu6r////////////////////////////////bqpmamZmZmYiHd4ynZ3ZVmImYqYp4yf///////////f//n/////////////////////////////+X////////yrmrmrmqMQAA==" TITLE="Fairyland - Reamp 2012" ARTIST="Francesco Zeta"><LOCATION DIR="/:Musik/:Hardstyle/:sptl/:Hardstyle oldschool/:" FILE="Francesco Zeta - Fairyland - Reamp 2012.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="1" TITLE="Fairyland Reamp 2012"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="259894" GENRE="classic hardstyle" COVERARTID="014/OEZ3ULCVWPNTUBOUUPVWCZSOKX2A" KEY="10m" PLAYCOUNT="4" PLAYTIME="279" PLAYTIME_FLOAT="278.544006" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2012/1/1" FLAGS="28" FILESIZE="9062"></INFO>
+<TEMPO BPM="150.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="12"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="103.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="150.000000"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="Cue 1" DISPL_ORDER="0" TYPE="0" START="1374.000000" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/1/9" MODIFIED_TIME="70174" LOCK="1" LOCK_MODIFICATION_TIME="2023-04-12T00:00:00" AUDIO_ID="AVInZnhmWIZVh2aalmaWZou6u83KrsvLqru6q7qpuru9y7vbzMzf/M/////////////////////////9////////////3tvMu8zLu8uqi+27u6u7u7u8vO78zMy8vMzczMzf3d3d3d3d3dzd/Lusvd3d3u/t3//////////////////////////////////////vyquqmpq6qZnO/73Lzf//7//+3///////////////////////////////////////28u8zd3e7d3u//////////////////////////////////////66mZmaq6mZmZmoQhAAAAAAAAAAAAAAAA==" TITLE="So High - Original Mix" ARTIST="Noisecontrollers"><LOCATION DIR="/:Musik/:Hardstyle/:sptl/:Hardstyle oldschool/:" FILE="Noisecontrollers - So High - Original Mix.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="1" TITLE="Noisecontrollers - So High"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="265250" GENRE="classic hardstyle" COVERARTID="022/WM3HNHB0XSUXXAOIYULHASR0XIBB" KEY="11m" PLAYCOUNT="29" PLAYTIME="339" PLAYTIME_FLOAT="338.256012" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2012/1/1" FLAGS="28" FILESIZE="11170"></INFO>
+<TEMPO BPM="150.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="19"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="258.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="150.000000"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="Cue 2" DISPL_ORDER="0" TYPE="0" START="273.000000" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+<CUE_V2 NAME="Cue 3" DISPL_ORDER="0" TYPE="0" START="49873.000000" LEN="0.000000" REPEATS="-1" HOTCUE="2"></CUE_V2>
+<CUE_V2 NAME="Cue 4" DISPL_ORDER="0" TYPE="0" START="64273.000000" LEN="0.000000" REPEATS="-1" HOTCUE="3"></CUE_V2>
+<CUE_V2 NAME="Cue 5" DISPL_ORDER="0" TYPE="0" START="230673.000000" LEN="0.000000" REPEATS="-1" HOTCUE="4"></CUE_V2>
+<CUE_V2 NAME="Cue 6" DISPL_ORDER="0" TYPE="0" START="253073.000000" LEN="0.000000" REPEATS="-1" HOTCUE="5"></CUE_V2>
+<CUE_V2 NAME="Cue 7" DISPL_ORDER="0" TYPE="0" START="256273.000000" LEN="0.000000" REPEATS="-1" HOTCUE="6"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/9/11" MODIFIED_TIME="57633" LOCK="1" LOCK_MODIFICATION_TIME="2023-04-12T00:00:00" AUDIO_ID="AZ8SIiIiIiIiV3VVVVVVVVV2d3d3d3d3dlV3d3d3d3iIi4MRAAE3d4VUVUZ3d3Z2Znn//////6if///////4////////nqZlZWiYh4mHhnmWZ2Z1l1ZoZVMlh0b7dDQ0RVZnd4ib/JiIiIh4iHrbmZmd3dzc///////////////////////////////////////////7aHd4eZiYd3Z4aP//////+b////////7/uXd+53dndmd3d3eImZmZqKu778qpmaqqqs3////////////////////////u/+7u7//u7u7/7v///pmZmZmZmZmZmZmZmZmZmVIiIiIiIiIiAA==" TITLE="Rock Civilization - Technoboy's Undersound Mix" ARTIST="Headhunterz"><LOCATION DIR="/:Musik/:Hardstyle/:sptl/:Hardstyle oldschool classics/:" FILE="Headhunterz - Rock Civilization - Technoboy's Undersound Mix.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="1" TITLE="Rock Civilization / The Sacrifice Remixes"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="263157" GENRE="classic hardstyle" COVERARTID="051/TJ32RVC1OKCSYBTCERXVAES1K0RA" KEY="5d" PLAYCOUNT="8" PLAYTIME="416" PLAYTIME_FLOAT="415.320007" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2009/1/1" FLAGS="28" FILESIZE="13606"></INFO>
+<TEMPO BPM="149.869995" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="4"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="329.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="149.869995"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="Cue 1" DISPL_ORDER="0" TYPE="0" START="356.000000" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+<CUE_V2 NAME="Cue 2" DISPL_ORDER="0" TYPE="0" START="1156.000000" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+<CUE_V2 NAME="Cue 3" DISPL_ORDER="0" TYPE="0" START="50755.000000" LEN="0.000000" REPEATS="-1" HOTCUE="2"></CUE_V2>
+<CUE_V2 NAME="Cue 4" DISPL_ORDER="0" TYPE="0" START="51555.000000" LEN="0.000000" REPEATS="-1" HOTCUE="3"></CUE_V2>
+<CUE_V2 NAME="Cue 5" DISPL_ORDER="0" TYPE="0" START="323953.000000" LEN="0.000000" REPEATS="-1" HOTCUE="4"></CUE_V2>
+<CUE_V2 NAME="Cue 6" DISPL_ORDER="0" TYPE="0" START="349552.000000" LEN="0.000000" REPEATS="-1" HOTCUE="5"></CUE_V2>
+<CUE_V2 NAME="Cue 7" DISPL_ORDER="0" TYPE="0" START="360752.000000" LEN="0.000000" REPEATS="-1" HOTCUE="6"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/1/9" MODIFIED_TIME="70211" LOCK="1" LOCK_MODIFICATION_TIME="2023-04-12T00:00:00" AUDIO_ID="AU0SIjgzKIMyRzXdmIiqiIuYiKmJvZiJuYjMmZq5v/YiElZlNERVRGd3ZVd2aYdlaIiK////////////b/////yP/////+tHZ2d3dnd4iXfP///////////t/////////////7qqqqqqq6uru6q6ZHu7u7tRRhAWRSQ1uq/bmYd2d4iJqmn/////////////////////////j////////////f/////9/////+u8u7u6d6zMzKpgAFapiHdmZ3ZmZ4l6////////////b///////////+Y//////////////////////////ciIiIiIiIiIiIiIiIiIiIiIiIiEAAA==" TITLE="Rambo is a Pussy" ARTIST="Hardstyle Masterz/Max Enforcer"><LOCATION DIR="/:Musik/:Hardstyle/:sptl/:Hardstyle oldschool/:" FILE="Hardstyle Masterz, Max Enforcer - Rambo is a Pussy.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="1" TITLE="Rambo is a Pussy"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="258889" GENRE="classic hardstyle" COVERARTID="126/4LY3JDCRJILWSDGBMSJEDSDYUJ3A" KEY="11m" PLAYCOUNT="2" PLAYTIME="334" PLAYTIME_FLOAT="333.071991" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2009/1/1" FLAGS="28" FILESIZE="10693"></INFO>
+<TEMPO BPM="150.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="19"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="398.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="150.000000"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="Cue 1" DISPL_ORDER="0" TYPE="0" START="1381.000000" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/3/30" MODIFIED_TIME="68447" LOCK="1" LOCK_MODIFICATION_TIME="2023-08-03T00:00:00" AUDIO_ID="AHkkNGJENDMxNlVSIzQxIxMRVzMlYyQSI0VGZmISJJVYZUMiMyEkVkRSIxAyEAAmZ3dSEAAAMAMyMCRUUiMjIyMzITM2RFMkeFVSEiNFRWRBAiIVdBWVJJU4c1iLgyInlXVprufdje7u2u/////////////////////////////////////////////////////////////////////////////////////////////////////////////Lt2lmhonIeKdTTv//7u3/3///7eqY7//+7+/9///+/+/+///+/v/v///u/v/v///v7/7///3v7/nNrIFlalWoljAjYw==" TITLE="KomaCasper- Jetzt ist hier Achterbahn"><LOCATION DIR="/:Musik/:HardTekk/:2018/:" FILE="KomaCasper- Jetzt ist hier Achterbahn.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="320000" KEY="A#m" PLAYCOUNT="3" PLAYTIME="121" PLAYTIME_FLOAT="120.744003" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2018/1/1" FLAGS="28" FILESIZE="4730"></INFO>
+<TEMPO BPM="174.940002" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="22"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="203.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="174.940002"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/10/25" MODIFIED_TIME="61105" LOCK="1" LOCK_MODIFICATION_TIME="2023-08-03T00:00:00" AUDIO_ID="AQckMzR4YhNFQ1iEIkRTRoYxNFQ1eFIURjI2UzNERDRENM7u7u7oj+/+/+9t/////////////8iYmJiXb//////v///////VRVqqYm//////jP//////ozNJMia//////c////zOUkMiM0IjNDIzQyRoiYl3qGiIiZuv///////////////////////5mZmamf//////////////uYiJmoiaiYmpiHl3eIiJeId3eHrN/////////////////////////6ibu5m5qWmJuZqcm+//////////////+Ve4dXrYZop3WMyHi5h3nJhpyHeM3/////+aqqqsvf///////w==" TITLE="KomaCasper-Aufstehen!ABGEHEN!"><LOCATION DIR="/:Musik/:HardTekk/:2018/:" FILE="KomaCasper-Aufstehen!ABGEHEN!.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="320000" KEY="F#m" PLAYCOUNT="3" PLAYTIME="264" PLAYTIME_FLOAT="263.351990" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2018/1/1" FLAGS="28" FILESIZE="10314"></INFO>
+<TEMPO BPM="175.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="18"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="32.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="175.000000"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="43917.714286" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/1/8" MODIFIED_TIME="66610" LOCK="1" LOCK_MODIFICATION_TIME="2024-01-01T00:00:00" AUDIO_ID="AHz////////////8ho/////////////si/////////////2Wff///////////+2K////3Kmqqrqqq67N///////////////////tyru7y7u7u7vu7u7u7/////uJms+JmZmZme+JmZmam/////////////yGf////////////+///////////////qqv/////////////b3////cqaqrq6qrrs///////////////////+7MzLzMzN3M3f//////////+omaz////////////+rN//////////////3f////////////++//////////////yv6HUxAAAAAAAAAAAA==" TITLE="Dj Snake - Propaganda (Two Players UK Hardcore Remix)"><LOCATION DIR="/:Musik/:Hardcore/:UK/:2022/:" FILE="Dj Snake - Propaganda (Two Players UK Hardcore Remix).wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" KEY="4M" PLAYCOUNT="5" PLAYTIME="125" PLAYTIME_FLOAT="124.235306" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="28" FILESIZE="31350"></INFO>
+<TEMPO BPM="170.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="18"></MUSICAL_KEY>
+<CUE_V2 NAME="Cue 9" DISPL_ORDER="0" TYPE="0" START="1.000000" LEN="0.000000" REPEATS="-1" HOTCUE="8"></CUE_V2>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="2.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="170.000000"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="Cue 2" DISPL_ORDER="0" TYPE="0" START="5.000000" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+<CUE_V2 NAME="Cue 8" DISPL_ORDER="0" TYPE="0" START="50829.000000" LEN="0.000000" REPEATS="-1" HOTCUE="7"></CUE_V2>
+<CUE_V2 NAME="Cue 4" DISPL_ORDER="0" TYPE="0" START="72005.000000" LEN="0.000000" REPEATS="-1" HOTCUE="3"></CUE_V2>
+<CUE_V2 NAME="Cue 7" DISPL_ORDER="0" TYPE="0" START="96005.000000" LEN="0.000000" REPEATS="-1" HOTCUE="6"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/1/8" MODIFIED_TIME="65474" LOCK="1" LOCK_MODIFICATION_TIME="2024-01-01T00:00:00" AUDIO_ID="ATVZmZmZmZmZmZnLmZmZmamarNvP/////v7+/v/u///////////////////////7rv/////////////////////////////////////////////////9/+3f//////////////////////////////////////////+I//////////////////////7u////mIZXd3V5mHeIzd3N3///////9lup3/////////////////////////7N///////////////////////////////////v///+7+/u////////7u/+/////u7+/u7u7v/+//////////3t2VMhAAAAAA==" TITLE="09.サクラカゼ (hu-zin Bootleg)"><LOCATION DIR="/:Musik/:Hardcore/:UK/:2021/:" FILE="09.サクラカゼ (hu-zin Bootleg).mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="320000" KEY="12d" PLAYCOUNT="4" PLAYTIME="309" PLAYTIME_FLOAT="308.688965" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2021/1/1" FLAGS="28" FILESIZE="11808"></INFO>
+<TEMPO BPM="170.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="5"></MUSICAL_KEY>
+<CUE_V2 NAME="Cue 9" DISPL_ORDER="0" TYPE="0" START="34.000000" LEN="0.000000" REPEATS="-1" HOTCUE="8"></CUE_V2>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="35.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="170.000000"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="Cue 2" DISPL_ORDER="0" TYPE="0" START="36.000000" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+<CUE_V2 NAME="Cue 7" DISPL_ORDER="0" TYPE="0" START="241448.000000" LEN="0.000000" REPEATS="-1" HOTCUE="6"></CUE_V2>
+<CUE_V2 NAME="Cue 4" DISPL_ORDER="0" TYPE="0" START="252742.000000" LEN="0.000000" REPEATS="-1" HOTCUE="3"></CUE_V2>
+<CUE_V2 NAME="Cue 8" DISPL_ORDER="0" TYPE="0" START="265801.000000" LEN="0.000000" REPEATS="-1" HOTCUE="7"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/3/27" MODIFIED_TIME="72178" AUDIO_ID="ASTv/////3//////////////3//////////////////////////////////////////////////////////7ZERFVGeImoeL///c2rvMqM28mmb//bzL28/N2+3cer3/z///////////////////////////l/3//v////////////////////////////////////////+J2WZGdWRczcy7z2W6p2Y6/+urvbzPy7zu7K//////////////////////////////////////////2v/////////////////////////////////////////////////////////QAA==" TITLE="Alone In The Dark (Remix)" ARTIST="Lorenzo Raganzini Paolo Ferrara Arytmia"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:Beatport/:Schranz/:2025/:" FILE="Alone In The Dark (Remix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="45" TITLE="Alone In The Dark (Remix)"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1068000" GENRE="Hard Techno" LABEL="No Mercy" COMMENT="Purchased at Beatport.com" PRODUCER="© 2025 No Mercy" COVERARTID="056/YRGWCFBXBLY5KABCANENBXIYNTIC" KEY="1m" PLAYCOUNT="2" PLAYTIME="292" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2025/3/17" FLAGS="12" FILESIZE="40646" COLOR="4"></INFO>
+<TEMPO BPM="154.999802" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.099975" PERCEIVED_DB="-3.161026" ANALYZED_DB="-3.161026"></LOUDNESS>
+<MUSICAL_KEY VALUE="21"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="50.764389" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="154.999802"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/3/20" MODIFIED_TIME="70271" AUDIO_ID="AUq///////////////////////dv////////////ZEREMzMiJu7E///////////Gz//////////3X//////////9jupo2M/+pn2a//l2yY7/qHzJda/////5////9n//////2JmZh37/////v////4n//////////7h1REIiRTQxERRWVWQRNEQzEAADZ3ZldlRFVmVVd3VEMzVnVEMzzJZ4m87ad5rv/ZeNmJrZiOu8u8h2u7Xf/////////////////9qpmYh///////////+K//////yZiIdm/////////////////////////////////////////////////w==" TITLE="David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP)"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:Schranz/:2026/:" FILE="David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP).wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1411200" PLAYCOUNT="7" PLAYTIME="331" PLAYTIME_FLOAT="330.218750" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="56885"></INFO>
+<TEMPO BPM="159.999817" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.322957" PERCEIVED_DB="0.028259" ANALYZED_DB="0.028259"></LOUDNESS>
+<MUSICAL_KEY VALUE="3"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="4.903792" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="159.999817"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/1/8" MODIFIED_TIME="64889" AUDIO_ID="AQA1VVVVVVVlVlZVM4hmZnZmZ3d3d5p1a93dzd3d3N3dzcVJ3d3d3d3d3d3u+1fIiHh2ZWd4iYZlVaupmIh4iJmZl2ZVe6h3Z4ebiHiaipm8llRFVERFVVVndUff7qju7+z+7u7tRb7+7//v///+//+Vjc3u7N3/3c7u3N7t3d/u3f/93u7v6Yu5hmd4Z3iIeXZlV9qYiId5mJmZhmVVqpiGeHeqeIiamJvMdlRFVERVVlVnZFrv7ov+787u7u75R+/u7/////////5mvd3u3c7/3N7tzd/d3e7t3f/t3u/+2JzdzczM3MzMzc3GSNzd3c3N3d3d3utWpUIREAAAAA==" TITLE="R3HAB &amp; KSHMR - Strong (DRIFT 2020 UK Hardcore Remix)"><LOCATION DIR="/:Musik/:Hardcore/:UK/:2020/:" FILE="R3HAB &amp; KSHMR - Strong (DRIFT 2020 UK Hardcore Remix).mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="320000" KEY="9m" PLAYCOUNT="2" PLAYTIME="256" PLAYTIME_FLOAT="255.582047" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2020/1/1" FLAGS="14" FILESIZE="10008"></INFO>
+<TEMPO BPM="169.999908" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.897004" PERCEIVED_DB="1.062004" ANALYZED_DB="1.062004"></LOUDNESS>
+<MUSICAL_KEY VALUE="17"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="737.981934" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="169.999908"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="0" START="737.981934" LEN="0.000000" REPEATS="-1" HOTCUE="0" COLOR="#FFFFFF"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/7/13" MODIFIED_TIME="49565" AUDIO_ID="APhodmVURENENEREVVmHdmZlVURVVVdme//////////////////////////d7v3////////////////////////////9zf//////////////////////////mam///////////////////////////3/mGVVZmZmZVRFRERFRERERFRENEVVV2Z9/////////////////////////9ze2/////////////////////////////zP//////////////////////////+Zqt///////////////////////////P6HVEVVVVVVRERDMzIjMzMzMiIhIiIhIhEQAAAAAA==" TITLE="Wilhelm Scream (Original Mix)" ARTIST="Beskar"><LOCATION DIR="/:Musik/:DnB/:JumpUp/:Beatport/:2023/:" FILE="Wilhelm Scream (Original Mix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="198" TITLE="Wilhelm Scream / Mount Arakeirkos"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1120169" GENRE="Drum &amp; Bass" LABEL="Dirtbox Recordings" COMMENT="Purchased at Beatport.com" PRODUCER="© 2023 Dirtbox Recordings" COVERARTID="044/MFFJ5FD4U50HOBN15KKMDFNAX0YB" PLAYCOUNT="4" PLAYTIME="249" PLAYTIME_FLOAT="248.276077" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2023/5/4" FLAGS="12" FILESIZE="35632"></INFO>
+<TEMPO BPM="174.000031" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-2.647385" ANALYZED_DB="-2.647385"></LOUDNESS>
+<MUSICAL_KEY VALUE="5"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="2.425405" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="174.000031"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/7/13" MODIFIED_TIME="49563" AUDIO_ID="AQYTNWupmLuIiciZncu73d7v/v/v3d3v//////////+Xh///3MzMu6qqmadf////////////////////////////////////////+8/////////////J/////////////////////////9zs3/////////////////////////3+yVM1Z3ZmZlVVVVVVZWZnd3dnd2Z3ef/////////////////////////Nlv/////////////////////////////////////////L/////////////X//////////////////////////7/2YiImJiId3ZlZmZREAAAAAAAAAAA==" TITLE="Don't Kill The Vibe (Original Mix)" ARTIST="Teddy Killerz"><LOCATION DIR="/:Musik/:DnB/:JumpUp/:Beatport/:2022/:" FILE="Don't Kill The Vibe (Original Mix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="69" TITLE="Critical Damage"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1119105" GENRE="Drum &amp; Bass" LABEL="Eatbrain" COMMENT="Purchased at Beatport.com" PRODUCER="© 2022 Eatbrain" COVERARTID="104/I1MLQSDEHO0S4DON4RGWBUSY32IC" PLAYCOUNT="3" PLAYTIME="263" PLAYTIME_FLOAT="262.200012" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2022/3/14" FLAGS="12" FILESIZE="38756"></INFO>
+<TEMPO BPM="175.000031" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.010079" PERCEIVED_DB="-5.913994" ANALYZED_DB="-5.913994"></LOUDNESS>
+<MUSICAL_KEY VALUE="16"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="349.061096" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="175.000031"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="43891.916310" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/3/2" MODIFIED_TIME="82496" LOCK="1" LOCK_MODIFICATION_TIME="2024-02-03T00:00:00" AUDIO_ID="APtGZmdmZnd2ZndmZ3dnd4iHiIeIiHh57u7t3czM7t7t3d3d3tvd3aze/t///M//////////////7//////7//////////////r//////+upqYh2mZqZiZdlWM3c3czLvN3N3MzMzNzNzLu8zczcy6rd3d3d3d7u7u7u7e7u7u7u3t7t7u3M///////////////////////////////////////////+7///////////////7u/+7+vv/////9/////////////////////////////v//////////////3/////////////+f/////////t3LqIZDMzIiIhEREQAA==" TITLE="You Get Me High" ARTIST="Anime &amp; Rob Gee"><LOCATION DIR="/:Musik/:Hardcore/:Hardcore Extended/:" FILE="10_anime_and_rob_gee_-_you_get_me_high.mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="10" TITLE="Exterminate (Extended DJ Versions) WEB"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="320000" GENRE="Hardcore" COMMENT="." KEY="G#m" PLAYCOUNT="2" PLAYTIME="252" PLAYTIME_FLOAT="251.480820" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2016/1/1" FLAGS="28" FILESIZE="9845"></INFO>
+<TEMPO BPM="175.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000000" PERCEIVED_DB="0.000000" ANALYZED_DB="0.000000"></LOUDNESS>
+<MUSICAL_KEY VALUE="20"></MUSICAL_KEY>
+<CUE_V2 NAME="Beat Marker" DISPL_ORDER="0" TYPE="4" START="157.000000" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="175.000000"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="157.000000" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/1/20" MODIFIED_TIME="30568" AUDIO_ID="AQOf///v///+//////+7///////////////u//////////////////////////////////uXiWmWiXmpmpiZmrz//////////////////////////////////tvK///////////////////////////8undkdUZjZkV0V0V0SFWIaHV4V5dod5ZodpiamKmKqJqaqJqJmpiO/////////////////////////////////+3cyf///////////////////////////c3//////////////////////////////////////////////////////////////////2AAAA==" TITLE="BOUNCE N BREAK (Extended Mix)" ARTIST="t e s t p r e s s mischluft"><LOCATION DIR="/:Musik/:Beatport/:Hard Bounce/:2026/:" FILE="BOUNCE N BREAK (Extended Mix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="16" TITLE="BOUNCE N BREAK"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="965811" GENRE="Hard Dance / Hardcore / Neo Rave Hard House" LABEL="HARD Recs" COMMENT="Purchased at Beatport.com" PRODUCER="© 2025 HARD Recs" COVERARTID="029/3U2MKJDUS0KM5BAO51KUA504UXFA" PLAYCOUNT="2" PLAYTIME="260" PLAYTIME_FLOAT="259.230011" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2025/4/18" FLAGS="12" FILESIZE="31012"></INFO>
+<TEMPO BPM="149.999985" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-1.885223" ANALYZED_DB="-1.885223"></LOUDNESS>
+<MUSICAL_KEY VALUE="19"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="30.914318" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="149.999985"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/1/20" MODIFIED_TIME="30838" AUDIO_ID="AThqqqqqqrqquqq6q7qquru7u7lqzMzMy7zMzMuJ3d3u3u7u7u6XdERERDMzMzM1p2ZmZmdmZmVniodoeGd4h5iHm5h5qYmmZXhkJnZlZmZlVVVXmbqqy6q///9139zM3d3L3czdyJ7u7u7r3u7u6Hzu3d7u7u7t62nu7u7u7//+62mVVlVVVVZlZme5h4mHeIl4mIi7qImYiFU1Z0NHVVVFVYRVZVd5ZmZ4mqu86VV2ze7d3u3e3d7sze7t7u3e7u7Znu3u7t7e7v7tzu7e/+7u7u7pKMzMzMzMzMzLV93d3u7u7u7tlpqqqqqaqqqqu5u7vMvMzMzMt0EQAAAAAA==" TITLE="Hardcore You And Me  (Extended Mix)" ARTIST="Neon Beatz"><LOCATION DIR="/:Musik/:Beatport/:UK Hardcore/:2025/:" FILE="Hardcore You And Me  (Extended Mix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="12" TITLE="The World Of Obsession - Best Of 2025"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1076528" GENRE="Hard Dance / Hardcore / Neo Rave UK / Happy Hardcore" LABEL="The World Of Obsession Recordings" COMMENT="Purchased at Beatport.com" PRODUCER="© 2025 The World Of Obsession Recordings" COVERARTID="055/X3TCPZBOFG2OMB5UTMYRCPIOT4HB" PLAYCOUNT="1" PLAYTIME="312" PLAYTIME_FLOAT="312.000000" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2025/12/2" FLAGS="12" FILESIZE="44100"></INFO>
+<TEMPO BPM="169.999832" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.095418" PERCEIVED_DB="0.351837" ANALYZED_DB="0.351837"></LOUDNESS>
+<MUSICAL_KEY VALUE="16"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="4.658154" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="169.999832"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/3/16" MODIFIED_TIME="65874" AUDIO_ID="ARQAAAAAASIREhIjV+//////////////////////////////////////////dr///////////////7qZh4iJZph2aKiP/////////////////////////////////////////////////////////9///////////////WZ5p2eZhmeau6qe67u5iJmGaJrMt37/////////////////////////////////////////+kv///////////////yXeqdEeoVEmmRHq5ZZuoV6u3ac3Jv/////////////mP/////////////////////////////+3LrMuYQhAAAAAA==" TITLE="ATZEWINRAD - supernasen"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2024/:" FILE="ATZEWINRAD - supernasen.wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1411200" PLAYCOUNT="4" PLAYTIME="277" PLAYTIME_FLOAT="276.003906" RANKING="51" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="47787"></INFO>
+<TEMPO BPM="159.999496" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000265" PERCEIVED_DB="-1.013733" ANALYZED_DB="-1.013733"></LOUDNESS>
+<MUSICAL_KEY VALUE="22"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="0" START="2.177612" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="2.177612" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="159.999496"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="12002.215378" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/7" MODIFIED_TIME="77616" AUDIO_ID="AM/v////////////////+p/////////+zu7dzLur373qh4u9yIeIzZh3u+uHmZ/u7t/+7e3dy7qpmru7iO3curqaqrzPho52vGaIn/////////////////////////////////////7L3///////////////////////////////////vLu6upmIh3iHiHd4h4hmRERv/////dzLqbvN26qqqov///7v7d7M7szMzLzMzM3////7///ZmmZmZmZmiI/////////8////////d4/////////+////////mv/////////////////7j///////////y7qYd2fflkMiEA==" TITLE="Bonfire (Sirolo Hard Techno Edit)  [wav 16]"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2025/:" FILE="Bonfire (Sirolo Hard Techno Edit)  [wav 16].wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1411200" PLAYCOUNT="6" PLAYTIME="207" PLAYTIME_FLOAT="206.765625" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="35641"></INFO>
+<TEMPO BPM="160.000076" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.299604" PERCEIVED_DB="-2.032600" ANALYZED_DB="-2.032600"></LOUDNESS>
+<MUSICAL_KEY VALUE="18"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="6.116876" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="160.000076"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="6.116876" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="43506.096134" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="48006.093988" LEN="0.000000" REPEATS="-1" HOTCUE="2"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="60006.088266" LEN="0.000000" REPEATS="-1" HOTCUE="3"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="94506.071815" LEN="0.000000" REPEATS="-1" HOTCUE="4"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="120006.059656" LEN="0.000000" REPEATS="-1" HOTCUE="5"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/27" MODIFIED_TIME="2667" AUDIO_ID="AS+f///////////5n//////////6VXn////////////3v////////////47//////f///92W//////vP///+92ZlZWVWb+3dzd3fyIh4eLnbze9WZ//////////////ojP//////////fv///////////9j////////////9b////////////2S4ZWeGZot4qZh63f7uz+/u7f/9/u/v//7u//zMze7d93d4aNqGfl+3ZU//////////////////////////x8////////////+////////////fe//////6////////////////////v/////////////8wAAAAAA==" TITLE="KIRK - CD Is Dead (mp3)"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2025/:" FILE="KIRK - CD Is Dead (mp3).mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="320000" KEY="G#m" PLAYCOUNT="3" PLAYTIME="304" PLAYTIME_FLOAT="303.480011" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="11888"></INFO>
+<TEMPO BPM="154.999725" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.473981" PERCEIVED_DB="-2.933777" ANALYZED_DB="-2.933777"></LOUDNESS>
+<MUSICAL_KEY VALUE="20"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="49.102894" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="154.999725"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/9" MODIFIED_TIME="72938" AUDIO_ID="AU3v////////////////////////////////////////////////iv///////////////////////939uqiIeIiJiIiu/u7u7u7u7u3O/+/////////Y////////////////////////+f/////////////////////////czd///+7+y6zb27zdur7u7e3e3dzd3d3NzM3d3u7u7u7u3u7tzduZqb3e////6b/8rf+3///////////8r///////////rf///////////////////////6//////////////////////+pmf//////////////////////mZmXQgAA==" TITLE="LWØ x FNRZ x TRYPDØ - Cinema - master"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2025/:" FILE="LWØ x FNRZ x TRYPDØ - Cinema - master.wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" PLAYCOUNT="3" PLAYTIME="333" PLAYTIME_FLOAT="332.903870" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="86057"></INFO>
+<TEMPO BPM="154.998520" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.219392" PERCEIVED_DB="-1.270859" ANALYZED_DB="-1.270859"></LOUDNESS>
+<MUSICAL_KEY VALUE="18"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="0.958417" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="154.998520"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/7/31" MODIFIED_TIME="67005" AUDIO_ID="ASxFZWZmZnd3d4iIiZmru83v///7iIr/////////////z////////////bvKmYiYmImIh4d5rMzLy7u83N3e2oisq7qaqv////////////uf//////////6YeP/////////////v////////////mnMhFLR5OmXK7r7N7N3Ozd3+qb/ty93d3t3bzczP/u3NzMu7u7qpiHvJeKmqr////////////5r//////////8mYr/////////////z////////////Zu5Opvsu//////////////v//////////+YZc//////////////////////////d/////////////Vw==" TITLE="Limp Bizkit - Break Stuff (Hardsok Remix)"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2025/:" FILE="Limp Bizkit - Break Stuff (Hardsok Remix).wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1411200" PLAYCOUNT="5" PLAYTIME="301" PLAYTIME_FLOAT="300.403229" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="51783"></INFO>
+<TEMPO BPM="154.999939" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000265" PERCEIVED_DB="-1.923401" ANALYZED_DB="-1.923401"></LOUDNESS>
+<MUSICAL_KEY VALUE="15"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1.942660" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="154.999939"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="24776.145964" LEN="0.000000" REPEATS="-1" HOTCUE="5"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="48001.961561" LEN="0.000000" REPEATS="-1" HOTCUE="6"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="105292.306701" LEN="0.000000" REPEATS="-1" HOTCUE="4"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/9" MODIFIED_TIME="78945" AUDIO_ID="AR9IiIh4eHh4eHeHdv////////////+I//////////////n///////////iK3//////+7LqHZmVo//////////////n////////////+mviIh4iJqYh3iHebmJiZiJmZmZmaqnr//////9//////2///////7///2Zmu/////////////////////////9u7v9d3d2Znd2Z3dmd4iIiJmZiZmZmqqX///+///////v//j/////////////+v//////////+7qqiHd3iIh3d3d4h4r///////////////////////////////////////////+piZmJiYiYiZiIqBAA==" TITLE="THISO - Down like "><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2025/:" FILE="THISO - Down like .wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" PLAYCOUNT="3" PLAYTIME="287" PLAYTIME_FLOAT="286.981873" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="74189"></INFO>
+<TEMPO BPM="154.999542" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.209996" PERCEIVED_DB="-1.995415" ANALYZED_DB="-1.995415"></LOUDNESS>
+<MUSICAL_KEY VALUE="19"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="25.058231" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="154.999542"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/10" MODIFIED_TIME="1411" AUDIO_ID="AL5aqqqqqqqqqquqqqq7u83s3//////////////////924q5eZdoqHmXeah5l3moiYb////////////////////////////////////////5vd/////////////////////7uXmXaLl5p3i5eah5uXqoisqauYrKmrqaypq5isqbuomZmZqZmZu6rMzMzM3ezMu8yompvcl5u925eay9uYu7iru8zLu7u7unZWi5ZVeZqLlniVeJiZlmz////93///2/////////53n////////9v////////9uv////////////////////iqqqqqqqqqurqqqqq7u83HdkIQAAAA==" TITLE="THNDERZ &amp; Rave Heaven - Face Down Ass Up (Remix) [EXTENDED]"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2025/:" FILE="THNDERZ &amp; Rave Heaven - Face Down Ass Up (Remix) [EXTENDED].wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" PLAYCOUNT="3" PLAYTIME="191" PLAYTIME_FLOAT="190.375015" RANKING="204" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="49210"></INFO>
+<TEMPO BPM="160.000153" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.205444" PERCEIVED_DB="-2.233551" ANALYZED_DB="-2.233551"></LOUDNESS>
+<MUSICAL_KEY VALUE="20"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="3.848191" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="160.000153"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/9" MODIFIED_TIME="85529" AUDIO_ID="AN7f///////7//////////////////v///////9/////////r//////9Vt///////////////////////////////////////tvc3d3cmsu8vLu7zsvKvM3d3dqrysu8u6z8VTRLg1m82GVEVVV7y93d3d3d3d7FMyKHIiI8pnZntmZWn////////////////87/////////////+VZlWf///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Q==" TITLE="Wanton - Vielleicht Vielleicht (remix)"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2025/:" FILE="Wanton - Vielleicht Vielleicht (remix).wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2304000" PLAYCOUNT="4" PLAYTIME="223" PLAYTIME_FLOAT="222.101562" RANKING="153" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="62492"></INFO>
+<TEMPO BPM="159.999847" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-1.877930" ANALYZED_DB="-1.877930"></LOUDNESS>
+<MUSICAL_KEY VALUE="22"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="3.181218" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="159.999847"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/10" MODIFIED_TIME="375" AUDIO_ID="ALo3d3eImamJmZmpmZmZmZman///////////////////qJh0NWeZh3h3eMyZzMiqqLu2n////////////////////+z//////////9zN3e23Znis//////////////////////////////////////////upl4iJiHiJq8ztzv/+3cr+3MzL3evMy+/c3v7e///t///P////79293al0ZmZXdneK///////////////////////P////////////////////vf//////////////////+qjf////////////////////6JmYmZmZiZmZmYmZmZmYd2eEIRAAAAAAAA==" TITLE="[TFT Records] AlexisGrace &amp; Rave Heaven - GANGSTA SHT (EXTENDED) [TFT116GT]"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2025/:" FILE="[TFT Records] AlexisGrace &amp; Rave Heaven - GANGSTA SHT (EXTENDED) [TFT116GT].wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" PLAYCOUNT="2" PLAYTIME="187" PLAYTIME_FLOAT="186.007828" RANKING="153" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="48086"></INFO>
+<TEMPO BPM="160.000259" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000263" PERCEIVED_DB="-1.146751" ANALYZED_DB="-1.146751"></LOUDNESS>
+<MUSICAL_KEY VALUE="19"></MUSICAL_KEY>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="0.000000" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="748.849121" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="160.000259"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="11998.830882" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="23998.811427" LEN="0.000000" REPEATS="-1" HOTCUE="2"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="35998.791972" LEN="0.000000" REPEATS="-1" HOTCUE="3"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="83998.714152" LEN="0.000000" REPEATS="-1" HOTCUE="4"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="160498.590127" LEN="0.000000" REPEATS="-1" HOTCUE="5"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/7" MODIFIED_TIME="78912" AUDIO_ID="AQzv////////////uf///////v/8qVh3/97Mqo3e/cy87u7e7u7v/////////u/+zM7sv/7//+3v///////u65h4e1WM3d7dze7/////uv///9/avP/////////////v/////////////8//////////////zf////////////+p////3d7s3v7f/euu7u7u7u7v/////dqarbqrz+3v/93LupiYiGh2zMzd7+z//////////////////////////////9zc/5rf7/7t3br//////////////f/////////////6v///////////////////////////l6/9uXQyEQ==" TITLE="chravma - my little pony - my first hard techno track and i hate it so much extended"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2025/:intro/:" FILE="chravma - my little pony - my first hard techno track and i hate it so much extended.wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1411200" PLAYCOUNT="3" PLAYTIME="268" PLAYTIME_FLOAT="267.636383" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="46128"></INFO>
+<TEMPO BPM="164.999619" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000265" PERCEIVED_DB="-5.210526" ANALYZED_DB="-5.210526"></LOUDNESS>
+<MUSICAL_KEY VALUE="6"></MUSICAL_KEY>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="0.000000" LEN="0.000000" REPEATS="-1" HOTCUE="4"></CUE_V2>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="6.704257" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="164.999619"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/7" MODIFIED_TIME="79333" AUDIO_ID="AUl///////////+v//////////97///////////8/////////+qnioh3d2ZmZVVmapmIh3Z3d3eIe////////////f/////////8qIm//////////8//////////yoiod3dmVmd4mZf///////////+//////////Ll////////////8///////////pqGZVREMyIiJXi5mIiId3d3d4iqmZiJiIiIeIiLuqqpmaqqq7l////////////7/////////6mX//////////////////////3Jff//////////+v////////+5l8///////////7/////////6Z3h0QxAA==" TITLE="Alberto Adami - Let You Suffer (Extended) [MSTR KNTRLVRLST]"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2026/:" FILE="Alberto Adami - Let You Suffer (Extended) [MSTR KNTRLVRLST].wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" PLAYCOUNT="6" PLAYTIME="330" PLAYTIME_FLOAT="329.250000" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="85107"></INFO>
+<TEMPO BPM="160.000458" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.000032" PERCEIVED_DB="-3.107101" ANALYZED_DB="-3.107101"></LOUDNESS>
+<MUSICAL_KEY VALUE="20"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="189.454895" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="160.000458"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/4/3" MODIFIED_TIME="58272" AUDIO_ID="AKZt3d3d3d3d3drN3d3d3d3dyGiN3d3d3e3d3dzN3d3t3d3e3HRWq5iZu5iZrJqK2oisyZqrqZqYrLy8u8rN/Mq+/b/v7O3t7Kud3/vM/e7/zN/+//y5mZmbzNt3mf//////y7uFMv/////////////////////////////////////////////////93f+9z9ze/f//qZqKmaqnVGb/////////////////////yVQ//////////////////////+////////////////////////ze///////////////////////+//////////////////////+630EQAAAAAA==" TITLE="Discotronic - Tricky Disco (Fyloh Bootleg) (Extended Mix)"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2026/:" FILE="Discotronic - Tricky Disco (Fyloh Bootleg) (Extended Mix).wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1411200" PLAYCOUNT="5" PLAYTIME="167" PLAYTIME_FLOAT="166.074219" RANKING="153" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="28609"></INFO>
+<TEMPO BPM="160.003204" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.200572" PERCEIVED_DB="-3.832947" ANALYZED_DB="-3.832947"></LOUDNESS>
+<MUSICAL_KEY VALUE="22"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="7.705796" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="160.003204"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/4/3" MODIFIED_TIME="57998" AUDIO_ID="ANJKqqqqqqqqqqqqqqqqqr//////////////////++///////////////M3LzKh3iqeHd3e7vLqJzLzLzNzd3O3siL/////////f/////7vLvf///////////////N27v//////////////////a///////////////8y5q7l3dmZ3iIu4eIiIury7vMzMyZzczczdzc3O7u7uppqpnvyu+/////////+P/////6qpv///////////////3Ny63//////////////////u//////////////+qmInv///////////////////szMzMzMzMzMzM3d3d3dpkIREAAAAA==" TITLE="LOLLIPOP [Benefice Master]" ARTIST="FACEXCONTROL"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2026/:" FILE="FACEXCONTROL - LOLLIPOP (Benefice Master).aiff" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1411000" GENRE="Hard Techno Industrial" COVERARTID="038/GVCDBWBGWXZZQD2YLXWEAXKZTGMD" KEY="9m" PLAYCOUNT="6" PLAYTIME="211" PLAYTIME_FLOAT="210.093765" RANKING="153" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2026/1/1" FLAGS="12" FILESIZE="36412"></INFO>
+<TEMPO BPM="160.000061" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.099975" PERCEIVED_DB="-1.831627" ANALYZED_DB="-1.831627"></LOUDNESS>
+<MUSICAL_KEY VALUE="17"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="97.546631" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="160.000061"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/7" MODIFIED_TIME="79364" AUDIO_ID="ANL//////////////////////////////////////+l2ZnVWVEVUVVVmZ3i73////////e7+7MzO7bZY/////////////////9z//////////////////8n/////////////////////////////////////z/6YhnZWZ5qpqrq6iZm77/////////////7f//dG7////////9///+/////P////////////////////////////////////////////////////////7//////////////////////////////////////f/////////////////6VogzIhEQAAAA==" TITLE="Sacramento - Shut The Club Down [MV3]"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2026/:" FILE="Sacramento - Shut The Club Down [MV3].wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" PLAYCOUNT="7" PLAYTIME="210" PLAYTIME_FLOAT="210.000000" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="54264"></INFO>
+<TEMPO BPM="159.999847" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-5.692863" ANALYZED_DB="-5.692863"></LOUDNESS>
+<MUSICAL_KEY VALUE="5"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="2.184131" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="159.999847"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/7" MODIFIED_TIME="79375" AUDIO_ID="AMBYuYnP//////////3////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////ty6qqurqqu6q63v3s////7tz//+7t/////v///ef////////////////////q///////////////////N//////////////////////////////////////////////////////////////////////////////////////t2VEMiIRERAAAAAA==" TITLE="Torsten - Come Take My Hand EDIT [Extended Master]"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:2026/:" FILE="Torsten - Come Take My Hand EDIT [Extended Master].wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" PLAYCOUNT="4" PLAYTIME="192" PLAYTIME_FLOAT="192.000000" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="49613"></INFO>
+<TEMPO BPM="159.999390" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-4.406860" ANALYZED_DB="-4.406860"></LOUDNESS>
+<MUSICAL_KEY VALUE="14"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="3.635432" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="159.999390"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/2/23" MODIFIED_TIME="7360" AUDIO_ID="APPP//////////////////////////////9X///////////////////////////////+hnZmQ0iGdTI1ZneHRWeGd4dmZnmYd3d4mEa///////////////////////////////+t//////////////////////////////////9kQzMzNZY0M4hTITmXd2ZmZmVnd3d4iGaf//////////////////////////////////////////////////////////////////////////////////////////////////Vb/////////////////////////////////5AAAA==" TITLE="Acid Machine Gun (Extended Mix)" ARTIST="Alberto Adami"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:Beatport/:2025/:" FILE="Acid Machine Gun (Extended Mix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="6" TITLE="Acid Machine Gun"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1106000" GENRE="Techno (Raw / Deep / Hypnotic)" LABEL="Evake Ministry" COMMENT="Purchased at Beatport.com" PRODUCER="© 2025 Evake Ministry" COVERARTID="083/TOWYPZBCZSULSBHL3LM0BYI3XYKB" KEY="A#m" PLAYCOUNT="2" PLAYTIME="244" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2025/2/7" FLAGS="12" FILESIZE="34479"></INFO>
+<TEMPO BPM="159.999924" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.109902" PERCEIVED_DB="-3.236328" ANALYZED_DB="-3.236328"></LOUDNESS>
+<MUSICAL_KEY VALUE="22"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="26.075600" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="159.999924"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="26.075600" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="61901.105104" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="118526.132105" LEN="0.000000" REPEATS="-1" HOTCUE="2"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="144026.144265" LEN="0.000000" REPEATS="-1" HOTCUE="3"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="204026.172875" LEN="0.000000" REPEATS="-1" HOTCUE="4"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="240026.190041" LEN="0.000000" REPEATS="-1" HOTCUE="5"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2025/10/11" MODIFIED_TIME="68193" AUDIO_ID="AQ7////////////////////////////////v/////////////////////////////1VneHd3dmZmZmVmVmVmVmVWVmZmZlVlVlZQAnubmYpjuXp3p3qKmv/u/u/u/u/u/t3bm/uaubuav/ubububv/yWXvyVXfz/7/ymf//////////////7fP/////////////2ard3ZmVENERERERZef///////////////P//////////////df//////////////9v//////////////9P///////////////////////////////////////////////////////////////w==" TITLE="Needle Destruction (Dimitri Vegas &amp; Per Pleks Extended Remix)" ARTIST="DJ Ghost Dimitri Vegas Cherry Moon Trax Per Pleks"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:Beatport/:2025/:" FILE="Needle Destruction (Dimitri Vegas &amp; Per Pleks Extended Remix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="76" TITLE="Needle Destruction (Dimitri Vegas &amp; Per Pleks Extended Remix)"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="967000" GENRE="Hard Dance / Hardcore / Neo Rave" LABEL="BSMNTTRAXX" COMMENT="Purchased at Beatport.com" PRODUCER="© 2025 BSMNTTRAXX" COVERARTID="025/ZYQSW5BBL5UDUDPNZLTRBLSIQTBA" KEY="10m" PLAYCOUNT="2" PLAYTIME="271" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2025/2/21" FLAGS="12" FILESIZE="37021"></INFO>
+<TEMPO BPM="149.999939" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-2.213615" ANALYZED_DB="-2.213615"></LOUDNESS>
+<MUSICAL_KEY VALUE="12"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1599.680420" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="149.999939"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/4/3" MODIFIED_TIME="59851" AUDIO_ID="APRpZndVZlZpl3eHiHdv////////////////////////////////////////////////////////////////+t+ndoZWd3aId4h3eZWKu7uZu7qqq6qqzM3N/+3MvMzM/t3e/93v2mZmi8tmf////////////////f///////////////O///////////////cupiIl3mZmbiZmZmrusy6rKm8zP//7////p///////////////9////////////////////////////////////////////////////////////////////////////////////9CAAAAAAAAAAAA==" TITLE="Like That (Original Mix)" ARTIST="JO3Y3T"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:Beatport/:2026/:" FILE="Like That (Original Mix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="18" TITLE="Like That"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="1190000" GENRE="Hard Techno" LABEL="Propaganda Records" COMMENT="Purchased at Beatport.com" PRODUCER="© 2026 Propaganda Records" COVERARTID="081/R4N3M2BLTFBMCCXB43ZXBG1BYXNC" KEY="11d" PLAYCOUNT="2" PLAYTIME="244" PLAYTIME_FLOAT="243.781250" RANKING="153" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2026/1/9" FLAGS="12" FILESIZE="38035"></INFO>
+<TEMPO BPM="159.999878" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-6.444382" ANALYZED_DB="-6.444382"></LOUDNESS>
+<MUSICAL_KEY VALUE="10"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="4.085481" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="159.999878"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/3/27" MODIFIED_TIME="70967" AUDIO_ID="ARe/////////////+P/////////////3//////////////j/////////////iYiIqIl3iKh4eIh3eJmHd3hnd3h4doh3iZiId4iImpiIqpiZmIiIiImZiYbf/////////////////////////6p4///////////////P////////////6pZ4jNdnqlRIiXZnmIirmpiImYmZiKqpmZqZiZeImaqpq5mJmZmaqqq7urh///////////////////////////yXn//////////////v/////////////c//////////////n/////////////+P//////////////QAAA==" TITLE="XXXTENTACION - Revenge (ROYAL Schranz Remix)"><LOCATION DIR="/:Musik/:Techno/:Hard Techno/:Schranz/:2025/:" FILE="XXXTENTACION - Revenge (ROYAL Schranz Remix).wav" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="2116800" PLAYCOUNT="2" PLAYTIME="279" PLAYTIME_FLOAT="279.000000" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" FLAGS="12" FILESIZE="72093" COLOR="4"></INFO>
+<TEMPO BPM="159.999771" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.110067" PERCEIVED_DB="-1.575005" ANALYZED_DB="-1.575005"></LOUDNESS>
+<MUSICAL_KEY VALUE="23"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="2.316716" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="159.999771"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/4/9" MODIFIED_TIME="60802" AUDIO_ID="AfgTQzRFRERFzu7u7////7MiIiMzNERFVWxHr///////////////////////ZaqH///////////////////////////////////JqZmZmZmZd3RUaWr////////////////////////////////////////tqYl2d5QAESNGeJmrvLu7u7u7zLu7u7u7zP////////////////////////////////x3d2eIiInt7/////////////t3h////////////////////////rr//////////////7z///////////////////////xERFj/////////////+VMAAAAAAA==" TITLE="In Da Club - Vocal Mix" ARTIST="Zax aka Zenith DJ"><LOCATION DIR="/:Musik/:Hardstyle/:beatport/:2003/:" FILE="Zax aka Zenith DJ - In Da Club - Vocal Mix.flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="1" TITLE="In Da Club"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="882946" LABEL="TRC | Trance Communications Records" PRODUCER="(C) 2006 TRC | Trance Communications Records" COVERARTID="058/0BIVT5AYS4TA0BFBF0MXD1ISIOKB" PLAYCOUNT="2" PLAYTIME="504" PLAYTIME_FLOAT="504.000000" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2003/10/12" FLAGS="12" FILESIZE="54407"></INFO>
+<TEMPO BPM="140.000259" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.097562" PERCEIVED_DB="-2.447495" ANALYZED_DB="-2.447495"></LOUDNESS>
+<MUSICAL_KEY VALUE="20"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="83.538040" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="140.000259"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/4/9" MODIFIED_TIME="62165" AUDIO_ID="AaI1VVVVdVVVY0VVZVVmVWVXNWZmZmh3d2YU//////////f////////9dD//////////ef////////dWloymRqh8p0WYa7lVmXrKhV3////////////////3mnqZdmVVVVVVZmZmd3eInkERESYiEREmZVVVV2VVVWeGZ4d3lmdmZmVEQzIiIiIiI3dnMiJnZ0IU7////////vWv/////////+//////////7//////////7///4pr//+pmf////////////////////lv////////////////////o/////////////////////pMuqmXd2ZlVTVVVVVac3lkUQAA==" TITLE="Focus (Derb Remix)" ARTIST="DJ Isaac"><LOCATION DIR="/:Musik/:Hardstyle/:beatport/:2004/:" FILE="DJ Isaac - Focus (Derb Remix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="2" TITLE="My Brain / Focus (Derb Remix)"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="938000" LABEL="Drop Out" PRODUCER="2004 Alphabet City GmbH" COVERARTID="087/XKBT2YCYC2EF4CVOLBX3C3KTDCMC" KEY="9d" PLAYCOUNT="2" PLAYTIME="418" PLAYTIME_FLOAT="417.913422" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2004/11/29" FLAGS="12" FILESIZE="47899"></INFO>
+<TEMPO BPM="140.999817" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-0.788177" ANALYZED_DB="-0.788177"></LOUDNESS>
+<MUSICAL_KEY VALUE="8"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1319.115234" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="140.999817"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/4/9" MODIFIED_TIME="61096" AUDIO_ID="Abc1ZmZmZmZmZWZmVmZmZniK2ZrGa+matmvGZmautmi4m8mZl1IW////////////////////z//////////P//////////64eUS/uHlM//////////////////////yI12ef///////////////////+/////////////////////9Znd2YyIhKpIRERe1GMv8y9zM/v7///66z////////////////////f/////////9//////////3///////7tzJZ3QmPv/////////////////////////////+//////////////////////////////////////////9gAA==" TITLE="Noise Tool - Technoboy 2004 Remix" ARTIST="K-Traxx"><LOCATION DIR="/:Musik/:Hardstyle/:beatport/:2004/:" FILE="K-Traxx - Noise Tool - Technoboy 2004 Remix.flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="1" TITLE="Volume 2"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="952000" LABEL="The Saifam Group Srl" PRODUCER="2004 The Saifam Group Srl" COVERARTID="065/BSEQ3IATDVUV5BND31BVC5PZHWTD" KEY="6m" PLAYCOUNT="2" PLAYTIME="440" PLAYTIME_FLOAT="439.040009" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2004/1/1" FLAGS="12" FILESIZE="51068"></INFO>
+<TEMPO BPM="139.999557" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.136250" PERCEIVED_DB="-0.553360" ANALYZED_DB="-0.553360"></LOUDNESS>
+<MUSICAL_KEY VALUE="20"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="3.276824" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="139.999557"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/7/31" MODIFIED_TIME="67335" AUDIO_ID="AJIChXaZd4l4WHmJZlh1d3h2eIZmeJl1Z8qZusy8zMmry8qrztq6y7qs3u7tUzM9///////////////////////////87////////////////////////////8VodVVnZUZnVUZlRVVVVGd1VnV1VndkVZpmiqd2qpZ3qraYy5iKqWdpqHibt4mcuIq8uZrceIu6iqrcvKu7qs3u7vgzMr//////////////b////////////9Vv///////////////////////////vVb////////////////////////////M3//////////////////////////gjQzAAAAAAAA==" TITLE="Back (Original Mix)" ARTIST="Greb Levah"><LOCATION DIR="/:Musik/:Beatport/:HardTekk/:" FILE="Back (Original Mix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="91" TRACK="44" TITLE="Back"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128016" GENRE="Techno (Raw / Deep / Hypnotic)" KEY="6m" PLAYCOUNT="6" PLAYTIME="147" PLAYTIME_FLOAT="146.355103" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2024/5/3" FLAGS="12" FILESIZE="2317" COLOR="5"></INFO>
+<TEMPO BPM="148.000229" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-2.969460" ANALYZED_DB="-2.969460"></LOUDNESS>
+<MUSICAL_KEY VALUE="20"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="357.781311" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="148.000229"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="91168.451683" LEN="0.000000" REPEATS="-1" HOTCUE="3"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="130087.310414" LEN="0.000000" REPEATS="-1" HOTCUE="5"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="141438.644211" LEN="0.000000" REPEATS="-1" HOTCUE="6"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/5/11" MODIFIED_TIME="50545" AUDIO_ID="ALMUVFRVRUVFdYdv///////////////////////////////////////////////1SKqpqHervMqbyqqoiIqszLqszLu6mGVWd3dlZniHd3iZu72EdZ//////////////////////////////////////////////xor///////////////////////dph3d3d4qqqZmZh3d3d3mqqpmZmqqamIi7vMmsuqqoZXd4ZkNXiId2VURWZ3ZVZnh3d4mau8tGX///////////////////////////////////////////91ZmRkT/////////////////////lGRBAAAAAA==" TITLE="Fuck That Shit (Original Mix)" ARTIST="HIGHTKK"><LOCATION DIR="/:Musik/:Beatport/:HardTekk/:" FILE="Fuck That Shit (Original Mix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="91" TRACK="9" TITLE="Fuck That Shit"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128000" GENRE="EBM" KEY="12m" PLAYCOUNT="4" PLAYTIME="179" PLAYTIME_FLOAT="178.597122" RANKING="153" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2025/8/8" FLAGS="12" FILESIZE="2827" COLOR="5"></INFO>
+<TEMPO BPM="147.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-2.472206" ANALYZED_DB="-2.472206"></LOUDNESS>
+<MUSICAL_KEY VALUE="14"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="155.932083" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="147.000000"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/7/31" MODIFIED_TIME="67263" AUDIO_ID="AKT/////////////////////////zMvmI0jNqsQTR6una8qZYSRBAUeK6VIiR52JYiJHqceZqpnJdEEBNSjJuu51NKzamFQ5mpu4mpeYYyI3mY///////////////////////+bP////////////////////////////q6mXmImql3qoh1QRJEEBNBAWu7h1IRSJ7HUhFFiJuDScrKdVMiKJmP///////////////////////Wz////////////////////////////6iXiqiHIQAEiZ3///////////////////////Zf////////////////////////////QAAA==" TITLE="Habe es geschafft (Original Mix)" ARTIST="Greb Levah"><LOCATION DIR="/:Musik/:Beatport/:HardTekk/:" FILE="Habe es geschafft (Original Mix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="91" TRACK="12" TITLE="Habe es geschafft"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128000" GENRE="Techno (Raw / Deep / Hypnotic)" KEY="2m" PLAYCOUNT="6" PLAYTIME="164" PLAYTIME_FLOAT="163.787125" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2024/7/5" FLAGS="12" FILESIZE="2593" COLOR="5"></INFO>
+<TEMPO BPM="148.000198" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-2.659134" ANALYZED_DB="-2.659134"></LOUDNESS>
+<MUSICAL_KEY VALUE="16"></MUSICAL_KEY>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="0.000000" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1575.090698" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="148.000198"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="136169.504896" LEN="0.000000" REPEATS="-1" HOTCUE="3"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/5/11" MODIFIED_TIME="49318" AUDIO_ID="AKkUREREREREV2d+//////////////////////////////////////hmVERERERERERCNURERERERUM0Nnd4h3dmeIh4d2Z3d2dnZWZWVHK///////////////////////////////////////////////////+6qomZhoqYeJd3iYiYd4h3dmdoz////////////////////////7X////////////////////////8dZubqqq4qqubqsvLzMzLqs/7++/P////////////////////z5/99v////////////////////////dv////////////////////////YQ==" TITLE="Ladys On The Dancefloor (Original Mix)" ARTIST="HIGHTKK"><LOCATION DIR="/:Musik/:Beatport/:HardTekk/:" FILE="Ladys On The Dancefloor (Original Mix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="91" TRACK="55" TITLE="Ladys On The Dancefloor"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128008" GENRE="Techno (Peak Time / Driving)" KEY="5m" PLAYCOUNT="3" PLAYTIME="169" PLAYTIME_FLOAT="168.605103" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2026/3/27" FLAGS="12" FILESIZE="2670" COLOR="5"></INFO>
+<TEMPO BPM="147.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-2.781548" ANALYZED_DB="-2.781548"></LOUDNESS>
+<MUSICAL_KEY VALUE="13"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1574.959717" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="147.000000"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/5/15" MODIFIED_TIME="47277" AUDIO_ID="AMYURFRTNWVlVYV1ZXVUVVRHb/////////////////////Vt////3/7u7c7u3v/t7v7uqXdnZ3eHl3d2iLmaund2VDNf////////////////////////////////////////94r////////////////////1REnd7u7t3d3c3czMzdzNzMzM3d7u7t3d3c3czMzdzNzMzMzv//////7/7u/+7/x3ZmaIl3Z3Z3h5d3h4i5mrp4dlQzTP////////////////////////////////////////eI////////////////////9zRN////////////////////9CAAAAAA==" TITLE="Life Inside Your Eyes (Original Mix)" ARTIST="HIGHTKK"><LOCATION DIR="/:Musik/:Beatport/:HardTekk/:" FILE="Life Inside Your Eyes (Original Mix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="91" TRACK="42" TITLE="Life Inside Your Eyes"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128000" GENRE="Melodic House &amp; Techno" PLAYCOUNT="3" PLAYTIME="198" PLAYTIME_FLOAT="197.845108" RANKING="153" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2024/12/27" FLAGS="12" FILESIZE="3131" COLOR="5"></INFO>
+<TEMPO BPM="148.000122" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-3.034622" ANALYZED_DB="-3.034622"></LOUDNESS>
+<MUSICAL_KEY VALUE="15"></MUSICAL_KEY>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="0.000000" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1574.917603" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="148.000122"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/7/31" MODIFIED_TIME="67050" AUDIO_ID="AJQVireJvHj/////////////7/////////////tnvN/73v/t293P3/7N3frf//3r3q7d6zebzLu7u5mru7qquYrMvKy7gmqBmcxq////////////////7////////////////////////////////////////6qeiIx4i3ipiI2XiMu2lo62l5t5a9eInb3vve/+za3b/f/d3d+d///evOn//9z87/v///7c/f/v/97f+v//+zfLOr7om5rMqquqqKq6mZqpiszLu8pie1Kqu1/////////////////f////////////////////////////////////////qaYAAA==" TITLE="Rave All Night (Original Mix)" ARTIST="HIGHTKK"><LOCATION DIR="/:Musik/:Beatport/:HardTekk/:" FILE="Rave All Night (Original Mix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="91" TRACK="47" TITLE="Rave All Night"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128016" GENRE="Techno (Peak Time / Driving)" PLAYCOUNT="6" PLAYTIME="148" PLAYTIME_FLOAT="147.727127" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2025/11/14" FLAGS="12" FILESIZE="2340" COLOR="5"></INFO>
+<TEMPO BPM="147.999313" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-3.377876" ANALYZED_DB="-3.377876"></LOUDNESS>
+<MUSICAL_KEY VALUE="21"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="155.634598" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="147.999313"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="3398.892888" LEN="0.000000" REPEATS="-1" HOTCUE="0"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="42317.992372" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="55291.025534" LEN="0.000000" REPEATS="-1" HOTCUE="4"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/5/11" MODIFIED_TIME="50284" AUDIO_ID="ALsDVERVQ///////////////////////YxIhESEhIREREREREREREREiJVRFVVRVVVVUNVRFVDVlVDQ2//////////////////////9lZVRVVFZVVWVGZVZmVnd3Q0T/////////////////////96///////////////////////2VURFRUVERVVWZmZmZ2d3UzRf/////////////////////0////////////////////////xFM0VTJUMzNC6l+vr7+G9FUl////////////////////8zRv//////////////////////hERENDQ0NDNDQ0NDREQ0NDQyEAAA==" TITLE="Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix)" ARTIST="HIGHTKK"><LOCATION DIR="/:Musik/:Beatport/:HardTekk/:" FILE="Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="91" TRACK="8" TITLE="Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix)"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128000" GENRE="Driving" KEY="8d" PLAYCOUNT="5" PLAYTIME="187" PLAYTIME_FLOAT="186.895096" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2025/4/11" FLAGS="12" FILESIZE="2958" COLOR="5"></INFO>
+<TEMPO BPM="147.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-2.793816" ANALYZED_DB="-2.793816"></LOUDNESS>
+<MUSICAL_KEY VALUE="1"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="358.829468" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="147.000000"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/7/31" MODIFIED_TIME="66515" AUDIO_ID="AR0TMzQzMzMzNDNDMzRFRFVFVGVEVUVTKv//////////////+7q6vKiruJurypi//////////////9//////////////+rzu7d3M7e7u7d3N7d3e3tze7u/rve7////////////////////////////5v/////////////++////////////////7M7d7N7//v/+3f///u/+/+////26ndzN3uu83t3eqbq+///////////////////////////////P///////////////////////////////////////////+///////py5lln///////////////QzM1QzMxAA==" TITLE="Der Techno Erlkönig (Original Mix)" ARTIST="Blondee"><LOCATION DIR="/:Musik/:Beatport/:Techno - Bangers/:" FILE="Der Techno Erlkönig (Original Mix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="73" TRACK="12" TITLE="Der Techno Erlkönig"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128000" GENRE="Dance / Pop" PLAYCOUNT="5" PLAYTIME="285" PLAYTIME_FLOAT="284.927124" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2025/11/21" FLAGS="12" FILESIZE="4509"></INFO>
+<TEMPO BPM="150.000381" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-1.225517" ANALYZED_DB="-1.225517"></LOUDNESS>
+<MUSICAL_KEY VALUE="23"></MUSICAL_KEY>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="0.000000" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="357.283478" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="150.000381"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="47957.162425" LEN="0.000000" REPEATS="-1" HOTCUE="6"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="75957.091218" LEN="0.000000" REPEATS="-1" HOTCUE="5"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="190356.800284" LEN="0.000000" REPEATS="-1" HOTCUE="4"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="215956.735180" LEN="0.000000" REPEATS="-1" HOTCUE="3"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="278356.576489" LEN="0.000000" REPEATS="-1" HOTCUE="7"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/5/15" MODIFIED_TIME="47495" AUDIO_ID="ALzv///////////////////5qXiph6//////////////////////////////////////////ur3Nu6rN7MzKqbrMy6uszd7d7MzM////////////////////////////////////ubmP//q5mKtzERE2Z2V1RGURNWNmp2iZmah4mZq6mpqZqqmZqqqpmYqauqq6zuqYiv///////////63/////////////////////////////3KzLvf7KqonNubqr3++4d3q7iZv4Zf//////////////////////+Hq5mZ///////////////6mP//////////////gxAAAAAA==" TITLE="Love Love Love (Force Remix)" ARTIST="Blondee"><LOCATION DIR="/:Musik/:Beatport/:Techno - Bangers/:" FILE="Love Love Love (Force Remix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="73" TRACK="22" TITLE="Love Love Love (Force Remix)"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128000" GENRE="Dance / Pop" COMMENT="Purchased at Beatport.com" PLAYCOUNT="4" PLAYTIME="189" PLAYTIME_FLOAT="188.216095" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2025/5/9" FLAGS="12" FILESIZE="2979"></INFO>
+<TEMPO BPM="149.999954" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-1.129059" ANALYZED_DB="-1.129059"></LOUDNESS>
+<MUSICAL_KEY VALUE="21"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1553.888550" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="149.999954"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/5/15" MODIFIED_TIME="47495" AUDIO_ID="AQ04iIiIiIiYmZmZmZmZqqqqqrq7u7u6qVb////////////////////////5dmVVVVVqhkMyIRESMzRVdHd0MiJWZGdlQyRmdGZlVURmZnd4iJqpmaqqqruqrLnP//////////////mP////////////////27vLu6u6mYiJmYmZiJmqqqqqqqqru8u+//////////////9l//////////////+J/////////////////t3My7uqqpiHeLmZmJmYiZl1j//////////////Iv////////////////oh3iZeIh3ZmdmZ3f////////////////7qqqqqqqqqqqqmqlw==" TITLE="Paradise (Extended Mix)" ARTIST="Andrea Botez"><LOCATION DIR="/:Musik/:Beatport/:Techno - Bangers/:" FILE="Paradise (Extended Mix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="73" TRACK="11" TITLE="Paradise (Extended Mix)"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128000" GENRE="Dance / Pop" COMMENT="Purchased at Beatport.com" PLAYCOUNT="3" PLAYTIME="270" PLAYTIME_FLOAT="269.152100" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2026/1/23" FLAGS="12" FILESIZE="4259"></INFO>
+<TEMPO BPM="149.999588" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-1.914085" ANALYZED_DB="-1.914085"></LOUDNESS>
+<MUSICAL_KEY VALUE="21"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1558.069092" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="149.999588"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/6/13" MODIFIED_TIME="4103" AUDIO_ID="AQUlZ3ZmVUNFZ3d3Z1RWmZmZmHh4mZmZmZd5////////////////+mZnZ3dmdmd3d3dmaLzMzLu7u8zby8zLmb///////////////N///////////////6rv/////////////+m///////////////tliZmZmZiImqqqq7qqn//////////////7q4d3d3d3d3d3d3iIiJqaqrqqqqq7u6qquqv+3/yHd4iHdlWJmZmqmZrv//////////////ZlVVZm////////+JmIiIr/v/////////////////////////////////UjM0M0M0MzMzMzNDMhIhIiIiMyISISIQ==" TITLE="Der Techno Zauberlehrling (Original Mix)" ARTIST="Blondee"><LOCATION DIR="/:Musik/:Beatport/:HardTekk/:" FILE="Der Techno Zauberlehrling (Original Mix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="179" TRACK="141" TITLE="Der Techno Zauberlehrling"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128008" GENRE="Dance / Pop" KEY="2m" PLAYCOUNT="4" PLAYTIME="262" PLAYTIME_FLOAT="261.346100" RANKING="102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2026/2/20" FLAGS="12" FILESIZE="4136"></INFO>
+<TEMPO BPM="149.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-0.168243" ANALYZED_DB="-0.168243"></LOUDNESS>
+<MUSICAL_KEY VALUE="16"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="23.347466" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="149.000000"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/5/15" MODIFIED_TIME="46982" AUDIO_ID="ASZv//////////////////////7//+/+1b7v7+7u/+/v/v7//u3u7u7u7t3u3d3u2GZmd2ZmdldndmZnZmV3d2Z3Z2Z3Zr/v7v7+/+/u/tVEW/7u7u7u7u7u7u7u/t7u7u3u7t7dplVVnd3u7d7u7d3t3d3u3e7u3u/+3u/t3u/oVkV2VTV1VUd2ZDZ2U2dmVGZVRWZmju3v/t3v/t3v7d7//t7/7d7/7d7+3e7+3e793e7uze7YZlvt7u7d3u7t7u7d7u7d7u3d7u7d3t3d3e3e7tze7tzd3czd7t3/7t7//u7/7u7u7u/+/+///+/+/v///v/u/u/u7u7u7/4xAA==" TITLE="Infraschall (Original Mix)" ARTIST="Tiefundton"><LOCATION DIR="/:Musik/:Beatport/:HardTekk/:" FILE="Infraschall (Original Mix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="127" TRACK="109" TITLE="Infraschall"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128000" GENRE="Hard Techno" PLAYCOUNT="2" PLAYTIME="294" PLAYTIME_FLOAT="293.930115" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2021/10/1" FLAGS="12" FILESIZE="4650"></INFO>
+<TEMPO BPM="144.999512" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="4.815683" PERCEIVED_DB="4.784149" ANALYZED_DB="4.784149"></LOUDNESS>
+<MUSICAL_KEY VALUE="3"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="74.457550" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="144.999512"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/5/15" MODIFIED_TIME="47465" AUDIO_ID="ALoVdnhzSHZHhzNnh4hkeHaJdkVmNIh4eJiXVEVompZ4h5qXU0mHd5qJiql5qIipupmbury6mVV1z/////////////////////9P////////////////////93Zv////////////////////+qdkRERERDNERFRERERERDREaIeYdYl1WYZWiXmYZ6h4mYZmghWHd3iIhjI0aJlmZ2eahkNYqJmGaZdXmWVpqbmHnKmsqYZTNf/////////////////////5f////////////////////3aGr///////////////////////////////////////////9Zp1IQAAAA==" TITLE="Down in it (Original Mix)" ARTIST="Greb Levah"><LOCATION DIR="/:Musik/:Beatport/:Tekkno/:" FILE="Down in it (Original Mix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="376" TRACK="161" TITLE="Down in it"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128008" GENRE="Hard Dance / Hardcore / Neo Rave" PLAYCOUNT="1" PLAYTIME="187" PLAYTIME_FLOAT="186.443100" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2025/12/19" FLAGS="12" FILESIZE="2952"></INFO>
+<TEMPO BPM="148.000076" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-2.825409" ANALYZED_DB="-2.825409"></LOUDNESS>
+<MUSICAL_KEY VALUE="15"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1575.291992" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="148.000076"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/10/12" MODIFIED_TIME="59299" AUDIO_ID="ARMSIiIiIiI0RFVWZ3if///////////////7////////////////z////////////////svLmszMq8ztzO79y+///M3d687e3L/u2Ez///////////////////////////////yf///////////////LymQzIiIjMzMzREVlaPzdzd3czN3d3c3N3////N7v6+7u7N/utSI17///////////////////////////////z////////////////////////////////7r///////////////+v/////////////+ur////////////////r////////////////EIQAA==" TITLE="Gettin' High (Extended Mix)" ARTIST="AKKI (DE)"><LOCATION DIR="/:Musik/:Beatport/:Tekkno/:" FILE="Gettin' High (Extended Mix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="376" TRACK="248" TITLE="Gettin' High"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128000" GENRE="Techno (Peak Time / Driving)" KEY="3d" PLAYCOUNT="3" PLAYTIME="276" PLAYTIME_FLOAT="275.492096" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2025/1/31" FLAGS="12" FILESIZE="4359"></INFO>
+<TEMPO BPM="141.000000" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-2.807907" ANALYZED_DB="-2.807907"></LOUDNESS>
+<MUSICAL_KEY VALUE="2"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1643.064819" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="141.000000"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/7/31" MODIFIED_TIME="56201" AUDIO_ID="APwSESIRIRIRIyEyIjITNFVVVVVVVVZVVVVVVVU8////////////////////////////////////+WZWVnd3h3Z4d3aHd3ZmZ4dkZnh3V5eYuGd3ZP///////////////////////////////////2//////////////////+0IiJEUyMjMzIjVEQ0VlZndkVmh2NYiZqmd4ZP/////////////////+//////////////////9UaIdWd6iEeIuZdnd2T////////////////2af//////////////////dmZ2Z2ZmZ2ZWZWZlZlIiERAREREQAAAAAAAAAAAAAAAA==" TITLE="Hollow (Original Mix)" ARTIST="Kopf &amp; Hörer"><LOCATION DIR="/:Musik/:Beatport/:Tekkno/:" FILE="Hollow (Original Mix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="376" TRACK="134" TITLE="Hollow"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128000" GENRE="Techno (Peak Time / Driving)" PLAYCOUNT="5" PLAYTIME="252" PLAYTIME_FLOAT="251.999115" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2024/12/20" FLAGS="12" FILESIZE="3987"></INFO>
+<TEMPO BPM="140.000076" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-0.746178" ANALYZED_DB="-0.746178"></LOUDNESS>
+<MUSICAL_KEY VALUE="12"></MUSICAL_KEY>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="0.000000" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1667.689941" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="140.000076"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="27381.961642" LEN="0.000000" REPEATS="-1" HOTCUE="6"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="39810.526298" LEN="0.000000" REPEATS="-1" HOTCUE="5"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="191953.300529" LEN="0.000000" REPEATS="-1" HOTCUE="2"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="218524.714620" LEN="0.000000" REPEATS="-1" HOTCUE="4"></CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="234810.420031" LEN="0.000000" REPEATS="-1" HOTCUE="7"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/5/15" MODIFIED_TIME="47466" AUDIO_ID="AMYURFRTNWVlVYV1ZXVUVVRHb/////////////////////Vt////3/7u7c7u3v/t7v7uqXdnZ3eHl3d2iLmaund2VDNf////////////////////////////////////////94r////////////////////1REnd7u7t3d3c3czMzdzNzMzM3d7u7t3d3c3czMzdzNzMzMzv//////7/7u/+7/x3ZmaIl3Z3Z3h5d3h4i5mrp4dlQzTP////////////////////////////////////////eI////////////////////9zRN////////////////////9CAAAAAA==" TITLE="Life Inside Your Eyes (Original Mix)" ARTIST="HIGHTKK"><LOCATION DIR="/:Musik/:Beatport/:Tekkno/:" FILE="Life Inside Your Eyes (Original Mix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="376" TRACK="192" TITLE="Life Inside Your Eyes"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128000" GENRE="Melodic House &amp; Techno" PLAYCOUNT="1" PLAYTIME="198" PLAYTIME_FLOAT="197.845108" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2024/12/27" FLAGS="12" FILESIZE="3131"></INFO>
+<TEMPO BPM="148.000122" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-3.034622" ANALYZED_DB="-3.034622"></LOUDNESS>
+<MUSICAL_KEY VALUE="15"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1574.917603" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="148.000122"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/10/25" MODIFIED_TIME="64989" AUDIO_ID="AJQVireJvHj/////////////7/////////////tnvN/73v/t293P3/7N3frf//3r3q7d6zebzLu7u5mru7qquYrMvKy7gmqBmcxq////////////////7////////////////////////////////////////6qeiIx4i3ipiI2XiMu2lo62l5t5a9eInb3vve/+za3b/f/d3d+d///evOn//9z87/v///7c/f/v/97f+v//+zfLOr7om5rMqquqqKq6mZqpiszLu8pie1Kqu1/////////////////f////////////////////////////////////////qaYAAA==" TITLE="Rave All Night (Original Mix)" ARTIST="HIGHTKK"><LOCATION DIR="/:Musik/:Beatport/:Tekkno/:" FILE="Rave All Night (Original Mix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="376" TRACK="178" TITLE="Rave All Night"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128016" GENRE="Techno (Peak Time / Driving)" PLAYCOUNT="2" PLAYTIME="148" PLAYTIME_FLOAT="147.727127" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2025/11/14" FLAGS="12" FILESIZE="2340"></INFO>
+<TEMPO BPM="147.999313" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-3.377876" ANALYZED_DB="-3.377876"></LOUDNESS>
+<MUSICAL_KEY VALUE="21"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="155.634598" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="147.999313"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="n.n." DISPL_ORDER="0" TYPE="0" START="3398.892888" LEN="0.000000" REPEATS="-1" HOTCUE="1"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/5/15" MODIFIED_TIME="47469" AUDIO_ID="AKr////////////////////////9d4d1Mmd2dkMiVoeHZjVld2ZTJ6n////////////LuqqYmHh4hDIR////////////////////////+////////////////////5dXUyIp////////////////////////+Hh2ZCRnZWVCFGeHhmRGVXZlUjdnh3YzV3d2ZDNWiZhmVWV3ZlQjRv///+///////ty7qZmIeIiFMhHf////////////////////////////////////////////12dTJFf////////////////////////3v////////////////////////0MAAA==" TITLE="Techno Traum (Original Mix)" ARTIST="HIGHTKK"><LOCATION DIR="/:Musik/:Beatport/:Tekkno/:" FILE="Techno Traum (Original Mix).m4a" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM OF_TRACKS="376" TRACK="191" TITLE="Techno Traum"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="128008" GENRE="Melodic House &amp; Techno" PLAYCOUNT="1" PLAYTIME="171" PLAYTIME_FLOAT="170.273102" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2024/8/2" FLAGS="12" FILESIZE="2695"></INFO>
+<TEMPO BPM="148.000381" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.000000" PERCEIVED_DB="-3.182617" ANALYZED_DB="-3.182617"></LOUDNESS>
+<MUSICAL_KEY VALUE="16"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="1574.375122" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="148.000381"></GRID>
+</CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2026/3/1" MODIFIED_TIME="75200" AUDIO_ID="AOB+hzMbx3Iy23YiTu2YS+z9hczux27O62js77e8nMzbuszcur3MzLp4j///////////////+qr///////////////+qv////////////////6vc3rmt//t7zO6n29/Xfs77i+//p8ze6X6++2m5m7u6iru7ubzMvLy5z///////////////2q3///////////////2r////////////////lnzM3Knd/9iOvvyK2++mzd/pje/9iOvvuL3P6FUiMiMyJDNERFVndCNH/////////////////////////////////////2/Jz8j9//m/qv////4xEQAAAAAAAAAAAA==" TITLE="So'ne Musik (Various Artists - So'ne Bassdrum Remix)" ARTIST="Deichkind"><LOCATION DIR="/:Musik/:HardTekk/:2015/:" FILE="Deichkind - So'ne Musik (The Various Artists - So'ne Bassdrum Remix).mp3" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<MODIFICATION_INFO AUTHOR_TYPE="user"></MODIFICATION_INFO>
+<INFO BITRATE="320000" GENRE="Freestyle" KEY="G" PLAYCOUNT="1" PLAYTIME="224" PLAYTIME_FLOAT="223.764893" RANKING="0" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2015/1/1" FLAGS="12" FILESIZE="8764"></INFO>
+<TEMPO BPM="161.999878" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="-0.304146" PERCEIVED_DB="0.492744" ANALYZED_DB="0.492744"></LOUDNESS>
+<MUSICAL_KEY VALUE="7"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="39.549088" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="161.999878"></GRID>
+</CUE_V2>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="0" START="39.549088" LEN="0.000000" REPEATS="-1" HOTCUE="0" COLOR="#FFFFFF"></CUE_V2>
+</ENTRY>
+<ENTRY MODIFIED_DATE="2025/6/9" MODIFIED_TIME="33307" AUDIO_ID="AQVGVERER5VERESKvZiIiIicmK7/2nSf/////////////P/////////////OypiIeGd2ne/qdW/////////////J7////////////2epmIhod4aHZmVEWt7+y8vL3tzMu6vMzO3b3t3c3u7urf////////////+u//////////////////////////////////////////////////////////////////////vru6qqqamc7vymSv////////////qf////////////xv////////////94////////////+Fh2REREamRUREeb2FVEVFWZVs3+piW1QzIyIRERAA==" TITLE="Blue (Original Mix)" ARTIST="Nobody IYF"><LOCATION DIR="/:Musik/:Hardcore/:UK/:Beatport/:2019/:" FILE="Blue (Original Mix).flac" VOLUME="M:" VOLUMEID="7e633190"></LOCATION>
+<ALBUM TRACK="62" TITLE="The Clash Of The Titans"></ALBUM>
+<MODIFICATION_INFO AUTHOR_TYPE="application"></MODIFICATION_INFO>
+<INFO BITRATE="1115719" GENRE="Hard Dance / Hardcore / Neo Rave" LABEL="Justice Hardcore" COMMENT="Purchased at Beatport.com" PRODUCER="© 2019 Justice Hardcore" COVERARTID="034/CFYNE1CXY0OGOCBZMGXHDHLORVND" PLAYCOUNT="1" PLAYTIME="261" PLAYTIME_FLOAT="260.563080" IMPORT_DATE="2026/10/25" LAST_PLAYED="2026/10/25" RELEASE_DATE="2019/5/8" FLAGS="12" FILESIZE="36214"></INFO>
+<TEMPO BPM="175.000046" BPM_QUALITY="100.000000"></TEMPO>
+<LOUDNESS PEAK_DB="0.011671" PERCEIVED_DB="-2.595436" ANALYZED_DB="-2.595436"></LOUDNESS>
+<MUSICAL_KEY VALUE="19"></MUSICAL_KEY>
+<CUE_V2 NAME="AutoGrid" DISPL_ORDER="0" TYPE="4" START="2.824574" LEN="0.000000" REPEATS="-1" HOTCUE="-1"><GRID BPM="175.000046"></GRID>
+</CUE_V2>
+</ENTRY>
+</COLLECTION>
+<SETS ENTRIES="0"></SETS>
+<PLAYLISTS><NODE TYPE="FOLDER" NAME="$ROOT"><SUBNODES COUNT="1"><NODE TYPE="PLAYLIST" NAME="HISTORY"><PLAYLIST ENTRIES="99" TYPE="LIST" UUID="9d56f2b985ff4b2eb4cdc1dac7817bc7"><ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Deep Techno/:2024/:Crank (Original Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Deep Techno/:2024/:Let's Go Dancing (Original Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Deep Techno/:2024/:Don't Go (Original Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Deep Techno/:2024/:WTFU (Extended Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Deep Techno/:2024/:Error Pulse (Extended Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:Free/:2016/:Niels Van Gogh - Pulverturm (NoCure Rework).wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:Free/:2018/:Hefty - Cause of Death (Googana remix)(unmastered).wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:Free/:2018/:Manu Chao - Bongo Bong ( Alain Delay Bootleg Mastert by Landr).wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:Free/:2018/:Matt Milano - Requiem for a Dream (Bootleg).wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:Free/:2018/:Steve Shaden - Feel My Soul (Original Mix).mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:Free/:2018/:schastn - Sweet Home Alabama (Techno Bootleg) Master.wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:Free/:2019/:Benny Benassi - Satisfaction _ARTCØRE [TECHNO] bootleg.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:Free/:2019/:Dope Amine - Heroes Of The West.wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Hardstyle/:beatport/:2004/:K-Traxx - Noise Tool - Technoboy 2004 Remix.flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Hardstyle/:beatport/:2003/:Zax aka Zenith DJ - In Da Club - Vocal Mix.flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Hardstyle/:beatport/:2004/:DJ Isaac - Focus (Derb Remix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:Tekkno/:Hollow (Original Mix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:Tekkno/:Gettin' High (Extended Mix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:HardTekk/:Fuck That Shit (Original Mix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:HardTekk/:Rave All Night (Original Mix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:HardTekk/:Back (Original Mix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:HardTekk/:Vit-Armin B x Dj Taip - Alles Elektrisch (Greb Levah Remix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Bounce/:2025/:XTC - Tadhgmc [v1 master].wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Bounce/:2025/:Jesse Taylor - Goes Like That.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Bounce/:2025/:JØR - Disparate Youth [modded.studio].wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Bounce/:2025/:STANEPIMP - COMEBACK.wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Bounce/:2025/:To The Rhythm RITTIE.wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2025/:KIRK - CD Is Dead (mp3).mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2025/:SAILØ - BRING IT BACK.wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2025/:THISO - Down like .wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2025/:LWØ x FNRZ x TRYPDØ - Cinema - master.wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2025/:The XX - Intro (Salvyan &amp; Gabrielle Rites Hard Techno Edit).wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2025/:Tom Whitfield - Push Me (DERVISH_STUDIO_MASTER_V2).wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2025/:Stromae - Alors On Danse (The Jackals Hard Techno Remix) mp3.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Peak Time Techno/:2024/:Syzz, The Rocketman - Gimme Gimme Gimme (A Man After Midnight) (The Rocketman Extended Remix) 150.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Peak Time Techno/:2024/:Leo - Bikini Bottom.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2024/:ATZEWINRAD - supernasen.wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:HardTekk/:2015/:Deichkind - So'ne Musik (The Various Artists - So'ne Bassdrum Remix).mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:Techno - Bangers/:Der Techno Erlkönig (Original Mix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2025/:Limp Bizkit - Break Stuff (Hardsok Remix).wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:Hard Bounce/:2026/:BOUNCE N BREAK (Extended Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2025/:Wanton - Vielleicht Vielleicht (remix).wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2026/:Sacramento - Shut The Club Down [MV3].wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2025/:XXXTENTACION - Sippin Tea In Your Hood (ROYAL Hard Techno Remix).wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2025/:THNDERZ &amp; Rave Heaven - Face Down Ass Up (Remix) [EXTENDED].wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:DnB/:JumpUp/:Beatport/:2022/:Don't Kill The Vibe (Original Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:DnB/:JumpUp/:Beatport/:2023/:Wilhelm Scream (Original Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Hardcore/:UK/:2022/:Dj Snake - Propaganda (Two Players UK Hardcore Remix).wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Hardcore/:UK/:2021/:09.サクラカゼ (hu-zin Bootleg).mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:UK Hardcore/:2025/:Hardcore You And Me  (Extended Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Hardcore/:UK/:Beatport/:2019/:Blue (Original Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Hardcore/:UK/:2020/:R3HAB &amp; KSHMR - Strong (DRIFT 2020 UK Hardcore Remix).mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Hardcore/:UK/:2020/:Alaguan feat. Lexi - Sailor Moon (DJ Edit).wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Hardcore/:Hardcore Extended/:10_anime_and_rob_gee_-_you_get_me_high.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:HardTekk/:2018/:KomaCasper-Aufstehen!ABGEHEN!.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:HardTekk/:2018/:KomaCasper- Jetzt ist hier Achterbahn.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2025/:intro/:chravma - my little pony - my first hard techno track and i hate it so much extended.wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2026/:Torsten - Come Take My Hand EDIT [Extended Master].wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2025/:Bonfire (Sirolo Hard Techno Edit)  [wav 16].wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2025/:[TFT Records] AlexisGrace &amp; Rave Heaven - GANGSTA SHT (EXTENDED) [TFT116GT].wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2026/:Discotronic - Tricky Disco (Fyloh Bootleg) (Extended Mix).wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2026/:FACEXCONTROL - LOLLIPOP (Benefice Master).aiff"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:Beatport/:2026/:Like That (Original Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2025/:Linkin Park - In The End (Alberto Adami Edit) (Extended Mix).wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:2026/:Alberto Adami - Let You Suffer (Extended) [MSTR KNTRLVRLST].wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:Beatport/:2025/:Acid Machine Gun (Extended Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:Schranz/:2025/:XXXTENTACION - Revenge (ROYAL Schranz Remix).wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:Beatport/:Schranz/:2025/:Alone In The Dark (Remix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:Hard Techno/:Schranz/:Melodic/:2025/:Eiskalter Blick feat. NICAROT (Original Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:Hard Techno/:Schranz/:Melodic/:2025/:Fassade (Original Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:Schranz/:2026/:David Temessi Paul Clark (UK) - Raw Power (David Temessi VIP).wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:Beatport/:2025/:Needle Destruction (Dimitri Vegas &amp; Per Pleks Extended Remix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:Hard Techno/:Beatport/:Schranz/:2008/:White Tool (Original Mix).flac"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Hardstyle/:sptl/:Hardstyle oldschool/:Hardstyle Masterz, Max Enforcer - Rambo is a Pussy.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Hardstyle/:sptl/:Hardstyle oldschool/:Noisecontrollers - So High - Original Mix.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Hardstyle/:sptl/:Hardstyle oldschool classics/:Headhunterz - Rock Civilization - Technoboy's Undersound Mix.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Hardstyle/:sptl/:Hardstyle oldschool/:Francesco Zeta - Fairyland - Reamp 2012.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:HardTekk/:Ladys On The Dancefloor (Original Mix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:HardTekk/:Life Inside Your Eyes (Original Mix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:HardTekk/:Habe es geschafft (Original Mix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:HardTekk/:Der Techno Zauberlehrling (Original Mix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:Techno - Bangers/:Love Love Love (Force Remix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:Techno - Bangers/:Paradise (Extended Mix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:Tekkno/:Down in it (Original Mix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:Tekkno/:Life Inside Your Eyes (Original Mix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:Tekkno/:Techno Traum (Original Mix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:Tekkno/:Rave All Night (Original Mix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Beatport/:HardTekk/:Infraschall (Original Mix).m4a"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:Bunker/:2020/:A2 X7Ø-7 - SHE KILLED MY WHEN I DREAMED [.wavaudiolab MASTERV1 - -0.3db - 24 bits - 44.1khz].wav"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:sptl/:Darkcore Industrial/:Project Omeaga - Protusan Attack.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:sptl/:Dark Underground Techno/:Sperminator - No Woman Allowed.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:sptl/:Darkcore Industrial/:Somniac One - Shirtless.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:sptl/:Darkcore Industrial/:Somniac One - The Grand Awokening - Original mix.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:sptl/:Dark Clubbing/:SWART - Mary X Molly.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:sptl/:Dark Clubbing/:SWART - Power Lust Greed Fame.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:sptl/:Dark Clubbing/:Various Artists, New Order - Confusion - Pump Panel Reconstruction Mix.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:sptl/:Dark Underground Techno/:Aahan, The Dag - Venting.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:sptl/:Dark Techno Extended Mieps Kat/:Age Of Love, Charlotte de Witte, Enrico Sangiuliano - The Age Of Love - Charlotte de Witte &amp; Enrico Sangiuliano Remix.mp3"></PRIMARYKEY>
+</ENTRY>
+<ENTRY><PRIMARYKEY TYPE="TRACK" KEY="M:/:Musik/:Techno/:DarkTechno/:sptl/:Dark Techno Extended Mieps Kat/:Alex Bilancini - Hyperspace.mp3"></PRIMARYKEY>
+</ENTRY>
+</PLAYLIST>
+</NODE>
+</SUBNODES>
+</NODE>
+</PLAYLISTS>
+<INDEXING></INDEXING>
+</NML>

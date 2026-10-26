@@ -55,32 +55,49 @@ public sealed class LibraryQuery(SqliteConnectionFactory factory) : ILibraryQuer
             }
         }
         var filterIndex=0;
-        foreach(var filter in query.Filters??[])
+        var smartClauses=new List<string>();
+        foreach(var entry in (query.Filters??[]).Select(f=>(Filter:f,Smart:false)).Concat((query.SmartRules??[]).Select(f=>(Filter:f,Smart:true))))
         {
+            var filter=entry.Filter;
+            var destination=entry.Smart?smartClauses:clauses;
             TrackMetadata.Validate(filter);
             var field=TrackMetadata.Get(filter.Field); var column=Column(field.Key);
             var parameter="filter"+filterIndex++;
             if(filter.Operator is MetadataOperator.IsEmpty or MetadataOperator.IsNotEmpty)
             {
                 var empty=$"({column} IS NULL OR TRIM(CAST({column} AS TEXT))='')";
-                clauses.Add(filter.Operator==MetadataOperator.IsEmpty?empty:"NOT "+empty); continue;
+                destination.Add(filter.Operator==MetadataOperator.IsEmpty?empty:"NOT "+empty); continue;
             }
             var value=TrackMetadata.Parse(field,filter.Value);
             if(filter.Operator is MetadataOperator.Contains or MetadataOperator.NotContains)
             {
                 args.Add(parameter,"%"+Escape((string)value)+"%");
-                clauses.Add($"COALESCE({column},'') {(filter.Operator==MetadataOperator.NotContains?"NOT LIKE":"LIKE")} @{parameter} ESCAPE '~'"); continue;
+                destination.Add($"COALESCE({column},'') {(filter.Operator==MetadataOperator.NotContains?"NOT LIKE":"LIKE")} @{parameter} ESCAPE '~'"); continue;
             }
             args.Add(parameter,value);
             var operation=filter.Operator switch { MetadataOperator.Equals=>"=",MetadataOperator.NotEquals=>"<>",MetadataOperator.GreaterThan=>">",MetadataOperator.GreaterOrEqual=>">=",MetadataOperator.LessThan=>"<",MetadataOperator.LessOrEqual=>"<=",_=>throw new ArgumentException("Ungültiger Filtervergleich.") };
             var expression=field.Kind==MetadataKind.Date?$"date({column})":field.Kind==MetadataKind.Text?$"{column} COLLATE NOCASE":column;
-            clauses.Add($"{expression} {operation} @{parameter}");
+            destination.Add($"{expression} {operation} @{parameter}");
         }
+        if(smartClauses.Count>0)clauses.Add("("+string.Join(query.SmartMatchAny?" OR ":" AND ",smartClauses)+")");
         return ("FROM track t JOIN library_root r ON r.id=t.library_root_id WHERE " + string.Join(" AND ", clauses), args);
+    }
+
+    private async Task<TrackQuery> ResolveAsync(TrackQuery query,CancellationToken ct)
+    {
+        if(query.Source.Kind!=LibraryTargetKind.SmartPlaylist)return query;
+        using var connection=factory.CreateConnection();
+        var json=await connection.QuerySingleOrDefaultAsync<string>(new CommandDefinition("SELECT json FROM workspace_state WHERE key=@key",new {key=SmartPlaylist.StateKey},cancellationToken:ct));
+        var definition=(System.Text.Json.JsonSerializer.Deserialize<List<SmartPlaylist>>(json??"[]")??[]).FirstOrDefault(p=>p.Id==query.Source.Path)
+            ??throw new InvalidOperationException("Diese Smart-Playlist existiert nicht mehr.");
+        definition.Validate();
+        return query with {Source=definition.Source,SmartRules=definition.Rules,SmartMatchAny=definition.MatchAny,
+            Sort=query.Sort=="default"?definition.Sort:query.Sort};
     }
 
     public async Task<IReadOnlyList<Track>> QueryAsync(TrackQuery query, CancellationToken ct = default)
     {
+        query=await ResolveAsync(query,ct);
         using var connection = factory.CreateConnection();
         var (filter, args) = Filter(query);
         var direction=query.Descending?"DESC":"ASC";
@@ -94,6 +111,7 @@ public sealed class LibraryQuery(SqliteConnectionFactory factory) : ILibraryQuer
 
     public async Task<TrackTotals> TotalsAsync(TrackQuery query, CancellationToken ct = default)
     {
+        query=await ResolveAsync(query,ct);
         using var connection = factory.CreateConnection();
         var (filter, args) = Filter(query);
         return await connection.QuerySingleAsync<TrackTotals>(new CommandDefinition($"SELECT COUNT(*) AS Count, COALESCE(SUM(t.file_size),0) AS Bytes, COALESCE(SUM(t.duration_ms),0) AS DurationMs, COALESCE(SUM(CASE WHEN t.file_size=0 THEN 1 ELSE 0 END),0) AS UnknownSizes {filter}", args, cancellationToken: ct));

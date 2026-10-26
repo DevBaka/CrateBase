@@ -10,9 +10,15 @@ namespace Cratebase.App.Desktop.Views;
 public partial class SetRecorderView : UserControl
 {
     public Func<Task>? SelectFfmpeg { get; set; }
+    public Func<Task>? ImportHistory { get; set; }
+    public Func<Task>? OpenArtwork { get; set; }
     public SetRecorderView() => AvaloniaXamlLoader.Load(this);
     private async void OnSelectFfmpegClick(object? sender, RoutedEventArgs e)
     { if (SelectFfmpeg != null) await Run(SelectFfmpeg); }
+    private async void OnImportHistoryClick(object? sender,RoutedEventArgs e)
+    {if(ImportHistory!=null)await Run(ImportHistory);}
+    private async void OnArtworkClick(object? sender,RoutedEventArgs e)
+    {if(OpenArtwork!=null)await Run(OpenArtwork);}
     private async Task Run(Func<Task> action)
     {
         try { await action(); }

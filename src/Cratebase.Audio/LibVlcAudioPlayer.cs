@@ -18,10 +18,13 @@ public sealed class LibVlcAudioPlayer : IAudioPlayer
     private readonly MediaPlayer _mediaPlayer;
     private Media? _currentMedia;
     private bool _disposed;
+    private readonly bool _enableVideo;
 
-    public LibVlcAudioPlayer()
+    public LibVlcAudioPlayer(bool enableVideo=false)
     {
+        _enableVideo=enableVideo;
         _mediaPlayer = new MediaPlayer(_libVlc);
+        _mediaPlayer.EnableMouseInput=false;_mediaPlayer.EnableKeyInput=false;
         _mediaPlayer.EndReached += (_, _) => PlaybackEnded?.Invoke(this, EventArgs.Empty);
         _mediaPlayer.TimeChanged += (_, _) => PositionChanged?.Invoke(this, EventArgs.Empty);
     }
@@ -36,6 +39,8 @@ public sealed class LibVlcAudioPlayer : IAudioPlayer
     public TimeSpan Position => TimeSpan.FromMilliseconds(Math.Max(0, _mediaPlayer.Time));
 
     public TimeSpan Duration => TimeSpan.FromMilliseconds(Math.Max(0, _mediaPlayer.Length));
+    public IntPtr VideoWindowHandle {get=>_mediaPlayer.Hwnd;set=>_mediaPlayer.Hwnd=value;}
+    public bool HasVideoOutput=>_mediaPlayer.VoutCount>0;
 
     public float Volume
     {
@@ -51,6 +56,7 @@ public sealed class LibVlcAudioPlayer : IAudioPlayer
         _mediaPlayer.Stop();
         _currentMedia?.Dispose();
         _currentMedia = new Media(_libVlc, absoluteFilePath, FromType.FromPath);
+        if(!_enableVideo)_currentMedia.AddOption(":no-video");
         _mediaPlayer.Media = _currentMedia;
     }
 

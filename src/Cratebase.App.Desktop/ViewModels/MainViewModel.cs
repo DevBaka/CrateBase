@@ -1055,6 +1055,13 @@ public partial class MainViewModel : ViewModelBase
     /// (s. OnEditFieldLostFocus), hier aber ohne DB-Schreiben, nur Vorschau neu erzeugen.</summary>
     [RelayCommand]
     private void RefreshTracklistPreview() => RegenerateTracklistPreview();
+    public void MergeHistoryMarkers(IReadOnlyList<SetTracklistMarker> markers)
+    {
+        if(IsRecording)throw new InvalidOperationException("History erst nach Abschluss der Aufnahme übernehmen.");
+        foreach(var marker in markers)
+            if(!TracklistMarkers.Any(old=>old.Position==marker.Position&&old.Artist==marker.Artist&&old.Title==marker.Title))InsertMarkerSorted(marker);
+        RegenerateTracklistPreview();StatusMessage=$"History-Auswahl übernommen: {markers.Count} Zeitstempel. Vor Veröffentlichung prüfen.";
+    }
 
     partial void OnTracklistFormatTemplateChanged(string value) => RegenerateTracklistPreview();
 
