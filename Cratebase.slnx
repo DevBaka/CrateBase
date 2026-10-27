@@ -3,11 +3,16 @@
     <Project Path="src/Cratebase.Analysis/Cratebase.Analysis.csproj" />
     <Project Path="src/Cratebase.App.Desktop/Cratebase.App.Desktop.csproj" />
     <Project Path="src/Cratebase.Audio/Cratebase.Audio.csproj" />
+    <Project Path="src/Cratebase.Beatport.App/Cratebase.Beatport.App.csproj" />
+    <Project Path="src/Cratebase.Beatport/Cratebase.Beatport.csproj" />
     <Project Path="src/Cratebase.Core/Cratebase.Core.csproj" />
     <Project Path="src/Cratebase.Server/Cratebase.Server.csproj" />
     <Project Path="src/Cratebase.Data/Cratebase.Data.csproj" />
     <Project Path="src/Cratebase.Import/Cratebase.Import.csproj" />
     <Project Path="src/Cratebase.Scanning/Cratebase.Scanning.csproj" />
     <Project Path="src/Cratebase.Tagging/Cratebase.Tagging.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Cratebase.Beatport.Tests/Cratebase.Beatport.Tests.csproj" />
   </Folder>
 </Solution>

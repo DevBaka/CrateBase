@@ -1,5 +1,7 @@
 # Cratebase
 
+Neu: eigenständiger [Beatport-Crates-Prototyp in C#/Avalonia](docs/Beatport-Crates.md) mit wiederverwendbarem Kern, Demo, Benutzername-/Passwort-Login, Playlist-Abgleich und Duplikatprüfung. Start: `start-beatport.bat`. Der Live-Zugriff ist noch nicht mit einem echten Konto verifiziert.
+
 Android-Prototyp und eingebauter Streaming-Server: [Einrichtung, APK-Build und Funktionen](docs/Android-und-Server.md).
 
 Neu: [Smarte Playlists, lokale KI, Set-/Transition-Workspace und Stem-Generator](docs/Smarte-Playlists-und-Set-Planung.md). Der Prototyp erhält Traktor-Cues und Originaldateien; eine Live-Stem-Mod für das laufende Traktor-Deck ist [noch nicht implementiert](docs/Traktor-Live-Stems-Machbarkeit.md).

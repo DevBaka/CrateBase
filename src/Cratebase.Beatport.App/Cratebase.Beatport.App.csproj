@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>WinExe</OutputType><TargetFramework>net8.0</TargetFramework></PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="12.1.1"/>
+    <PackageReference Include="Avalonia.Desktop" Version="12.1.1"/>
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.1"/>
+    <PackageReference Include="LibVLCSharp" Version="3.10.1"/>
+    <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.23.1" Condition="$([MSBuild]::IsOSPlatform('Windows'))"/>
+  </ItemGroup>
+  <ItemGroup><ProjectReference Include="../Cratebase.Beatport/Cratebase.Beatport.csproj"/></ItemGroup>
+</Project>

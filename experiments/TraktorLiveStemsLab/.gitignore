@@ -1,0 +1,12 @@
+reports/
+reports/*.jsonl
+reports/*.txt
+reports/*.json
+reports/*.js
+reports/*.f32
+reports/decompiled/
+reports/decompiled-*/
+native/build/
+__pycache__/
+*.pyc
+

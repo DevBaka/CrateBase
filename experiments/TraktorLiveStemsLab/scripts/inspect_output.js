@@ -1,0 +1,1 @@
+for(const module of Process.enumerateModules())if(/asio|voicemeeter/i.test(module.name))send({type:'output_module',name:module.name,path:module.path,exports:module.enumerateExports().map(x=>({name:x.name,address:x.address.toString()})).slice(0,30)});

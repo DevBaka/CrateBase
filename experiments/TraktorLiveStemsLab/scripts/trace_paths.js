@@ -1,0 +1,2 @@
+const seen=new Set();
+for(const name of ['NtCreateFile','NtOpenFile'])Interceptor.attach(Process.getModuleByName('ntdll.dll').getExportByName(name),{onEnter(args){try{const attr=args[2],u=attr.add(16).readPointer(),p=u.add(8).readPointer().readUtf16String(u.readU16()/2);if(!seen.has(p)&&(/nml|\.tsi|traktor/i.test(p))){seen.add(p);send({type:'native_path',api:name,path:p,root:attr.add(8).readPointer().toString()});}}catch{}}});
