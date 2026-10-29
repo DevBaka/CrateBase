@@ -8,14 +8,37 @@ User renewed the working window at 05:48:21 UTC for three hours, until 08:48:21 
 
 Im Repository `start-traktor-live-stems.cmd` öffnen. Das separate Kontrollfenster startet den privaten CUDA-Dienst und anschließend die instrumentierte Traktor-Testkopie. Ein bereits laufendes Traktor muss zuvor geschlossen sein. Beim Start bis zu zwei Minuten auf die vollständige Ansicht warten.
 
-- `Traktor mit Live Stems starten`: lädt Erweiterung und private Testcollection zusammen.
-- In Traktor die Playlist **LAB Live GPU Stems** öffnen. Track per Kontextmenü **Load into Deck → Load as Stem** laden.
-- **Live-Trennung aktiv** schaltet die native Ersetzung während der Wiedergabe ein/aus. Ausgeschaltet liefern die vier Spuren jeweils ein Viertel des Originalmixes; sie sind dann keine getrennten Instrumente.
-- **Songs hinzufügen** kopiert ausgewählte Originaldateien in den privaten Arbeitsbereich. Verfügbare Traktor-Metadaten und Cues werden in die Testcollection übernommen. Nach einem Neustart über dieses Kontrollfenster liegen die Titel in **Live Stems – hinzugefügt**. Es wird keine abgeschlossene Stem-Datei exportiert.
+- `Traktor mit Live Stems starten`: startet Erweiterung und private Collection. Eine vorhandene private Collection wird beim Start erhalten.
+- Beim ersten Start mit der Collection-Anbindung wird die originale `Traktor 4.5.1/collection.nml` vollständig und unverändert in den privaten Arbeitsbereich kopiert; die alte kleine Testcollection wird gesichert. Danach bleiben Änderungen in dieser privaten Collection erhalten. Unter **Traktor-Collection · private Kopie** lassen sich die Quelldatei wählen und mit **Original erneut übernehmen** die neuesten Originaldaten neu kopieren. Dafür muss Traktor geschlossen sein. Jede Ersetzung sichert die vorherige private Collection unter `collection-backups/`. Änderungen werden nicht automatisch in die originale Collection zurückgeschrieben.
+- Normale Audiodateien aus Ordnerbrowser, Collection oder Playlisten mit dem üblichen Ladebefehl laden. Bei aktivierter Erweiterung wird automatisch ein natives Stem-Deck gewählt. Ein vorheriges Hinzufügen zur Testplaylist ist nicht erforderlich.
+- Unter **GPU und Leistung** schaltet **Live Stems aktivieren** die automatische Deck-Auswahl und native Audio-Ersetzung ein/aus. Die Einstellung wird gespeichert und ohne Traktor-Neustart übernommen. **Traktor: … bestätigt** stammt aus der laufenden Mod-Sitzung; der GPU-Status wird separat angezeigt.
+- Deaktiviert werden neue Songs als normale Tracks geladen. Schon geladene Stem-Decks werden nicht während der Wiedergabe ausgetauscht: Ihre vier Spuren liefern jeweils ein Viertel des Originalmixes. Mutes, Filter, Effekte und Fader bleiben wirksam; für den gesamten Originalmix müssen alle vier Spuren eingeschaltet sein.
+- Temporäre Stem-Container und CUDA-Caches liegen ausschließlich im privaten Arbeitsbereich. Musikdateien werden dafür nicht verändert oder vollständig kopiert; es sind keine fertigen portablen Stem-Exporte.
 - Genauigkeit, GPU-Speicherbudget und Zahl gleichzeitiger Aufträge sind einstellbar. Ein geändertes Speicherbudget benötigt einen Neustart des GPU-Dienstes; bestehende Cache-Ergebnisse behalten ihre Berechnungsqualität.
 - Der Ausgangspegel ist für Tests leise eingestellt. Audiogerät und Routing können in der privaten Traktor-Kopie normal eingestellt werden.
 
 Die Laufzeiten sind auf diesem PC privat eingerichtet; das Startskript ist kein allgemeiner Installer. Das Kontrollfenster ist separat und ersetzt keinen nativen Preferences-Tab. Ohne den Mod-Launcher oder bei einer anderen Traktor-Buildversion ist die Erweiterung nicht aktiv.
+
+## Stabilitätsstand vom 29.10.2026
+
+Die Edition verwendet jetzt einen eigenen Versionsordner unter
+`C:\Users\DJBaka\Documents\Native Instruments\Traktor 4.5 Cratebase Edition`.
+Dort liegen Collection, TSI-Einstellungen, History, Stripes und Transients.
+`sandbox.json` speichert diesen Ort als `profile_directory`; Launcher und
+Kontrollfenster beziehen ihren Collection-Pfad daraus. Die Pfadumleitung nimmt
+diesen Ordner ausdrücklich aus der allgemeinen NI-Umleitung aus. Der bisherige
+private Profilordner bleibt als Sicherung bestehen. GPU-Laufzeiten und temporäre
+Stem-Caches liegen weiterhin unter LocalAppData/Cratebase.
+
+Kein Nachweis hundertprozentiger Ausfallsicherheit oder einer Freigabe für unbeaufsichtigte Club-Sets. Die Änderung instrumentiert die konkrete Traktor-Buildversion 4.5.1.21. Mehrstündige Tests mit S4 MK3, tatsächlichem Club-Audiogerät/ASIO, allen benötigten Mappings, vier spielenden Decks und hoher GPU-Last stehen aus.
+
+Geprüft: native 44,1/48/96-kHz-Verarbeitung, Vorwärts-/Rückwärtslesen, Sprünge, Cache-Isolation und Leser-Wiederverwendung; 400 Umschalt-/Sprungzyklen mit vier Spuren sowie Umschalten aus einem zweiten Thread während der Reads. Einstellungen werden validiert und atomar gespeichert. Tests prüfen paralleles Schreiben/Lesen, ungültige Werte, begrenzte Vorbereitungsaufträge, Zeitüberschreitungen und authentifizierte Pipe-Kommunikation nach einem hängenden Client.
+
+Praktischer Test: normale FLAC-Ladevorgänge aus dem Ordnerbrowser, deaktiviert als normaler Track und nach Aktivierung als Stem-Deck; die bereits laufende Deck-Wiedergabe blieb aktiv. Bei gestopptem GPU-Dienst funktionierten sowohl fertig gecachte Stems als auch der Originalmix-Fallback eines ungecachten Tracks. Nach Wiederanlauf und erneutem Laden wurden alle 8.705 Blöcke des zweiten Testtracks erzeugt; die vier nachgelagerten nativen Leser lieferten anschließend getrennte GPU-Signale mit nichtnull Energie. Das ist kein Nachweis für einen CUDA-Treiberabsturz oder jedes Audio-Routing.
+
+Die Dateivorbereitung antwortet nach spätestens zwei Sekunden mit einem Fehler/Fallback, wenn sie nicht fertig wird. Neue GPU-Anfragen erhalten begrenzte Authentifizierungs-/Antwortwartezeiten. Bei einer fehlgeschlagenen Anfrage bleibt der Originalmix-Fallback verfügbar; nach Wiederherstellung des Dienstes kann erneutes Laden einen neuen Auftrag auslösen. Es gibt beim normalen Start kein automatisches Ende nach zwölf Stunden mehr.
+
+18 automatisierte Prüfungen bestanden: `test_live_settings.py`, `test_pipe_transport.py`, `test_gpu_service_control.py`, `test_dynamic_tracks.py`, `test_add_live_tracks.py`, `test_downstream_bridge.py`. Native Tests mit `LAB_LIVE_DLL=live_bridge_v4.dll` und der privaten Python-Laufzeit ausführen. Python-Quellen zusätzlich mit `compileall` geprüft.
 
 ## Verifizierter Zwischenstand, 06:28 UTC
 

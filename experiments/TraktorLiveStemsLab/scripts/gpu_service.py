@@ -5,9 +5,12 @@ Messages are authenticated JSON bytes, never pickle-deserialized commands.
 """
 import argparse,hashlib,json,os,secrets,threading,time,traceback
 from concurrent.futures import ThreadPoolExecutor
-from multiprocessing.connection import Listener,Client
+from multiprocessing import AuthenticationError
+from multiprocessing.connection import Listener
 from pathlib import Path
 from types import SimpleNamespace
+from live_settings import read as read_live_settings,save as save_live_settings,validate
+from pipe_transport import connect,authenticate_server
 
 def root():return Path(os.environ['LOCALAPPDATA'])/'Cratebase'/'traktor-lab'
 def connection_info():
@@ -20,7 +23,8 @@ def connection_info():
     return r'\\.\pipe\Cratebase.TraktorStems.'+suffix,key_file.read_bytes()
 def request(message):
     address,key=connection_info()
-    with Client(address,family='AF_PIPE',authkey=key) as pipe:
+    connection,pipe=connect(address,key)
+    with connection:
         pipe.send_bytes(json.dumps(message).encode());return json.loads(pipe.recv_bytes(4*1024*1024))
 
 class Service:
@@ -29,7 +33,7 @@ class Service:
         self.settings={'enabled':True,'gpu_index':0,'precision':'fp16','memory_budget_mb':4096,'max_active_tracks':4}
         self.model=None;self.phase='loading';self.error=None
         saved=self.lab/'live-stems-settings.json'
-        if saved.exists():self.settings.update(json.loads(saved.read_text()))
+        self.settings=read_live_settings(saved)
     def load_model(self):
         import torch
         from demucs.pretrained import get_model
@@ -46,6 +50,7 @@ class Service:
     def snapshot(self):
         with self.lock:return {'phase':self.phase,'gpu':getattr(self,'gpu',None),'settings':self.settings.copy(),'error':self.error,'jobs':{k:{x:v for x,v in j.items() if x not in ('cancel','future')} for k,j in self.jobs.items()}}
     def dispatch(self,message):
+        if not isinstance(message,dict):return {'ok':False,'error':'Request must be an object'}
         command=message.get('command')
         if command=='status':return self.snapshot()
         if command=='shutdown':self.stop.set();return {'ok':True}
@@ -57,10 +62,9 @@ class Service:
         if command=='settings':
             changed=message.get('values',{});allowed={'enabled','precision','memory_budget_mb','max_active_tracks'}
             if set(changed)-allowed:return {'ok':False,'error':'Unsupported setting'}
-            if 'precision' in changed and changed['precision'] not in ('fp16','fp32'):return {'ok':False,'error':'Invalid precision'}
-            if 'memory_budget_mb' in changed and not 1024<=int(changed['memory_budget_mb'])<=6144:return {'ok':False,'error':'Memory budget must be 1024–6144 MB'}
-            if 'max_active_tracks' in changed and not 1<=int(changed['max_active_tracks'])<=4:return {'ok':False,'error':'Active track limit must be 1–4'}
-            with self.lock:self.settings.update(changed);(self.lab/'live-stems-settings.json').write_text(json.dumps(self.settings,indent=2))
+            with self.lock:
+                try:self.settings=save_live_settings(self.lab/'live-stems-settings.json',{**self.settings,**changed})
+                except (ValueError,OSError,TypeError) as error:return {'ok':False,'error':str(error)}
             return {'ok':True,'settings':self.settings.copy(),'restart_required':'memory_budget_mb' in changed}
         if command!='submit':return {'ok':False,'error':'Unknown command'}
         if self.phase!='ready' or not self.settings['enabled']:return {'ok':False,'error':'GPU service is not ready or disabled'}
@@ -68,7 +72,11 @@ class Service:
         if not source.is_file():return {'ok':False,'error':'Source file unavailable'}
         identity=hashlib.sha256((str(source).lower()+':'+str(source.stat().st_mtime_ns)+':'+str(source.stat().st_size)).encode()).hexdigest()[:24]
         with self.lock:
-            if identity in self.jobs:return {'ok':True,'id':identity,'cache':self.jobs[identity]['cache'],'existing':True}
+            if identity in self.jobs:
+                previous=self.jobs[identity]
+                if previous['phase'] not in ('error','cancelled'):
+                    return {'ok':True,'id':identity,'cache':previous['cache'],'existing':True}
+                if not message.get('retry_failed'):return {'ok':False,'error':previous.get('error') or 'Previous separation failed'}
             active=sum(j['phase'] not in ('complete','error','cancelled') for j in self.jobs.values())
             if active>=int(self.settings['max_active_tracks']):return {'ok':False,'error':'Active track limit reached; original audio remains available'}
             cache=self.lab/'cache'/f'{identity}.cache';report=self.lab/'cache'/f'{identity}.json';cache.parent.mkdir(exist_ok=True)
@@ -93,7 +101,7 @@ class Service:
         except BaseException as error:job.update(phase='error',error=str(error));traceback.print_exc()
     def serve(self):
         address,key=connection_info()
-        with Listener(address,family='AF_PIPE',authkey=key) as listener:
+        with Listener(address,family='AF_PIPE',authkey=None) as listener:
             print(json.dumps({'phase':'loading','pipe':address}),flush=True)
             def load():
                 try:self.load_model();print(json.dumps({'phase':'ready','gpu':self.gpu}),flush=True)
@@ -101,9 +109,10 @@ class Service:
             threading.Thread(target=load,name='GPUInitialize',daemon=True).start()
             while not self.stop.is_set():
                 try:
-                    with listener.accept() as pipe:
+                    with listener.accept() as connection:
+                        pipe=authenticate_server(connection,key)
                         message=json.loads(pipe.recv_bytes(1024*1024));response=self.dispatch(message);pipe.send_bytes(json.dumps(response).encode())
-                except (EOFError,ValueError,KeyError) as error:print('Bad local request:',error,flush=True)
+                except (AuthenticationError,AssertionError,EOFError,ValueError,KeyError,TypeError,OSError) as error:print('Bad local request:',error,flush=True)
             for job in self.jobs.values():job['cancel'].set()
             self.pool.shutdown(wait=True,cancel_futures=True)
 

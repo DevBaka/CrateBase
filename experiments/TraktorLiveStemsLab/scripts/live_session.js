@@ -21,6 +21,11 @@ new NativeFunction(dll.getExportByName('LabSetCacheReadOriginal'),'void',['point
 const factory=new NativeFunction(base.add(0x667d30),'void',['pointer','pointer','uint64','pointer','int64']);
 const tracks=new Map(settings.tracks.map(t=>[t.carrier.toLowerCase(),t]));
 const pending=new Set();const keep=[];
+function receiveGenerationRetry(){recv('generation_retry_needed',message=>{
+  pending.delete(message.source);
+  send({type:'live_error',source:message.source,message:message.error||'GPU nicht verfügbar; Originalmix bleibt verfügbar. Nach Wiederherstellung den Track erneut laden.'});
+  receiveGenerationRetry();
+});}receiveGenerationRetry();
 function stringObject(value){const data=Memory.allocUtf16String(value),object=Memory.alloc(32);object.writePointer(data);object.add(8).writeU64(0);object.add(16).writeU64(value.length);object.add(24).writeU64(Math.max(value.length,8));return {data,object};}
 function pathOf(p){try{const n=p.add(16).readU64().toNumber(),cap=p.add(24).readU64().toNumber();return n>0&&n<4096?(cap>7?p.readPointer():p).readUtf16String(n):null;}catch{return null;}}
 // Never acquire Traktor's URI lock from a getter: some callers already own it.
@@ -68,17 +73,24 @@ if(settings.dynamic_loading===true){
   // this source has an associated private carrier. This covers keyboard/mappings
   // and ordinary browser loads without relying on the context-menu command.
   Interceptor.attach(base.add(0xc405a0),{
-    onEnter(args){this.track=null;try{this.track=ensureDynamic(args[0]);}catch(error){send({type:'live_error',message:'Deck-Vorbereitung: '+error});}},
+    onEnter(args){this.track=null;try{
+      const source=originalPath(args[0]);
+      this.track=ensureDynamic(args[0])||(source?dynamicBySource.get(source.toLowerCase()):null);
+    }catch(error){send({type:'live_error',message:'Deck-Vorbereitung: '+error});}},
     onLeave(result){if(this.track&&(result.toUInt32()&255)){
-      result.replace(result.and('0xffffffff').or('0x200000000'));
-      send({type:'automatic_stem_load',source:this.track.source});
+      result.replace(result.and('0xffffffff').or(liveEnabled?'0x200000000':'0x0'));
+      send({type:liveEnabled?'automatic_stem_load':'ordinary_track_load',source:this.track.source});
     }}
   });
   // Engine-side source resolution also needs the actual track context when a
   // filesystem entry has no fingerprint yet. Never redirect a global zero ID.
   Interceptor.attach(base.add(0x83cfe0),{
     onEnter(args){this.previous=trackContexts.get(this.threadId);try{
-      const track=ensureDynamic(args[2]);if(track)trackContexts.set(this.threadId,track);
+      const source=originalPath(args[2]);
+      // A load already committed to a Stem Deck must resolve its carrier even
+      // if the switch changes while the engine is opening its four readers.
+      const track=!args[3].isNull()&&source?dynamicBySource.get(source.toLowerCase()):null;
+      if(track)trackContexts.set(this.threadId,track);
     }catch(error){send({type:'live_error',message:'Deck-Quelle: '+error});}},
     onLeave(){if(this.previous)trackContexts.set(this.threadId,this.previous);else trackContexts.delete(this.threadId);}
   });
@@ -98,20 +110,21 @@ if(settings.dynamic_loading===true){
       const source=originalPath(args[0]);
       if(liveEnabled&&source&&/[.](mp3|flac|wav|aif|aiff|m4a|mp4|ogg)$/i.test(source)&&!/[.]stem[.]mp4$/i.test(source))
         this.eligible=rva===0x84f7c0||dynamicBySource.has(source.toLowerCase());
-      if(!liveEnabled&&rva===0x84f7c0&&!(args[0].add(0x2f8).readU32()&64)){
+      if(!liveEnabled){
         const source=originalPath(args[0]);this.disabledAssociation=!!source&&dynamicBySource.has(source.toLowerCase());
       }
+      if(source&&trackContexts.get(this.threadId)?.source.toLowerCase()===source.toLowerCase())this.eligible=true;
     }catch(error){send({type:'live_error',message:'Automatisches Laden: '+error});}},
     onLeave(result){if(this.eligible)result.replace(ptr(1));else if(this.disabledAssociation)result.replace(ptr(0));}
   });
   // These are native TrackID -> associated-file queries, used by both the browser
   // and deck loader. Only identities prepared by this session are redirected.
   Interceptor.attach(base.add(0x86e6c0),{
-    onEnter(args){this.track=liveEnabled?(trackContexts.get(this.threadId)||dynamicById.get(idOf(args[0]))):null;},
+    onEnter(args){this.track=trackContexts.get(this.threadId)||(liveEnabled?dynamicById.get(idOf(args[0])):null);},
     onLeave(result){if(this.track)result.replace(ptr(1));}
   });
   Interceptor.attach(base.add(0x86da20),{
-    onEnter(args){this.out=args[0];this.track=liveEnabled?(trackContexts.get(this.threadId)||dynamicById.get(idOf(args[1]))):null;},
+    onEnter(args){this.out=args[0];this.track=trackContexts.get(this.threadId)||(liveEnabled?dynamicById.get(idOf(args[1])):null);},
     onLeave(){if(!this.track)return;try{
       const out=this.out;
       if(out.add(32).readU8()===0){out.writeByteArray(new Uint8Array(32));out.add(24).writeU64(7);}

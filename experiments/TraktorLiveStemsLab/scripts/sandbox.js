@@ -11,6 +11,17 @@ function rewritePath(path){
     if(!path)return path;
     let value=path.replace(/\//g,'\\');const prefix=value.startsWith('\\\\?\\')?'\\\\?\\':value.startsWith('\\??\\')?'\\??\\':'';if(prefix)value=value.substring(4);
     const normalized=value.toLowerCase();
+    // The edition profile lives beside the normal version directories. Keep
+    // its own paths out of the broader Native Instruments redirection below.
+    if(config.profile_directory){
+        const target=config.profile_directory.toLowerCase();
+        if(normalized===target||normalized.startsWith(target+'\\'))return path;
+        for(const original of [config.original_documents_ni+'\\Traktor 4.5.1',config.legacy_profile_directory]){
+            if(!original)continue;
+            const match=original.toLowerCase();
+            if(normalized===match||normalized.startsWith(match+'\\'))return prefix+config.profile_directory+value.substring(original.length);
+        }
+    }
     for(const [original,replacement] of [[config.original_documents_ni,config.lab_documents_ni],[config.original_local_ni,config.lab_local_ni],[config.original_roaming_ni,config.lab_roaming_ni]]){
         const match=original.toLowerCase();
         if(normalized===match||normalized.startsWith(match+'\\'))return prefix+replacement+value.substring(original.length);

@@ -5,11 +5,12 @@ import os
 import shutil
 import winreg
 from pathlib import Path
+from profile_config import directory as profile_directory
 
 lab=Path(os.environ["LOCALAPPDATA"])/"Cratebase"/"traktor-lab"
 original=Path(os.environ["USERPROFILE"])/"Documents"/"Native Instruments"/"Traktor 4.5.1"
 install=Path(r"C:\Program Files\Native Instruments\Traktor Pro 4")
-root=lab/"user"/"Documents"/"Native Instruments"/"Traktor 4.5.1"
+root=profile_directory(lab)
 root.mkdir(parents=True,exist_ok=True)
 
 
@@ -43,7 +44,10 @@ def main():
     shutil.copytree(install/"Resources64",lab/"binaries"/"Resources64",dirs_exist_ok=True)
     for name in ("libbeatport.dll","crashpad_handler.exe"):shutil.copy2(install/name,lab/"binaries"/name)
     (lab/"original-data-baseline.json").write_text(json.dumps(snapshots,indent=2),encoding="utf-8")
-    config={"lab":str(lab),"original_documents_ni":str(original.parent),"lab_documents_ni":str(root.parent),"original_local_ni":str(Path(os.environ["LOCALAPPDATA"])/"Native Instruments"),"lab_local_ni":str(lab/"user"/"Local"/"Native Instruments"),"original_roaming_ni":str(Path(os.environ["APPDATA"])/"Native Instruments"),"lab_roaming_ni":str(lab/"user"/"Roaming"/"Native Instruments")}
+    previous=json.loads((lab/'sandbox.json').read_text(encoding='utf-8')) if (lab/'sandbox.json').exists() else {}
+    config={"lab":str(lab),"original_documents_ni":str(original.parent),"lab_documents_ni":str(lab/'user/Documents/Native Instruments'),"original_local_ni":str(Path(os.environ["LOCALAPPDATA"])/"Native Instruments"),"lab_local_ni":str(lab/"user"/"Local"/"Native Instruments"),"original_roaming_ni":str(Path(os.environ["APPDATA"])/"Native Instruments"),"lab_roaming_ni":str(lab/"user"/"Roaming"/"Native Instruments")}
+    for field in ('profile_directory','legacy_profile_directory'):
+        if field in previous:config[field]=previous[field]
     (lab/"sandbox.json").write_text(json.dumps(config,indent=2),encoding="utf-8")
     print("Sandbox prepared:",root)
     print("Original collection/settings hashes recorded; originals remain unmodified.")

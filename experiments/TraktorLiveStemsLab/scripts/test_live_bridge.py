@@ -1,5 +1,5 @@
 """Lifecycle, cache isolation, native fallback, resampling and enable-switch tests."""
-import ctypes as C,os,time,unittest
+import ctypes as C,os,threading,time,unittest
 from pathlib import Path
 import numpy as np
 from stem_cache import StemCache,RATE,BLOCK
@@ -59,5 +59,39 @@ class LiveBridgeTests(unittest.TestCase):
         for i in range(300):
             ptr,read,out,left,delete,destroyed=self.reader(index);read(ptr,out);delete(ptr,i);self.assertEqual(destroyed,[i])
         self.assertLessEqual(self.dll.LabReaderCount(),before+1)
+
+    def test_four_stems_repeated_switches_and_random_seeks_remain_finite(self):
+        index,cache=self.cache();cache.store_original(np.full((2,cache.frames),.8,dtype=np.float32))
+        values=np.array([.1,.2,.3,.4],dtype=np.float32)
+        cache.publish(0,np.broadcast_to(values[:,None,None],(4,2,cache.frames)).copy())
+        readers=[self.reader(index,stem=stem) for stem in range(1,5)]
+        rng=np.random.default_rng(451)
+        try:
+            for iteration in range(400):
+                enabled=iteration%2;self.dll.LabSetEnabled(enabled)
+                for stem,(address,read,out,left,delete,destroyed) in enumerate(readers):
+                    C.c_int64.from_address(address+0xe0).value=int(rng.integers(0,cache.frames-BLOCK))
+                    read(address,out);self.assertTrue(np.isfinite(left).all())
+                    np.testing.assert_allclose(left[500:],values[stem] if enabled else .2,atol=1e-6)
+        finally:
+            self.dll.LabSetEnabled(1)
+            for address,_,_,_,delete,_ in readers:delete(address,0)
+
+    def test_switch_from_another_thread_during_reads(self):
+        index,cache=self.cache();cache.store_original(np.full((2,cache.frames),.8,dtype=np.float32))
+        cache.publish(0,np.full((4,2,cache.frames),.4,dtype=np.float32))
+        address,read,out,left,delete,_=self.reader(index)
+        stop=threading.Event()
+        def toggle():
+            while not stop.is_set():
+                self.dll.LabSetEnabled(0);self.dll.LabSetEnabled(1)
+        worker=threading.Thread(target=toggle);worker.start()
+        try:
+            for _ in range(400):
+                C.c_int64.from_address(address+0xe0).value=0;read(address,out)
+                self.assertTrue(np.isfinite(left).all())
+                self.assertGreaterEqual(float(left.min()),.19999)
+                self.assertLessEqual(float(left.max()),.40001)
+        finally:stop.set();worker.join(2);self.dll.LabSetEnabled(1);delete(address,0)
 
 if __name__=='__main__':unittest.main()

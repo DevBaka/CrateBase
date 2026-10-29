@@ -1,5 +1,23 @@
 # Investigation journal
 
+## 2026-10-29 — real Traktor collection
+
+- Replaced the implicit fixture-only initialization with a one-time exact copy of the user's real Traktor 4.5.1 collection. Observed original: 40,456 tracks, 554 playlist nodes and 106 folder nodes, 57,755,858 bytes. Private snapshot SHA-256 matched the original exactly before launch. Original NML, cue data, unknown XML and track locations are not rewritten.
+- Previous private collection is retained in timestamped `collection-backups/`; source and imported counts are remembered separately. Later normal launches preserve private library edits. Explicit refresh or choosing another NML requires Traktor closed and creates another backup. Two running-process checks prevent replacing a collection if Traktor starts during preparation.
+- Added source selection, counts/path display and “Original erneut übernehmen” to the control panel; CLI launches share the same initialization.
+- Two new tests cover byte-exact copy, original preservation, legacy backup, preservation across subsequent starts, explicit refresh backup, malformed NML, private-source rejection and the start-during-import race. Full relevant suite: 20 tests passed; compileall passed.
+- Launched private PID 748 with the real collection. Native Traktor displayed the actual “Death and Pain” playlist with eight tracks, artists, keys and play counts, and real playlist favorites instead of fixture-only entries. Ordinary user loads registered four 48-kHz readers for a track from that playlist. No claim of full-library audio-file availability.
+
+## 2026-10-29 — enable/disable and failure recovery
+
+- Added validated atomic settings shared by panel, launcher and GPU service. Parallel-reader/writer tests caught Windows sharing violations; bounded retry now preserves a complete old/new settings document. Runtime acknowledgement includes PID and freshness, independently of the GPU status.
+- Enabled ordinary deck loads choose Stem Decks; disabled new loads choose ordinary Track Decks. Existing decks retain their native controls and get original/4 on each stem when bypassed. In-flight Stem Deck source resolution keeps its per-track context across a switch, avoiding a wrong source selector during opening.
+- Preserved the existing private collection at launch instead of replacing it with the initial fixture collection. Removed the obsolete add-fixture button; arbitrary supported files load directly through Traktor's browser. Removed the panel's implicit twelve-hour session termination.
+- Bounded carrier preparation to two workers and one response per request, including timeout. Added authenticated pipe receive/authentication deadlines on both client and server; an unresponsive peer must not block subsequent service clients. Failed GPU requests clear their pending marker so reloading can retry after recovery; failed/cancelled jobs can be resubmitted explicitly.
+- Practical private-session PID 10088: Dementor FLAC loaded normally into four native stem readers; disabling was acknowledged and Elevate loaded into a normal Deck B while A continued. Enabling then reloading Elevate selected a Stem Deck. Existing cached Get A Good Feeling continued with GPU service stopped. Normal session exit confirmed original collection/settings hashes unchanged.
+- Final private-session PID 42364: stopped GPU service, loaded uncached 50 DUB FLAC normally. Request failed explicitly; all four native source readers reported fallback (1,586 calls each at sampled point, zero replacements), and playback position advanced. Restarted service, paused/reloaded same track: GPU completed 8,705 blocks in about 8.04 s; all four downstream readers subsequently reported 1,609 GPU replacements and 827,392 frames, with distinct nonzero accumulated energies. Left deck paused, extension enabled, service ready. These counters and visible playback do not certify the physical club output or driver behavior.
+- Final verification: 18 tests passed across settings, dispatcher, actual Windows pipe authentication/recovery, service controls/retry, dynamic private carriers, fixture import, and native source/downstream bridge. Includes 400 four-stem switch/seek cycles, concurrent switching during reads, and 300 reader destruction/reuse cycles. Python compileall passed. No multi-hour/hardware/ASIO qualification or claim of 100% reliability.
+
 ## 2026-10-27 00:36–00:45 UTC — setup and baseline
 
 - Explicit eight-hour work request recorded; installed Traktor is not running.
@@ -51,3 +69,16 @@
 - Added a German Tk control panel, repository launch command, GPU setting persistence and enable-switch delivery to the native bridge on the control path. Added user-selected private audio import with cue/metadata preservation, classic Stem carriers and duplicate prevention. Preparation test passes without source/NML mutation.
 - Closed owned PID 9900 for v4 integration tests. Launcher guard again confirmed original collection and settings hashes unchanged. User reminded us that Traktor needs one to two minutes to reach fullscreen; account for this during each launch.
 
+
+## 2026-10-29 — requested 24 visible browser favorites
+
+- User explicitly requests 24 favorites with an additional visible row in the native Traktor UI, alongside bidirectional local persistence and future LAN synchronization. This is a requirement, not a completed feature.
+- Read-only inspection of the verified private binary identifies BrowserShortCutsForm at vtable RVA 0x31fd828; constructor RVA 0xa60c50 allocates 0x540 bytes and initializes 12 inline 0x28-byte slot objects at offset 0x2f0. Fields follow that array, so increasing the loop bound alone would corrupt memory.
+- Layout RVA 0xa83960 uses fixed 12 control IDs, six columns and two rows. Event handling RVA 0xa7c450 also bounds indices to 12. Browser.Shortcuts is the persisted setting; no count setting was found in the active TSI.
+- No runtime or binary patch was applied. Extending the native bar requires coordinated storage, controls, layout, event handling and persistence changes. Existing playback remains untouched by this investigation.
+
+## 2026-10-29 — separate Native Instruments edition profile
+
+- Migrated the private profile by copying it to Documents/Native Instruments/Traktor 4.5 Cratebase Edition. The former private profile remains available as a backup; installed version directories were not replaced.
+- Centralized collection/profile lookup, persisted the new root in sandbox.json, updated only private redirected registry RootDirectory and copied TSI paths. Sandbox path rewriting excludes the edition folder from broad NI redirection and maps original/legacy Traktor paths to the edition.
+- Verified byte-identical collection copy, TSI parsing/path replacement, version-specific private registry value and actual JavaScript path rewriting for original, legacy, edition and unrelated music paths. Existing collection tests pass. Refreshed the existing control panel process to load the changed path.
