@@ -86,3 +86,38 @@ von anderen Umgebungen benutzt werden. Regressionstest: `scripts/test_setup_wind
 Keine Original-Collection, Musikdateien, Controller-Mappings oder aktiven Decks
 überschreiben. Nicht »100 % club-stabil« behaupten, bevor reale Audiotests mit
 Sprung, mehreren Decks, Gerätewahl und längerer Wiedergabe auf dem Claw bestanden sind.
+
+
+## Reparatur auf dem Claw am 31.10.2026
+
+- Intel Arc, Treiber 32.0.101.8509, DirectML: voller 327680-Sample-Block
+  gegen CPU erneut geprüft. Relativer RMS-Fehler 0,000002, Fenster 5,06 s.
+- Der Fehler lag im Übergang zum spielenden Deck: vier registrierte Stem-Leser
+  wurden nur zur Analyse verwendet, während der Playback-Cache die normale
+  Stereoquelle erhielt. Vorherige Claw-Logs: `downstream: []`.
+- `live_session.js` löst vorbereitete, nicht leere Track-IDs jetzt auch nach Ende
+  des synchronen Lade-Kontexts auf dem Engine-Thread auf. Die Eligibility-Abfrage
+  erkennt bereits vorbereitete Quellen ebenfalls ohne diesen Thread-Kontext.
+  Collection-Serialisierung, unbekannte IDs und ausgeschaltete Live-Stems bleiben
+  geschützt; ein bereits laufender Lade-Kontext kann seinen Carrier fertig öffnen.
+- Lokales Laufzeitmanifest war auf `live_bridge-29c7bc1137e4b072.dll` gesetzt.
+  Diese abweichende DLL fiel beim Bypass-/Crossfade-Test durch. Nach Sicherung
+  auf die zum versionierten Quelltext passende und getestete
+  `live_bridge-3b50330c1e24970a.dll` umgestellt. Keine installierte NI-Datei geändert.
+- Korrigierte private Sitzung PID 8724, Log
+  `logs/sandbox-20261031-002442.jsonl`: zwei Decks mit je vier nachgelagerten
+  Lesern. Für Chris Stussy / All Night Long (Original Mix) je 10.050 echte
+  Stem-Ausgaben / 1.181.880 Frames mit vier unterschiedlichen, nicht nullen
+  Signalenergien; keine Hook-Fehler. Benutzer bestätigte laufenden Track.
+- 26 Python-Tests bestanden (native Source/Downstream, Einstellungen, Dienst,
+  dynamische Tracks, Render-Priorität), zusätzlich 5 Node-Regressionstests
+  in `test_live_associations.js`; JS-Syntax geprüft.
+- Wiederholbare Prüfung: private GUI-Python-Laufzeit mit
+  `scripts/claw_verify.py verify` bzw. `status`. `start` verweigert den Start,
+  solange ein Traktor-Prozess läuft; keine aktiven Decks werden beendet.
+- Grenze: zwei parallele neue Demucs-Aufträge lagen in dieser Sitzung bei ca.
+  0,66–0,69 Audiosekunden/s je Track; Solo-Läufe zuvor ca. 1,4–1,5. Die Reparatur
+  bestätigt die Einspeisung ins Deck, keine Zusage für dauerhaftes Mehrdeck-
+  Echtzeitrendering. Physischer Ausgang, lange Laufzeit und manuelle Seek/Mute-
+  Abnahme stehen noch aus. Computer Use verweigerte den Zugriff auf Traktor;
+  Schließen und Track-Laden wurden deshalb vom Benutzer übernommen.

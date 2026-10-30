@@ -46,6 +46,15 @@ Interceptor.attach(Process.getModuleByName('kernel32.dll').getExportByName('Clos
 });
 const assignWide=new NativeFunction(base.add(0x519800),'pointer',['pointer','pointer','uint64']);
 const dynamicBySource=new Map(),dynamicById=new Map(),failedSources=new Map();let requestId=0;
+// Engine workers query associations after the synchronous load context has ended.
+// Only nonzero IDs explicitly prepared in this session may resolve off-thread.
+function associatedTrack(idPointer){
+  if(writingCollection)return null;
+  const context=trackContexts.get(Process.getCurrentThreadId());
+  if(context)return context;
+  if(!liveEnabled)return null;
+  try{return dynamicById.get(idOf(idPointer))||null;}catch{return null;}
+}
 const trackContexts=new Map();
 function idOf(p){return Array.from(new Uint8Array(p.readByteArray(256)),x=>x.toString(16).padStart(2,'0')).join('');}
 function originalPath(object){
@@ -119,8 +128,7 @@ if(settings.dynamic_loading===true){
   });
   for(const rva of [0x84ea30,0x84f7c0])Interceptor.attach(base.add(rva),{
     onEnter(args){this.eligible=false;this.disabledAssociation=false;try{
-      const context=trackContexts.get(this.threadId);
-      if(writingCollection||!context)return;
+      if(writingCollection)return;
       // Rendering/scanning the browser must not probe every audio file. Defer
       // carrier creation to the actual deck-load decision above.
       const source=originalPath(args[0]);
@@ -136,11 +144,11 @@ if(settings.dynamic_loading===true){
   // These are native TrackID -> associated-file queries, used by both the browser
   // and deck loader. Only identities prepared by this session are redirected.
   Interceptor.attach(base.add(0x86e6c0),{
-    onEnter(args){this.track=writingCollection?null:trackContexts.get(this.threadId);},
+    onEnter(args){this.track=associatedTrack(args[0]);},
     onLeave(result){if(this.track)result.replace(ptr(1));}
   });
   Interceptor.attach(base.add(0x86da20),{
-    onEnter(args){this.out=args[0];this.track=writingCollection?null:trackContexts.get(this.threadId);},
+    onEnter(args){this.out=args[0];this.track=associatedTrack(args[1]);},
     onLeave(){if(!this.track)return;try{
       const out=this.out;
       if(out.add(32).readU8()===0){out.writeByteArray(new Uint8Array(32));out.add(24).writeU64(7);}
