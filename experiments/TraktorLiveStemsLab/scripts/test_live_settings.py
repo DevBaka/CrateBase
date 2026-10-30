@@ -60,4 +60,11 @@ class PreparationTests(unittest.TestCase):
             self.assertIn('missing audio',replies[1]['error'])
         finally:dispatcher.close()
 
+class RenderRateTests(unittest.TestCase):
+    def test_invalid_and_unbounded_rates_are_rejected(self):
+        from live_settings import validate
+        for value in (-1,33,float('nan'),float('inf'),True,'2'):
+            with self.subTest(value=value),self.assertRaises(ValueError):validate({'render_rate':value})
+        for value in (0,.5,1,8,32):self.assertEqual(validate({'render_rate':value})['render_rate'],value)
+
 if __name__=='__main__':unittest.main()

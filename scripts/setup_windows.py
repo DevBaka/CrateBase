@@ -1,5 +1,5 @@
 """Per-user dependency installer; no global Python/PATH or NI data changes."""
-import argparse, hashlib, json, os, shutil, subprocess, sys
+import argparse, hashlib, json, os, shutil, subprocess, sys, uuid
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -18,14 +18,33 @@ def environment(uv, folder, requirements, probe, index=None):
     python = folder / 'Scripts/python.exe'
     stamp = folder / 'cratebase-requirements.json'
     identity = json.dumps([requirements, index])
-    if not python.exists():
+    healthy = False
+    config = folder / 'pyvenv.cfg'
+    if python.exists() and config.exists():
+        entries=dict(line.split('=',1) for line in config.read_text(encoding='utf-8').splitlines() if '=' in line)
+        home=next((value.strip() for key,value in entries.items() if key.strip()=='home'),None)
+        # Check before invoking uv's trampoline: pythonw otherwise displays an
+        # OS dialog instead of returning useful diagnostics to our installer.
+        if home and (Path(home)/'python.exe').is_file():
+            try:
+                run(python, '-I', '-c', 'import sys, encodings; assert sys.version_info[:2] == (3,11)', capture=True)
+                healthy=True
+            except (OSError,subprocess.CalledProcessError):pass
+    if not healthy:
+        if folder.exists():
+            resolved=folder.resolve()
+            if resolved.parent not in (LAB.resolve(),(BASE/'bootstrap').resolve()):
+                raise RuntimeError('Reparatur ausserhalb verwalteter Laufzeitordner verweigert: '+str(resolved))
+            backup=resolved.with_name(resolved.name+'.broken-'+uuid.uuid4().hex)
+            print('Repariere Python-Laufzeit; bisherige Dateien gesichert unter '+str(backup),flush=True)
+            resolved.rename(backup)
+        # Clean up corrupted managed-python directory if it exists
+        managed_python = Path(os.environ.get('UV_PYTHON_INSTALL_DIR', ''))
+        if managed_python.exists():
+            print('Bereinige beschädigte managed-python Installation ...', flush=True)
+            shutil.rmtree(managed_python, ignore_errors=True)
         run(uv, '--no-config', 'venv', '--python', '3.11', '--managed-python', folder)
-    # A copied virtualenv may point at an interpreter absent on this PC.
-    try:
-        run(python, '-I', '-c', 'import sys; assert sys.version_info[:2] == (3,11)', capture=True)
-    except (OSError, subprocess.CalledProcessError) as error:
-        raise RuntimeError(f'Ungueltige kopierte Python-Umgebung: {folder}. '
-                           'Diesen Laufzeitordner umbenennen und Starter erneut ausfuehren.') from error
+        run(python, '-I', '-c', 'import sys, encodings; assert sys.version_info[:2] == (3,11)', capture=True)
     if stamp.exists() and stamp.read_text() == identity:
         try:
             run(python, '-I', '-c', probe, capture=True)

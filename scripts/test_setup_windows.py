@@ -24,10 +24,12 @@ class InstallerTests(unittest.TestCase):
 
     def test_repeat_setup_probes_but_does_not_reinstall(self):
         with tempfile.TemporaryDirectory() as folder:
-            root = Path(folder)
+            root = Path(folder)/'bootstrap/environment'
             python = root / 'Scripts/python.exe'
-            python.parent.mkdir()
+            python.parent.mkdir(parents=True)
             python.touch()
+            home=root/'base';home.mkdir();(home/'python.exe').touch()
+            (root/'pyvenv.cfg').write_text('home = '+str(home))
             with patch.object(setup, 'run') as command:
                 setup.environment('uv', root, ['package==1'], 'import package')
                 self.assertTrue(any('install' in call.args for call in command.call_args_list))
@@ -35,6 +37,24 @@ class InstallerTests(unittest.TestCase):
                 setup.environment('uv', root, ['package==1'], 'import package')
                 self.assertEqual(command.call_count, 2)
                 self.assertFalse(any('install' in call.args for call in command.call_args_list))
+
+    def test_missing_base_interpreter_is_backed_up_and_rebuilt(self):
+        with tempfile.TemporaryDirectory() as folder:
+            base=Path(folder);root=base/'bootstrap/environment'
+            (root/'Scripts').mkdir(parents=True)
+            (root/'Scripts/python.exe').touch()
+            (root/'pyvenv.cfg').write_text('home = '+str(base/'missing-base'))
+            (root/'keep.txt').write_text('preserve')
+            def simulate(*args,**kwargs):
+                if 'venv' in args:root.mkdir(parents=True)
+            with patch.object(setup,'BASE',base),patch.object(setup,'run',side_effect=simulate) as command:
+                setup.environment('uv',root,['package==1'],'import package')
+                calls=command.call_args_list
+                self.assertEqual(calls[0].args[0],'uv')
+                self.assertIn('venv',calls[0].args)
+            backups=list((base/'bootstrap').glob('environment.broken-*'))
+            self.assertEqual(len(backups),1)
+            self.assertEqual((backups[0]/'keep.txt').read_text(),'preserve')
 
 
 if __name__ == '__main__':

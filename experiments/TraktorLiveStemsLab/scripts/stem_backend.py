@@ -3,6 +3,17 @@ import importlib.util
 import types
 
 
+def devices():
+    import torch
+    result=[{'backend':'cpu','gpu_index':0,'name':'CPU'}]
+    if torch.cuda.is_available():
+        result += [{'backend':'cuda','gpu_index':i,'name':'CUDA · '+torch.cuda.get_device_name(i)} for i in range(torch.cuda.device_count())]
+    if importlib.util.find_spec('torch_directml') is not None:
+        import torch_directml
+        result += [{'backend':'directml','gpu_index':i,'name':'DirectML · '+torch_directml.device_name(i).rstrip('\0')} for i in range(torch_directml.device_count())]
+    return result
+
+
 def directml_spectral_bridge(model,device):
     # HTDemucs already uses this pattern for Apple's MPS: complex STFT/ISTFT
     # stay on CPU, real neural-network tensors live on the accelerator. Unlike
@@ -28,7 +39,8 @@ def load(settings):
         choice=read(Path(os.environ['LOCALAPPDATA'])/'Cratebase/traktor-lab').get('backend','auto')
     torch.set_num_threads(4)
     if choice in ('auto','cuda') and torch.cuda.is_available():
-        index=min(index,torch.cuda.device_count()-1);device=torch.device('cuda',index)
+        if not 0<=index<torch.cuda.device_count():raise RuntimeError('Gewählte CUDA-GPU nicht verfügbar. Rechengerät erneut auswählen.')
+        device=torch.device('cuda',index)
         torch.cuda.set_device(device)
         total=torch.cuda.get_device_properties(index).total_memory
         torch.cuda.set_per_process_memory_fraction(min(.9,int(settings['memory_budget_mb'])*1024**2/total),index)
@@ -36,7 +48,8 @@ def load(settings):
     elif choice in ('auto','directml') and importlib.util.find_spec('torch_directml') is not None:
         import torch_directml
         if torch_directml.device_count()<1:raise RuntimeError('Kein DirectML/DX12-Grafikgerät gefunden. Grafiktreiber prüfen oder CPU auswählen.')
-        index=min(index,torch_directml.device_count()-1);device=torch_directml.device(index)
+        if not 0<=index<torch_directml.device_count():raise RuntimeError('Gewählte DirectML-GPU nicht verfügbar. Rechengerät erneut auswählen.')
+        device=torch_directml.device(index)
         name='DirectML · '+torch_directml.device_name(index).rstrip('\0')
     elif choice in ('cuda','directml'):
         raise RuntimeError('Gewünschter GPU-Backend fehlt. Den BAT-Starter zur Einrichtung erneut ausführen.')
@@ -44,3 +57,8 @@ def load(settings):
     model=get_model('htdemucs').models[0].eval().to(device)
     if device.type=='privateuseone':directml_spectral_bridge(model,device)
     return model,device,name
+
+
+if __name__=='__main__':
+    import json
+    print(json.dumps(devices(),ensure_ascii=True))

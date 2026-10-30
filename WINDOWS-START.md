@@ -52,6 +52,26 @@ wird dieser nicht ausgetauscht. Der normale Start hier auf dem NVIDIA-PC bleibt 
 Die bisherige Offline-Stem-Erzeugung innerhalb von Cratebase nutzt weiterhin ihre
 eigene CPU-Laufzeit und funktioniert unabhängig von der GPU-Marke.
 
+### Stem Settings
+
+Im Live-Stem-Steuerfenster gibt es den Reiter **Stem Settings**. Er ist Teil des
+Cratebase-Steuerfensters, nicht von Traktors nativem Preferences-Dialog.
+Die Geräteauswahl listet CPU und die GPUs der installierten CUDA-/DirectML-Laufzeit
+mit Namen auf. Gerätewechsel werden erst bei geschlossenem Traktor gespeichert
+und beim nächsten Start des Dienstes übernommen. Die Auswahl bleibt gespeichert.
+
+**Audiosek./Sek.** begrenzt die Renderleistung pro aktivem Auftrag: 1 entspricht
+höchstens einer Audiosekunde pro Echtzeitsekunde, 4 höchstens vier; 0 bedeutet
+unbegrenzt. Langsamere Hardware kann diesen Wert unterschreiten. Änderungen gelten
+auch für laufende Aufträge ab dem nächsten Berechnungsfenster. Die Auftragsliste
+zeigt zusätzlich die bisher erreichte durchschnittliche Geschwindigkeit.
+
+Needle Search und Beatjump priorisieren die angeforderte Stelle einschließlich
+der für die Überlappung benötigten Nachbarfenster. Fehlende Stem-Blöcke verwenden
+den Originalmix; verfügbare Stems werden mit kurzem Crossfade wieder übernommen.
+Manuell gesetzte Stem-Mutes, Filter und Fader werden dabei weiterhin respektiert:
+Für den vollständigen Originalmix müssen alle vier Spuren hörbar sein.
+
 ## Diagnose und Prüfstand
 
 Einrichtungsprotokolle: `%LOCALAPPDATA%\Cratebase\bootstrap\setup-*.log`.

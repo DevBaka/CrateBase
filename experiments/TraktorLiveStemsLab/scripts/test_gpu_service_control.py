@@ -31,4 +31,19 @@ class ServiceControlTests(unittest.TestCase):
                 self.assertEqual(service.pool.submit.call_count,2)
             finally:original_pool.shutdown(wait=True)
 
+class DeviceSettingsTests(unittest.TestCase):
+    def test_live_speed_update_preserves_device_choice_for_next_restart(self):
+        from live_settings import save
+        with tempfile.TemporaryDirectory() as folder,patch.object(gpu_service,'root',return_value=Path(folder)):
+            service=gpu_service.Service()
+            try:
+                path=Path(folder)/'live-stems-settings.json'
+                save(path,{'backend':'cpu','gpu_index':0})
+                result=service.dispatch({'command':'settings','values':{'render_rate':.5}})
+                self.assertTrue(result['ok'])
+                self.assertEqual(service.settings['render_rate'],.5)
+                self.assertEqual(read(path)['backend'],'cpu')
+                self.assertEqual(read(path)['render_rate'],.5)
+            finally:service.pool.shutdown(wait=True)
+
 if __name__=='__main__':unittest.main()

@@ -4,6 +4,12 @@ from pathlib import Path
 import numpy as np
 from stem_cache import StemCache,BLOCK,RATE
 
+def next_window(requested,hop,windows,done):
+    wanted=(requested*BLOCK)//hop if requested>=0 else -1
+    for index in (wanted,wanted-1,wanted+1):
+        if 0<=index<windows and index not in done:return index
+    return next(index for index in range(windows) if index not in done)
+
 def arguments():
     p=argparse.ArgumentParser();p.add_argument('source',type=Path);p.add_argument('cache',type=Path)
     p.add_argument('--seconds',type=float);p.add_argument('--precision',choices=['fp32','fp16'],default='fp16')
@@ -90,11 +96,11 @@ def run_job(a,model=None,model_lock=None,cancel_event=None,onstatus=None):
     try:
         while len(done)<windows:
             if cancel_event and cancel_event.is_set():raise InterruptedError('Separation cancelled')
-            requested=cache.requested();wanted=(requested*BLOCK)//hop if requested>=0 else -1
-            priorities=[wanted,wanted-1,wanted+1] if requested!=last_requested else []
-            candidates=[i for i in priorities if 0<=i<windows and i not in done]
-            index=candidates[0] if candidates else next(i for i in range(windows) if i not in done)
-            if candidates:last_requested=requested
+            requested=cache.requested()
+            # Overlap means the next window can also be needed to publish the
+            # sought block. Keep prioritizing its neighborhood on every turn.
+            index=next_window(requested,hop,windows,done)
+            last_requested=requested
             core=index*hop;context_start=core-left;source_start=max(0,context_start);source_end=min(frames,context_start+context)
             chunk=np.zeros((2,context),dtype=np.float32)
             chunk[:,source_start-context_start:source_end-context_start]=audio[:,source_start:source_end]
@@ -119,8 +125,23 @@ def run_job(a,model=None,model_lock=None,cancel_event=None,onstatus=None):
                 result=accumulator[:,:,block_start:block_end]/np.maximum(weights[block_start:block_end],1e-8)
                 cache.publish(block_start,result)
             metrics['windows'].append({'index':index,'inference_and_transfer_seconds':elapsed,'ready_blocks':int(cache.ready.sum())})
-            status('separating',completed_windows=len(done),total_windows=windows,ready_blocks=int(cache.ready.sum()),total_blocks=cache.blocks,generation_seconds=time.perf_counter()-generation_begin)
-            if a.throttle:time.sleep(a.throttle)
+            generation_seconds=time.perf_counter()-generation_begin
+            status('separating',completed_windows=len(done),total_windows=windows,ready_blocks=int(cache.ready.sum()),total_blocks=cache.blocks,generation_seconds=generation_seconds,render_audio_seconds_per_second=min(frames,len(done)*hop)/RATE/max(.001,generation_seconds))
+            rate=getattr(a,'render_rate',0)
+            rate=rate() if callable(rate) else rate
+            # A cap, never a promise of speed: slower hardware cannot be forced
+            # to render faster. Pace each useful hop; waits remain cancellable.
+            delay=max(0,hop/RATE/rate-elapsed) if rate else 0
+            delay+=a.throttle
+            if delay:
+                deadline=time.monotonic()+delay
+                while time.monotonic()<deadline:
+                    # Needle search should not wait out a low-speed throttle.
+                    if cache.requested()!=last_requested:break
+                    wait=min(.1,max(0,deadline-time.monotonic()))
+                    if cancel_event:
+                        if cancel_event.wait(wait):raise InterruptedError('Separation cancelled')
+                    else:time.sleep(wait)
         metrics.update(peak_gpu_mb=torch.cuda.max_memory_allocated(device)/1024**2 if cuda else 0,peak_stem=float(np.max(np.abs(cache.data))),first_window_seconds=metrics['windows'][0]['inference_and_transfer_seconds'])
         status('complete',ready_blocks=int(cache.ready.sum()),generation_seconds=time.perf_counter()-generation_begin)
     except BaseException:

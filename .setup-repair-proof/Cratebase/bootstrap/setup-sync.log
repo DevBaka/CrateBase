@@ -1,0 +1,37 @@
+﻿**********************
+nStart der Windows PowerShell-Aufzeichnung
+Startzeit: 20261030203416
+Benutzername: DESKTOP-O8QPNVQ\DJBaka
+RunAs-Benutzer: DESKTOP-O8QPNVQ\DJBaka
+Konfigurationsname: 
+Computer: DESKTOP-O8QPNVQ (Microsoft Windows NT 10.0.26300.0)
+Hostanwendung: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/bootstrap-windows.ps1 -Target sync -SetupOnly
+Prozess-ID: 61860
+PSVersion: 5.1.26100.9711
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9711
+BuildVersion: 10.0.26100.9711
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Repariere unvollstaendige oder von einem anderen PC kopierte Python-Laufzeit ...
+Downloading cpython-3.11.17-windows-x86_64-none (download) (23.9MiB)
+ Downloaded cpython-3.11.17-windows-x86_64-none (download)
+Using CPython 3.11.17
+Creating virtual environment at: .setup-repair-proof\Cratebase\bootstrap\python
+Activate with: .setup-repair-proof\Cratebase\bootstrap\python\Scripts\activate
+Repariere Python-Laufzeit; bisherige Dateien gesichert unter C:\Users\DJBaka\Documents\GitHub\CrateBase\.setup-repair-proof\Cratebase\traktor-lab\python.broken-4441786d619f472cad1c962b43c93b5d
+Using CPython 3.11.17
+Creating virtual environment at: .setup-repair-proof\Cratebase\traktor-lab\python
+Activate with: .setup-repair-proof\Cratebase\traktor-lab\python\Scripts\activate
+Using Python 3.11.17 environment at: .setup-repair-proof\Cratebase\traktor-lab\python
+Resolved 1 package in 299ms
+Prepared 1 package in 90ms
+Installed 1 package in 21ms
+ + psutil==7.2.2
+**********************
+Ende der Windows PowerShell-Aufzeichnung
+Endzeit: 20261030203425
+**********************

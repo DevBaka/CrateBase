@@ -1,14 +1,16 @@
 """Validated settings and atomic publication shared by panel, launcher and GPU service."""
-import json, os, time, uuid
+import json, os, time, uuid, math
 from pathlib import Path
 
-DEFAULTS={'enabled':True,'gpu_index':0,'precision':'fp16','memory_budget_mb':4096,'max_active_tracks':4,'backend':'auto'}
+DEFAULTS={'enabled':True,'gpu_index':0,'precision':'fp16','memory_budget_mb':4096,'max_active_tracks':4,'backend':'auto','render_rate':0.0}
 
 def validate(values):
     result={**DEFAULTS,**values}
     if type(result['enabled']) is not bool:raise ValueError('Aktivierung muss ein boolescher Wert sein')
     if result['precision'] not in ('fp16','fp32'):raise ValueError('Ungültige GPU-Genauigkeit')
     if result['backend'] not in ('auto','cuda','directml','cpu'):raise ValueError('Ungültiges Stem-Backend')
+    rate=result['render_rate']
+    if type(rate) not in (int,float) or not math.isfinite(rate) or not 0<=rate<=32:raise ValueError('Rendergeschwindigkeit: 0 (Maximum) bis 32 Audiosekunden pro Sekunde')
     for name,low,high in [('gpu_index',0,31),('memory_budget_mb',1024,6144),('max_active_tracks',1,4)]:
         if type(result[name]) is not int or not low<=result[name]<=high:raise ValueError('Ungültige Einstellung: '+name)
     return result

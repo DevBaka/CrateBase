@@ -39,14 +39,15 @@ class Service:
         import contextlib
         from stem_backend import load
         os.environ['TORCH_HOME']=str(self.lab/'models');torch.set_num_threads(4)
-        self.model,device,name=load(self.settings);cuda=device.type=='cuda'
+        loaded_settings=self.settings.copy()
+        self.model,device,name=load(loaded_settings);cuda=device.type=='cuda'
         dummy=torch.zeros((1,2,327680),device=device)
         precision=torch.autocast('cuda',enabled=self.settings['precision']=='fp16',dtype=torch.float16) if cuda else contextlib.nullcontext()
         with torch.no_grad(),precision:self.model(dummy)
         if cuda:torch.cuda.synchronize(device)
-        self.gpu=name;self.phase='ready'
+        self.gpu=name;self.loaded_settings=loaded_settings;self.phase='ready'
     def snapshot(self):
-        with self.lock:return {'phase':self.phase,'gpu':getattr(self,'gpu',None),'inference_python':sys.executable,'settings':self.settings.copy(),'error':self.error,'jobs':{k:{x:v for x,v in j.items() if x not in ('cancel','future')} for k,j in self.jobs.items()}}
+        with self.lock:return {'phase':self.phase,'gpu':getattr(self,'gpu',None),'loaded_settings':getattr(self,'loaded_settings',None),'inference_python':sys.executable,'settings':self.settings.copy(),'error':self.error,'jobs':{k:{x:v for x,v in j.items() if x not in ('cancel','future')} for k,j in self.jobs.items()}}
     def dispatch(self,message):
         if not isinstance(message,dict):return {'ok':False,'error':'Request must be an object'}
         command=message.get('command')
@@ -58,10 +59,13 @@ class Service:
                 if not job:return {'ok':False,'error':'Unknown job'}
                 job['cancel'].set();return {'ok':True}
         if command=='settings':
-            changed=message.get('values',{});allowed={'enabled','precision','memory_budget_mb','max_active_tracks'}
+            changed=message.get('values',{});allowed={'enabled','precision','memory_budget_mb','max_active_tracks','render_rate'}
             if set(changed)-allowed:return {'ok':False,'error':'Unsupported setting'}
             with self.lock:
-                try:self.settings=save_live_settings(self.lab/'live-stems-settings.json',{**self.settings,**changed})
+                try:
+                    persisted=read_live_settings(self.lab/'live-stems-settings.json')
+                    save_live_settings(self.lab/'live-stems-settings.json',{**persisted,**changed})
+                    self.settings=validate({**self.settings,**changed})
                 except (ValueError,OSError,TypeError) as error:return {'ok':False,'error':str(error)}
             return {'ok':True,'settings':self.settings.copy(),'restart_required':'memory_budget_mb' in changed}
         if command!='submit':return {'ok':False,'error':'Unknown command'}
@@ -86,6 +90,7 @@ class Service:
             if reference and not Path(reference).resolve().is_relative_to(self.lab.resolve()):return {'ok':False,'error':'Native reference must stay inside the private lab'}
             job={'id':identity,'source':str(source),'cache':str(cache),'phase':'queued','cancel':threading.Event(),'submitted':time.time()};self.jobs[identity]=job
             options=SimpleNamespace(source=source,cache=cache,report=report,seconds=message.get('seconds'),precision=self.settings['precision'],throttle=float(message.get('throttle',0)),start_signal=None,native_reference_prefix=Path(reference) if reference else None,reuse_cache=bool(message.get('reuse_cache',False)))
+            options.render_rate=lambda:self.settings['render_rate']
             job['future']=self.pool.submit(self.execute,identity,options)
             return {'ok':True,'id':identity,'cache':str(cache),'existing':False}
     def execute(self,identity,options):

@@ -27,6 +27,20 @@ function Invoke-Checked([string]$Program, [string[]]$Arguments) {
     } finally { $ErrorActionPreference = $previousPreference }
     if ($resultCode -ne 0) { throw "$Program fehlgeschlagen (Exitcode $resultCode)." }
 }
+function Test-PythonEnvironment([string]$Directory) {
+    $config = Join-Path $Directory 'pyvenv.cfg'
+    if (-not (Test-Path $config) -or -not (Test-Path (Join-Path $Directory 'Scripts\python.exe'))) { return $false }
+    $homeLine = Get-Content $config | Where-Object { $_ -match '^home\s*=' } | Select-Object -First 1
+    if (-not $homeLine) { return $false }
+    $interpreterHome = ($homeLine -split '=',2)[1].Trim()
+    if (-not (Test-Path (Join-Path $interpreterHome 'python.exe'))) { return $false }
+    $previousPreference = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = 'Continue'
+        & (Join-Path $Directory 'Scripts\python.exe') -I -c 'import sys,encodings; assert sys.version_info[:2] == (3,11)' *> $null
+        return ($LASTEXITCODE -eq 0)
+    } finally { $ErrorActionPreference = $previousPreference }
+}
 try {
     try { $ownsMutex = $mutex.WaitOne(0) } catch [Threading.AbandonedMutexException] { $ownsMutex = $true }
     if (-not $ownsMutex) {
@@ -57,7 +71,23 @@ try {
     $env:UV_PYTHON_INSTALL_DIR = Join-Path $base 'managed-python'
     $env:UV_CACHE_DIR = Join-Path $base 'cache'
     $python = Join-Path $base 'python\Scripts\python.exe'
-    if (-not (Test-Path $python)) { Invoke-Checked $uv @('--no-config','venv','--python','3.11','--managed-python',(Join-Path $base 'python')) }
+    $pythonDirectory = Join-Path $base 'python'
+    if (-not (Test-PythonEnvironment $pythonDirectory)) {
+        if (Test-Path $pythonDirectory) {
+            Write-Host 'Repariere unvollstaendige oder von einem anderen PC kopierte Python-Laufzeit ...'
+            $resolved = (Resolve-Path -LiteralPath $pythonDirectory).Path
+            if ($resolved -ne [IO.Path]::GetFullPath((Join-Path $base 'python'))) { throw 'Unerwarteter Reparaturpfad.' }
+            Move-Item -LiteralPath $resolved -Destination ($resolved + '.broken-' + [Guid]::NewGuid().ToString('N'))
+        }
+        # Delete corrupted managed-python directory if it exists
+        $managedPythonDir = Join-Path $base 'managed-python'
+        if (Test-Path $managedPythonDir) {
+            Write-Host 'Bereinige beschädigte managed-python Installation ...'
+            Remove-Item -LiteralPath $managedPythonDir -Recurse -Force -ErrorAction SilentlyContinue
+        }
+        Invoke-Checked $uv @('--no-config','venv','--python','3.11','--managed-python',$pythonDirectory)
+        if (-not (Test-PythonEnvironment $pythonDirectory)) { throw 'Python konnte nicht repariert werden. Siehe Einrichtungsprotokoll.' }
+    }
     Invoke-Checked $python @((Join-Path $PSScriptRoot 'setup_windows.py'),'--target',$Target,'--backend',$StemBackend,'--uv',$uv)
     if ($Target -in @('desktop','beatport')) {
         $dotnet = Join-Path $base 'dotnet\dotnet.exe'

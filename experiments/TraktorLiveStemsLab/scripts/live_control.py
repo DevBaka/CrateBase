@@ -71,7 +71,8 @@ class Control:
         self.collection_sync_status=tk.StringVar(value='Collection-Abgleich: wartet auf geschlossene Traktor-Instanzen')
         ttk.Label(collection_bar,textvariable=self.collection_sync_status,wraplength=810).pack(anchor='w',pady=(5,0))
         values=read_settings();self.enabled=tk.BooleanVar(value=values.get('enabled',True))
-        settings=ttk.LabelFrame(outer,text='GPU und Leistung',padding=10);settings.pack(fill='x')
+        notebook=ttk.Notebook(outer);notebook.pack(fill='x')
+        settings=ttk.Frame(notebook,padding=10);notebook.add(settings,text='Stem Settings')
         ttk.Checkbutton(settings,text='Live Stems aktivieren · normale Tracks automatisch als Stems laden',variable=self.enabled,command=self.save).grid(row=0,column=0,columnspan=7,sticky='w',pady=(0,10))
         self.precision=tk.StringVar(value=values.get('precision','fp16'));self.budget=tk.StringVar(value=str(values.get('memory_budget_mb',4096)));self.limit=tk.StringVar(value=str(values.get('max_active_tracks',4)))
         for col,(label,variable,options) in enumerate((('Genauigkeit',self.precision,['fp16','fp32']),('GPU-Budget (MB)',self.budget,['2048','3072','4096','5120','6144']),('Gleichzeitige Aufträge',self.limit,['1','2','3','4']))):
@@ -79,6 +80,16 @@ class Control:
         ttk.Button(settings,text='Speichern',command=self.save).grid(row=1,column=6)
         backend=read_runtime_install(LAB).get('backend','cuda')
         ttk.Label(settings,text=f'Backend: {backend.upper()} · FP16 und GPU-Budget gelten nur für CUDA. DirectML nutzt FP32 und den Windows-Speichermanager.',foreground='#b3bbc8',wraplength=800).grid(row=2,column=0,columnspan=7,sticky='w',pady=(8,0))
+        self.device_options={'Automatisch':{'backend':'auto','gpu_index':0},'CPU':{'backend':'cpu','gpu_index':0}}
+        selected='Automatisch' if values['backend']=='auto' else ('CPU' if values['backend']=='cpu' else f"{values['backend'].upper()} · Gerät {values['gpu_index']}")
+        self.device_options[selected]={'backend':values['backend'],'gpu_index':values['gpu_index']}
+        self.device=tk.StringVar(value=selected)
+        ttk.Label(settings,text='Rechengerät').grid(row=3,column=0,sticky='w',pady=8)
+        self.device_combo=ttk.Combobox(settings,textvariable=self.device,values=list(self.device_options),state='readonly',width=48);self.device_combo.grid(row=3,column=1,columnspan=5,sticky='w')
+        self.render_rate=tk.StringVar(value=str(values['render_rate']))
+        ttk.Label(settings,text='Audiosek./Sek.').grid(row=4,column=0,sticky='w')
+        ttk.Combobox(settings,textvariable=self.render_rate,values=['0','0.5','1','2','4','8','16','32'],width=9).grid(row=4,column=1,sticky='w')
+        ttk.Label(settings,text='0 = Maximum · Obergrenze, abhängig von der Hardware. Gerätewechsel nach Traktor-Neustart.\nBei Needle Search/Beatjump: Originalmix bis die angeforderte Stelle berechnet ist.',wraplength=780).grid(row=5,column=0,columnspan=7,sticky='w',pady=8)
         self.status=tk.StringVar(value='GPU-Dienst wird geprüft…');ttk.Label(outer,textvariable=self.status,wraplength=820).pack(fill='x',pady=12)
         self.runtime_status=tk.StringVar(value='Traktor: noch keine aktuelle Bestätigung')
         ttk.Label(outer,textvariable=self.runtime_status,foreground='#87c8ff',wraplength=820).pack(fill='x',pady=(0,8))
@@ -88,6 +99,10 @@ class Control:
         self.notice=tk.StringVar(value='Aktiv: Songs aus Ordnern, Collection und Playlisten normal laden → Stem-Deck.\nDeaktiviert: neue Songs normal laden; bereits geladene Live-Stem-Decks erhalten den Originalmix auf vier Spuren. Spur-Mutes, Filter und Fader bleiben wirksam. Für den vollständigen Originalmix alle vier Spuren einschalten.')
         ttk.Label(outer,textvariable=self.notice,wraplength=820,foreground='#b3bbc8').pack(anchor='w',pady=(12,0))
         self.root.after(100,self.drain);threading.Thread(target=self.poll,daemon=True).start()
+        def enumerate_devices():
+            result=subprocess.run([str(CUDA),str(SCRIPTS/'stem_backend.py')],capture_output=True,text=True,encoding='utf-8',creationflags=subprocess.CREATE_NO_WINDOW,timeout=90,check=True)
+            self.events.put(('devices',json.loads(result.stdout)))
+        self.work(enumerate_devices)
     def work(self,fn):
         def run():
             try:fn()
@@ -115,13 +130,16 @@ class Control:
         self.work(run)
     def save(self):
         try:
-            values=read_settings();values.update(enabled=self.enabled.get(),precision=self.precision.get(),memory_budget_mb=int(self.budget.get()),max_active_tracks=int(self.limit.get()));save_live_settings(SETTINGS,values)
+            values=read_settings();device=self.device_options[self.device.get()]
+            if running() and any(values[k]!=device[k] for k in ('backend','gpu_index')):
+                messagebox.showinfo('Rechengerät wechseln','Traktor bitte zuerst schließen. Der laufende Audiodienst wird während der Wiedergabe nicht ausgetauscht.');return False
+            values.update(device);values.update(enabled=self.enabled.get(),precision=self.precision.get(),memory_budget_mb=int(self.budget.get()),max_active_tracks=int(self.limit.get()),render_rate=float(self.render_rate.get().replace(',','.')));save_live_settings(SETTINGS,values)
         except (OSError,ValueError) as error:
             messagebox.showerror('Einstellungen konnten nicht gespeichert werden',str(error));return False
         self.notice.set('Gespeichert · Bestätigung der laufenden Traktor-Testkopie wird geprüft…')
         def update():
             try:
-                result=request({'command':'settings','values':{k:values[k] for k in ('enabled','precision','memory_budget_mb','max_active_tracks')}})
+                result=request({'command':'settings','values':{k:values[k] for k in ('enabled','precision','memory_budget_mb','max_active_tracks','render_rate')}})
                 if not result.get('ok'):raise RuntimeError(result.get('error'))
             except (FileNotFoundError,ConnectionError,OSError):pass
             self.events.put(('notice','Einstellungen gespeichert. Die Statuszeile zeigt, ob die laufende Testkopie die Umschaltung bestätigt hat.'))
@@ -143,7 +161,9 @@ class Control:
                 try:state=request({'command':'status'})
                 except OSError:
                     hidden([str(CUDA),str(SCRIPTS/'gpu_service.py'),'serve'],LAB/'logs'/'gpu-service-console.log');state={'phase':'loading'}
-                if state.get('inference_python') and Path(state['inference_python']).resolve()!=CUDA.resolve():
+                desired=read_settings()
+                loaded=state.get('loaded_settings') or state.get('settings')
+                if (state.get('inference_python') and Path(state['inference_python']).resolve()!=CUDA.resolve()) or (loaded and any(loaded.get(k,desired[k])!=desired[k] for k in ('backend','gpu_index','memory_budget_mb'))):
                     # start() already refuses to switch while Traktor is running.
                     request({'command':'shutdown'})
                     for _ in range(100):
@@ -201,6 +221,16 @@ class Control:
                 kind,value=self.events.get_nowait()
                 if kind=='error':self.notice.set(value);messagebox.showerror('Live Stems',value)
                 elif kind=='notice':self.notice.set(value)
+                elif kind=='devices':
+                    previous=self.device_options[self.device.get()]
+                    self.device_options={'Automatisch':{'backend':'auto','gpu_index':0}}
+                    for device in value:
+                        label=device['name'] if device['backend']=='cpu' else f"{device['name']} [{device['gpu_index']}]"
+                        self.device_options[label]={k:device[k] for k in ('backend','gpu_index')}
+                    selected=next((label for label,device in self.device_options.items() if device==previous),None)
+                    if selected is None:
+                        selected=self.device.get();self.device_options[selected]=previous
+                    self.device_combo.configure(values=list(self.device_options));self.device.set(selected)
                 elif kind=='collection':self.collection_label.set(self.describe_collection(value))
                 elif kind=='idle':self.busy=False;self.start_button.configure(state='normal')
                 elif kind=='offline':self.status.set('GPU-Dienst aus · wird beim Start automatisch geladen')
@@ -212,6 +242,7 @@ class Control:
                     for item in self.table.get_children():self.table.delete(item)
                     for identity,job in value.get('jobs',{}).items():
                         total=job.get('total_blocks',0);ready=job.get('ready_blocks',0);progress=f'{ready/total:.0%}' if total else '—'
+                        if job.get('render_audio_seconds_per_second') is not None:progress+=f" · {job['render_audio_seconds_per_second']:.1f}×"
                         self.table.insert('', 'end',iid=identity,values=(Path(job.get('source','')).name,job.get('error') or labels.get(job.get('phase'),job.get('phase')),progress))
         except queue.Empty:pass
         self.root.after(200,self.drain)

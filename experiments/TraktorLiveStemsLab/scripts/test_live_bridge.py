@@ -56,6 +56,20 @@ class LiveBridgeTests(unittest.TestCase):
             delete(ptr,0);self.assertEqual(destroyed,[0])
         other,cache2=self.cache();cache2.publish(0,np.full((4,2,cache2.frames),.7,dtype=np.float32))
         ptr,read,out,left,delete,_=self.reader(other);read(ptr,out);np.testing.assert_allclose(left,.7,rtol=0,atol=1e-7);delete(ptr,0)
+    def test_seek_to_unrendered_middle_plays_original_then_resumes_stems(self):
+        index,cache=self.cache();cache.store_original(np.full((2,cache.frames),.8,dtype=np.float32))
+        cache.publish(0,np.full((4,2,BLOCK*4),.6,dtype=np.float32))
+        ptr,read,out,left,delete,_=self.reader(index)
+        try:
+            read(ptr,out);self.assertAlmostEqual(float(left[500]),.6,places=6)
+            # Needle-search/beatjump beyond the available stem blocks.
+            position=BLOCK*32;C.c_int64.from_address(ptr+0xe0).value=position
+            read(ptr,out);self.assertTrue(np.isfinite(left).all());self.assertAlmostEqual(float(left[500]),.2,places=6)
+            self.assertEqual(cache.requested(),32)
+            cache.publish(position,np.full((4,2,BLOCK*2),.5,dtype=np.float32))
+            C.c_int64.from_address(ptr+0xe0).value=position
+            read(ptr,out);self.assertAlmostEqual(float(left[500]),.5,places=6)
+        finally:delete(ptr,0)
     def test_reader_slots_reuse_after_native_destruction(self):
         index,cache=self.cache(BLOCK*2);cache.publish(0,np.zeros((4,2,cache.frames),dtype=np.float32))
         before=self.dll.LabReaderCount()
