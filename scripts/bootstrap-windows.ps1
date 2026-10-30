@@ -87,10 +87,9 @@ try {
     if ($needsUvReinstall) {
         Write-Host 'Installiere private Python-Verwaltung ...'
         if (Test-Path $uvDir) {
-            Remove-Item -LiteralPath $uvDir -Recurse -Force -ErrorAction SilentlyContinue
-        }
-        if (Test-Path $uvZip) {
-            Remove-Item -LiteralPath $uvZip -Force -ErrorAction SilentlyContinue
+            $resolvedUv = (Resolve-Path -LiteralPath $uvDir).Path
+            if ($resolvedUv -ne [IO.Path]::GetFullPath((Join-Path $base 'uv'))) { throw 'Unerwarteter UV-Reparaturpfad.' }
+            Move-Item -LiteralPath $resolvedUv -Destination ($resolvedUv+'.broken-'+[Guid]::NewGuid().ToString('N'))
         }
         Invoke-WebRequest -UseBasicParsing 'https://github.com/astral-sh/uv/releases/download/0.13.5/uv-x86_64-pc-windows-msvc.zip' -OutFile $uvZip
         if ((Get-FileHash $uvZip -Algorithm SHA256).Hash -ne 'a38b8d1902b7cfbc76b423ba1bb456f623f42064cdc72628b6075b89afd1019a') { throw 'UV-Download: Pruefsumme ungueltig.' }
@@ -108,22 +107,8 @@ try {
             if ($resolved -ne [IO.Path]::GetFullPath((Join-Path $base 'python'))) { throw 'Unerwarteter Reparaturpfad.' }
             Move-Item -LiteralPath $resolved -Destination ($resolved + '.broken-' + [Guid]::NewGuid().ToString('N'))
         }
-        # Delete corrupted managed-python directory if it exists
-        $managedPythonDir = Join-Path $base 'managed-python'
-        if (Test-Path $managedPythonDir) {
-            Write-Host 'Bereinige beschädigte managed-python Installation ...'
-            try {
-                Remove-Item -LiteralPath $managedPythonDir -Recurse -Force -ErrorAction Stop
-            } catch {
-                Write-Host "Warnung: Konnte managed-python nicht vollständig entfernen: $_" -ForegroundColor Yellow
-            }
-        }
-        # Also clear uv cache to avoid stale downloads
-        $uvCacheDir = Join-Path $base 'cache'
-        if (Test-Path $uvCacheDir) {
-            Write-Host 'Bereinige uv Cache ...'
-            Remove-Item -LiteralPath $uvCacheDir -Recurse -Force -ErrorAction SilentlyContinue
-        }
+        # Shared managed Python and cache can be in use by other applications.
+        # Repair this one venv; never recursively clear the shared directories.
         Write-Host 'Erstelle neue Python-Umgebung ...'
         Invoke-Checked $uv @('--no-config','venv','--python','3.11','--managed-python',$pythonDirectory)
         if (-not (Test-PythonEnvironment $pythonDirectory)) { throw 'Python konnte nicht repariert werden. Siehe Einrichtungsprotokoll.' }

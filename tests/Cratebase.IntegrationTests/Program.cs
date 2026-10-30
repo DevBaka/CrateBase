@@ -48,6 +48,8 @@ if(args.Length==3&&args[0] is "--preview-club-media" or "--export-club-media") {
 
 if(args.Contains("--recorder-checks")) { RecorderChecks.Run(); return; }
 if(args.Contains("--history-checks")){await HistoryAnalysisChecks.RunAsync();return;}
+if(args.Contains("--history-library-checks")){HistorySessionChecks.Run();return;}
+if(args.Contains("--history-library-audit")){HistorySessionChecks.Audit();return;}
 if(args.Contains("--history-ui-checks")){HistoryUiChecks.Run(args.Length==3&&args[1]=="--report"?args[2]:null);return;}
 if(args.Contains("--history-player-checks")){HistoryPlayerChecks.Run();return;}
 if(args.Contains("--history-video-checks")){HistoryPlayerChecks.Run(true);return;}

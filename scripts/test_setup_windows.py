@@ -1,4 +1,5 @@
 import tempfile
+import os
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -47,7 +48,7 @@ class InstallerTests(unittest.TestCase):
             (root/'keep.txt').write_text('preserve')
             def simulate(*args,**kwargs):
                 if 'venv' in args:root.mkdir(parents=True)
-            with patch.object(setup,'BASE',base),patch.object(setup,'run',side_effect=simulate) as command:
+            with patch.object(setup,'BASE',base),patch.object(setup,'run',side_effect=simulate) as command,patch.dict(os.environ,{'UV_PYTHON_INSTALL_DIR':'','UV_CACHE_DIR':''}),patch.object(setup.shutil,'rmtree',side_effect=AssertionError('Installer must never recursively delete optional paths')):
                 setup.environment('uv',root,['package==1'],'import package')
                 calls=command.call_args_list
                 self.assertEqual(calls[0].args[0],'uv')

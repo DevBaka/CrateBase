@@ -79,6 +79,7 @@ public sealed partial class SetPlanningView : UserControl, IDisposable
         var tools=new WrapPanel {Orientation=Orientation.Horizontal};
         foreach(var c in new Control[]{_plans,_name,Work("Neues Set",NewAsync),Work("Speichern",SaveAsync),Work("Auswahl anhängen",AppendSelectionAsync),Work("↑",()=>MoveAsync(-1)),Work("↓",()=>MoveAsync(1)),Work("Entfernen",RemoveAsync),Work("Als Playlist speichern",PublishAsync)}.Where(c=>browserQuery==null||c is not Button {Content:"Auswahl anhängen"}))tools.Children.Add(c);
         layout.Children.Add(tools);
+        tools.Children.Add(Work("Session-Histories …",HistoriesAsync));
         _planCancel.Click+=(_,_)=>_job?.Cancel();tools.Children.Add(_planCancel);
         _plans.ItemTemplate=new FuncDataTemplate<SetPlan>((p,_)=>new TextBlock {Text=p?.Name});
         _plans.SelectionChanged+=async(_,_)=>{if(!_rebuilding&&_plans.SelectedItem is SetPlan plan)await Run(async()=>{await SaveCurrentAsync();_plan=plan;RefreshPicker();await LoadRowsAsync();});};
@@ -164,7 +165,7 @@ public sealed partial class SetPlanningView : UserControl, IDisposable
         {
             var entry=_plan.Entries[i];tracks.TryGetValue(entry.TrackId,out var track);
             var next=i+1<_plan.Entries.Count?tracks.GetValueOrDefault(_plan.Entries[i+1].TrackId):null;
-            _rows.Add(new(i+1,entry,track,track!=null&&next!=null?ClubSetPlanner.Assess(track,next,Options()).Explanation:"—"));
+            _rows.Add(new(i+1,entry,track,(track!=null&&next!=null?ClubSetPlanner.Assess(track,next,Options()).Explanation:"—")+(entry.Note.Length>0?" · "+entry.Note:"")));
         }
         _table.SelectedIndex=_rows.Count>0?Math.Min(index,_rows.Count-1):-1;_rebuilding=false;await LoadDecksAsync();
         _details.Text=$"{_rows.Count} Tracks · ungekürzte Laufzeit {TimeSpan.FromMilliseconds(_rows.Sum(r=>(long)(r.Track?.DurationMs??0))).TotalMinutes:0} min. Tracks links auswählen und ins Set ziehen oder doppelklicken. Vorschläge verwenden die Quelle und Suche im Browser links.";

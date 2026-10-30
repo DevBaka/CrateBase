@@ -27,6 +27,9 @@ def main():
         raise RuntimeError('Close the existing Traktor process before starting the isolated lab')
     collection=ensure_collection(lab,lambda:any((p.info['name'] or '').lower()=='traktor pro 4.exe' for p in psutil.process_iter(['name'])))
     print('Collection-Abgleich vor dem Start:',sync_collection(lab,lambda:any((p.info['name'] or '').lower()=='traktor pro 4.exe' for p in psutil.process_iter(['name']))),flush=True)
+    from history_library import import_histories
+    try:print('History-Bibliothek:',import_histories(lab,lambda:any((p.info['name'] or '').lower()=='traktor pro 4.exe' for p in psutil.process_iter(['name']))),flush=True)
+    except Exception as error:print('History-Import übersprungen; Traktor startet mit bisheriger Collection:',str(error),flush=True)
     print('Private Traktor-Collection:',collection['tracks'],'Tracks,',collection['playlists'],'Playlisten; Quelle:',collection['source'],flush=True)
     baseline=json.loads((lab/'original-data-baseline.json').read_text(encoding='utf-8'))
     def original_hash(path):

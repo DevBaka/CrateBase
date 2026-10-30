@@ -39,16 +39,10 @@ def environment(uv, folder, requirements, probe, index=None):
             backup=resolved.with_name(resolved.name+'.broken-'+uuid.uuid4().hex)
             print('Repariere Python-Laufzeit; bisherige Dateien gesichert unter '+str(backup),flush=True)
             resolved.rename(backup)
-        # Clean up corrupted managed-python directory if it exists
-        managed_python = Path(os.environ.get('UV_PYTHON_INSTALL_DIR', ''))
-        if managed_python.exists():
-            print('Bereinige beschädigte managed-python Installation ...', flush=True)
-            shutil.rmtree(managed_python, ignore_errors=True)
-        # Also clean up uv cache
-        uv_cache = Path(os.environ.get('UV_CACHE_DIR', ''))
-        if uv_cache.exists():
-            print('Bereinige uv Cache ...', flush=True)
-            shutil.rmtree(uv_cache, ignore_errors=True)
+        # Never delete paths obtained from optional environment variables.
+        # Path('') is the current working directory, NOT an absent cache.
+        # uv repairs/downloads its managed interpreter when creating this venv;
+        # other environments can still be using the shared interpreter/cache.
         print(f'Erstelle Python-Umgebung in {folder} ...', flush=True)
         run(uv, '--no-config', 'venv', '--python', '3.11', '--managed-python', folder)
         run(python, '-I', '-c', 'import sys, encodings; assert sys.version_info[:2] == (3,11)', capture=True)
