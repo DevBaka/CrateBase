@@ -65,12 +65,36 @@ try {
         if ($install.ExitCode -eq 3010) { throw 'VC++ wurde installiert. Windows bitte neu starten und Starter erneut ausfuehren.' }
     }
     $uv = Join-Path $base 'uv\uv.exe'
+    $uvDir = Join-Path $base 'uv'
+    $uvZip = Join-Path $base 'uv.zip'
+    $needsUvReinstall = $false
     if (-not (Test-Path $uv)) {
+        $needsUvReinstall = $true
+    } else {
+        # Test if uv is functional
+        try {
+            $ErrorActionPreference = 'Continue'
+            & $uv --version 2>&1 | Out-Null
+            if ($LASTEXITCODE -ne 0) {
+                Write-Host 'UV ist beschädigt, reinstalliere ...' -ForegroundColor Yellow
+                $needsUvReinstall = $true
+            }
+        } catch {
+            Write-Host 'UV Test fehlgeschlagen, reinstalliere ...' -ForegroundColor Yellow
+            $needsUvReinstall = $true
+        }
+    }
+    if ($needsUvReinstall) {
         Write-Host 'Installiere private Python-Verwaltung ...'
-        $zip = Join-Path $base 'uv.zip'
-        Invoke-WebRequest -UseBasicParsing 'https://github.com/astral-sh/uv/releases/download/0.13.5/uv-x86_64-pc-windows-msvc.zip' -OutFile $zip
-        if ((Get-FileHash $zip -Algorithm SHA256).Hash -ne 'a38b8d1902b7cfbc76b423ba1bb456f623f42064cdc72628b6075b89afd1019a') { throw 'UV-Download: Pruefsumme ungueltig.' }
-        Expand-Archive $zip (Join-Path $base 'uv') -Force
+        if (Test-Path $uvDir) {
+            Remove-Item -LiteralPath $uvDir -Recurse -Force -ErrorAction SilentlyContinue
+        }
+        if (Test-Path $uvZip) {
+            Remove-Item -LiteralPath $uvZip -Force -ErrorAction SilentlyContinue
+        }
+        Invoke-WebRequest -UseBasicParsing 'https://github.com/astral-sh/uv/releases/download/0.13.5/uv-x86_64-pc-windows-msvc.zip' -OutFile $uvZip
+        if ((Get-FileHash $uvZip -Algorithm SHA256).Hash -ne 'a38b8d1902b7cfbc76b423ba1bb456f623f42064cdc72628b6075b89afd1019a') { throw 'UV-Download: Pruefsumme ungueltig.' }
+        Expand-Archive $uvZip $uvDir -Force
     }
     $env:UV_PYTHON_INSTALL_DIR = Join-Path $base 'managed-python'
     $env:UV_CACHE_DIR = Join-Path $base 'cache'

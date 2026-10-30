@@ -29,7 +29,8 @@ def environment(uv, folder, requirements, probe, index=None):
             try:
                 run(python, '-I', '-c', 'import sys, encodings; assert sys.version_info[:2] == (3,11)', capture=True)
                 healthy=True
-            except (OSError,subprocess.CalledProcessError):pass
+            except (OSError,subprocess.CalledProcessError) as e:
+                print(f'Python-Check fehlgeschlagen: {e}', flush=True)
     if not healthy:
         if folder.exists():
             resolved=folder.resolve()
@@ -43,6 +44,12 @@ def environment(uv, folder, requirements, probe, index=None):
         if managed_python.exists():
             print('Bereinige beschädigte managed-python Installation ...', flush=True)
             shutil.rmtree(managed_python, ignore_errors=True)
+        # Also clean up uv cache
+        uv_cache = Path(os.environ.get('UV_CACHE_DIR', ''))
+        if uv_cache.exists():
+            print('Bereinige uv Cache ...', flush=True)
+            shutil.rmtree(uv_cache, ignore_errors=True)
+        print(f'Erstelle Python-Umgebung in {folder} ...', flush=True)
         run(uv, '--no-config', 'venv', '--python', '3.11', '--managed-python', folder)
         run(python, '-I', '-c', 'import sys, encodings; assert sys.version_info[:2] == (3,11)', capture=True)
     if stamp.exists() and stamp.read_text() == identity:
