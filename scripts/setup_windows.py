@@ -126,7 +126,12 @@ def main():
         temporary.replace(dll)
     # Validate the actual accelerator before declaring setup complete.
     os.environ['TORCH_HOME'] = str(LAB / 'models')
-    run(inference, SCRIPTS / 'check_stem_backend.py', '--backend', backend)
+    # Suppress UserWarnings during backend check (e.g., DirectML fallback warnings)
+    try:
+        run(inference, '-W', 'ignore::UserWarning', SCRIPTS / 'check_stem_backend.py', '--backend', backend)
+    except subprocess.CalledProcessError:
+        # If warning suppression fails, try without it
+        run(inference, SCRIPTS / 'check_stem_backend.py', '--backend', backend)
     manifest = {'backend': backend, 'inference_python': str(inference), 'native_bridge': str(dll)}
     temporary = LAB / 'runtime-install.partial'
     temporary.write_text(json.dumps(manifest, indent=2), encoding='utf-8')

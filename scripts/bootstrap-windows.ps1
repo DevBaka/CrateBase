@@ -37,8 +37,12 @@ function Test-PythonEnvironment([string]$Directory) {
     $previousPreference = $ErrorActionPreference
     try {
         $ErrorActionPreference = 'Continue'
-        & (Join-Path $Directory 'Scripts\python.exe') -I -c 'import sys,encodings; assert sys.version_info[:2] == (3,11)' *> $null
-        return ($LASTEXITCODE -eq 0)
+        $output = & (Join-Path $Directory 'Scripts\python.exe') -I -c 'import sys,encodings; assert sys.version_info[:2] == (3,11)' 2>&1
+        $exitCode = $LASTEXITCODE
+        if ($exitCode -ne 0) {
+            Write-Host "Python-Test fehlgeschlagen mit Exitcode $exitCode: $output" -ForegroundColor Yellow
+        }
+        return ($exitCode -eq 0)
     } finally { $ErrorActionPreference = $previousPreference }
 }
 try {
@@ -72,7 +76,8 @@ try {
     $env:UV_CACHE_DIR = Join-Path $base 'cache'
     $python = Join-Path $base 'python\Scripts\python.exe'
     $pythonDirectory = Join-Path $base 'python'
-    if (-not (Test-PythonEnvironment $pythonDirectory)) {
+    $needsReinstall = -not (Test-PythonEnvironment $pythonDirectory)
+    if ($needsReinstall) {
         if (Test-Path $pythonDirectory) {
             Write-Host 'Repariere unvollstaendige oder von einem anderen PC kopierte Python-Laufzeit ...'
             $resolved = (Resolve-Path -LiteralPath $pythonDirectory).Path
@@ -83,8 +88,19 @@ try {
         $managedPythonDir = Join-Path $base 'managed-python'
         if (Test-Path $managedPythonDir) {
             Write-Host 'Bereinige beschädigte managed-python Installation ...'
-            Remove-Item -LiteralPath $managedPythonDir -Recurse -Force -ErrorAction SilentlyContinue
+            try {
+                Remove-Item -LiteralPath $managedPythonDir -Recurse -Force -ErrorAction Stop
+            } catch {
+                Write-Host "Warnung: Konnte managed-python nicht vollständig entfernen: $_" -ForegroundColor Yellow
+            }
         }
+        # Also clear uv cache to avoid stale downloads
+        $uvCacheDir = Join-Path $base 'cache'
+        if (Test-Path $uvCacheDir) {
+            Write-Host 'Bereinige uv Cache ...'
+            Remove-Item -LiteralPath $uvCacheDir -Recurse -Force -ErrorAction SilentlyContinue
+        }
+        Write-Host 'Erstelle neue Python-Umgebung ...'
         Invoke-Checked $uv @('--no-config','venv','--python','3.11','--managed-python',$pythonDirectory)
         if (-not (Test-PythonEnvironment $pythonDirectory)) { throw 'Python konnte nicht repariert werden. Siehe Einrichtungsprotokoll.' }
     }
