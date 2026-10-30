@@ -40,7 +40,7 @@ function Test-PythonEnvironment([string]$Directory) {
         $output = & (Join-Path $Directory 'Scripts\python.exe') -I -c 'import sys,encodings; assert sys.version_info[:2] == (3,11)' 2>&1
         $exitCode = $LASTEXITCODE
         if ($exitCode -ne 0) {
-            Write-Host "Python-Test fehlgeschlagen mit Exitcode $exitCode: $output" -ForegroundColor Yellow
+            Write-Host "Python-Test fehlgeschlagen mit Exitcode ${exitCode}: ${output}" -ForegroundColor Yellow
         }
         return ($exitCode -eq 0)
     } finally { $ErrorActionPreference = $previousPreference }
