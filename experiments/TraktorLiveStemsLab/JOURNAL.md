@@ -82,3 +82,10 @@
 - Migrated the private profile by copying it to Documents/Native Instruments/Traktor 4.5 Cratebase Edition. The former private profile remains available as a backup; installed version directories were not replaced.
 - Centralized collection/profile lookup, persisted the new root in sandbox.json, updated only private redirected registry RootDirectory and copied TSI paths. Sandbox path rewriting excludes the edition folder from broad NI redirection and maps original/legacy Traktor paths to the edition.
 - Verified byte-identical collection copy, TSI parsing/path replacement, version-specific private registry value and actual JavaScript path rewriting for original, legacy, edition and unrelated music paths. Existing collection tests pass. Refreshed the existing control panel process to load the changed path.
+
+## 2026-10-30 — favorite labels, icon gutter and native MIDI range
+
+- Native primary buttons are SwitchControlEx (0x1f8). The text layout has a separate font resource reference at +0xf8; copying it fixes missing names. Four text insets at +0x168 require the rendering flags at +0x178 too; copying all 24 POD bytes preserves the icon gutter and single-line clipping. Verified all visible labels after a native full-window redraw, including long playlist names.
+- Patched only the verified descriptor initializer's max values 11 -> 23 and label loop 12 -> 24. The 25 enum labels include the default -1 plus Favorites 1–24. Native runtime maps and the actual Controller Manager Append dropdown both show Favorite 24.
+- Added the native property-change callback adapter for 0xd80/0xd81: extended zero-based values 12–23 run the original action against second-bank slots 0–11. No extended index reaches the inline twelve-slot array. Physical MIDI input remains untested (n/a port in the visible Generic MIDI configuration).
+- Standard live-stem starter now includes the favorites extension. Existing target paths and MIDI bindings retained; dropdown was dismissed without changing the selected user's binding value.

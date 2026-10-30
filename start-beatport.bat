@@ -1,3 +1,7 @@
 @echo off
-cd /d "%~dp0"
-dotnet run --project src\Cratebase.Beatport.App\Cratebase.Beatport.App.csproj -c Release
+setlocal
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\bootstrap-windows.ps1" -Target beatport %*
+if errorlevel 1 (
+  pause
+  exit /b 1
+)

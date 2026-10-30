@@ -8,11 +8,13 @@ import psutil
 from add_live_tracks import prepare,atomic_json,lab_root
 from gpu_service import request
 from live_settings import read as read_live_settings,save as save_live_settings
-from collection_store import ensure_collection,import_collection,default_source,read_state,private_path
+from collection_store import ensure_collection,import_collection,default_source,read_state,private_path,sync_collection
+from profile_lock import hold as hold_profile
 from sync_control import Runtime as SyncRuntime
+from runtime_install import inference_python,read as read_runtime_install
 
 LAB=lab_root();SCRIPTS=Path(__file__).resolve().parent
-PYTHON=LAB/'python'/'Scripts'/'python.exe';CUDA=LAB/'cuda-python'/'Scripts'/'python.exe'
+PYTHON=LAB/'python'/'Scripts'/'python.exe';CUDA=inference_python(LAB)
 PRIVATE_COLLECTION=private_path(LAB)
 SETTINGS=LAB/'live-stems-settings.json'
 
@@ -38,14 +40,22 @@ def prepare_launch_settings():
 
 class Control:
     def __init__(self):
-        self.root=tk.Tk();self.root.title('Cratebase · Traktor Live Stems (Experiment)');self.root.geometry('900x830');self.root.minsize(860,780)
+        self.root=tk.Tk();self.root.title('Cratebase · Traktor Live Stems (Experiment)')
+        self.root.geometry(f'{min(900,max(760,self.root.winfo_screenwidth()-80))}x{min(900,max(500,self.root.winfo_screenheight()-100))}');self.root.minsize(760,500)
         self.events=queue.Queue();self.busy=False;self.launcher=None;self.started=None;self.start_reported=False
         self.sync_runtime=SyncRuntime(LAB)
         style=ttk.Style();style.theme_use('clam');style.configure('.',background='#20242b',foreground='#e5e9f0',font=('Segoe UI',10));style.configure('Treeview',background='#171a20',fieldbackground='#171a20',rowheight=29);style.map('Treeview',background=[('selected','#355a77')]);style.map('TCombobox',fieldbackground=[('readonly','#343b46')],foreground=[('readonly','#e5e9f0')]);self.root.configure(bg='#20242b')
         style.map('TCheckbutton',background=[('active','#303742')],foreground=[('active','#e5e9f0')])
-        outer=ttk.Frame(self.root,padding=18);outer.pack(fill='both',expand=True)
-        ttk.Label(outer,text='Traktor · Live GPU Stems',font=('Segoe UI',20,'bold')).pack(anchor='w')
-        ttk.Label(outer,text='Private Testkopie · Traktor Pro 4.5.1 · RTX 3060 Ti',foreground='#87c8ff').pack(anchor='w',pady=(2,10))
+        # Handheld screens at 125–150% scaling need access to controls below
+        # the fold rather than a window whose minimum height exceeds the screen.
+        canvas=tk.Canvas(self.root,bg='#20242b',highlightthickness=0)
+        scrollbar=ttk.Scrollbar(self.root,orient='vertical',command=canvas.yview)
+        canvas.configure(yscrollcommand=scrollbar.set);scrollbar.pack(side='right',fill='y');canvas.pack(side='left',fill='both',expand=True)
+        outer=ttk.Frame(canvas,padding=18);window=canvas.create_window((0,0),window=outer,anchor='nw')
+        outer.bind('<Configure>',lambda event:canvas.configure(scrollregion=canvas.bbox('all')))
+        canvas.bind('<Configure>',lambda event:canvas.itemconfigure(window,width=event.width))
+        ttk.Label(outer,text='Traktor · Live Stems',font=('Segoe UI',20,'bold')).pack(anchor='w')
+        ttk.Label(outer,text='Private Kopie · Traktor Pro 4.5.1 · GPU/CPU wird automatisch erkannt',foreground='#87c8ff').pack(anchor='w',pady=(2,10))
         ttk.Label(outer,text='Track in ein Stem-Deck laden → GPU trennt Drums, Bass, Other und Vocals.\nBis Daten bereitstehen, bleibt der Originalmix verfügbar. Traktor benötigt beim Start bis zu zwei Minuten.',wraplength=800).pack(anchor='w')
         bar=ttk.Frame(outer);bar.pack(fill='x',pady=14)
         self.start_button=ttk.Button(bar,text='Traktor mit Live Stems starten',command=self.start);self.start_button.pack(side='left')
@@ -57,6 +67,9 @@ class Control:
         actions=ttk.Frame(collection_bar);actions.pack(anchor='w',pady=(7,0))
         ttk.Button(actions,text='Collection wählen…',command=lambda:self.import_library(True)).pack(side='left')
         ttk.Button(actions,text='Original erneut übernehmen',command=lambda:self.import_library(False)).pack(side='left',padx=8)
+        ttk.Button(actions,text='Edition ins Original übernehmen',command=self.export_library).pack(side='left')
+        self.collection_sync_status=tk.StringVar(value='Collection-Abgleich: wartet auf geschlossene Traktor-Instanzen')
+        ttk.Label(collection_bar,textvariable=self.collection_sync_status,wraplength=810).pack(anchor='w',pady=(5,0))
         values=read_settings();self.enabled=tk.BooleanVar(value=values.get('enabled',True))
         settings=ttk.LabelFrame(outer,text='GPU und Leistung',padding=10);settings.pack(fill='x')
         ttk.Checkbutton(settings,text='Live Stems aktivieren · normale Tracks automatisch als Stems laden',variable=self.enabled,command=self.save).grid(row=0,column=0,columnspan=7,sticky='w',pady=(0,10))
@@ -64,7 +77,8 @@ class Control:
         for col,(label,variable,options) in enumerate((('Genauigkeit',self.precision,['fp16','fp32']),('GPU-Budget (MB)',self.budget,['2048','3072','4096','5120','6144']),('Gleichzeitige Aufträge',self.limit,['1','2','3','4']))):
             ttk.Label(settings,text=label).grid(row=1,column=col*2,padx=(0,7));ttk.Combobox(settings,textvariable=variable,values=options,state='readonly',width=9).grid(row=1,column=col*2+1,padx=(0,18))
         ttk.Button(settings,text='Speichern',command=self.save).grid(row=1,column=6)
-        ttk.Label(settings,text='FP16 ist schneller. Ein geändertes Speicherbudget gilt nach Neustart des GPU-Dienstes.',foreground='#b3bbc8').grid(row=2,column=0,columnspan=7,sticky='w',pady=(8,0))
+        backend=read_runtime_install(LAB).get('backend','cuda')
+        ttk.Label(settings,text=f'Backend: {backend.upper()} · FP16 und GPU-Budget gelten nur für CUDA. DirectML nutzt FP32 und den Windows-Speichermanager.',foreground='#b3bbc8',wraplength=800).grid(row=2,column=0,columnspan=7,sticky='w',pady=(8,0))
         self.status=tk.StringVar(value='GPU-Dienst wird geprüft…');ttk.Label(outer,textvariable=self.status,wraplength=820).pack(fill='x',pady=12)
         self.runtime_status=tk.StringVar(value='Traktor: noch keine aktuelle Bestätigung')
         ttk.Label(outer,textvariable=self.runtime_status,foreground='#87c8ff',wraplength=820).pack(fill='x',pady=(0,8))
@@ -113,6 +127,12 @@ class Control:
             self.events.put(('notice','Einstellungen gespeichert. Die Statuszeile zeigt, ob die laufende Testkopie die Umschaltung bestätigt hat.'))
         self.work(update)
         return True
+    def export_library(self):
+        if running():messagebox.showinfo('Collection übernehmen','Traktor bitte zuerst schließen.');return
+        def export():
+            with hold_profile(LAB):result=sync_collection(LAB,lambda:bool(running()),prefer='edition')
+            self.events.put(('notice','Collection-Abgleich: '+result['status']+'. Der vorherige Dateistand ist gesichert.'))
+        self.work(export)
     def start(self):
         if self.busy:return
         if running():messagebox.showinfo('Traktor läuft bereits','Bitte Traktor zuerst schließen. Die Live-Erweiterung wird beim Start der privaten Testkopie geladen.');return
@@ -122,6 +142,15 @@ class Control:
             try:
                 try:state=request({'command':'status'})
                 except OSError:
+                    hidden([str(CUDA),str(SCRIPTS/'gpu_service.py'),'serve'],LAB/'logs'/'gpu-service-console.log');state={'phase':'loading'}
+                if state.get('inference_python') and Path(state['inference_python']).resolve()!=CUDA.resolve():
+                    # start() already refuses to switch while Traktor is running.
+                    request({'command':'shutdown'})
+                    for _ in range(100):
+                        time.sleep(.1)
+                        try:request({'command':'status'})
+                        except OSError:break
+                    else:raise RuntimeError('Alter GPU-Dienst beendet sich nicht. Bitte schließen und erneut versuchen.')
                     hidden([str(CUDA),str(SCRIPTS/'gpu_service.py'),'serve'],LAB/'logs'/'gpu-service-console.log');state={'phase':'loading'}
                 deadline=time.monotonic()+120
                 while state.get('phase')!='ready':
@@ -133,8 +162,8 @@ class Control:
                 if running():raise RuntimeError('Traktor wurde zwischenzeitlich gestartet. Bitte zuerst schließen.')
                 self.events.put(('notice','Traktor-Collection wird vorbereitet…'))
                 self.events.put(('collection',ensure_collection(LAB,lambda:bool(running()))))
-                prepare_launch_settings()
-                self.launcher=hidden([str(PYTHON),str(SCRIPTS/'launch_lab.py'),'--live'],LAB/'logs'/'live-launch-console.log');self.started=time.monotonic();self.start_reported=False
+                with hold_profile(LAB):prepare_launch_settings()
+                self.launcher=hidden([str(PYTHON),str(SCRIPTS/'launch_lab.py'),'--live','--favorites'],LAB/'logs'/'live-launch-console.log');self.started=time.monotonic();self.start_reported=False
                 self.events.put(('notice','Traktor wird gestartet. Bitte bis zu zwei Minuten warten, bis die Vollbildansicht geladen ist.'))
             finally:self.events.put(('idle',None))
         self.work(launch)
@@ -166,6 +195,7 @@ class Control:
             except OSError:self.events.put(('offline',None))
             time.sleep(2)
     def drain(self):
+        self.collection_sync_status.set(self.sync_runtime.collection_status)
         try:
             while True:
                 kind,value=self.events.get_nowait()

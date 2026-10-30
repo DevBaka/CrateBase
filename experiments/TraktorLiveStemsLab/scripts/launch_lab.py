@@ -13,6 +13,8 @@ from preparation_dispatcher import PreparationDispatcher
 from dynamic_tracks import prepare_dynamic
 from collection_store import ensure_collection,sync_collection
 import favorites_store
+from runtime_install import native_bridge
+from profile_lock import hold as hold_profile
 
 
 def main():
@@ -27,7 +29,10 @@ def main():
     print('Collection-Abgleich vor dem Start:',sync_collection(lab,lambda:any((p.info['name'] or '').lower()=='traktor pro 4.exe' for p in psutil.process_iter(['name']))),flush=True)
     print('Private Traktor-Collection:',collection['tracks'],'Tracks,',collection['playlists'],'Playlisten; Quelle:',collection['source'],flush=True)
     baseline=json.loads((lab/'original-data-baseline.json').read_text(encoding='utf-8'))
-    session_hashes={item['path']:hashlib.sha256(Path(item['path']).read_bytes()).hexdigest() for item in baseline}
+    def original_hash(path):
+        try:return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+        except FileNotFoundError:return None
+    session_hashes={item['path']:original_hash(item['path']) for item in baseline}
     # Validate persisted inputs before spawning a suspended copy.
     manifest=json.loads((lab/'live-tracks.json').read_text(encoding='utf-8')) if args.live else []
     settings_file=lab/'live-stems-settings.json'
@@ -84,7 +89,7 @@ def main():
     extra=None
     if args.trace:extra=session.create_script(args.trace.read_text(encoding="utf-8"));extra.on("message",message);extra.load()
     if args.live:
-        live_config={'tracks':manifest,'enabled':live_settings.get('enabled',True),'dynamic_loading':True,'dll':str(Path(__file__).resolve().parent.parent/'native'/'build'/'live_bridge_v4.dll')}
+        live_config={'tracks':manifest,'enabled':live_settings.get('enabled',True),'dynamic_loading':True,'dll':str(native_bridge(lab))}
         extra=session.create_script(Path(__file__).with_name('live_session.js').read_text(encoding='utf-8').replace('LIVE_CONFIG',json.dumps(live_config)))
         extra.on('message',message)
         try:extra.load()
@@ -126,18 +131,22 @@ def main():
             time.sleep(.5)
     except KeyboardInterrupt:pass
     finally:
-        try:device.kill(pid)
-        except (frida.ProcessNotFoundError,frida.InvalidOperationError):pass
+        if not session.is_detached:
+            try:device.kill(pid)
+            except (frida.ProcessNotFoundError,frida.InvalidOperationError):pass
+        try:psutil.Process(pid).wait(timeout=15)
+        except (psutil.NoSuchProcess,psutil.TimeoutExpired):pass
         try:session.detach()
         except frida.InvalidOperationError:pass
         output.close()
         pool.shutdown(wait=False,cancel_futures=True)
         preparation.close()
         for path,expected_hash in session_hashes.items():
-            current=hashlib.sha256(Path(path).read_bytes()).hexdigest()
+            current=original_hash(path)
             if current!=expected_hash:raise RuntimeError("Original data changed during lab session: "+path)
         print("Verified: original collection and settings hashes unchanged during playback.",flush=True)
         print('Collection-Abgleich nach dem Schließen:',sync_collection(lab,lambda:any((p.info['name'] or '').lower()=='traktor pro 4.exe' for p in psutil.process_iter(['name']))),flush=True)
 
 
-if __name__=="__main__":main()
+if __name__=="__main__":
+    with hold_profile(Path(os.environ['LOCALAPPDATA'])/'Cratebase/traktor-lab',timeout=30):main()

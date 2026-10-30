@@ -1,13 +1,14 @@
 // Private Traktor 4.5.1: two visible rows of twelve native NGL controls.
 // Keep the legacy object's twelve inline slots intact. A second owned bank is
 // presented to legacy UI handlers only for the duration of a synchronous event.
-// No audio callbacks or executable bytes are modified by this extension.
+// No audio callbacks or on-disk executable are modified by this extension.
 'use strict';
 const config=FAVORITES_CONFIG;
 const base=Process.getModuleByName('Traktor Pro 4.exe').base;
 const native=(rva,result,args)=>new NativeFunction(base.add(rva),result,args);
 const allocate=native(0x2a2b9b0,'pointer',['uint64']);
 const makeSwitch=native(0x1dd83e0,'pointer',['pointer']);
+const makeFavorite=native(0xaa3ea0,'pointer',['pointer']);
 const makeLabel=native(0x1dd6440,'pointer',['pointer']);
 const addChild=native(0x1e0d330,'void',['pointer','pointer']);
 const findChild=native(0x1e0fea0,'pointer',['pointer','int']);
@@ -20,6 +21,17 @@ const updateSlot=native(0xa92e10,'void',['pointer','uint','pointer']);
 const openPath=native(0xa914e0,'void',['pointer','pointer','char','char','char']);
 const hitTest=native(0x1e164c0,'pointer',['pointer','pointer','char']);
 const stopTimer=native(0xd1be10,'void',['pointer']);
+const actionId=native(0xd1fe50,'int',['pointer']);
+// These three instructions belong solely to the dynamically allocated MIDI
+// parameter descriptors/name maps, not to the legacy inline favorite array.
+// Verify the entire set before touching any instruction in the private process.
+const midiPatches=[
+ {rva:0xa5f92f,before:[0xc7,0x44,0x24,0x54,0x0b,0,0,0],after:[0xc7,0x44,0x24,0x54,0x17,0,0,0]},
+ {rva:0xa5f9bb,before:[0xc7,0x44,0x24,0x6c,0x0b,0,0,0],after:[0xc7,0x44,0x24,0x6c,0x17,0,0,0]},
+ {rva:0xa5fef0,before:[0x41,0x83,0xfc,0x0c],after:[0x41,0x83,0xfc,0x18]}
+];
+for(const patch of midiPatches){const bytes=new Uint8Array(base.add(patch.rva).readByteArray(patch.before.length));if(!patch.before.every((value,i)=>bytes[i]===value))throw Error('MIDI-Descriptor stimmt nicht mit Traktor 4.5.1 überein: '+patch.rva.toString(16));}
+for(const patch of midiPatches)Memory.patchCode(base.add(patch.rva),patch.after.length,code=>code.writeByteArray(patch.after));
 const legacyIds={primary:[31,32,33,34,35,36,37,38,39,40,41,42],
  icon:[1,4,6,8,10,12,14,16,18,20,23,25],shade:[2,3,5,7,9,11,13,15,17,19,22,24]};
 const states=new Map(),keep=[],scopes=new Map();
@@ -70,6 +82,7 @@ function initialize(form){
    const i=state.ids.primary.indexOf(id);
    if(i<0||payload.add(8).readPointer().isNull())return;
    const path=stringValue(state.bank.add(i*40));if(!path)return;
+   send({type:'favorites_open',slot:i+13});
    const text=stringObject(path);try{openPath(manager(form),text,1,0,0);}finally{destroyString(text);}
   }catch(error){send({type:'favorites_error',message:String(error)});}
  },'void',['pointer','int','int','pointer']);
@@ -77,17 +90,22 @@ function initialize(form){
  for(let i=0;i<12;i++)for(const role of ['shade','primary','icon']){
   // The legacy decoration IDs are Text/Label controls too: native updates
   // access fields +0xe8/+0xec. A ShadeAreaControl is smaller and incompatible.
-  const child=role==='icon'?makeSwitch(allocate(0x1d8)):makeLabel(allocate(0x180));
+  const child=role==='primary'?makeFavorite(allocate(0x1f8)):role==='icon'?makeSwitch(allocate(0x1d8)):makeLabel(allocate(0x180));
   if(child.isNull())throw Error('Favoriten-Bedienelement konnte nicht angelegt werden');
-  // Native MouseTrapControl<LabelControl> has exactly the same 0x180-byte
-  // layout as LabelControl (verified constructor/destructor); its event
-  // override makes the text region a full hit-test target, like the old slots.
-  if(role==='primary')child.writePointer(base.add(0x318ce08));
+  // Primary favorites are SwitchControlEx (0x1f8), not plain labels. Use
+  // their real constructor so text drawing, clicks and extra fields match.
   // NGL's text-style prefix contains the resource name/id and borrowed font
   // pointer, followed by mode/color. Its destructor does not own/free these
   // resources. Copy only that prefix, never the owning text/layout objects.
   const prototype=findChild(form,legacyIds[role][i]);
   Memory.copy(child.add(0xd0),prototype.add(0xd0),32);
+  // TextLayout has its own font resource reference, distinct from the image
+  // resource above. Copy its name/id only, not the owned shaping/text cache.
+  Memory.copy(child.add(0xf8),prototype.add(0xf8),16);
+  // Four POD text insets plus the eight rendering flags that enable those
+  // insets and single-line clipping. Insets alone are ignored by a default
+  // SwitchControlEx, producing text on top of the neighboring icon.
+  Memory.copy(child.add(0x168),prototype.add(0x168),24);
   child.add(0x80).writeU32(prototype.add(0x80).readU32());
   const id=12000+i*3+['primary','icon','shade'].indexOf(role);state.controls[role].push(child);state.ids[role].push(id);child.add(0x58).writeS32(id);
   addChild(form,child);
@@ -97,8 +115,8 @@ function initialize(form){
   if(role==='icon'){const label=stringObject(String(i+13));try{setText(child,label);}finally{destroyString(label);}}
  }
  states.set(form.toString(),state);
- bank(state,()=>{for(let i=0;i<12;i++){const text=stringObject((config.slots||[])[i]||'');try{updateSlot(form,i,text);}finally{destroyString(text);}}});
- layout(state);send({type:'favorites_ready',slots:24,rows:2});
+ bank(state,()=>{for(let i=0;i<12;i++){const value=(config.slots||[])[i]||'',text=stringObject(value);try{updateSlot(form,i,text);}finally{destroyString(text);}if(!value){const placeholder=stringObject((i+13)+' · Frei');try{setText(state.controls.primary[i],placeholder);}finally{destroyString(placeholder);}}}});
+ layout(state);send({type:'favorites_ready',slots:24,rows:2,form:form.toString()});
 }
 // Scoped child lookup lets native drag/drop and label updates address the new
 // controls without changing any legacy IDs or the first twelve saved targets.
@@ -125,4 +143,20 @@ dropOriginal=new NativeFunction(Interceptor.replaceFast(base.add(0xa8ba80),drop)
 let rebuildOriginal;
 const rebuild=new NativeCallback((root,form)=>{if(active())return;rebuildOriginal(root,form);},'void',['pointer','pointer']);
 rebuildOriginal=new NativeFunction(Interceptor.replaceFast(base.add(0xa8b1b0),rebuild),'void',['pointer','pointer']);keep.push(rebuild);
+// The MIDI/keyboard properties are 0-based (12..23 = visible slots 13..24).
+// Hand a local 0..11 value to the original action while exposing the owned
+// second bank. Never pass an extended index to Traktor's twelve-slot array.
+let mappingOriginal;
+const mapping=new NativeCallback((listener,property,context,event)=>{
+ const state=states.get(listener.sub(0x2b0).toString());
+ if(!state||event.isNull())return mappingOriginal(listener,property,context,event);
+ const value=event.add(4).readS32();
+ if(event.readS32()!==1||value<12||value>=24)return mappingOriginal(listener,property,context,event);
+ const action=actionId(property);
+ if(action!==0xd80&&action!==0xd81)return mappingOriginal(listener,property,context,event);
+ const local=Memory.alloc(12);Memory.copy(local,event,12);local.add(4).writeS32(value-12);
+ send({type:'favorites_mapping',action:action===0xd81?'append':'select',slot:value+1});
+ return bank(state,()=>mappingOriginal(listener,property,context,local));
+},'void',['pointer','pointer','pointer','pointer']);
+mappingOriginal=new NativeFunction(Interceptor.replaceFast(base.add(0xa80410),mapping),'void',['pointer','pointer','pointer','pointer']);keep.push(mapping);
 send({type:'favorites_extension_loaded'});

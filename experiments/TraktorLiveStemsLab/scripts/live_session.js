@@ -31,13 +31,26 @@ function pathOf(p){try{const n=p.add(16).readU64().toNumber(),cap=p.add(24).read
 // Never acquire Traktor's URI lock from a getter: some callers already own it.
 // Take a bounded read-only snapshot instead; abandon the lookup if its vector moves.
 const getUris=new NativeFunction(base.add(0x4fe290),'pointer',[]);
+let uriManager=ptr(0),writingCollection=false;
+// Resolve the manager off the frequently called metadata getters. Some
+// serialization callers already hold application locks when invoking them.
+const uriTimer=setInterval(()=>{try{const value=getUris();if(!value.isNull()&&!value.equals(ptr(-1))){uriManager=value;clearInterval(uriTimer);}}catch{}},1000);
+const collectionHandles=new Set();
+Interceptor.attach(Process.getModuleByName('kernel32.dll').getExportByName('CreateFileW'),{
+  onEnter(args){this.collection=false;try{const path=args[0].readUtf16String();this.collection=!!path&&/(^|[\\/])collection(?:new)?[.]nml$/i.test(path)&&(args[1].toUInt32()&0x40000000)!==0;if(this.collection)writingCollection=true;}catch{}},
+  onLeave(handle){if(this.collection){if(!handle.equals(ptr(-1)))collectionHandles.add(handle.toString());else if(!collectionHandles.size)writingCollection=false;}}
+});
+Interceptor.attach(Process.getModuleByName('kernel32.dll').getExportByName('CloseHandle'),{
+  onEnter(args){this.collection=collectionHandles.delete(args[0].toString());},
+  onLeave(){if(this.collection&&!collectionHandles.size)writingCollection=false;}
+});
 const assignWide=new NativeFunction(base.add(0x519800),'pointer',['pointer','pointer','uint64']);
 const dynamicBySource=new Map(),dynamicById=new Map(),failedSources=new Map();let requestId=0;
 const trackContexts=new Map();
 function idOf(p){return Array.from(new Uint8Array(p.readByteArray(256)),x=>x.toString(16).padStart(2,'0')).join('');}
 function originalPath(object){
   if(!object.readPointer().equals(base.add(0x31d4c30)))return null;
-  const manager=getUris();if(manager.isNull()||manager.equals(ptr(-1)))return null;
+  const manager=uriManager;if(manager.isNull())return null;
   const uriRegistry=manager.add(16).readPointer();
   if(uriRegistry.isNull())return null;
   const begin=uriRegistry.add(8).readPointer(),end=uriRegistry.add(16).readPointer(),id=object.add(16).readU32();
@@ -73,14 +86,15 @@ if(settings.dynamic_loading===true){
   // this source has an associated private carrier. This covers keyboard/mappings
   // and ordinary browser loads without relying on the context-menu command.
   Interceptor.attach(base.add(0xc405a0),{
-    onEnter(args){this.track=null;try{
+    onEnter(args){this.track=null;this.previous=trackContexts.get(this.threadId);try{
       const source=originalPath(args[0]);
       this.track=ensureDynamic(args[0])||(source?dynamicBySource.get(source.toLowerCase()):null);
+      if(this.track)trackContexts.set(this.threadId,this.track);
     }catch(error){send({type:'live_error',message:'Deck-Vorbereitung: '+error});}},
     onLeave(result){if(this.track&&(result.toUInt32()&255)){
       result.replace(result.and('0xffffffff').or(liveEnabled?'0x200000000':'0x0'));
       send({type:liveEnabled?'automatic_stem_load':'ordinary_track_load',source:this.track.source});
-    }}
+    }if(this.previous)trackContexts.set(this.threadId,this.previous);else trackContexts.delete(this.threadId);}
   });
   // Engine-side source resolution also needs the actual track context when a
   // filesystem entry has no fingerprint yet. Never redirect a global zero ID.
@@ -105,11 +119,13 @@ if(settings.dynamic_loading===true){
   });
   for(const rva of [0x84ea30,0x84f7c0])Interceptor.attach(base.add(rva),{
     onEnter(args){this.eligible=false;this.disabledAssociation=false;try{
+      const context=trackContexts.get(this.threadId);
+      if(writingCollection||!context)return;
       // Rendering/scanning the browser must not probe every audio file. Defer
       // carrier creation to the actual deck-load decision above.
       const source=originalPath(args[0]);
       if(liveEnabled&&source&&/[.](mp3|flac|wav|aif|aiff|m4a|mp4|ogg)$/i.test(source)&&!/[.]stem[.]mp4$/i.test(source))
-        this.eligible=rva===0x84f7c0||dynamicBySource.has(source.toLowerCase());
+        this.eligible=dynamicBySource.has(source.toLowerCase());
       if(!liveEnabled){
         const source=originalPath(args[0]);this.disabledAssociation=!!source&&dynamicBySource.has(source.toLowerCase());
       }
@@ -120,11 +136,11 @@ if(settings.dynamic_loading===true){
   // These are native TrackID -> associated-file queries, used by both the browser
   // and deck loader. Only identities prepared by this session are redirected.
   Interceptor.attach(base.add(0x86e6c0),{
-    onEnter(args){this.track=trackContexts.get(this.threadId)||(liveEnabled?dynamicById.get(idOf(args[0])):null);},
+    onEnter(args){this.track=writingCollection?null:trackContexts.get(this.threadId);},
     onLeave(result){if(this.track)result.replace(ptr(1));}
   });
   Interceptor.attach(base.add(0x86da20),{
-    onEnter(args){this.out=args[0];this.track=trackContexts.get(this.threadId)||(liveEnabled?dynamicById.get(idOf(args[1])):null);},
+    onEnter(args){this.out=args[0];this.track=writingCollection?null:trackContexts.get(this.threadId);},
     onLeave(){if(!this.track)return;try{
       const out=this.out;
       if(out.add(32).readU8()===0){out.writeByteArray(new Uint8Array(32));out.add(24).writeU64(7);}

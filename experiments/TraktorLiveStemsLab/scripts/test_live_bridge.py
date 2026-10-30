@@ -3,17 +3,20 @@ import ctypes as C,os,threading,time,unittest
 from pathlib import Path
 import numpy as np
 from stem_cache import StemCache,RATE,BLOCK
+from runtime_install import native_bridge
 
 class LiveBridgeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.dll=C.WinDLL(str(Path(__file__).resolve().parents[1]/'native'/'build'/os.environ.get('LAB_LIVE_DLL','live_bridge_v1.dll')))
+        override=os.environ.get('LAB_LIVE_DLL')
+        path=Path(__file__).resolve().parents[1]/'native'/'build'/override if override else native_bridge(Path(os.environ['LOCALAPPDATA'])/'Cratebase/traktor-lab')
+        cls.dll=C.WinDLL(str(path))
         d=cls.dll;d.LabCreateCache.argtypes=[C.c_wchar_p,C.c_uint64,C.c_uint];d.LabAddCache.argtypes=[C.c_wchar_p]
         d.LabRegisterSource.argtypes=[C.c_void_p,C.c_uint,C.c_uint,C.c_uint,C.c_uint]
         d.LabStatistics.argtypes=[C.c_uint,C.c_uint];d.LabStatistics.restype=C.c_uint64
         cls.keep=[];cls.counter=0
     def cache(self,frames=RATE*2):
-        type(self).counter+=1;path=Path(os.environ['LOCALAPPDATA'])/'Cratebase'/'traktor-lab'/'fixtures'/f'live-test-{os.getpid()}-{self.counter}.cache'
+        type(self).counter+=1;path=Path(os.environ['LOCALAPPDATA'])/'Cratebase'/'traktor-lab'/'fixtures'/f'live-test-{os.getpid()}-{type(self).__name__}-{self.counter}.cache'
         index=self.dll.LabCreateCache(str(path),frames,RATE);self.assertGreaterEqual(index,0)
         cache=StemCache(path);self.assertEqual(cache.frames,frames);self.assertEqual(self.dll.LabAddCache(str(path)),index)
         self.keep.append(cache);return index,cache

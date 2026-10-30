@@ -17,8 +17,10 @@ def run_job(a,model=None,model_lock=None,cancel_event=None,onstatus=None):
     import torch
     from demucs.pretrained import get_model
     torch.set_num_threads(4)
-    if model is not None:torch.cuda.set_device(next(model.parameters()).device)
-    if not torch.cuda.is_available():raise RuntimeError('CUDA is not available; no silent CPU fallback')
+    device=next(model.parameters()).device if model is not None else torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    cuda=device.type=='cuda'
+    if cuda:torch.cuda.set_device(device)
+    if not cuda:a.precision='fp32'
     report=a.report or a.cache.with_suffix('.json');started=time.perf_counter();metrics={'source':str(a.source),'cache':str(a.cache),'precision':a.precision,'windows':[]}
     def status(phase,**extra):
         metrics.update(phase=phase,elapsed_seconds=time.perf_counter()-started,**extra)
@@ -55,7 +57,7 @@ def run_job(a,model=None,model_lock=None,cancel_event=None,onstatus=None):
         audio=align_audio(audio,cache.frames,0);frames=cache.frames
     else:cache=StemCache(a.cache,frames)
     if not struct.unpack_from('<i',cache.map,72)[0]:cache.store_original(audio)
-    metrics.update(total_frames=frames,duration_seconds=frames/RATE,decode_seconds=time.perf_counter()-started,gpu=torch.cuda.get_device_name(0))
+    metrics.update(total_frames=frames,duration_seconds=frames/RATE,decode_seconds=time.perf_counter()-started,gpu=torch.cuda.get_device_name(device) if cuda else str(device))
     if bool(np.all(cache.ready)):
         # Published cache blocks are immutable and can still be mapped by decks.
         # Reopening a completed track must not run the whole model again.
@@ -64,8 +66,13 @@ def run_job(a,model=None,model_lock=None,cancel_event=None,onstatus=None):
         cache.close();return
     status('loading_model')
     begin=time.perf_counter()
-    if model is None:model=get_model('htdemucs').models[0].eval().to('cuda')
-    torch.cuda.synchronize()
+    if model is None:
+        from stem_backend import load
+        model,device,_name=load({'backend':'auto','gpu_index':0,'memory_budget_mb':4096})
+        cuda=device.type=='cuda'
+        metrics['gpu']=_name
+    if not cuda:a.precision='fp32'
+    if cuda:torch.cuda.synchronize(device)
     metrics.update(model_load_seconds=time.perf_counter()-begin,sources=model.sources)
     if model.sources!=['drums','bass','other','vocals']:raise RuntimeError('Unexpected model stem order')
     if a.start_signal:
@@ -91,11 +98,13 @@ def run_job(a,model=None,model_lock=None,cancel_event=None,onstatus=None):
             core=index*hop;context_start=core-left;source_start=max(0,context_start);source_end=min(frames,context_start+context)
             chunk=np.zeros((2,context),dtype=np.float32)
             chunk[:,source_start-context_start:source_end-context_start]=audio[:,source_start:source_end]
-            tensor=torch.from_numpy(chunk).unsqueeze(0).to('cuda');reference=tensor.mean(1,keepdim=True);mean=reference.mean();std=reference.std().clamp_min(1e-5)
+            tensor=torch.from_numpy(chunk).unsqueeze(0).to(device);reference=tensor.mean(1,keepdim=True);mean=reference.mean();std=reference.std().clamp_min(1e-5)
             normalized=(tensor-mean)/std
             with model_lock or contextlib.nullcontext():
-                torch.cuda.synchronize();begin=time.perf_counter()
-                with torch.inference_mode(),torch.autocast('cuda',enabled=a.precision=='fp16',dtype=torch.float16):separated=model(normalized)
+                if cuda:torch.cuda.synchronize(device)
+                begin=time.perf_counter()
+                precision=torch.autocast('cuda',enabled=a.precision=='fp16',dtype=torch.float16) if cuda else contextlib.nullcontext()
+                with torch.no_grad(),precision:separated=model(normalized)
                 separated=(separated.float()*std+mean/4)[0].cpu().numpy();elapsed=time.perf_counter()-begin
             if not np.isfinite(separated).all():raise RuntimeError('Nonfinite GPU output')
             start,end=ranges[index];raw_start=core-overlap;length=hop+2*overlap
@@ -112,7 +121,7 @@ def run_job(a,model=None,model_lock=None,cancel_event=None,onstatus=None):
             metrics['windows'].append({'index':index,'inference_and_transfer_seconds':elapsed,'ready_blocks':int(cache.ready.sum())})
             status('separating',completed_windows=len(done),total_windows=windows,ready_blocks=int(cache.ready.sum()),total_blocks=cache.blocks,generation_seconds=time.perf_counter()-generation_begin)
             if a.throttle:time.sleep(a.throttle)
-        metrics.update(peak_gpu_mb=torch.cuda.max_memory_allocated()/1024**2,peak_stem=float(np.max(np.abs(cache.data))),first_window_seconds=metrics['windows'][0]['inference_and_transfer_seconds'])
+        metrics.update(peak_gpu_mb=torch.cuda.max_memory_allocated(device)/1024**2 if cuda else 0,peak_stem=float(np.max(np.abs(cache.data))),first_window_seconds=metrics['windows'][0]['inference_and_transfer_seconds'])
         status('complete',ready_blocks=int(cache.ready.sum()),generation_seconds=time.perf_counter()-generation_begin)
     except BaseException:
         struct.pack_into('<i',cache.map,56,1);status('error');raise

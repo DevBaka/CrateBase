@@ -20,6 +20,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit, parse_qs, quote
 from live_settings import atomic_write
+from contextlib import nullcontext
+from profile_lock import hold as hold_profile
 
 MAX_FILE=256*1024*1024
 LOCAL_FIELDS={'Browser.Dir.Root','Browser.Dir.Music','Browser.Dir.Recordings','Browser.Dir.GeneratedStems','Browser.Dir.ITunesMusic','Browser.Dir.ContentImportRoot','Browser.Dir.Loops'}
@@ -55,9 +57,9 @@ def digest(data):return hashlib.sha256(data).hexdigest()
 
 
 class Profile:
-    def __init__(self,root,state,busy=lambda:False):
+    def __init__(self,root,state,busy=lambda:False,gate=None):
         self.root=Path(root).resolve();self.state=Path(state).resolve();self.state.mkdir(parents=True,exist_ok=True)
-        self.busy=busy;self.lock=threading.RLock();self.cache={}
+        self.busy=busy;self.lock=threading.RLock();self.cache={};self.gate=gate
 
     def path(self,name):
         parts=PurePosixPath(name).parts
@@ -70,7 +72,7 @@ class Profile:
         path=self.path(name);before=path.stat()
         if before.st_size>MAX_FILE:raise ValueError('Datei über 256 MB: '+name)
         data=path.read_bytes();after=path.stat()
-        if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):raise RuntimeError('Datei wird gerade verändert')
+        if (before.st_size,before.st_mtime_ns,before.st_ino,before.st_ctime_ns)!=(after.st_size,after.st_mtime_ns,after.st_ino,after.st_ctime_ns):raise RuntimeError('Datei wird gerade verändert')
         return portable(data,name)
 
     def revision(self,name):
@@ -82,10 +84,11 @@ class Profile:
             if self.busy():raise RuntimeError('Traktor läuft; Abgleich wartet bis zum Schließen')
             result={}
             for path in self.root.rglob('*'):
+                if self.busy():raise RuntimeError('Traktor wurde gestartet; Abgleich pausiert')
                 if not path.is_file() or path.is_symlink() or path.is_relative_to(self.state):continue
                 name=path.relative_to(self.root).as_posix()
                 if '.sync-conflict-' in name or name.endswith(('.tmp','.syncing','.importing')):continue
-                stat=path.stat();stamp=(stat.st_size,stat.st_mtime_ns)
+                stat=path.stat();stamp=(stat.st_size,stat.st_mtime_ns,stat.st_ino,stat.st_ctime_ns)
                 if stat.st_size>MAX_FILE:continue
                 cached=self.cache.get(name)
                 if not cached or cached[0]!=stamp:
@@ -94,7 +97,7 @@ class Profile:
             return result
 
     def write(self,name,data,expected):
-        with self.lock:
+        with self.lock, (hold_profile(self.gate) if self.gate else nullcontext()):
             if self.busy():raise RuntimeError('Traktor läuft; Datei wurde nicht ersetzt')
             path=self.path(name)
             if len(data)>MAX_FILE:raise ValueError('Datei zu groß')
@@ -165,7 +168,16 @@ class Endpoint:
                 self.send_header('X-Cratebase-Response',endpoint.signature(str(status),'response',nonce,body));self.end_headers()
                 try:self.wfile.write(body)
                 except OSError:pass
-        self.server=ThreadingHTTPServer((host,port),Handler);self.server.daemon_threads=True
+        class BoundedServer(ThreadingHTTPServer):
+            def __init__(self,*args):self.slots=threading.BoundedSemaphore(8);super().__init__(*args)
+            def process_request(self,request,address):
+                if not self.slots.acquire(blocking=False):request.close();return
+                try:super().process_request(request,address)
+                except Exception:self.slots.release();raise
+            def process_request_thread(self,*args):
+                try:super().process_request_thread(*args)
+                finally:self.slots.release()
+        self.server=BoundedServer((host,port),Handler);self.server.daemon_threads=True
         threading.Thread(target=self.server.serve_forever,daemon=True).start()
         return self.server.server_address[1]
 
@@ -222,7 +234,7 @@ class Endpoint:
 
 class Discovery:
     def __init__(self,endpoint,port,tcp_port):
-        self.endpoint=endpoint;self.port=port;self.tcp_port=tcp_port;self.peers={};self.stop=threading.Event()
+        self.endpoint=endpoint;self.port=port;self.tcp_port=tcp_port;self.peers={};self.stop=threading.Event();self.lock=threading.Lock()
         self.socket=socket.socket(socket.AF_INET,socket.SOCK_DGRAM);self.socket.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1);self.socket.setsockopt(socket.SOL_SOCKET,socket.SO_BROADCAST,1)
         self.socket.bind(('',port));self.socket.settimeout(1)
         threading.Thread(target=self.run,daemon=True).start()
@@ -236,7 +248,14 @@ class Discovery:
                 last=time.monotonic()
             try:
                 data,address=self.socket.recvfrom(4096);packet=json.loads(data)
+                if not isinstance(packet,dict):continue
+                node=packet.get('node')
+                if not isinstance(node,str) or len(node)!=32 or any(c not in '0123456789abcdef' for c in node):continue
                 if packet.get('cratebase')==1 and packet.get('group')==self.endpoint.group and packet.get('node')!=self.endpoint.node and 1<=int(packet.get('port',0))<=65535:
-                    self.peers[packet['node']]={'host':address[0],'port':int(packet['port']),'name':str(packet.get('name','PC'))[:100],'seen':time.time()}
+                    with self.lock:
+                        self.peers={n:p for n,p in self.peers.items() if time.time()-p['seen']<30}
+                        if len(self.peers)<256:self.peers[node]={'host':address[0],'port':int(packet['port']),'name':str(packet.get('name','PC'))[:100],'seen':time.time()}
             except (OSError,ValueError,TypeError,KeyError):pass
+    def snapshot(self):
+        with self.lock:return list(self.peers.values())
     def close(self):self.stop.set();self.socket.close()

@@ -21,6 +21,21 @@ Die Laufzeiten sind auf diesem PC privat eingerichtet; das Startskript ist kein 
 
 ## Stabilitätsstand vom 29.10.2026
 
+### Favoriten-Erweiterung vom 30.10.2026
+
+Der Starter lädt die zweite native Favoritenreihe automatisch mit. Schriftquelle,
+Symbolabstand und einzeilige Begrenzung werden von den ursprünglichen Controls
+übernommen. Die zusätzlichen Ziele bleiben in `additional-favorites.json` erhalten.
+Die Controller-Manager-Parameter „Favorites Select“ und „Append to favorite“
+besitzen jetzt Werte bis „Favorite 24“. Erweiterte Werte werden auf die zweite
+Zielbank übersetzt, bevor ein nativer Zwölf-Slot-Handler aufgerufen wird.
+Die Änderung prüft drei buildgebundene Instruktionsfolgen und betrifft nur den
+privaten laufenden Prozess, nicht die installierte EXE.
+
+Im laufenden Traktor geprüft: Beschriftung mit Symbolabstand nach vollständiger
+Neuzeichnung; natives Append-Dropdown mit Favorite 13–24. Ein Test mit physischem
+MIDI-Eingabegerät wurde hierbei nicht durchgeführt (Generic MIDI In-Port: n/a).
+
 Die Edition verwendet jetzt einen eigenen Versionsordner unter
 `C:\Users\DJBaka\Documents\Native Instruments\Traktor 4.5 Cratebase Edition`.
 Dort liegen Collection, TSI-Einstellungen, History, Stripes und Transients.

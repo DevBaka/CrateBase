@@ -9,4 +9,6 @@ reports/decompiled-*/
 native/build/
 __pycache__/
 *.pyc
+dist/
+build/
 

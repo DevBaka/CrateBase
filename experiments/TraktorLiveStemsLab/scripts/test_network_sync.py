@@ -1,6 +1,7 @@
-import json,secrets,tempfile,unittest
+import json,secrets,tempfile,unittest,http.client,hmac,hashlib,time,socket,threading
 from pathlib import Path
-from network_sync import Profile,Endpoint,portable
+from network_sync import Profile,Endpoint,portable,digest,Discovery
+from profile_lock import hold,ProfileBusy
 
 
 class NetworkSyncTests(unittest.TestCase):
@@ -48,6 +49,37 @@ class NetworkSyncTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):self.a.write('collection.nml',b'<NML/>','wrong revision')
         with self.assertRaises(Exception):self.a.write('collection.nml',b'broken',self.a.revision('collection.nml'))
         self.assertEqual(p.read_bytes(),before)
+
+    def test_shared_gate_blocks_writer(self):
+        self.a.gate=Path(self.tmp.name)/'gate'
+        with hold(self.a.gate):
+            with self.assertRaises(ProfileBusy):self.a.write('blocked.dat',b'data',None)
+        self.a.write('blocked.dat',b'data',None)
+        self.assertEqual((self.a.root/'blocked.dat').read_bytes(),b'data')
+
+    def test_replay_and_expected_revision_are_authenticated(self):
+        path='/file?path=test.dat';data=b'payload';nonce=str(time.time())+':test'
+        headers={'X-Cratebase-Nonce':nonce,'X-Cratebase-Body':digest(data),'X-Cratebase-Auth':self.left.signature('PUT',path+'\n',nonce,data)}
+        def send(values):
+            connection=http.client.HTTPConnection('127.0.0.1',self.port,timeout=3)
+            try:
+                connection.request('PUT',path,body=data,headers=values);response=connection.getresponse();response.read();return response.status
+            finally:connection.close()
+        self.assertEqual(send({**headers,'X-Cratebase-Expected':'tampered'}),403)
+        self.assertEqual(send(headers),200)
+        self.assertEqual(send(headers),403)
+
+    def test_discovery_ignores_bad_packets_and_recovers(self):
+        discovery=Discovery(self.right,0,self.port)
+        udp_port=discovery.socket.getsockname()[1]
+        sender=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+        try:
+            for value in ([],None,{'node':[]}):sender.sendto(json.dumps(value).encode(),('127.0.0.1',udp_port))
+            sender.sendto(json.dumps({'cratebase':1,'group':self.right.group,'node':self.left.node,'name':'Local peer','port':self.port}).encode(),('127.0.0.1',udp_port))
+            deadline=time.monotonic()+2
+            while time.monotonic()<deadline and not discovery.snapshot():time.sleep(.02)
+            self.assertEqual(discovery.snapshot()[0]['name'],'Local peer')
+        finally:discovery.close();sender.close()
 
 
 if __name__=='__main__':unittest.main()

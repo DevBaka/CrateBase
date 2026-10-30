@@ -32,6 +32,7 @@ def default_source(lab):
     state=read_state(lab)
     if state:return Path(state['source'])
     config=json.loads((Path(lab)/'sandbox.json').read_text(encoding='utf-8'))
+    if config.get('source_collection'):return Path(config['source_collection'])
     return Path(config['original_documents_ni'])/'Traktor 4.5.1/collection.nml'
 
 def import_collection(lab,source,is_running=lambda:False):
@@ -70,8 +71,9 @@ def ensure_collection(lab,is_running=lambda:False):
     return import_collection(lab,default_source(lab),is_running)
 
 
-def sync_collection(lab,is_running=lambda:False):
+def sync_collection(lab,is_running=lambda:False,prefer=None):
     """Three-way whole-NML sync; retain both versions on concurrent edits."""
+    if prefer not in (None,'edition','original'):raise ValueError('Ungültige Collection-Auswahl')
     if is_running():return {'status':'busy'}
     state=read_state(lab)
     if not state:return {'status':'unconfigured'}
@@ -82,12 +84,18 @@ def sync_collection(lab,is_running=lambda:False):
     if upstream==local:
         if base!=local:state['source_sha256']=local;atomic_write(state_path(lab),state)
         return {'status':'equal'}
-    if upstream!=base and local!=base:
+    if prefer is None and upstream!=base and local!=base:
         report={'status':'conflict','original':str(original),'edition':str(edition),'original_sha256':upstream,'edition_sha256':local}
         atomic_write(Path(lab)/'collection-sync-conflict.json',report)
         return report
-    source,target,expected=(edition,original,upstream) if upstream==base else (original,edition,local)
+    source,target,expected=(edition,original,upstream) if prefer=='edition' or (prefer is None and upstream==base) else (original,edition,local)
     counts=summarize(source)
+    previous_counts=summarize(target)
+    if prefer is None and previous_counts['tracks']>=1000 and counts['tracks']<previous_counts['tracks']/2:
+        report={'status':'suspicious_shrink','original':str(original),'edition':str(edition),
+                'from_tracks':previous_counts['tracks'],'to_tracks':counts['tracks']}
+        atomic_write(Path(lab)/'collection-sync-conflict.json',report)
+        return report
     temporary=target.with_name(target.name+'.'+uuid.uuid4().hex+'.syncing')
     try:
         shutil.copy2(source,temporary)

@@ -3,7 +3,7 @@
 No TCP listener, firewall rule, system service, or external Ollama installation.
 Messages are authenticated JSON bytes, never pickle-deserialized commands.
 """
-import argparse,hashlib,json,os,secrets,threading,time,traceback
+import argparse,hashlib,json,os,secrets,threading,time,traceback,sys
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import AuthenticationError
 from multiprocessing.connection import Listener
@@ -36,19 +36,17 @@ class Service:
         self.settings=read_live_settings(saved)
     def load_model(self):
         import torch
-        from demucs.pretrained import get_model
+        import contextlib
+        from stem_backend import load
         os.environ['TORCH_HOME']=str(self.lab/'models');torch.set_num_threads(4)
-        if not torch.cuda.is_available():raise RuntimeError('CUDA unavailable')
-        index=int(self.settings['gpu_index']);torch.cuda.set_device(index)
-        total=torch.cuda.get_device_properties(index).total_memory
-        budget=int(self.settings['memory_budget_mb'])*1024*1024
-        torch.cuda.set_per_process_memory_fraction(min(.9,budget/total),index)
-        self.model=get_model('htdemucs').models[0].eval().to('cuda')
-        dummy=torch.zeros((1,2,327680),device='cuda')
-        with torch.inference_mode(),torch.autocast('cuda',enabled=self.settings['precision']=='fp16',dtype=torch.float16):self.model(dummy)
-        torch.cuda.synchronize();self.gpu=torch.cuda.get_device_name(index);self.phase='ready'
+        self.model,device,name=load(self.settings);cuda=device.type=='cuda'
+        dummy=torch.zeros((1,2,327680),device=device)
+        precision=torch.autocast('cuda',enabled=self.settings['precision']=='fp16',dtype=torch.float16) if cuda else contextlib.nullcontext()
+        with torch.no_grad(),precision:self.model(dummy)
+        if cuda:torch.cuda.synchronize(device)
+        self.gpu=name;self.phase='ready'
     def snapshot(self):
-        with self.lock:return {'phase':self.phase,'gpu':getattr(self,'gpu',None),'settings':self.settings.copy(),'error':self.error,'jobs':{k:{x:v for x,v in j.items() if x not in ('cancel','future')} for k,j in self.jobs.items()}}
+        with self.lock:return {'phase':self.phase,'gpu':getattr(self,'gpu',None),'inference_python':sys.executable,'settings':self.settings.copy(),'error':self.error,'jobs':{k:{x:v for x,v in j.items() if x not in ('cancel','future')} for k,j in self.jobs.items()}}
     def dispatch(self,message):
         if not isinstance(message,dict):return {'ok':False,'error':'Request must be an object'}
         command=message.get('command')

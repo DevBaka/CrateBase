@@ -20,3 +20,6 @@ android/.gradle/
 android/**/build/
 android/local.properties
 *.keystore
+
+# Isolated Windows bootstrap verification (downloaded runtimes, not sources)
+.setup-test-local/

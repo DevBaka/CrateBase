@@ -1,6 +1,5 @@
 """Exercise stale native prefetch replacement at the final cache-read boundary."""
 import ctypes as C,os,unittest
-os.environ.setdefault('LAB_LIVE_DLL','live_bridge_v3.dll')
 import numpy as np
 import test_live_bridge as base
 from stem_cache import RATE
